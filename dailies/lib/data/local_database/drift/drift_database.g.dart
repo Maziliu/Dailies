@@ -412,21 +412,6 @@ class $DriftEventsTable extends DriftEvents
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _isReaccuringMeta = const VerificationMeta(
-    'isReaccuring',
-  );
-  @override
-  late final GeneratedColumn<bool> isReaccuring = GeneratedColumn<bool>(
-    'is_reaccuring',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_reaccuring" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
-  );
   static const VerificationMeta _timeSlotIdMeta = const VerificationMeta(
     'timeSlotId',
   );
@@ -442,13 +427,7 @@ class $DriftEventsTable extends DriftEvents
     ),
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    eventName,
-    location,
-    isReaccuring,
-    timeSlotId,
-  ];
+  List<GeneratedColumn> get $columns => [id, eventName, location, timeSlotId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -476,15 +455,6 @@ class $DriftEventsTable extends DriftEvents
       context.handle(
         _locationMeta,
         location.isAcceptableOrUnknown(data['location']!, _locationMeta),
-      );
-    }
-    if (data.containsKey('is_reaccuring')) {
-      context.handle(
-        _isReaccuringMeta,
-        isReaccuring.isAcceptableOrUnknown(
-          data['is_reaccuring']!,
-          _isReaccuringMeta,
-        ),
       );
     }
     if (data.containsKey('time_slot_id')) {
@@ -521,11 +491,6 @@ class $DriftEventsTable extends DriftEvents
         DriftSqlType.string,
         data['${effectivePrefix}location'],
       ),
-      isReaccuring:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.bool,
-            data['${effectivePrefix}is_reaccuring'],
-          )!,
       timeSlotId:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
@@ -544,13 +509,11 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
   final int id;
   final String eventName;
   final String? location;
-  final bool isReaccuring;
   final int timeSlotId;
   const DriftEvent({
     required this.id,
     required this.eventName,
     this.location,
-    required this.isReaccuring,
     required this.timeSlotId,
   });
   @override
@@ -561,7 +524,6 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
     if (!nullToAbsent || location != null) {
       map['location'] = Variable<String>(location);
     }
-    map['is_reaccuring'] = Variable<bool>(isReaccuring);
     map['time_slot_id'] = Variable<int>(timeSlotId);
     return map;
   }
@@ -574,7 +536,6 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
           location == null && nullToAbsent
               ? const Value.absent()
               : Value(location),
-      isReaccuring: Value(isReaccuring),
       timeSlotId: Value(timeSlotId),
     );
   }
@@ -588,7 +549,6 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
       id: serializer.fromJson<int>(json['id']),
       eventName: serializer.fromJson<String>(json['eventName']),
       location: serializer.fromJson<String?>(json['location']),
-      isReaccuring: serializer.fromJson<bool>(json['isReaccuring']),
       timeSlotId: serializer.fromJson<int>(json['timeSlotId']),
     );
   }
@@ -599,7 +559,6 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
       'id': serializer.toJson<int>(id),
       'eventName': serializer.toJson<String>(eventName),
       'location': serializer.toJson<String?>(location),
-      'isReaccuring': serializer.toJson<bool>(isReaccuring),
       'timeSlotId': serializer.toJson<int>(timeSlotId),
     };
   }
@@ -608,13 +567,11 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
     int? id,
     String? eventName,
     Value<String?> location = const Value.absent(),
-    bool? isReaccuring,
     int? timeSlotId,
   }) => DriftEvent(
     id: id ?? this.id,
     eventName: eventName ?? this.eventName,
     location: location.present ? location.value : this.location,
-    isReaccuring: isReaccuring ?? this.isReaccuring,
     timeSlotId: timeSlotId ?? this.timeSlotId,
   );
   DriftEvent copyWithCompanion(DriftEventsCompanion data) {
@@ -622,10 +579,6 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
       id: data.id.present ? data.id.value : this.id,
       eventName: data.eventName.present ? data.eventName.value : this.eventName,
       location: data.location.present ? data.location.value : this.location,
-      isReaccuring:
-          data.isReaccuring.present
-              ? data.isReaccuring.value
-              : this.isReaccuring,
       timeSlotId:
           data.timeSlotId.present ? data.timeSlotId.value : this.timeSlotId,
     );
@@ -637,15 +590,13 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
           ..write('id: $id, ')
           ..write('eventName: $eventName, ')
           ..write('location: $location, ')
-          ..write('isReaccuring: $isReaccuring, ')
           ..write('timeSlotId: $timeSlotId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, eventName, location, isReaccuring, timeSlotId);
+  int get hashCode => Object.hash(id, eventName, location, timeSlotId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -653,7 +604,6 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
           other.id == this.id &&
           other.eventName == this.eventName &&
           other.location == this.location &&
-          other.isReaccuring == this.isReaccuring &&
           other.timeSlotId == this.timeSlotId);
 }
 
@@ -661,20 +611,17 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
   final Value<int> id;
   final Value<String> eventName;
   final Value<String?> location;
-  final Value<bool> isReaccuring;
   final Value<int> timeSlotId;
   const DriftEventsCompanion({
     this.id = const Value.absent(),
     this.eventName = const Value.absent(),
     this.location = const Value.absent(),
-    this.isReaccuring = const Value.absent(),
     this.timeSlotId = const Value.absent(),
   });
   DriftEventsCompanion.insert({
     this.id = const Value.absent(),
     required String eventName,
     this.location = const Value.absent(),
-    this.isReaccuring = const Value.absent(),
     required int timeSlotId,
   }) : eventName = Value(eventName),
        timeSlotId = Value(timeSlotId);
@@ -682,14 +629,12 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
     Expression<int>? id,
     Expression<String>? eventName,
     Expression<String>? location,
-    Expression<bool>? isReaccuring,
     Expression<int>? timeSlotId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventName != null) 'event_name': eventName,
       if (location != null) 'location': location,
-      if (isReaccuring != null) 'is_reaccuring': isReaccuring,
       if (timeSlotId != null) 'time_slot_id': timeSlotId,
     });
   }
@@ -698,14 +643,12 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
     Value<int>? id,
     Value<String>? eventName,
     Value<String?>? location,
-    Value<bool>? isReaccuring,
     Value<int>? timeSlotId,
   }) {
     return DriftEventsCompanion(
       id: id ?? this.id,
       eventName: eventName ?? this.eventName,
       location: location ?? this.location,
-      isReaccuring: isReaccuring ?? this.isReaccuring,
       timeSlotId: timeSlotId ?? this.timeSlotId,
     );
   }
@@ -722,9 +665,6 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
     if (location.present) {
       map['location'] = Variable<String>(location.value);
     }
-    if (isReaccuring.present) {
-      map['is_reaccuring'] = Variable<bool>(isReaccuring.value);
-    }
     if (timeSlotId.present) {
       map['time_slot_id'] = Variable<int>(timeSlotId.value);
     }
@@ -737,7 +677,6 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
           ..write('id: $id, ')
           ..write('eventName: $eventName, ')
           ..write('location: $location, ')
-          ..write('isReaccuring: $isReaccuring, ')
           ..write('timeSlotId: $timeSlotId')
           ..write(')'))
         .toString();
@@ -1206,7 +1145,6 @@ typedef $$DriftEventsTableCreateCompanionBuilder =
       Value<int> id,
       required String eventName,
       Value<String?> location,
-      Value<bool> isReaccuring,
       required int timeSlotId,
     });
 typedef $$DriftEventsTableUpdateCompanionBuilder =
@@ -1214,7 +1152,6 @@ typedef $$DriftEventsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> eventName,
       Value<String?> location,
-      Value<bool> isReaccuring,
       Value<int> timeSlotId,
     });
 
@@ -1266,11 +1203,6 @@ class $$DriftEventsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<bool> get isReaccuring => $composableBuilder(
-    column: $table.isReaccuring,
-    builder: (column) => ColumnFilters(column),
-  );
-
   $$DriftTimeSlotsTableFilterComposer get timeSlotId {
     final $$DriftTimeSlotsTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -1319,11 +1251,6 @@ class $$DriftEventsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<bool> get isReaccuring => $composableBuilder(
-    column: $table.isReaccuring,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   $$DriftTimeSlotsTableOrderingComposer get timeSlotId {
     final $$DriftTimeSlotsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -1365,11 +1292,6 @@ class $$DriftEventsTableAnnotationComposer
 
   GeneratedColumn<String> get location =>
       $composableBuilder(column: $table.location, builder: (column) => column);
-
-  GeneratedColumn<bool> get isReaccuring => $composableBuilder(
-    column: $table.isReaccuring,
-    builder: (column) => column,
-  );
 
   $$DriftTimeSlotsTableAnnotationComposer get timeSlotId {
     final $$DriftTimeSlotsTableAnnotationComposer composer = $composerBuilder(
@@ -1427,13 +1349,11 @@ class $$DriftEventsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> eventName = const Value.absent(),
                 Value<String?> location = const Value.absent(),
-                Value<bool> isReaccuring = const Value.absent(),
                 Value<int> timeSlotId = const Value.absent(),
               }) => DriftEventsCompanion(
                 id: id,
                 eventName: eventName,
                 location: location,
-                isReaccuring: isReaccuring,
                 timeSlotId: timeSlotId,
               ),
           createCompanionCallback:
@@ -1441,13 +1361,11 @@ class $$DriftEventsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String eventName,
                 Value<String?> location = const Value.absent(),
-                Value<bool> isReaccuring = const Value.absent(),
                 required int timeSlotId,
               }) => DriftEventsCompanion.insert(
                 id: id,
                 eventName: eventName,
                 location: location,
-                isReaccuring: isReaccuring,
                 timeSlotId: timeSlotId,
               ),
           withReferenceMapper:

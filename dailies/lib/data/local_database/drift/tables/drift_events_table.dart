@@ -5,7 +5,6 @@ class DriftEvents extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get eventName => text()();
   TextColumn get location => text().nullable()();
-  BoolColumn get isReaccuring => boolean().withDefault(const Constant(false))();
   IntColumn get timeSlotId =>
       integer().references(DriftTimeSlots, #id, onDelete: KeyAction.cascade)();
 }

@@ -1,3 +1,4 @@
+import 'package:dailies/presentation/views/common_widgets/custom_floating_action_button.dart';
 import 'package:dailies/presentation/views/events/events_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,23 +14,31 @@ class EventsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<EventsViewModel>(
       builder: (context, viewModel, child) {
-        return Column(
+        return Stack(
           children: [
-            TableCalendar(
-              headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true,
-              ),
-              focusedDay: viewModel.selectedDay,
-              firstDay: FIRST_CALENDAR_DAY,
-              lastDay: LAST_CALENDAR_DAY,
-              sixWeekMonthsEnforced: true,
-              selectedDayPredicate:
-                  (selectedDay) =>
-                      isSameDay(selectedDay, viewModel.selectedDay),
-              onDaySelected:
-                  (selectedDay, focusedDay) =>
-                      viewModel.onDaySelect(selectedDay),
+            Column(
+              children: [
+                TableCalendar(
+                  headerStyle: const HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                  ),
+                  focusedDay: viewModel.selectedDay,
+                  firstDay: FIRST_CALENDAR_DAY,
+                  lastDay: LAST_CALENDAR_DAY,
+                  sixWeekMonthsEnforced: true,
+                  selectedDayPredicate:
+                      (selectedDay) =>
+                          isSameDay(selectedDay, viewModel.selectedDay),
+                  onDaySelected:
+                      (selectedDay, focusedDay) =>
+                          viewModel.onDaySelect(selectedDay),
+                ),
+              ],
+            ),
+
+            CustomFloatingActionButton(
+              onButtonPress: viewModel.onAddEventButtonPress,
             ),
           ],
         );

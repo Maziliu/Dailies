@@ -6,6 +6,10 @@ class EventsViewModel extends ChangeNotifier {
 
   DateTime get selectedDay => _selectedDay;
 
+  void onAddEventButtonPress() {
+    print('Added Event');
+  }
+
   void onDaySelect(DateTime selectedDay) {
     if (!isSameDay(selectedDay, _selectedDay)) {
       _selectedDay = selectedDay;

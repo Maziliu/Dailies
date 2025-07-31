@@ -1,26 +1,24 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
+import 'package:dailies/data/models/app_model.dart';
 
-class TimeSlot {
-  final int _id;
-  final int? _nextTimeSlot;
+class TimeSlot extends AppModel {
+  final int? _nextTimeSlotId;
   final DateTime _dateOfTimeSlot;
   final DateTime? _startTime;
   final DateTime? _endTime;
 
   TimeSlot({
-    required int id,
+    required super.id,
     required int? nextTimeSlotId,
     required DateTime dateOfTimeSlot,
     required DateTime? startTime,
     required DateTime? endTime,
-  }) : _id = id,
-       _nextTimeSlot = nextTimeSlotId,
+  }) : _nextTimeSlotId = nextTimeSlotId,
        _dateOfTimeSlot = dateOfTimeSlot,
        _startTime = startTime,
        _endTime = endTime;
 
-  int get id => _id;
-  int get nextTimeSlot => _nextTimeSlot!;
+  int get nextTimeSlotId => _nextTimeSlotId!;
   DateTime get dateOfTimeSlot => _dateOfTimeSlot;
   DateTime get startTime => _startTime!;
   DateTime get endTime => _endTime!;
@@ -37,5 +35,5 @@ class TimeSlot {
     return TimeSlotType.Interval;
   }
 
-  bool get isReaccuring => _nextTimeSlot == null;
+  bool get isReaccuring => _nextTimeSlotId == null;
 }

@@ -1,18 +1,18 @@
-import 'package:dailies/data/local_database/interfaces/dao/generic_dao.dart';
-import 'package:dailies/data/local_database/interfaces/mapper/model_mapper.dart';
-import 'package:dailies/data/repositories/crud_operations_mixin.dart';
+import 'package:dailies/data/dao/time_slot_dao.dart';
+import 'package:dailies/data/mapper/time_slot_mapper.dart';
+import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
 class TimeSlotRepository with CRUDOperationsMixin {
-  final GenericDao _dao;
-  final ModelMapper _mapper;
+  final TimeSlotDao _dao;
+  final TimeSlotMapper _mapper;
 
-  TimeSlotRepository({required GenericDao dao, required ModelMapper mapper})
+  TimeSlotRepository({required TimeSlotDao dao, required TimeSlotMapper mapper})
     : _dao = dao,
       _mapper = mapper;
 
   @override
-  GenericDao get dao => _dao;
+  TimeSlotDao get dao => _dao;
 
   @override
-  ModelMapper get mapper => _mapper;
+  TimeSlotMapper get mapper => _mapper;
 }

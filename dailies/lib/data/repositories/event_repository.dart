@@ -1,18 +1,18 @@
-import 'package:dailies/data/local_database/interfaces/dao/generic_dao.dart';
-import 'package:dailies/data/local_database/interfaces/mapper/model_mapper.dart';
-import 'package:dailies/data/repositories/crud_operations_mixin.dart';
+import 'package:dailies/data/dao/event_dao.dart';
+import 'package:dailies/data/mapper/event_mapper.dart';
+import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
 class EventRepository with CRUDOperationsMixin {
-  final GenericDao _dao;
-  final ModelMapper _mapper;
+  final EventDao _dao;
+  final EventMapper _mapper;
 
-  EventRepository({required GenericDao dao, required ModelMapper mapper})
+  EventRepository({required EventDao dao, required EventMapper mapper})
     : _dao = dao,
       _mapper = mapper;
 
   @override
-  GenericDao get dao => _dao;
+  EventDao get dao => _dao;
 
   @override
-  ModelMapper get mapper => _mapper;
+  EventMapper get mapper => _mapper;
 }

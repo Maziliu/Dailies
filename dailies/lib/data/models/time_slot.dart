@@ -1,7 +1,7 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/app_model.dart';
 
-class TimeSlot extends AppModel {
+class TimeSlot extends AppModel implements Comparable<TimeSlot> {
   final int? _nextTimeSlotId;
   final DateTime _dateOfTimeSlot;
   final DateTime? _startTime;
@@ -36,4 +36,22 @@ class TimeSlot extends AppModel {
   }
 
   bool get isReaccuring => _nextTimeSlotId == null;
+
+  @override
+  int compareTo(TimeSlot other) {
+    if (_dateOfTimeSlot.compareTo(other._dateOfTimeSlot) != 0) {
+      return _dateOfTimeSlot.compareTo(other._dateOfTimeSlot);
+    }
+
+    //Specific times matter if both they are on the same day
+    if (_endTime == null && other._endTime == null) {
+      return 0;
+    } else if (_endTime == null) {
+      return 1;
+    } else if (other._endTime == null) {
+      return -1;
+    } else {
+      return _endTime.compareTo(other._endTime);
+    }
+  }
 }

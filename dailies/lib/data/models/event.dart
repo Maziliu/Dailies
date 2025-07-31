@@ -1,7 +1,7 @@
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 
-class Event extends AppModel {
+class Event extends AppModel implements Comparable<Event> {
   final String _eventName;
   final String? _location;
   final List<TimeSlot> _timeSlots;
@@ -19,5 +19,10 @@ class Event extends AppModel {
   String? get location => _location;
   List<TimeSlot> get timeSlots => _timeSlots;
   int get timeSlotHeadId => _timeSlots[0].id;
-  bool get isReaccurring => _timeSlots.length > 1;
+  bool get isRecurring => _timeSlots.length > 1;
+
+  @override
+  int compareTo(Event other) {
+    return _timeSlots.first.compareTo(other._timeSlots.first);
+  }
 }

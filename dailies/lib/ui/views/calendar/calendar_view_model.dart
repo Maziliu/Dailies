@@ -3,7 +3,7 @@ import 'package:dailies/data/models/time_slot.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class EventsViewModel extends ChangeNotifier {
+class CalendarViewModel extends ChangeNotifier {
   DateTime _selectedDay = DateTime.now();
   final List<Event> _currentAndAdjacentMonthsEvents = [
     Event(
@@ -17,6 +17,41 @@ class EventsViewModel extends ChangeNotifier {
           dateOfTimeSlot: DateTime.now(), // Today
           startTime: DateTime.now().add(const Duration(hours: 1)),
           endTime: DateTime.now().add(const Duration(hours: 2)),
+        ),
+        TimeSlot(
+          id: 1031,
+          nextTimeSlotId: null,
+          dateOfTimeSlot: DateTime.now(), // Today
+          startTime: DateTime.now().add(const Duration(hours: 2)),
+          endTime: DateTime.now().add(const Duration(hours: 4)),
+        ),
+        TimeSlot(
+          id: 1031,
+          nextTimeSlotId: null,
+          dateOfTimeSlot: DateTime.now(), // Today
+          startTime: DateTime.now().add(const Duration(hours: 2)),
+          endTime: DateTime.now().add(const Duration(hours: 4)),
+        ),
+        TimeSlot(
+          id: 1031,
+          nextTimeSlotId: null,
+          dateOfTimeSlot: DateTime.now(), // Today
+          startTime: DateTime.now().add(const Duration(hours: 2)),
+          endTime: DateTime.now().add(const Duration(hours: 4)),
+        ),
+        TimeSlot(
+          id: 1031,
+          nextTimeSlotId: null,
+          dateOfTimeSlot: DateTime.now(), // Today
+          startTime: DateTime.now().add(const Duration(hours: 2)),
+          endTime: DateTime.now().add(const Duration(hours: 4)),
+        ),
+        TimeSlot(
+          id: 1031,
+          nextTimeSlotId: null,
+          dateOfTimeSlot: DateTime.now(), // Today
+          startTime: DateTime.now().add(const Duration(hours: 2)),
+          endTime: DateTime.now().add(const Duration(hours: 4)),
         ),
       ],
     ),
@@ -63,6 +98,7 @@ class EventsViewModel extends ChangeNotifier {
       ],
     ),
   ];
+
   late final ValueNotifier<List<Event>> selectedEvents = ValueNotifier([]);
 
   DateTime get selectedDay => _selectedDay;
@@ -84,23 +120,10 @@ class EventsViewModel extends ChangeNotifier {
     List<Event> filteredEvents = [
       for (final event in _currentAndAdjacentMonthsEvents)
         ...(() {
-          final matchingSlots =
-              event.timeSlots
-                  .where(
-                    (slot) =>
-                        onlyDate(slot.dateOfTimeSlot) == onlyDate(specificDay),
-                  )
-                  .toList();
+          final matchingSlots = event.timeSlots.where((slot) => onlyDate(slot.dateOfTimeSlot) == onlyDate(specificDay)).toList();
 
           if (matchingSlots.isNotEmpty) {
-            return [
-              Event(
-                id: event.id,
-                eventName: event.eventName,
-                location: event.location,
-                timeSlots: matchingSlots,
-              ),
-            ];
+            return [Event(id: event.id, eventName: event.eventName, location: event.location, timeSlots: matchingSlots)];
           }
           return [];
         })(),

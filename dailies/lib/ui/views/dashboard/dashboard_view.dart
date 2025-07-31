@@ -1,6 +1,6 @@
 import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
-import 'package:dailies/ui/views/events/events_view.dart';
-import 'package:dailies/ui/views/events/events_view_model.dart';
+import 'package:dailies/ui/views/calendar/calendar_view.dart';
+import 'package:dailies/ui/views/calendar/calendar_view_model.dart';
 import 'package:dailies/ui/views/overview/overview_view.dart';
 import 'package:dailies/ui/views/overview/overview_view_model.dart';
 import 'package:dailies/ui/views/upload/upload_view.dart';
@@ -20,7 +20,7 @@ class DashboardView extends StatelessWidget {
             index: viewModel.selectedTabIndex,
             children: [
               ChangeNotifierProvider(create: (_) => OverviewViewModel(), child: const OverviewView()),
-              ChangeNotifierProvider(create: (_) => EventsViewModel(), child: const EventsView()),
+              ChangeNotifierProvider(create: (_) => CalendarViewModel(), child: const CalendarView()),
               ChangeNotifierProvider(create: (_) => UploadViewModel(), child: const UploadView()),
             ],
           ),
@@ -30,7 +30,7 @@ class DashboardView extends StatelessWidget {
             currentIndex: viewModel.selectedTabIndex,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Overview'),
-              BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Events'),
+              BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Calendar'),
               BottomNavigationBarItem(icon: Icon(Icons.upload), label: 'Upload'),
             ],
           ),

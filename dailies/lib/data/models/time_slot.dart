@@ -26,7 +26,7 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
   TimeSlotType get timeSlotType {
     if (_startTime == null) {
       if (_endTime == null) {
-        return TimeSlotType.AllDay;
+        return TimeSlotType.Unspecified;
       }
 
       return TimeSlotType.Deadline;

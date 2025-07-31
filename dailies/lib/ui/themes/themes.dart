@@ -33,24 +33,21 @@ final ThemeData defaultTheme = ThemeData(
     filled: true,
     fillColor: const Color(0xFF2A2A3C),
     labelStyle: const TextStyle(color: UI_ELEMENTS_BACKGROUND_COLOUR),
-    enabledBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: Color(0xFFBB86FC)),
-      borderRadius: BorderRadius.circular(BORDER_RADIUS),
-    ),
+    enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Color(0xFFBB86FC)), borderRadius: BorderRadius.circular(BORDER_RADIUS)),
     focusedBorder: OutlineInputBorder(
       borderSide: const BorderSide(color: UI_ELEMENTS_BACKGROUND_COLOUR, width: 2),
       borderRadius: BorderRadius.circular(BORDER_RADIUS),
     ),
   ),
   scaffoldBackgroundColor: const Color(0xFF121212),
-  cardTheme: CardTheme(
-    color: const Color(0xFF333340),
-    elevation: 6,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(BORDER_RADIUS)),
-    shadowColor: Colors.black,
-    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-    surfaceTintColor: Colors.transparent,
-  ),
+  // cardTheme: CardTheme(
+  //   color: const Color(0xFF333340),
+  //   elevation: 6,
+  //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(BORDER_RADIUS)),
+  //   shadowColor: Colors.black,
+  //   margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+  //   surfaceTintColor: Colors.transparent,
+  // ),
   hoverColor: const Color(0xFF2A2A3C),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: BOTTOM_NAV_BACKGROUND_COLOR,

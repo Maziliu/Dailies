@@ -20,4 +20,8 @@ class DriftTimeSlotDao extends DatabaseAccessor<AppDatabase> with _$DriftTimeSlo
 
   @override
   Future<bool> updateEntry(DriftTimeSlotsCompanion updatedObject) => update(driftTimeSlots).replace(updatedObject);
+
+  @override
+  Future<List<DriftTimeSlot>> getTimeSlotsInDateTimeRange(DateTime lowerBound, DateTime upperBound) =>
+      (select(driftTimeSlots)..where((timeSlot) => timeSlot.date.isBetweenValues(lowerBound, upperBound))).get();
 }

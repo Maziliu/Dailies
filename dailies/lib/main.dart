@@ -3,6 +3,7 @@ import 'package:dailies/ui/themes/themes.dart';
 import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:dailies/ui/views/dashboard/dashboard_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 

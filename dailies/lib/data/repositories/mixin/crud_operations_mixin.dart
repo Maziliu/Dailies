@@ -1,5 +1,5 @@
 import 'package:dailies/common/exceptions/database_exceptions.dart';
-import 'package:dailies/common/utils/safe_executers.dart';
+import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/dao/generic_dao.dart';
 import 'package:dailies/data/mapper/model_mapper.dart';
@@ -24,9 +24,7 @@ mixin CRUDOperationsMixin {
   }
 
   Future<Result<AppModel>> getEntryById(int id) async {
-    Result<dynamic> databaseResult = await guardedAsyncExcecute(
-      () => dao.getEntryById(id),
-    );
+    Result<dynamic> databaseResult = await guardedAsyncExcecute(() => dao.getEntryById(id));
 
     switch (databaseResult) {
       case Ok(value: final dynamic result):

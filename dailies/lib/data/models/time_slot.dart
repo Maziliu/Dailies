@@ -7,16 +7,11 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
   final DateTime? _startTime;
   final DateTime? _endTime;
 
-  TimeSlot({
-    required super.id,
-    required int? nextTimeSlotId,
-    required DateTime dateOfTimeSlot,
-    required DateTime? startTime,
-    required DateTime? endTime,
-  }) : _nextTimeSlotId = nextTimeSlotId,
-       _dateOfTimeSlot = dateOfTimeSlot,
-       _startTime = startTime,
-       _endTime = endTime;
+  TimeSlot({required super.id, required int? nextTimeSlotId, required DateTime dateOfTimeSlot, required DateTime? startTime, required DateTime? endTime})
+    : _nextTimeSlotId = nextTimeSlotId,
+      _dateOfTimeSlot = dateOfTimeSlot,
+      _startTime = startTime,
+      _endTime = endTime;
 
   int get nextTimeSlotId => _nextTimeSlotId!;
   DateTime get dateOfTimeSlot => _dateOfTimeSlot;

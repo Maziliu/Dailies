@@ -7,6 +7,7 @@ class CalendarViewModel extends ChangeNotifier {
   DateTime _selectedDay = DateTime.now();
   final List<Event> _currentAndAdjacentMonthsEvents = [
     Event(
+      timeSlotHeadId: 2,
       id: 1,
       eventName: 'Meeting with Bob',
       location: 'Office',
@@ -56,6 +57,7 @@ class CalendarViewModel extends ChangeNotifier {
       ],
     ),
     Event(
+      timeSlotHeadId: 24,
       id: 12,
       eventName: 'Mfgddgd',
       location: 'Officegfgdg',
@@ -70,6 +72,7 @@ class CalendarViewModel extends ChangeNotifier {
       ],
     ),
     Event(
+      timeSlotHeadId: 22,
       id: 2,
       eventName: 'Doctor Appointment',
       location: 'Clinic',
@@ -84,6 +87,7 @@ class CalendarViewModel extends ChangeNotifier {
       ],
     ),
     Event(
+      timeSlotHeadId: 66,
       id: 3,
       eventName: 'All-day Conference',
       location: 'Convention Center',
@@ -99,13 +103,17 @@ class CalendarViewModel extends ChangeNotifier {
     ),
   ];
 
-  late final ValueNotifier<List<Event>> selectedEvents = ValueNotifier([]);
+  late final ValueNotifier<List<Event>> _selectedEvents = ValueNotifier([]);
+
+  ValueNotifier<List<Event>> get selectedEvents => _selectedEvents;
 
   DateTime get selectedDay => _selectedDay;
 
   Future<void> initialize() async {
     await loadEventsFromCurrentAndAdjacentMonths();
-    selectedEvents.value = getEventsForSpecificDay(_selectedDay);
+    _selectedEvents.value = getEventsForSpecificDay(_selectedDay);
+
+    notifyListeners();
   }
 
   void onAddEventButtonPress() {
@@ -123,7 +131,7 @@ class CalendarViewModel extends ChangeNotifier {
           final matchingSlots = event.timeSlots.where((slot) => onlyDate(slot.dateOfTimeSlot) == onlyDate(specificDay)).toList();
 
           if (matchingSlots.isNotEmpty) {
-            return [Event(id: event.id, eventName: event.eventName, location: event.location, timeSlots: matchingSlots)];
+            return [Event(id: event.id, eventName: event.eventName, location: event.location, timeSlots: matchingSlots, timeSlotHeadId: event.timeSlotHeadId)];
           }
           return [];
         })(),
@@ -135,7 +143,7 @@ class CalendarViewModel extends ChangeNotifier {
   void onDaySelect(DateTime selectedDay) {
     if (!isSameDay(selectedDay, _selectedDay)) {
       _selectedDay = selectedDay;
-      selectedEvents.value = getEventsForSpecificDay(selectedDay);
+      _selectedEvents.value = getEventsForSpecificDay(selectedDay);
       notifyListeners();
     }
   }

@@ -1,0 +1,1 @@
+class FailedUtilityOperationOnResult implements Exception {}

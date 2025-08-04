@@ -26,12 +26,7 @@ class CalendarViewModel extends ChangeNotifier {
     TimeSlot timeSlot = TimeSlot(dateOfTimeSlot: _selectedDay, startTime: startTime, endTime: endTime);
     Event event = Event(eventName: eventName, location: location, timeSlot: timeSlot);
 
-    Result res = await _eventRepositoryService.saveEvent(event);
-
-    if (res is Ok)
-      print(res.value);
-    else if (res is Error)
-      print(res.error.toString());
+    _eventRepositoryService.saveEvent(event);
   }
 
   Future<void> loadEventsFromCurrentAndAdjacentMonths() async {}

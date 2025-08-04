@@ -12,30 +12,18 @@ import 'package:dailies/data/repositories/event_repository.dart';
 import 'package:dailies/data/repositories/time_slot_repository.dart';
 import 'package:get_it/get_it.dart';
 
-void setUpDataLayer(GetIt injector) {
+Future<void> setUpDataLayer(GetIt injector) async {
   //Database
   injector.registerSingleton<AppDatabase>(AppDatabase());
 
   //DAOs
-  injector.registerLazySingleton<TimeSlotDao>(
-    () => DriftTimeSlotDao(injector<AppDatabase>()),
-    instanceName: DatabaseType.Local.name,
-  );
+  injector.registerLazySingleton<TimeSlotDao>(() => DriftTimeSlotDao(injector<AppDatabase>()), instanceName: DatabaseType.Local.name);
 
-  injector.registerLazySingleton<EventDao>(
-    () => DriftEventDao(injector<AppDatabase>()),
-    instanceName: DatabaseType.Local.name,
-  );
+  injector.registerLazySingleton<EventDao>(() => DriftEventDao(injector<AppDatabase>()), instanceName: DatabaseType.Local.name);
 
   //Mappers
-  injector.registerLazySingleton<TimeSlotMapper>(
-    () => DriftTimeSlotMapper(),
-    instanceName: DatabaseType.Local.name,
-  );
-  injector.registerLazySingleton<EventMapper>(
-    () => DriftEventMapper(),
-    instanceName: DatabaseType.Local.name,
-  );
+  injector.registerLazySingleton<TimeSlotMapper>(() => DriftTimeSlotMapper(), instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<EventMapper>(() => DriftEventMapper(), instanceName: DatabaseType.Local.name);
 
   //Repositories
   injector.registerLazySingleton(
@@ -45,9 +33,6 @@ void setUpDataLayer(GetIt injector) {
     ),
   );
   injector.registerLazySingleton(
-    () => EventRepository(
-      dao: injector<EventDao>(instanceName: DatabaseType.Local.name),
-      mapper: injector<EventMapper>(instanceName: DatabaseType.Local.name),
-    ),
+    () => EventRepository(dao: injector<EventDao>(instanceName: DatabaseType.Local.name), mapper: injector<EventMapper>(instanceName: DatabaseType.Local.name)),
   );
 }

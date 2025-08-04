@@ -5,7 +5,7 @@ import 'package:dailies/ui/views/overview/overview_view_model.dart';
 import 'package:dailies/ui/views/upload/upload_view_model.dart';
 import 'package:get_it/get_it.dart';
 
-void setUpPresentationLayer(GetIt injector) {
+Future<void> setUpPresentationLayer(GetIt injector) async {
   injector.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
   injector.registerLazySingleton<OverviewViewModel>(() => OverviewViewModel());
   injector.registerLazySingleton<CalendarViewModel>(() => CalendarViewModel(eventRepositoryService: injector<EventRepositoryService>()));

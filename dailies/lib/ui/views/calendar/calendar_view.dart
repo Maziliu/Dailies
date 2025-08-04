@@ -81,9 +81,9 @@ class _CalendarViewState extends State<CalendarView> {
                         String? timeText;
                         switch (slot.timeSlotType) {
                           case TimeSlotType.Interval:
-                            timeText = "${TimeOfDay.fromDateTime(slot.startTime).format(context)} - ${TimeOfDay.fromDateTime(slot.endTime).format(context)}";
+                            timeText = "${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
                           case TimeSlotType.Deadline:
-                            timeText = "Due at ${TimeOfDay.fromDateTime(slot.endTime).format(context)}";
+                            timeText = "Due at ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
                           default:
                             timeText = null;
                         }

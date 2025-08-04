@@ -4,7 +4,7 @@ import 'package:dailies/data/models/time_slot.dart';
 class Event extends AppModel implements Comparable<Event> {
   final String _eventName;
   final String? _location;
-  final int? _timeSlotHeadId;
+  int? _timeSlotHeadId;
   final List<TimeSlot> _timeSlots = [];
 
   Event({super.id, int? timeSlotHeadId, required String eventName, required String? location, TimeSlot? timeSlot})
@@ -19,6 +19,10 @@ class Event extends AppModel implements Comparable<Event> {
   List<TimeSlot> get timeSlots => _timeSlots;
   int get timeSlotHeadId => _timeSlotHeadId ?? -1;
   bool get isRecurring => _timeSlots.length > 1;
+
+  set timeSlotHeadId(int headId) {
+    _timeSlotHeadId = headId;
+  }
 
   void appendTimeSlot(TimeSlot timeSlot) {
     _timeSlots.add(timeSlot);

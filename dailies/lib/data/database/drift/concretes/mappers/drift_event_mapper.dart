@@ -10,7 +10,7 @@ class DriftEventMapper extends EventMapper<DriftEventsCompanion, DriftEvent> {
     Event event = appModel as Event;
 
     return DriftEventsCompanion(
-      id: Value(event.id),
+      id: (event.isNotSaved) ? const Value.absent() : Value(event.id),
       eventName: Value(event.eventName),
       location: Value(event.location),
       timeSlotId: Value(event.timeSlotHeadId),

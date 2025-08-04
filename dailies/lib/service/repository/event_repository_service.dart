@@ -12,6 +12,23 @@ class EventRepositoryService {
   EventRepositoryService({required this.timeSlotService, required this.eventRepository});
 
   Future<Result<int>> saveEvent(Event event) async {
+    List<TimeSlot> times = event.timeSlots;
+
+    for (int i = times.length - 1; i >= 0; i--) {
+      Result<int> result = await timeSlotService.saveTimeSlot(times[i]);
+
+      switch (result) {
+        case Ok<int>(value: int id):
+          if (i > 0) {
+            times[i - 1].nextTimeSlotId = id;
+          }
+        case Error<int>():
+          return result;
+      }
+    }
+
+    event.timeSlotHeadId = times.first.id;
+
     return await eventRepository.insert(event);
   }
 

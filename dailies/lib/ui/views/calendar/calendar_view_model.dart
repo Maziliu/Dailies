@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
@@ -25,7 +26,12 @@ class CalendarViewModel extends ChangeNotifier {
     TimeSlot timeSlot = TimeSlot(dateOfTimeSlot: _selectedDay, startTime: startTime, endTime: endTime);
     Event event = Event(eventName: eventName, location: location, timeSlot: timeSlot);
 
-    _eventRepositoryService.saveEvent(event);
+    Result res = await _eventRepositoryService.saveEvent(event);
+
+    if (res is Ok)
+      print(res.value);
+    else if (res is Error)
+      print(res.error.toString());
   }
 
   Future<void> loadEventsFromCurrentAndAdjacentMonths() async {}

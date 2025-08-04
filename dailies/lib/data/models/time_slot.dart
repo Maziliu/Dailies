@@ -7,16 +7,18 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
   final DateTime? _startTime;
   final DateTime? _endTime;
 
-  TimeSlot({required super.id, required int? nextTimeSlotId, required DateTime dateOfTimeSlot, required DateTime? startTime, required DateTime? endTime})
+  TimeSlot({super.id, int? nextTimeSlotId, startTime, DateTime? endTime, required DateTime dateOfTimeSlot})
     : _nextTimeSlotId = nextTimeSlotId,
       _dateOfTimeSlot = dateOfTimeSlot,
       _startTime = startTime,
       _endTime = endTime;
 
+  factory TimeSlot.fromDateTime({required DateTime dateTime}) => TimeSlot(dateOfTimeSlot: DateTime(dateTime.year, dateTime.month, dateTime.day));
+
   int get nextTimeSlotId => _nextTimeSlotId!;
-  DateTime get dateOfTimeSlot => _dateOfTimeSlot;
   DateTime get startTime => _startTime!;
   DateTime get endTime => _endTime!;
+  DateTime get dateOfTimeSlot => DateTime(_dateOfTimeSlot.year, _dateOfTimeSlot.month, _dateOfTimeSlot.day);
 
   TimeSlotType get timeSlotType {
     if (_startTime == null) {
@@ -32,21 +34,26 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
 
   bool get isReaccuring => _nextTimeSlotId == null;
 
+  bool isSameDay(DateTime other) {
+    final thisDate = DateTime(_dateOfTimeSlot.year, _dateOfTimeSlot.month, _dateOfTimeSlot.day);
+    final otherDate = DateTime(other.year, other.month, other.day);
+
+    return thisDate.compareTo(otherDate) == 0;
+  }
+
   @override
   int compareTo(TimeSlot other) {
-    if (_dateOfTimeSlot.compareTo(other._dateOfTimeSlot) != 0) {
-      return _dateOfTimeSlot.compareTo(other._dateOfTimeSlot);
-    }
+    final thisDate = DateTime(_dateOfTimeSlot.year, _dateOfTimeSlot.month, _dateOfTimeSlot.day);
+    final otherDate = DateTime(other._dateOfTimeSlot.year, other._dateOfTimeSlot.month, other._dateOfTimeSlot.day);
 
-    //Specific times matter if both they are on the same day
-    if (_endTime == null && other._endTime == null) {
-      return 0;
-    } else if (_endTime == null) {
-      return 1;
-    } else if (other._endTime == null) {
-      return -1;
-    } else {
-      return _endTime.compareTo(other._endTime);
-    }
+    if (!isSameDay(otherDate)) return thisDate.compareTo(otherDate);
+
+    //The abouve filters diff days and the same days must be diffed by endtime
+    //Note: 0 --> Same, -1 --> isBefore, 1 --> isAfter
+    if (_endTime == null && other._endTime == null) return 0;
+    if (_endTime == null) return 1;
+    if (other._endTime == null) return -1;
+
+    return _endTime.compareTo(other._endTime);
   }
 }

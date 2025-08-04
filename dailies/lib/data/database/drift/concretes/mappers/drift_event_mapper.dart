@@ -19,6 +19,6 @@ class DriftEventMapper extends EventMapper<DriftEventsCompanion, DriftEvent> {
 
   @override
   AppModel convertOutputToAppModel(DriftEvent outputModel) {
-    return Event(id: outputModel.id, eventName: outputModel.eventName, location: outputModel.location, timeSlots: [], timeSlotHeadId: outputModel.timeSlotId);
+    return Event(id: outputModel.id, eventName: outputModel.eventName, location: outputModel.location, timeSlotHeadId: outputModel.timeSlotId);
   }
 }

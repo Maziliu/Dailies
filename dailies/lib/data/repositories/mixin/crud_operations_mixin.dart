@@ -5,7 +5,7 @@ import 'package:dailies/data/dao/generic_dao.dart';
 import 'package:dailies/data/mapper/model_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 
-mixin CRUDOperationsMixin {
+mixin RepositoryCRUDOperationsMixin {
   GenericDao get dao;
   ModelMapper get mapper;
 

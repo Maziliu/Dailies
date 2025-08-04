@@ -20,6 +20,12 @@ class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlotsCompanion, DriftT
 
   @override
   AppModel convertOutputToAppModel(DriftTimeSlot outputModel) {
-    return TimeSlot(id: outputModel.id, nextTimeSlotId: outputModel.nextTimeSlotId, dateOfTimeSlot: outputModel.date, startTime: outputModel.startTime, endTime: outputModel.endTime);
+    return TimeSlot(
+      id: outputModel.id,
+      nextTimeSlotId: outputModel.nextTimeSlotId,
+      dateOfTimeSlot: outputModel.date,
+      startTime: outputModel.startTime,
+      endTime: outputModel.endTime,
+    );
   }
 }

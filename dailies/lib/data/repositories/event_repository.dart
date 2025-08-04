@@ -5,7 +5,7 @@ import 'package:dailies/data/mapper/event_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
-class EventRepository with CRUDOperationsMixin {
+class EventRepository with RepositoryCRUDOperationsMixin {
   final EventDao _dao;
   final EventMapper _mapper;
 

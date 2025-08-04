@@ -5,7 +5,7 @@ import 'package:dailies/data/mapper/time_slot_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
-class TimeSlotRepository with CRUDOperationsMixin {
+class TimeSlotRepository with RepositoryCRUDOperationsMixin {
   final TimeSlotDao _dao;
   final TimeSlotMapper _mapper;
 

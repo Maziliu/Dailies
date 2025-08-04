@@ -1,7 +1,9 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
-import 'package:dailies/ui/views/components/add%20event/custom_floating_action_button.dart';
+import 'package:dailies/ui/components/hero_dialog_route.dart';
+import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
+import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/calendar_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +11,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 final DateTime FIRST_CALENDAR_DAY = DateTime.utc(2003, 05, 14);
 final DateTime LAST_CALENDAR_DAY = DateTime.utc(2100, 12, 31);
+final String ADD_EVENT_HERO_TAG = 'addEventHeroTag';
 
 class EventTimeSlotPair {
   final Event event;
@@ -18,7 +21,9 @@ class EventTimeSlotPair {
 }
 
 class CalendarView extends StatefulWidget {
-  const CalendarView({super.key});
+  const CalendarView({super.key, required CalendarViewModel viewModel}) : _viewModel = viewModel;
+
+  final CalendarViewModel _viewModel;
 
   @override
   State<CalendarView> createState() => _CalendarViewState();
@@ -31,7 +36,7 @@ class _CalendarViewState extends State<CalendarView> {
 
     Future.microtask(() {
       if (mounted) {
-        context.read<CalendarViewModel>().initialize();
+        widget._viewModel.initialize();
       }
     });
   }
@@ -52,7 +57,7 @@ class _CalendarViewState extends State<CalendarView> {
                 selectedDayPredicate: (selectedDay) => isSameDay(selectedDay, viewModel.selectedDay),
                 onDaySelected: (selectedDay, focusedDay) => viewModel.onDaySelect(selectedDay),
               ),
-              const SizedBox(height: 8),
+              UIFormating.smallVerticalSpacing(),
               Expanded(
                 child: ValueListenableBuilder<List<Event>>(
                   valueListenable: viewModel.selectedEvents,
@@ -100,9 +105,21 @@ class _CalendarViewState extends State<CalendarView> {
           );
         },
       ),
-      floatingActionButton: Consumer<CalendarViewModel>(
-        builder: (context, viewModel, child) {
-          return CustomFloatingActionButton(onActionButtonComplete: viewModel.onAddEventButtonPress);
+      floatingActionButton: FloatingActionButton(
+        heroTag: ADD_EVENT_HERO_TAG,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(
+            HeroDialogRoute(
+              builder: (context) {
+                return PopupCard.AddEvent(
+                  onSubmit: widget._viewModel.onAddEventButtonPress,
+                  selectedDay: widget._viewModel.selectedDay,
+                  heroTag: ADD_EVENT_HERO_TAG,
+                );
+              },
+            ),
+          );
         },
       ),
     );

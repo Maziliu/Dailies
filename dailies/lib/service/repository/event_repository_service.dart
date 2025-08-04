@@ -11,6 +11,10 @@ class EventRepositoryService {
 
   EventRepositoryService({required this.timeSlotService, required this.eventRepository});
 
+  Future<Result<int>> saveEvent(Event event) async {
+    return await eventRepository.insert(event);
+  }
+
   Future<Result<List<Event>>> fetchAllEventsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
     Result<List<TimeSlot>> timeSlotsResult = await timeSlotService.fetchTimeSlotsBetweenDates(lowerBound, upperBound);
     List<TimeSlot> timeSlots;

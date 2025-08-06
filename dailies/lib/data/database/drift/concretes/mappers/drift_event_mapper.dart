@@ -4,9 +4,9 @@ import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:drift/drift.dart';
 
-class DriftEventMapper extends EventMapper<DriftEventsCompanion, DriftEvent> {
+class DriftEventMapper extends EventMapper<DriftEvent, DriftEventsCompanion> {
   @override
-  DriftEventsCompanion convertAppModelToInputModel(AppModel appModel) {
+  DriftEventsCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
     Event event = appModel as Event;
 
     return DriftEventsCompanion(
@@ -18,7 +18,12 @@ class DriftEventMapper extends EventMapper<DriftEventsCompanion, DriftEvent> {
   }
 
   @override
-  AppModel convertOutputToAppModel(DriftEvent outputModel) {
-    return Event(id: outputModel.id, eventName: outputModel.eventName, location: outputModel.location, timeSlotHeadId: outputModel.timeSlotId);
+  AppModel convertIncomingDatabaseModelToAppModel(DriftEvent incomingDatabaseModel) {
+    return Event(
+      id: incomingDatabaseModel.id,
+      eventName: incomingDatabaseModel.eventName,
+      location: incomingDatabaseModel.location,
+      timeSlotHeadId: incomingDatabaseModel.timeSlotId,
+    );
   }
 }

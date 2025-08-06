@@ -1,3 +1,4 @@
+import 'package:dailies/data/database/drift/drift_database.dart';
 import 'package:dailies/data/repositories/event_repository.dart';
 import 'package:dailies/data/repositories/time_slot_repository.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
@@ -6,9 +7,12 @@ import 'package:get_it/get_it.dart';
 
 Future<void> setUpServiceLayer(GetIt injector) async {
   //Repo Services
-  injector.registerLazySingleton(() => TimeSlotRepositoryService(timeSlotRepository: injector<TimeSlotRepository>()));
+  injector.registerLazySingleton(() => TimeSlotRepositoryService(timeSlotRepository: injector<TimeSlotRepository<DriftTimeSlot, DriftTimeSlotsCompanion>>()));
 
   injector.registerLazySingleton(
-    () => EventRepositoryService(timeSlotService: injector<TimeSlotRepositoryService>(), eventRepository: injector<EventRepository>()),
+    () => EventRepositoryService(
+      timeSlotService: injector<TimeSlotRepositoryService>(),
+      eventRepository: injector<EventRepository<DriftEvent, DriftEventsCompanion>>(),
+    ),
   );
 }

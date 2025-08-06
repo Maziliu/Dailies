@@ -17,22 +17,31 @@ Future<void> setUpDataLayer(GetIt injector) async {
   injector.registerSingleton<AppDatabase>(AppDatabase());
 
   //DAOs
-  injector.registerLazySingleton<TimeSlotDao>(() => DriftTimeSlotDao(injector<AppDatabase>()), instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion>>(
+    () => DriftTimeSlotDao(injector<AppDatabase>()),
+    instanceName: DatabaseType.Local.name,
+  );
 
-  injector.registerLazySingleton<EventDao>(() => DriftEventDao(injector<AppDatabase>()), instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<EventDao<DriftEvent, DriftEventsCompanion>>(
+    () => DriftEventDao(injector<AppDatabase>()),
+    instanceName: DatabaseType.Local.name,
+  );
 
   //Mappers
-  injector.registerLazySingleton<TimeSlotMapper>(() => DriftTimeSlotMapper(), instanceName: DatabaseType.Local.name);
-  injector.registerLazySingleton<EventMapper>(() => DriftEventMapper(), instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion>>(() => DriftTimeSlotMapper(), instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<EventMapper<DriftEvent, DriftEventsCompanion>>(() => DriftEventMapper(), instanceName: DatabaseType.Local.name);
 
   //Repositories
   injector.registerLazySingleton(
     () => TimeSlotRepository(
-      dao: injector<TimeSlotDao>(instanceName: DatabaseType.Local.name),
-      mapper: injector<TimeSlotMapper>(instanceName: DatabaseType.Local.name),
+      dao: injector<TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion>>(instanceName: DatabaseType.Local.name),
+      mapper: injector<TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion>>(instanceName: DatabaseType.Local.name),
     ),
   );
   injector.registerLazySingleton(
-    () => EventRepository(dao: injector<EventDao>(instanceName: DatabaseType.Local.name), mapper: injector<EventMapper>(instanceName: DatabaseType.Local.name)),
+    () => EventRepository(
+      dao: injector<EventDao<DriftEvent, DriftEventsCompanion>>(instanceName: DatabaseType.Local.name),
+      mapper: injector<EventMapper<DriftEvent, DriftEventsCompanion>>(instanceName: DatabaseType.Local.name),
+    ),
   );
 }

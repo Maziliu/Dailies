@@ -4,9 +4,9 @@ import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:drift/drift.dart';
 
-class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlotsCompanion, DriftTimeSlot> {
+class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion> {
   @override
-  DriftTimeSlotsCompanion convertAppModelToInputModel(AppModel appModel) {
+  DriftTimeSlotsCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
     TimeSlot timeSlot = appModel as TimeSlot;
 
     return DriftTimeSlotsCompanion(
@@ -19,13 +19,13 @@ class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlotsCompanion, DriftT
   }
 
   @override
-  AppModel convertOutputToAppModel(DriftTimeSlot outputModel) {
+  AppModel convertIncomingDatabaseModelToAppModel(DriftTimeSlot incomingDatabaseModel) {
     return TimeSlot(
-      id: outputModel.id,
-      nextTimeSlotId: outputModel.nextTimeSlotId,
-      dateOfTimeSlot: outputModel.date,
-      startTime: outputModel.startTime,
-      endTime: outputModel.endTime,
+      id: incomingDatabaseModel.id,
+      nextTimeSlotId: incomingDatabaseModel.nextTimeSlotId,
+      dateOfTimeSlot: incomingDatabaseModel.date,
+      startTime: incomingDatabaseModel.startTime,
+      endTime: incomingDatabaseModel.endTime,
     );
   }
 }

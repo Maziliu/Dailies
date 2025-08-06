@@ -14,7 +14,7 @@ class TimeSlotRepositoryService {
   }
 
   Future<Result<List<TimeSlot>>> fetchTimeSlotsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
-    Result results = await timeSlotRepository.getTimeSlotsBetween(lowerBound, upperBound);
+    Result<List<AppModel>> results = await timeSlotRepository.getTimeSlotsBetween(lowerBound, upperBound);
 
     return performOperationOnResultIfNotError(results, (results) => results.map((result) => result as TimeSlot).toList());
   }

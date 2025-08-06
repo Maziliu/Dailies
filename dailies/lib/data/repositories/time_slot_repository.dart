@@ -5,21 +5,25 @@ import 'package:dailies/data/mapper/time_slot_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
-class TimeSlotRepository with RepositoryCRUDOperationsMixin {
-  final TimeSlotDao _dao;
-  final TimeSlotMapper _mapper;
+class TimeSlotRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseModel> {
+  final TimeSlotDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> _dao;
+  final TimeSlotMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> _mapper;
 
-  TimeSlotRepository({required TimeSlotDao dao, required TimeSlotMapper mapper}) : _dao = dao, _mapper = mapper;
+  TimeSlotRepository({
+    required TimeSlotDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> dao,
+    required TimeSlotMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> mapper,
+  }) : _dao = dao,
+       _mapper = mapper;
 
   Future<Result<List<AppModel>>> getTimeSlotsBetween(DateTime lowerBound, DateTime upperBound) async {
-    Result results = await guardedAsyncExcecute(() => dao.getTimeSlotsInDateTimeRange(lowerBound, upperBound));
+    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getTimeSlotsInDateTimeRange(lowerBound, upperBound));
 
-    return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertOutputToAppModel(result)).toList());
+    return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
   }
 
   @override
-  TimeSlotDao get dao => _dao;
+  TimeSlotDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> get dao => _dao;
 
   @override
-  TimeSlotMapper get mapper => _mapper;
+  TimeSlotMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> get mapper => _mapper;
 }

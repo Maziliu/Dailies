@@ -5,21 +5,25 @@ import 'package:dailies/data/mapper/event_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
-class EventRepository with RepositoryCRUDOperationsMixin {
-  final EventDao _dao;
-  final EventMapper _mapper;
+class EventRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseModel> {
+  final EventDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> _dao;
+  final EventMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> _mapper;
 
-  EventRepository({required EventDao dao, required EventMapper mapper}) : _dao = dao, _mapper = mapper;
-
-  @override
-  EventDao get dao => _dao;
-
-  @override
-  EventMapper get mapper => _mapper;
+  EventRepository({
+    required EventDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> dao,
+    required EventMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> mapper,
+  }) : _dao = dao,
+       _mapper = mapper;
 
   Future<Result<List<AppModel>>> getEventsWithTimeSlotIds(List<int> timeSlotIds) async {
-    Result results = await guardedAsyncExcecute(() => dao.getEventsWithTimeSlotIds(timeSlotIds));
+    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getEventsWithTimeSlotIds(timeSlotIds));
 
-    return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertOutputToAppModel(result)).toList());
+    return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
   }
+
+  @override
+  EventDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> get dao => _dao;
+
+  @override
+  EventMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> get mapper => _mapper;
 }

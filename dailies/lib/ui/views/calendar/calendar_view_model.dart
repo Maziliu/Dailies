@@ -8,7 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarViewModel extends ChangeNotifier {
   final EventRepositoryService _eventRepositoryService;
   DateTime _selectedDay = DateTime.now();
-  final List<Event> _currentAndAdjacentMonthsEvents = [];
+  List<Event> _currentAndAdjacentMonthsEvents = [];
   final ValueNotifier<List<Event>> _selectedEvents = ValueNotifier([]);
   ValueNotifier<List<Event>> get selectedEvents => _selectedEvents;
   DateTime get selectedDay => _selectedDay;
@@ -26,10 +26,25 @@ class CalendarViewModel extends ChangeNotifier {
     TimeSlot timeSlot = TimeSlot(dateOfTimeSlot: _selectedDay, startTime: startTime, endTime: endTime);
     Event event = Event(eventName: eventName, location: location, timeSlot: timeSlot);
 
-    _eventRepositoryService.saveEvent(event);
+    print(((await _eventRepositoryService.saveEvent(event)) as Ok).value);
   }
 
-  Future<void> loadEventsFromCurrentAndAdjacentMonths() async {}
+  Future<void> loadEventsFromCurrentAndAdjacentMonths() async {
+    DateTime lowerBound = _selectedDay.subtract(const Duration(days: 30)), upperBound = _selectedDay.add(const Duration(days: 30));
+
+    print(lowerBound.toString());
+    print(upperBound.toString());
+
+    Result<List<Event>> eventsResult = await _eventRepositoryService.fetchAllEventsBetweenDates(lowerBound, upperBound);
+
+    switch (eventsResult) {
+      case Ok<List<Event>>(value: final events):
+        _currentAndAdjacentMonthsEvents = events;
+        print(events);
+      case Error<List<Event>>():
+        print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+    }
+  }
 
   List<Event> getEventsForSpecificDay(DateTime specificDay) {
     List<Event> filteredEvents = [];

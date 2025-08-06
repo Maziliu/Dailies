@@ -1,5 +1,6 @@
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/common/utils/result_helpers.dart';
+import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/repositories/event_repository.dart';
@@ -21,6 +22,8 @@ class EventRepositoryService {
         case Ok<int>(value: int id):
           if (i > 0) {
             times[i - 1].nextTimeSlotId = id;
+          } else {
+            times[i].id = id;
           }
         case Error<int>():
           return result;
@@ -38,11 +41,11 @@ class EventRepositoryService {
     switch (timeSlotsResult) {
       case Ok<List<TimeSlot>>(value: final List<TimeSlot> values):
         timeSlots = values;
+
       case Error<List<TimeSlot>>(error: final Exception error):
         return Result.error(error);
     }
-
-    Result results = await eventRepository.getEventsWithTimeSlotIds([for (final TimeSlot timeSlot in timeSlots) timeSlot.id]);
+    Result<List<AppModel>> results = await eventRepository.getEventsWithTimeSlotIds([for (final TimeSlot timeSlot in timeSlots) timeSlot.id]);
 
     Result<List<Event>> eventsResult = performOperationOnResultIfNotError(results, (results) => results.map((result) => result as Event).toList());
 

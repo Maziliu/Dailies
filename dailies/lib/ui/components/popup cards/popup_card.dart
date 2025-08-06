@@ -25,7 +25,7 @@ class PopupCard extends StatelessWidget {
         padding: UIFormating.extraLargePadding(),
         child: Hero(
           tag: _heroTag,
-          child: Material(elevation: 8, borderRadius: UIFormating.mediumCircularBorderRadius(), color: colorScheme.surface, child: _innerContentWidget),
+          child: Material(elevation: 0, borderRadius: UIFormating.mediumCircularBorderRadius(), color: colorScheme.surface, child: _innerContentWidget),
         ),
       ),
     );

@@ -13,11 +13,6 @@ class AppDatabase extends _$AppDatabase {
   int get schemaVersion => 1;
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(
-      name: 'drift_database',
-      native: const DriftNativeOptions(
-        databaseDirectory: getApplicationSupportDirectory,
-      ),
-    );
+    return driftDatabase(name: 'drift_database', native: const DriftNativeOptions(databaseDirectory: getApplicationSupportDirectory));
   }
 }

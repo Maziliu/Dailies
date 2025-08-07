@@ -683,11 +683,503 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
   }
 }
 
+class $DriftStaminasTable extends DriftStaminas
+    with TableInfo<$DriftStaminasTable, DriftStamina> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DriftStaminasTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _gachaNameMeta = const VerificationMeta(
+    'gachaName',
+  );
+  @override
+  late final GeneratedColumn<String> gachaName = GeneratedColumn<String>(
+    'gacha_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _maxStaminaMeta = const VerificationMeta(
+    'maxStamina',
+  );
+  @override
+  late final GeneratedColumn<int> maxStamina = GeneratedColumn<int>(
+    'max_stamina',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rechargeTimeInSecondsMeta =
+      const VerificationMeta('rechargeTimeInSeconds');
+  @override
+  late final GeneratedColumn<int> rechargeTimeInSeconds = GeneratedColumn<int>(
+    'recharge_time_in_seconds',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _staminaOfLatestResetMeta =
+      const VerificationMeta('staminaOfLatestReset');
+  @override
+  late final GeneratedColumn<int> staminaOfLatestReset = GeneratedColumn<int>(
+    'stamina_of_latest_reset',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _timeOfLastResetMeta = const VerificationMeta(
+    'timeOfLastReset',
+  );
+  @override
+  late final GeneratedColumn<DateTime> timeOfLastReset =
+      GeneratedColumn<DateTime>(
+        'time_of_last_reset',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _imageNameMeta = const VerificationMeta(
+    'imageName',
+  );
+  @override
+  late final GeneratedColumn<String> imageName = GeneratedColumn<String>(
+    'image_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    gachaName,
+    maxStamina,
+    rechargeTimeInSeconds,
+    staminaOfLatestReset,
+    timeOfLastReset,
+    imageName,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'drift_staminas';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DriftStamina> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('gacha_name')) {
+      context.handle(
+        _gachaNameMeta,
+        gachaName.isAcceptableOrUnknown(data['gacha_name']!, _gachaNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_gachaNameMeta);
+    }
+    if (data.containsKey('max_stamina')) {
+      context.handle(
+        _maxStaminaMeta,
+        maxStamina.isAcceptableOrUnknown(data['max_stamina']!, _maxStaminaMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_maxStaminaMeta);
+    }
+    if (data.containsKey('recharge_time_in_seconds')) {
+      context.handle(
+        _rechargeTimeInSecondsMeta,
+        rechargeTimeInSeconds.isAcceptableOrUnknown(
+          data['recharge_time_in_seconds']!,
+          _rechargeTimeInSecondsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_rechargeTimeInSecondsMeta);
+    }
+    if (data.containsKey('stamina_of_latest_reset')) {
+      context.handle(
+        _staminaOfLatestResetMeta,
+        staminaOfLatestReset.isAcceptableOrUnknown(
+          data['stamina_of_latest_reset']!,
+          _staminaOfLatestResetMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_staminaOfLatestResetMeta);
+    }
+    if (data.containsKey('time_of_last_reset')) {
+      context.handle(
+        _timeOfLastResetMeta,
+        timeOfLastReset.isAcceptableOrUnknown(
+          data['time_of_last_reset']!,
+          _timeOfLastResetMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_timeOfLastResetMeta);
+    }
+    if (data.containsKey('image_name')) {
+      context.handle(
+        _imageNameMeta,
+        imageName.isAcceptableOrUnknown(data['image_name']!, _imageNameMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DriftStamina map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DriftStamina(
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id'],
+          )!,
+      gachaName:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}gacha_name'],
+          )!,
+      maxStamina:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}max_stamina'],
+          )!,
+      rechargeTimeInSeconds:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}recharge_time_in_seconds'],
+          )!,
+      staminaOfLatestReset:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}stamina_of_latest_reset'],
+          )!,
+      timeOfLastReset:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}time_of_last_reset'],
+          )!,
+      imageName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image_name'],
+      ),
+    );
+  }
+
+  @override
+  $DriftStaminasTable createAlias(String alias) {
+    return $DriftStaminasTable(attachedDatabase, alias);
+  }
+}
+
+class DriftStamina extends DataClass implements Insertable<DriftStamina> {
+  final int id;
+  final String gachaName;
+  final int maxStamina;
+  final int rechargeTimeInSeconds;
+  final int staminaOfLatestReset;
+  final DateTime timeOfLastReset;
+  final String? imageName;
+  const DriftStamina({
+    required this.id,
+    required this.gachaName,
+    required this.maxStamina,
+    required this.rechargeTimeInSeconds,
+    required this.staminaOfLatestReset,
+    required this.timeOfLastReset,
+    this.imageName,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['gacha_name'] = Variable<String>(gachaName);
+    map['max_stamina'] = Variable<int>(maxStamina);
+    map['recharge_time_in_seconds'] = Variable<int>(rechargeTimeInSeconds);
+    map['stamina_of_latest_reset'] = Variable<int>(staminaOfLatestReset);
+    map['time_of_last_reset'] = Variable<DateTime>(timeOfLastReset);
+    if (!nullToAbsent || imageName != null) {
+      map['image_name'] = Variable<String>(imageName);
+    }
+    return map;
+  }
+
+  DriftStaminasCompanion toCompanion(bool nullToAbsent) {
+    return DriftStaminasCompanion(
+      id: Value(id),
+      gachaName: Value(gachaName),
+      maxStamina: Value(maxStamina),
+      rechargeTimeInSeconds: Value(rechargeTimeInSeconds),
+      staminaOfLatestReset: Value(staminaOfLatestReset),
+      timeOfLastReset: Value(timeOfLastReset),
+      imageName:
+          imageName == null && nullToAbsent
+              ? const Value.absent()
+              : Value(imageName),
+    );
+  }
+
+  factory DriftStamina.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DriftStamina(
+      id: serializer.fromJson<int>(json['id']),
+      gachaName: serializer.fromJson<String>(json['gachaName']),
+      maxStamina: serializer.fromJson<int>(json['maxStamina']),
+      rechargeTimeInSeconds: serializer.fromJson<int>(
+        json['rechargeTimeInSeconds'],
+      ),
+      staminaOfLatestReset: serializer.fromJson<int>(
+        json['staminaOfLatestReset'],
+      ),
+      timeOfLastReset: serializer.fromJson<DateTime>(json['timeOfLastReset']),
+      imageName: serializer.fromJson<String?>(json['imageName']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'gachaName': serializer.toJson<String>(gachaName),
+      'maxStamina': serializer.toJson<int>(maxStamina),
+      'rechargeTimeInSeconds': serializer.toJson<int>(rechargeTimeInSeconds),
+      'staminaOfLatestReset': serializer.toJson<int>(staminaOfLatestReset),
+      'timeOfLastReset': serializer.toJson<DateTime>(timeOfLastReset),
+      'imageName': serializer.toJson<String?>(imageName),
+    };
+  }
+
+  DriftStamina copyWith({
+    int? id,
+    String? gachaName,
+    int? maxStamina,
+    int? rechargeTimeInSeconds,
+    int? staminaOfLatestReset,
+    DateTime? timeOfLastReset,
+    Value<String?> imageName = const Value.absent(),
+  }) => DriftStamina(
+    id: id ?? this.id,
+    gachaName: gachaName ?? this.gachaName,
+    maxStamina: maxStamina ?? this.maxStamina,
+    rechargeTimeInSeconds: rechargeTimeInSeconds ?? this.rechargeTimeInSeconds,
+    staminaOfLatestReset: staminaOfLatestReset ?? this.staminaOfLatestReset,
+    timeOfLastReset: timeOfLastReset ?? this.timeOfLastReset,
+    imageName: imageName.present ? imageName.value : this.imageName,
+  );
+  DriftStamina copyWithCompanion(DriftStaminasCompanion data) {
+    return DriftStamina(
+      id: data.id.present ? data.id.value : this.id,
+      gachaName: data.gachaName.present ? data.gachaName.value : this.gachaName,
+      maxStamina:
+          data.maxStamina.present ? data.maxStamina.value : this.maxStamina,
+      rechargeTimeInSeconds:
+          data.rechargeTimeInSeconds.present
+              ? data.rechargeTimeInSeconds.value
+              : this.rechargeTimeInSeconds,
+      staminaOfLatestReset:
+          data.staminaOfLatestReset.present
+              ? data.staminaOfLatestReset.value
+              : this.staminaOfLatestReset,
+      timeOfLastReset:
+          data.timeOfLastReset.present
+              ? data.timeOfLastReset.value
+              : this.timeOfLastReset,
+      imageName: data.imageName.present ? data.imageName.value : this.imageName,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DriftStamina(')
+          ..write('id: $id, ')
+          ..write('gachaName: $gachaName, ')
+          ..write('maxStamina: $maxStamina, ')
+          ..write('rechargeTimeInSeconds: $rechargeTimeInSeconds, ')
+          ..write('staminaOfLatestReset: $staminaOfLatestReset, ')
+          ..write('timeOfLastReset: $timeOfLastReset, ')
+          ..write('imageName: $imageName')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    gachaName,
+    maxStamina,
+    rechargeTimeInSeconds,
+    staminaOfLatestReset,
+    timeOfLastReset,
+    imageName,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DriftStamina &&
+          other.id == this.id &&
+          other.gachaName == this.gachaName &&
+          other.maxStamina == this.maxStamina &&
+          other.rechargeTimeInSeconds == this.rechargeTimeInSeconds &&
+          other.staminaOfLatestReset == this.staminaOfLatestReset &&
+          other.timeOfLastReset == this.timeOfLastReset &&
+          other.imageName == this.imageName);
+}
+
+class DriftStaminasCompanion extends UpdateCompanion<DriftStamina> {
+  final Value<int> id;
+  final Value<String> gachaName;
+  final Value<int> maxStamina;
+  final Value<int> rechargeTimeInSeconds;
+  final Value<int> staminaOfLatestReset;
+  final Value<DateTime> timeOfLastReset;
+  final Value<String?> imageName;
+  const DriftStaminasCompanion({
+    this.id = const Value.absent(),
+    this.gachaName = const Value.absent(),
+    this.maxStamina = const Value.absent(),
+    this.rechargeTimeInSeconds = const Value.absent(),
+    this.staminaOfLatestReset = const Value.absent(),
+    this.timeOfLastReset = const Value.absent(),
+    this.imageName = const Value.absent(),
+  });
+  DriftStaminasCompanion.insert({
+    this.id = const Value.absent(),
+    required String gachaName,
+    required int maxStamina,
+    required int rechargeTimeInSeconds,
+    required int staminaOfLatestReset,
+    required DateTime timeOfLastReset,
+    this.imageName = const Value.absent(),
+  }) : gachaName = Value(gachaName),
+       maxStamina = Value(maxStamina),
+       rechargeTimeInSeconds = Value(rechargeTimeInSeconds),
+       staminaOfLatestReset = Value(staminaOfLatestReset),
+       timeOfLastReset = Value(timeOfLastReset);
+  static Insertable<DriftStamina> custom({
+    Expression<int>? id,
+    Expression<String>? gachaName,
+    Expression<int>? maxStamina,
+    Expression<int>? rechargeTimeInSeconds,
+    Expression<int>? staminaOfLatestReset,
+    Expression<DateTime>? timeOfLastReset,
+    Expression<String>? imageName,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (gachaName != null) 'gacha_name': gachaName,
+      if (maxStamina != null) 'max_stamina': maxStamina,
+      if (rechargeTimeInSeconds != null)
+        'recharge_time_in_seconds': rechargeTimeInSeconds,
+      if (staminaOfLatestReset != null)
+        'stamina_of_latest_reset': staminaOfLatestReset,
+      if (timeOfLastReset != null) 'time_of_last_reset': timeOfLastReset,
+      if (imageName != null) 'image_name': imageName,
+    });
+  }
+
+  DriftStaminasCompanion copyWith({
+    Value<int>? id,
+    Value<String>? gachaName,
+    Value<int>? maxStamina,
+    Value<int>? rechargeTimeInSeconds,
+    Value<int>? staminaOfLatestReset,
+    Value<DateTime>? timeOfLastReset,
+    Value<String?>? imageName,
+  }) {
+    return DriftStaminasCompanion(
+      id: id ?? this.id,
+      gachaName: gachaName ?? this.gachaName,
+      maxStamina: maxStamina ?? this.maxStamina,
+      rechargeTimeInSeconds:
+          rechargeTimeInSeconds ?? this.rechargeTimeInSeconds,
+      staminaOfLatestReset: staminaOfLatestReset ?? this.staminaOfLatestReset,
+      timeOfLastReset: timeOfLastReset ?? this.timeOfLastReset,
+      imageName: imageName ?? this.imageName,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (gachaName.present) {
+      map['gacha_name'] = Variable<String>(gachaName.value);
+    }
+    if (maxStamina.present) {
+      map['max_stamina'] = Variable<int>(maxStamina.value);
+    }
+    if (rechargeTimeInSeconds.present) {
+      map['recharge_time_in_seconds'] = Variable<int>(
+        rechargeTimeInSeconds.value,
+      );
+    }
+    if (staminaOfLatestReset.present) {
+      map['stamina_of_latest_reset'] = Variable<int>(
+        staminaOfLatestReset.value,
+      );
+    }
+    if (timeOfLastReset.present) {
+      map['time_of_last_reset'] = Variable<DateTime>(timeOfLastReset.value);
+    }
+    if (imageName.present) {
+      map['image_name'] = Variable<String>(imageName.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DriftStaminasCompanion(')
+          ..write('id: $id, ')
+          ..write('gachaName: $gachaName, ')
+          ..write('maxStamina: $maxStamina, ')
+          ..write('rechargeTimeInSeconds: $rechargeTimeInSeconds, ')
+          ..write('staminaOfLatestReset: $staminaOfLatestReset, ')
+          ..write('timeOfLastReset: $timeOfLastReset, ')
+          ..write('imageName: $imageName')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $DriftTimeSlotsTable driftTimeSlots = $DriftTimeSlotsTable(this);
   late final $DriftEventsTable driftEvents = $DriftEventsTable(this);
+  late final $DriftStaminasTable driftStaminas = $DriftStaminasTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -695,6 +1187,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     driftTimeSlots,
     driftEvents,
+    driftStaminas,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1437,6 +1930,257 @@ typedef $$DriftEventsTableProcessedTableManager =
       DriftEvent,
       PrefetchHooks Function({bool timeSlotId})
     >;
+typedef $$DriftStaminasTableCreateCompanionBuilder =
+    DriftStaminasCompanion Function({
+      Value<int> id,
+      required String gachaName,
+      required int maxStamina,
+      required int rechargeTimeInSeconds,
+      required int staminaOfLatestReset,
+      required DateTime timeOfLastReset,
+      Value<String?> imageName,
+    });
+typedef $$DriftStaminasTableUpdateCompanionBuilder =
+    DriftStaminasCompanion Function({
+      Value<int> id,
+      Value<String> gachaName,
+      Value<int> maxStamina,
+      Value<int> rechargeTimeInSeconds,
+      Value<int> staminaOfLatestReset,
+      Value<DateTime> timeOfLastReset,
+      Value<String?> imageName,
+    });
+
+class $$DriftStaminasTableFilterComposer
+    extends Composer<_$AppDatabase, $DriftStaminasTable> {
+  $$DriftStaminasTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get gachaName => $composableBuilder(
+    column: $table.gachaName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get maxStamina => $composableBuilder(
+    column: $table.maxStamina,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rechargeTimeInSeconds => $composableBuilder(
+    column: $table.rechargeTimeInSeconds,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get staminaOfLatestReset => $composableBuilder(
+    column: $table.staminaOfLatestReset,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get timeOfLastReset => $composableBuilder(
+    column: $table.timeOfLastReset,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get imageName => $composableBuilder(
+    column: $table.imageName,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$DriftStaminasTableOrderingComposer
+    extends Composer<_$AppDatabase, $DriftStaminasTable> {
+  $$DriftStaminasTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get gachaName => $composableBuilder(
+    column: $table.gachaName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get maxStamina => $composableBuilder(
+    column: $table.maxStamina,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rechargeTimeInSeconds => $composableBuilder(
+    column: $table.rechargeTimeInSeconds,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get staminaOfLatestReset => $composableBuilder(
+    column: $table.staminaOfLatestReset,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get timeOfLastReset => $composableBuilder(
+    column: $table.timeOfLastReset,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get imageName => $composableBuilder(
+    column: $table.imageName,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$DriftStaminasTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DriftStaminasTable> {
+  $$DriftStaminasTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get gachaName =>
+      $composableBuilder(column: $table.gachaName, builder: (column) => column);
+
+  GeneratedColumn<int> get maxStamina => $composableBuilder(
+    column: $table.maxStamina,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get rechargeTimeInSeconds => $composableBuilder(
+    column: $table.rechargeTimeInSeconds,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get staminaOfLatestReset => $composableBuilder(
+    column: $table.staminaOfLatestReset,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get timeOfLastReset => $composableBuilder(
+    column: $table.timeOfLastReset,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get imageName =>
+      $composableBuilder(column: $table.imageName, builder: (column) => column);
+}
+
+class $$DriftStaminasTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $DriftStaminasTable,
+          DriftStamina,
+          $$DriftStaminasTableFilterComposer,
+          $$DriftStaminasTableOrderingComposer,
+          $$DriftStaminasTableAnnotationComposer,
+          $$DriftStaminasTableCreateCompanionBuilder,
+          $$DriftStaminasTableUpdateCompanionBuilder,
+          (
+            DriftStamina,
+            BaseReferences<_$AppDatabase, $DriftStaminasTable, DriftStamina>,
+          ),
+          DriftStamina,
+          PrefetchHooks Function()
+        > {
+  $$DriftStaminasTableTableManager(_$AppDatabase db, $DriftStaminasTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer:
+              () => $$DriftStaminasTableFilterComposer($db: db, $table: table),
+          createOrderingComposer:
+              () =>
+                  $$DriftStaminasTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer:
+              () => $$DriftStaminasTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> gachaName = const Value.absent(),
+                Value<int> maxStamina = const Value.absent(),
+                Value<int> rechargeTimeInSeconds = const Value.absent(),
+                Value<int> staminaOfLatestReset = const Value.absent(),
+                Value<DateTime> timeOfLastReset = const Value.absent(),
+                Value<String?> imageName = const Value.absent(),
+              }) => DriftStaminasCompanion(
+                id: id,
+                gachaName: gachaName,
+                maxStamina: maxStamina,
+                rechargeTimeInSeconds: rechargeTimeInSeconds,
+                staminaOfLatestReset: staminaOfLatestReset,
+                timeOfLastReset: timeOfLastReset,
+                imageName: imageName,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String gachaName,
+                required int maxStamina,
+                required int rechargeTimeInSeconds,
+                required int staminaOfLatestReset,
+                required DateTime timeOfLastReset,
+                Value<String?> imageName = const Value.absent(),
+              }) => DriftStaminasCompanion.insert(
+                id: id,
+                gachaName: gachaName,
+                maxStamina: maxStamina,
+                rechargeTimeInSeconds: rechargeTimeInSeconds,
+                staminaOfLatestReset: staminaOfLatestReset,
+                timeOfLastReset: timeOfLastReset,
+                imageName: imageName,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          BaseReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$DriftStaminasTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $DriftStaminasTable,
+      DriftStamina,
+      $$DriftStaminasTableFilterComposer,
+      $$DriftStaminasTableOrderingComposer,
+      $$DriftStaminasTableAnnotationComposer,
+      $$DriftStaminasTableCreateCompanionBuilder,
+      $$DriftStaminasTableUpdateCompanionBuilder,
+      (
+        DriftStamina,
+        BaseReferences<_$AppDatabase, $DriftStaminasTable, DriftStamina>,
+      ),
+      DriftStamina,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1445,4 +2189,6 @@ class $AppDatabaseManager {
       $$DriftTimeSlotsTableTableManager(_db, _db.driftTimeSlots);
   $$DriftEventsTableTableManager get driftEvents =>
       $$DriftEventsTableTableManager(_db, _db.driftEvents);
+  $$DriftStaminasTableTableManager get driftStaminas =>
+      $$DriftStaminasTableTableManager(_db, _db.driftStaminas);
 }

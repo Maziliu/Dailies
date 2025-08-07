@@ -19,13 +19,11 @@ class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCo
   }
 
   @override
-  AppModel convertIncomingDatabaseModelToAppModel(DriftTimeSlot incomingDatabaseModel) {
-    return TimeSlot(
-      id: incomingDatabaseModel.id,
-      nextTimeSlotId: incomingDatabaseModel.nextTimeSlotId,
-      dateOfTimeSlot: incomingDatabaseModel.date,
-      startTime: incomingDatabaseModel.startTime,
-      endTime: incomingDatabaseModel.endTime,
-    );
-  }
+  TimeSlot convertIncomingDatabaseModelToAppModel(DriftTimeSlot incomingDatabaseModel) => TimeSlot(
+    id: incomingDatabaseModel.id,
+    nextTimeSlotId: incomingDatabaseModel.nextTimeSlotId,
+    dateOfTimeSlot: incomingDatabaseModel.date,
+    startTime: incomingDatabaseModel.startTime,
+    endTime: incomingDatabaseModel.endTime,
+  );
 }

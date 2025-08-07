@@ -34,11 +34,13 @@ class _StaminaWidgetState extends State<StaminaWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
+
     return Card(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(width: 40, height: 40, child: Image.asset('assets/${viewModel._stamina.imageName ?? ''}')),
+          SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
           ValueListenableBuilder<int>(
             valueListenable: viewModel.currentStamina,
             builder: (context, currentStamnina, _) {

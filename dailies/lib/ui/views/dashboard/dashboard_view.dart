@@ -20,7 +20,7 @@ class DashboardView extends StatelessWidget {
           body: IndexedStack(
             index: viewModel.selectedTabIndex,
             children: [
-              ChangeNotifierProvider(create: (_) => OverviewViewModel(), child: const OverviewView()),
+              ChangeNotifierProvider(create: (_) => injector<OverviewViewModel>(), child: const OverviewView()),
               ChangeNotifierProvider(create: (_) => injector<CalendarViewModel>(), child: const CalendarView()),
               ChangeNotifierProvider(create: (_) => UploadViewModel(), child: const UploadView()),
             ],

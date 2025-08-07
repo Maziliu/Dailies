@@ -9,9 +9,7 @@ class TimeSlotRepositoryService {
 
   TimeSlotRepositoryService({required this.timeSlotRepository});
 
-  Future<Result<int>> saveTimeSlot(TimeSlot timeSlot) async {
-    return await timeSlotRepository.insert(timeSlot);
-  }
+  Future<Result<int>> saveTimeSlot(TimeSlot timeSlot) async => await timeSlotRepository.insert(timeSlot);
 
   Future<Result<List<TimeSlot>>> fetchTimeSlotsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
     Result<List<AppModel>> results = await timeSlotRepository.getTimeSlotsBetween(lowerBound, upperBound);

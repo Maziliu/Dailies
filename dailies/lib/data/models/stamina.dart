@@ -9,7 +9,7 @@ class Stamina extends AppModel {
   int staminaOfLastestReset;
 
   Stamina({
-    required super.id,
+    super.id,
     required Duration rechargeTime,
     required int maxStamina,
     required String gachaTitle,

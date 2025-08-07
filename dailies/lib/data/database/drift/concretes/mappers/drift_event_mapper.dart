@@ -18,12 +18,10 @@ class DriftEventMapper extends EventMapper<DriftEvent, DriftEventsCompanion> {
   }
 
   @override
-  AppModel convertIncomingDatabaseModelToAppModel(DriftEvent incomingDatabaseModel) {
-    return Event(
-      id: incomingDatabaseModel.id,
-      eventName: incomingDatabaseModel.eventName,
-      location: incomingDatabaseModel.location,
-      timeSlotHeadId: incomingDatabaseModel.timeSlotId,
-    );
-  }
+  Event convertIncomingDatabaseModelToAppModel(DriftEvent incomingDatabaseModel) => Event(
+    id: incomingDatabaseModel.id,
+    eventName: incomingDatabaseModel.eventName,
+    location: incomingDatabaseModel.location,
+    timeSlotHeadId: incomingDatabaseModel.timeSlotId,
+  );
 }

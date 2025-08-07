@@ -16,4 +16,6 @@ class StaminaRepositoryService {
   }
 
   Future<Result<int>> saveStamina(Stamina stamina) async => await _repository.insert(stamina);
+
+  Future<Result<bool>> updateStamina(Stamina updatedStamina) async => await _repository.update(updatedStamina);
 }

@@ -36,5 +36,9 @@ class OverviewViewModel extends ChangeNotifier {
       case Error<List<Stamina>>():
         print("OVERVIEEW INIT ERROR");
     }
+
+    for (Stamina s in staminas.value) {
+      print("Name of Gacha: ${s.gachaTitle} Stamina of last reset: ${s.staminaOfLastestReset} Time of last save: ${s.timeOfLastReset.toString()}");
+    }
   }
 }

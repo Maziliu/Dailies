@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
+import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -10,8 +11,9 @@ import 'package:provider/provider.dart';
 
 class StaminaWidget extends StatefulWidget {
   final Stamina _stamina;
+  final void Function(Stamina) _onDelete;
 
-  const StaminaWidget({super.key, required Stamina stamina}) : _stamina = stamina;
+  const StaminaWidget({super.key, required Stamina stamina, required void Function(Stamina) onDelete}) : _stamina = stamina, _onDelete = onDelete;
 
   @override
   State<StaminaWidget> createState() => _StaminaWidgetState();
@@ -37,6 +39,19 @@ class _StaminaWidgetState extends State<StaminaWidget> {
     return InkWell(
       onDoubleTap: () async {
         await viewModel.resetStaminaTo(staminaLevel: 0);
+      },
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return DeleteConfirmationDialog(
+              onDelete: () {
+                widget._onDelete(widget._stamina);
+              },
+              itemName: widget._stamina.gachaTitle,
+            );
+          },
+        );
       },
       child: Card(
         child: Row(
@@ -73,12 +88,6 @@ class _StaminaWidgetViewModel extends ChangeNotifier {
   }
 
   int get maxStamina => _stamina.maxStamina;
-
-  @override
-  void dispose() async {
-    await resetStaminaTo(staminaLevel: currentStamina.value);
-    super.dispose();
-  }
 
   Future<void> resetStaminaTo({int staminaLevel = 0}) async {
     currentStamina.value = staminaLevel;

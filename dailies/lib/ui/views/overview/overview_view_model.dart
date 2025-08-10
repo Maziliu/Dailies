@@ -41,4 +41,12 @@ class OverviewViewModel extends ChangeNotifier {
       print("Name of Gacha: ${s.gachaTitle} Stamina of last reset: ${s.staminaOfLastestReset} Time of last save: ${s.timeOfLastReset.toString()}");
     }
   }
+
+  void deleteStamina(Stamina stamina) async {
+    await _staminaRepositoryService.deleteStamina(stamina);
+
+    staminas.value.remove(stamina);
+
+    notifyListeners();
+  }
 }

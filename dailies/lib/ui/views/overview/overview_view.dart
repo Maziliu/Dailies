@@ -1,7 +1,7 @@
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
-import 'package:dailies/ui/components/stamina%20tracker/stamina_widget.dart';
+import 'package:dailies/ui/components/stamina%20widget/stamina_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/overview/overview_view_model.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class _OverviewViewState extends State<OverviewView> {
     return Padding(
       padding: UIFormating.smallPadding(),
       child: Scaffold(
-        body: Wrap(children: viewModel.staminas.value.map((Stamina stamina) => StaminaWidget(stamina: stamina)).toList()),
+        body: Wrap(children: viewModel.staminas.value.map((Stamina stamina) => StaminaWidget(stamina: stamina, onDelete: viewModel.deleteStamina)).toList()),
         floatingActionButton: FloatingActionButton(
           elevation: 0,
           heroTag: ADD_STAMINA_HERO_TAG,

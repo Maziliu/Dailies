@@ -31,6 +31,7 @@ class CalendarViewModel extends ChangeNotifier {
     switch (eventId) {
       case Ok<int>(value: final int id):
         event.id = id;
+        _currentAndAdjacentMonthsEvents.add(event);
         _selectedEvents.value.add(event);
         notifyListeners();
       case Error<int>():
@@ -40,10 +41,6 @@ class CalendarViewModel extends ChangeNotifier {
 
   Future<void> loadEventsFromCurrentAndAdjacentMonths() async {
     DateTime lowerBound = _selectedDay.subtract(const Duration(days: 30)), upperBound = _selectedDay.add(const Duration(days: 30));
-
-    print(lowerBound.toString());
-    print(upperBound.toString());
-
     Result<List<Event>> eventsResult = await _eventRepositoryService.fetchAllEventsBetweenDates(lowerBound, upperBound);
 
     switch (eventsResult) {

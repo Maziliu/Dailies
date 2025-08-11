@@ -18,6 +18,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
             _onDelete();
             Navigator.of(context).pop();
           },
+          style: TextButton.styleFrom(foregroundColor: Colors.red),
           child: const Text('Delete'),
         ),
       ],

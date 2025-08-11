@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
+import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
+import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
+
+const String SET_STAMINA_HERO_TAG = 'setStaminaHeroTag';
 
 class StaminaWidget extends StatefulWidget {
   final Stamina _stamina;
@@ -35,6 +39,20 @@ class _StaminaWidgetState extends State<StaminaWidget> {
     String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
 
     return InkWell(
+      onTap: () async {
+        final int? remainingStamina = await Navigator.push<int>(
+          context,
+          HeroDialogRoute(
+            builder: (context) {
+              return PopupCard.SetStamina(heroTag: SET_STAMINA_HERO_TAG);
+            },
+          ),
+        );
+
+        if (remainingStamina != null) {
+          await viewModel.resetStaminaTo(staminaLevel: remainingStamina);
+        }
+      },
       onDoubleTap: () async {
         await viewModel.resetStaminaTo(staminaLevel: 0);
       },

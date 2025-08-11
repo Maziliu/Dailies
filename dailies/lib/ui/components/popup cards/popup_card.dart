@@ -1,5 +1,6 @@
 import 'package:dailies/ui/components/popup%20cards/add_event_popup_card.dart';
 import 'package:dailies/ui/components/popup%20cards/add_stamina_popup_card.dart';
+import 'package:dailies/ui/components/popup%20cards/set_stamina_popup_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,10 @@ class PopupCard extends StatelessWidget {
 
   factory PopupCard.AddStamina({Key? key, required void Function(String, int, Duration, int, String?) onSubmit, required String heroTag}) {
     return PopupCard(innerContentWidget: AddStaminaPopupCard(onSubmit: onSubmit, heroTag: heroTag), heroTag: heroTag);
+  }
+
+  factory PopupCard.SetStamina({Key? key, required String heroTag}) {
+    return PopupCard(innerContentWidget: SetStaminaPopupCard(heroTag: heroTag), heroTag: heroTag);
   }
 
   @override

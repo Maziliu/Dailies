@@ -6,8 +6,6 @@ import 'package:dailies/service/repository/stamina_repository_service.dart';
 import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:provider/provider.dart';
 
 class StaminaWidget extends StatefulWidget {
   final Stamina _stamina;

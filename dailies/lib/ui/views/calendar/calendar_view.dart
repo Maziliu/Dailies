@@ -2,6 +2,7 @@ import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
+import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/calendar_view_model.dart';
@@ -89,12 +90,27 @@ class _CalendarViewState extends State<CalendarView> {
                           timeText = null;
                       }
 
-                      return Card(
-                        margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                        child: ListTile(
-                          title: Text(event.eventName),
-                          subtitle: (timeText != null) ? Text(timeText) : null,
-                          onTap: () => print('Tapped: ${event.eventName} - ${slot.timeSlotType.name}'),
+                      return InkWell(
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return DeleteConfirmationDialog(
+                                itemName: event.eventName,
+                                onDelete: () {
+                                  viewModel.deleteEvent(event);
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                          child: ListTile(
+                            title: Text(event.eventName),
+                            subtitle: (timeText != null) ? Text(timeText) : null,
+                            onTap: () => print('Tapped: ${event.eventName} - ${slot.timeSlotType.name}'),
+                          ),
                         ),
                       );
                     },

@@ -36,7 +36,10 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
           child: Column(
             children: [
               Center(
-                child: Text('Create New Event', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                child: Text(
+                  'Create New Gacha Widget',
+                  style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                ),
               ),
               UIFormating.largeVerticalSpacing(),
               FormBuilderTextField(
@@ -82,7 +85,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                   }
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary),
-                child: const Text('Create Event'),
+                child: const Text('Create Widget'),
               ),
             ],
           ),

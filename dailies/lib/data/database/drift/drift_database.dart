@@ -21,6 +21,14 @@ class AppDatabase extends _$AppDatabase {
   );
 
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'drift_database', native: const DriftNativeOptions(databaseDirectory: getApplicationSupportDirectory));
+    return driftDatabase(
+      name: 'drift_database',
+      native: DriftNativeOptions(
+        databaseDirectory: getApplicationSupportDirectory,
+        setup: (rawDb) {
+          rawDb.execute('PRAGMA foreign_keys = ON;');
+        },
+      ),
+    );
   }
 }

@@ -68,4 +68,11 @@ class CalendarViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void deleteEvent(Event event) async {
+    await _eventRepositoryService.deleteEvent(event);
+    _selectedEvents.value.remove(event);
+
+    notifyListeners();
+  }
 }

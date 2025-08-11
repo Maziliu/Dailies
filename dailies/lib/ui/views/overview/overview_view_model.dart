@@ -19,7 +19,16 @@ class OverviewViewModel extends ChangeNotifier {
       staminaOfLastestReset: staminaOfLastestReset,
     );
 
-    _staminaRepositoryService.saveStamina(stamina);
+    Result<int> id = await _staminaRepositoryService.saveStamina(stamina);
+
+    switch (id) {
+      case Ok<int>(value: final int id):
+        stamina.id = id;
+        staminas.value.add(stamina);
+        notifyListeners();
+      case Error<int>():
+        throw UnimplementedError();
+    }
   }
 
   Future<void> initialize() async {

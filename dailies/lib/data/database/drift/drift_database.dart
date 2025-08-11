@@ -27,6 +27,7 @@ class AppDatabase extends _$AppDatabase {
         databaseDirectory: getApplicationSupportDirectory,
         setup: (rawDb) {
           rawDb.execute('PRAGMA foreign_keys = ON;');
+          rawDb.execute('PRAGMA journal_mode = WAL;');
         },
       ),
     );

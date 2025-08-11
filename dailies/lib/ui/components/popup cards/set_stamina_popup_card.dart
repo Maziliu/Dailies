@@ -22,6 +22,9 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
     return SingleChildScrollView(
       child: Padding(
         padding: UIFormating.largePadding(),
@@ -29,34 +32,29 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
           key: _formKey,
           child: Column(
             children: [
+              Center(
+                child: Text('Set Remaining Stamina', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+              ),
+              UIFormating.largeVerticalSpacing(),
               FormBuilderTextField(
                 name: _setStaminaToTag,
                 decoration: const InputDecoration(labelText: 'Remaining Stamina'),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) => (value == null) ? "Required" : null,
               ),
+              UIFormating.mediumVerticalSpacing(),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    Map<String, dynamic>? fields = _formKey.currentState?.fields;
 
-              Row(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        Map<String, dynamic>? fields = _formKey.currentState?.fields;
+                    int remainingStamina = int.parse(fields?[_setStaminaToTag].value ?? '0');
 
-                        int remainingStamina = int.parse(fields?[_setStaminaToTag].value ?? '0');
-
-                        Navigator.pop(context, remainingStamina);
-                      }
-                    },
-                    child: const Text('Set'),
-                  ),
-                ],
+                    Navigator.pop(context, remainingStamina);
+                  }
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary),
+                child: const Text('Set'),
               ),
             ],
           ),

@@ -39,6 +39,8 @@ class _StaminaWidgetState extends State<StaminaWidget> {
     String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
 
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: () async {
         final int? remainingStamina = await Navigator.push<int>(
           context,
@@ -69,21 +71,24 @@ class _StaminaWidgetState extends State<StaminaWidget> {
           },
         );
       },
-      child: Card(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
-            ValueListenableBuilder<int>(
-              valueListenable: viewModel.currentStamina,
-              builder: (context, currentStamnina, _) {
-                return Padding(
-                  padding: UIFormating.smallPadding(),
-                  child: Text('$currentStamnina/${viewModel.maxStamina}', style: const TextStyle(fontSize: 24)),
-                );
-              },
-            ),
-          ],
+      child: Hero(
+        tag: SET_STAMINA_HERO_TAG,
+        child: Card(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
+              ValueListenableBuilder<int>(
+                valueListenable: viewModel.currentStamina,
+                builder: (context, currentStamnina, _) {
+                  return Padding(
+                    padding: UIFormating.smallPadding(),
+                    child: Text('$currentStamnina/${viewModel.maxStamina}', style: const TextStyle(fontSize: 24)),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

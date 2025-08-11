@@ -25,8 +25,8 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
 
     return SingleChildScrollView(
       child: Padding(

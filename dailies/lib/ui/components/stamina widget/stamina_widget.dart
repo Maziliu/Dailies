@@ -46,7 +46,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
           context,
           HeroDialogRoute(
             builder: (context) {
-              return PopupCard.SetStamina(heroTag: SET_STAMINA_HERO_TAG);
+              return PopupCard.SetStamina(heroTag: '$SET_STAMINA_HERO_TAG/${widget._stamina.id}');
             },
           ),
         );
@@ -72,7 +72,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
         );
       },
       child: Hero(
-        tag: SET_STAMINA_HERO_TAG,
+        tag: '$SET_STAMINA_HERO_TAG/${widget._stamina.id}',
         child: Card(
           child: Row(
             mainAxisSize: MainAxisSize.min,

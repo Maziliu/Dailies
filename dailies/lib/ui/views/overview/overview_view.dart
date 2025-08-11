@@ -41,10 +41,10 @@ class _OverviewViewState extends State<OverviewView> {
           heroTag: ADD_STAMINA_HERO_TAG,
           child: const Icon(Icons.add),
           onPressed: () {
-            final viewModel = Provider.of<OverviewViewModel>(context, listen: false);
+            final OverviewViewModel viewModel = Provider.of<OverviewViewModel>(context, listen: false);
             Navigator.of(context).push(
               HeroDialogRoute(
-                builder: (context) {
+                builder: (_) {
                   return PopupCard.AddStamina(onSubmit: viewModel.onAddStaminaButtonPress, heroTag: ADD_STAMINA_HERO_TAG);
                 },
               ),

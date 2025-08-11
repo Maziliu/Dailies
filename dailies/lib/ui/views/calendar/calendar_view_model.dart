@@ -26,7 +26,16 @@ class CalendarViewModel extends ChangeNotifier {
     TimeSlot timeSlot = TimeSlot(dateOfTimeSlot: _selectedDay, startTime: startTime, endTime: endTime);
     Event event = Event(eventName: eventName, location: location, timeSlot: timeSlot);
 
-    print(((await _eventRepositoryService.saveEvent(event)) as Ok).value);
+    Result<int> eventId = await _eventRepositoryService.saveEvent(event);
+
+    switch (eventId) {
+      case Ok<int>(value: final int id):
+        event.id = id;
+        _selectedEvents.value.add(event);
+        notifyListeners();
+      case Error<int>():
+        throw UnimplementedError();
+    }
   }
 
   Future<void> loadEventsFromCurrentAndAdjacentMonths() async {

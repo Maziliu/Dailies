@@ -1,3 +1,4 @@
+import 'package:dailies/generated/assets.gen.dart';
 import 'package:dailies/ui/components/interface/animatable_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,23 @@ class AddStaminaPopupCard extends StatefulWidget implements AnimatableWidget {
 
 class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
-  final String _gachaNameFieldTag = 'gachaName', _maxStaminaFieldTag = 'maxStamina', _rechargeTimeFieldTag = 'rechargeTime', _currentStamina = 'currentStamina';
+  final String _gachaNameFieldTag = 'gachaName',
+      _maxStaminaFieldTag = 'maxStamina',
+      _rechargeTimeFieldTag = 'rechargeTime',
+      _currentStamina = 'currentStamina',
+      _energyType = 'energyType';
+
+  String _formatAssetName(String filename) {
+    final nameWithoutExtension = filename.split('.').first;
+
+    final noUnderscoresOrNonAlphaNumeric = nameWithoutExtension.replaceAll(RegExp(r'[^a-zA-Z0-9]+'), ' ');
+
+    final words = noUnderscoresOrNonAlphaNumeric.split(' ').where((word) => word.isNotEmpty);
+
+    final capitalizedWords = words.map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase());
+
+    return capitalizedWords.join(' ');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +85,27 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                 decoration: const InputDecoration(labelText: 'Current Stamina'),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
+              UIFormating.smallVerticalSpacing(),
+              FormBuilderDropdown<AssetGenImage>(
+                name: _energyType,
+                items:
+                    Assets.values
+                        .map(
+                          (asset) => DropdownMenuItem<AssetGenImage>(
+                            value: asset,
+                            child: Row(
+                              children: [
+                                SizedBox(width: 40, height: 40, child: asset.image(fit: BoxFit.contain)),
+                                const SizedBox(width: 10),
+                                Text(_formatAssetName(asset.path.split('/').last)),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                decoration: const InputDecoration(labelText: 'Energy Type'),
+                validator: (value) => (value == null) ? 'Required' : null,
+              ),
               UIFormating.mediumVerticalSpacing(),
               ElevatedButton(
                 onPressed: () {
@@ -79,7 +117,9 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                         maxStamina = int.parse(fields?[_maxStaminaFieldTag].value);
                     final int currentStamina = int.parse(fields?[_currentStamina].value ?? '0');
 
-                    widget._onSubmit(gachaName, maxStamina, Duration(seconds: rechargeTimeInSeconds), currentStamina, '');
+                    final String? imageName = (fields?[_energyType].value as AssetGenImage?)?.path.split('/').last;
+
+                    widget._onSubmit(gachaName, maxStamina, Duration(seconds: rechargeTimeInSeconds), currentStamina, imageName);
 
                     Navigator.of(context).pop();
                   }

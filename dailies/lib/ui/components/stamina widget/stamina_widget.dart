@@ -36,8 +36,8 @@ class _StaminaWidgetState extends State<StaminaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
-
+    final String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
+    final String heroTag = '$SET_STAMINA_HERO_TAG/${widget._stamina.id}';
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
@@ -46,7 +46,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
           context,
           HeroDialogRoute(
             builder: (context) {
-              return PopupCard.SetStamina(heroTag: '$SET_STAMINA_HERO_TAG/${widget._stamina.id}');
+              return PopupCard.SetStamina(heroTag: heroTag);
             },
           ),
         );
@@ -72,7 +72,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
         );
       },
       child: Hero(
-        tag: '$SET_STAMINA_HERO_TAG/${widget._stamina.id}',
+        tag: heroTag,
         child: Card(
           child: Row(
             mainAxisSize: MainAxisSize.min,

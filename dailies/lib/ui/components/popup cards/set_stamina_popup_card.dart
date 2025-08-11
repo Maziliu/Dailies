@@ -31,6 +31,8 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
         child: FormBuilder(
           key: _formKey,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
                 child: Text('Set Remaining Stamina', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),

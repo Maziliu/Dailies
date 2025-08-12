@@ -35,7 +35,15 @@ class _OverviewViewState extends State<OverviewView> {
     return Padding(
       padding: UIFormating.smallPadding(),
       child: Scaffold(
-        body: Wrap(children: viewModel.staminas.value.map((Stamina stamina) => StaminaWidget(stamina: stamina, onDelete: viewModel.deleteStamina)).toList()),
+        body: ValueListenableBuilder<List<Stamina>>(
+          valueListenable: viewModel.staminas,
+          builder: (context, staminas, child) {
+            return Wrap(
+              children:
+                  staminas.map((Stamina stamina) => StaminaWidget(key: ValueKey(stamina.id), stamina: stamina, onDelete: viewModel.deleteStamina)).toList(),
+            );
+          },
+        ),
         floatingActionButton: FloatingActionButton(
           elevation: 0,
           heroTag: ADD_STAMINA_HERO_TAG,

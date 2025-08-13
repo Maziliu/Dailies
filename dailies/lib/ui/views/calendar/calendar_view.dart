@@ -1,11 +1,15 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
+import 'package:dailies/dependency_setup.dart';
+import 'package:dailies/service/repository/event_repository_service.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
+import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
+import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
-import 'package:dailies/ui/views/calendar/calendar_view_model.dart';
+import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -13,13 +17,6 @@ import 'package:table_calendar/table_calendar.dart';
 final DateTime FIRST_CALENDAR_DAY = DateTime.utc(2003, 05, 14);
 final DateTime LAST_CALENDAR_DAY = DateTime.utc(2100, 12, 31);
 final String ADD_EVENT_HERO_TAG = 'addEventHeroTag';
-
-class EventTimeSlotPair {
-  final Event event;
-  final TimeSlot timeSlot;
-
-  EventTimeSlotPair({required this.event, required this.timeSlot});
-}
 
 class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
@@ -29,112 +26,91 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
+  late final CalendarPageViewModel pageViewModel;
+
   @override
   void initState() {
     super.initState();
 
-    Future.microtask(() async {
-      if (mounted) {
-        final viewModel = Provider.of<CalendarViewModel>(context, listen: false);
-        await viewModel.initialize();
-      }
-    });
+    pageViewModel = injector<CalendarPageViewModel>();
+  }
+
+  @override
+  void dispose() {
+    pageViewModel.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<CalendarViewModel>(context);
-
-    return Padding(
-      padding: UIFormating.smallPadding(),
-      child: Scaffold(
-        body: Column(
-          children: [
-            TableCalendar(
-              headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
-              focusedDay: viewModel.selectedDay,
-              firstDay: FIRST_CALENDAR_DAY,
-              lastDay: LAST_CALENDAR_DAY,
-              sixWeekMonthsEnforced: true,
-              selectedDayPredicate: (selectedDay) => isSameDay(selectedDay, viewModel.selectedDay),
-              onDaySelected: (selectedDay, focusedDay) => viewModel.onDaySelect(selectedDay),
-            ),
-            UIFormating.smallVerticalSpacing(),
-            Expanded(
-              child: ValueListenableBuilder<List<Event>>(
-                valueListenable: viewModel.selectedEvents,
-                builder: (context, events, _) {
-                  final flattened =
-                      events.expand((event) {
-                        return event.timeSlots.map((slot) => EventTimeSlotPair(event: event, timeSlot: slot));
-                      }).toList();
-
-                  if (flattened.isEmpty) {
-                    return const Center(child: Text("No events"));
-                  }
-
-                  return ListView.builder(
-                    itemCount: flattened.length,
-                    itemBuilder: (context, index) {
-                      final pair = flattened[index];
-                      final event = pair.event;
-                      final slot = pair.timeSlot;
-
-                      String? timeText;
-                      switch (slot.timeSlotType) {
-                        case TimeSlotType.Interval:
-                          timeText = "${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
-                        case TimeSlotType.Deadline:
-                          timeText = "Due at ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
-                        default:
-                          timeText = null;
-                      }
-
-                      return InkWell(
-                        onLongPress: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return DeleteConfirmationDialog(
-                                itemName: event.eventName,
-                                onDelete: () {
-                                  viewModel.deleteEvent(event);
-                                },
-                              );
-                            },
-                          );
-                        },
-                        child: Card(
-                          margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                          child: ListTile(
-                            title: Text(event.eventName),
-                            subtitle: (timeText != null) ? Text(timeText) : null,
-                            onTap: () => print('Tapped: ${event.eventName} - ${slot.timeSlotType.name}'),
-                          ),
-                        ),
-                      );
-                    },
+    return ChangeNotifierProvider.value(
+      value: pageViewModel,
+      child: Consumer<CalendarPageViewModel>(
+        builder: (context, viewModel, _) {
+          return Padding(
+            padding: UIFormating.smallPadding(),
+            child: Scaffold(
+              body: Column(
+                children: [
+                  TableCalendar(
+                    headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                    focusedDay: viewModel.calendarViewModel.selectedDay,
+                    firstDay: FIRST_CALENDAR_DAY,
+                    lastDay: LAST_CALENDAR_DAY,
+                    sixWeekMonthsEnforced: true,
+                    selectedDayPredicate: (day) => isSameDay(day, viewModel.calendarViewModel.selectedDay),
+                    onDaySelected: (selectedDay, _) => viewModel.onDaySelect(selectedDay),
+                  ),
+                  UIFormating.smallVerticalSpacing(),
+                  Expanded(
+                    child:
+                        viewModel.flattenedEvents.isEmpty
+                            ? const Center(child: Text("No events"))
+                            : ScheduleListViewWidget(
+                              pairs: viewModel.flattenedEvents,
+                              builder:
+                                  (pair) => InkWell(
+                                    onLongPress: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return DeleteConfirmationDialog(
+                                            itemName: pair.first.eventName,
+                                            onDelete: () async {
+                                              await viewModel.deleteEvent(pair.first);
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    onTap: () => print('Tapped: ${pair.first.eventName} - ${pair.second.timeSlotType.name}'),
+                                    child: ScheduleItemWidget(eventTimeSlotPair: pair),
+                                  ),
+                            ),
+                  ),
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                elevation: 0,
+                heroTag: ADD_EVENT_HERO_TAG,
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    HeroDialogRoute(
+                      builder: (context) {
+                        return PopupCard.AddEvent(
+                          onSubmit: viewModel.onAddEvent,
+                          selectedDay: viewModel.calendarViewModel.selectedDay,
+                          heroTag: ADD_EVENT_HERO_TAG,
+                        );
+                      },
+                    ),
                   );
                 },
               ),
             ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          elevation: 0,
-          heroTag: ADD_EVENT_HERO_TAG,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            final viewModel = Provider.of<CalendarViewModel>(context, listen: false);
-            Navigator.of(context).push(
-              HeroDialogRoute(
-                builder: (context) {
-                  return PopupCard.AddEvent(onSubmit: viewModel.onAddEventButtonPress, selectedDay: viewModel.selectedDay, heroTag: ADD_EVENT_HERO_TAG);
-                },
-              ),
-            );
-          },
-        ),
+          );
+        },
       ),
     );
   }

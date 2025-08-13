@@ -77,7 +77,13 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                 name: _rechargeTimeFieldTag,
                 decoration: const InputDecoration(labelText: 'Recharge Time In Seconds'),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validator: (value) => (value == null) ? "Required" : null,
+                validator:
+                    (value) =>
+                        (value == null)
+                            ? "Required"
+                            : (int.parse(value) <= 0)
+                            ? "Must be non zero"
+                            : null,
               ),
               UIFormating.smallVerticalSpacing(),
               FormBuilderTextField(

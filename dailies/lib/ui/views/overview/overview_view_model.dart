@@ -33,7 +33,6 @@ class OverviewViewModel extends ChangeNotifier {
 
   Future<void> initialize() async {
     await loadAllStaminas();
-    notifyListeners();
   }
 
   Future<void> loadAllStaminas() async {

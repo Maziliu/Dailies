@@ -1,22 +1,16 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
+import 'package:dailies/data/models/event.dart';
+import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/interface/animatable_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class AddEventPopupCard extends StatefulWidget implements AnimatableWidget {
-  final void Function(String, String?, DateTime?, DateTime?) _onSubmit;
   final String _heroTag;
   final DateTime _selectedDay;
 
-  const AddEventPopupCard({
-    super.key,
-    required void Function(String, String?, DateTime?, DateTime?) onSubmit,
-    required String heroTag,
-    required DateTime selectedDay,
-  }) : _onSubmit = onSubmit,
-       _heroTag = heroTag,
-       _selectedDay = selectedDay;
+  const AddEventPopupCard({super.key, required String heroTag, required DateTime selectedDay}) : _heroTag = heroTag, _selectedDay = selectedDay;
 
   @override
   State<AddEventPopupCard> createState() => _AddEventPopupCardState();
@@ -173,9 +167,14 @@ class _AddEventPopupCardState extends State<AddEventPopupCard> {
                       );
                     }
 
-                    widget._onSubmit(eventName, locationName, startTime, endTime);
-
-                    Navigator.of(context).pop();
+                    Navigator.pop(
+                      context,
+                      Event(
+                        eventName: eventName,
+                        location: locationName,
+                        timeSlot: TimeSlot(dateOfTimeSlot: widget._selectedDay, startTime: startTime, endTime: endTime),
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary),

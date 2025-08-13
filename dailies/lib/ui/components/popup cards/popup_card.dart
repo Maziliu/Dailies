@@ -10,13 +10,8 @@ class PopupCard extends StatelessWidget {
 
   const PopupCard({super.key, required Widget innerContentWidget, required String heroTag}) : _innerContentWidget = innerContentWidget, _heroTag = heroTag;
 
-  factory PopupCard.AddEvent({
-    Key? key,
-    required void Function(String, String?, DateTime?, DateTime?) onSubmit,
-    required DateTime selectedDay,
-    required String heroTag,
-  }) {
-    return PopupCard(innerContentWidget: AddEventPopupCard(onSubmit: onSubmit, heroTag: heroTag, selectedDay: selectedDay), heroTag: heroTag);
+  factory PopupCard.AddEvent({Key? key, required DateTime selectedDay, required String heroTag}) {
+    return PopupCard(innerContentWidget: AddEventPopupCard(heroTag: heroTag, selectedDay: selectedDay), heroTag: heroTag);
   }
 
   factory PopupCard.AddStamina({Key? key, required void Function(String, int, Duration, int, String?) onSubmit, required String heroTag}) {

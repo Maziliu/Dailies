@@ -1,1 +1,1 @@
-enum TimeSlotType { Unspecified, Interval, Deadline }
+enum TimeSlotType { Interval, Deadline, Unspecified }

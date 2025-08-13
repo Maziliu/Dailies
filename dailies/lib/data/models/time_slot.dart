@@ -37,17 +37,23 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
 
   @override
   int compareTo(TimeSlot other) {
+    //uses the enum order first
+    final enumIndexComparison = timeSlotType.index.compareTo(other.timeSlotType.index);
+    if (enumIndexComparison != 0) return enumIndexComparison;
+
     final thisDate = DateTime(_dateOfTimeSlot.year, _dateOfTimeSlot.month, _dateOfTimeSlot.day);
     final otherDate = DateTime(other._dateOfTimeSlot.year, other._dateOfTimeSlot.month, other._dateOfTimeSlot.day);
 
-    if (!isSameDay(otherDate)) return thisDate.compareTo(otherDate);
+    //same type so compare by date if not same day
+    final dateComparison = thisDate.compareTo(otherDate);
+    if (dateComparison != 0) return dateComparison;
 
-    //The abouve filters diff days and the same days must be diffed by endtime
+    //same day so compare by start time
     //Note: 0 --> Same, -1 --> isBefore, 1 --> isAfter
-    if (_endTime == null && other._endTime == null) return 0;
-    if (_endTime == null) return 1;
-    if (other._endTime == null) return -1;
+    if (_startTime == null && other._startTime == null) return 0;
+    if (_startTime == null) return 1;
+    if (other._startTime == null) return -1;
 
-    return _endTime.compareTo(other._endTime);
+    return _startTime.compareTo(other._startTime);
   }
 }

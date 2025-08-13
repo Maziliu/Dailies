@@ -1,4 +1,3 @@
-import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/overview/overview_page_view_model.dart';
 import 'package:dailies/ui/views/overview/schedule%20section/schedule_section.dart';
@@ -18,11 +17,7 @@ class OverviewView extends StatelessWidget {
       child: Scaffold(
         body: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            GachaSection(viewModel: pageViewModel.staminaViewModel),
-            UIFormating.extraLargeVerticalSpacing(),
-            ScheduleSection(eventsViewModel: pageViewModel.eventsViewModel),
-          ],
+          children: [GachaSection(viewModel: pageViewModel.staminaViewModel), Expanded(child: ScheduleSection(eventsViewModel: pageViewModel.eventsViewModel))],
         ),
       ),
     );

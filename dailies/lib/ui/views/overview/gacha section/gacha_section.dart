@@ -2,7 +2,6 @@ import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
 import 'package:dailies/ui/components/stamina%20widget/stamina_widget.dart';
-import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/overview/gacha%20section/gacha_view_model.dart';
 import 'package:flutter/material.dart';
 
@@ -15,35 +14,47 @@ class GachaSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<List<Stamina>>(
-      valueListenable: _viewModel.staminas,
-      builder: (context, staminas, child) {
-        return Wrap(
-          children: [
-            ...staminas.map((Stamina stamina) => StaminaWidget(key: ValueKey(stamina.id), stamina: stamina, onDelete: _viewModel.deleteStamina)),
-            _addStaminaTransparentButton(context),
-          ],
-        );
-      },
+    return Padding(
+      padding: const EdgeInsetsGeometry.fromLTRB(16, 16, 16, 0),
+      child: ValueListenableBuilder<List<Stamina>>(
+        valueListenable: _viewModel.staminas,
+        builder: (context, staminas, child) {
+          return GridView.count(
+            childAspectRatio: 3,
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            children: [
+              ...staminas.map((stamina) => StaminaWidget(key: ValueKey(stamina.id), stamina: stamina, onDelete: _viewModel.deleteStamina)),
+              _addStaminaTransparentButton(context),
+            ],
+          );
+        },
+      ),
     );
   }
 
-  Widget _addStaminaTransparentButton(BuildContext context) => OutlinedButton(
-    style: OutlinedButton.styleFrom(
-      side: const BorderSide(color: Color.fromRGBO(158, 158, 158, 0.5)),
-      shape: const CircleBorder(),
-      padding: const EdgeInsets.all(17),
-      backgroundColor: Colors.transparent,
-    ),
-    onPressed: () {
-      Navigator.of(context).push(
-        HeroDialogRoute(
-          builder: (_) {
-            return PopupCard.AddStamina(onSubmit: _viewModel.onAddStaminaButtonPress, heroTag: ADD_STAMINA_HERO_TAG);
-          },
+  Widget _addStaminaTransparentButton(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(4),
+    child: InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          HeroDialogRoute(
+            builder: (_) {
+              return PopupCard.AddStamina(onSubmit: _viewModel.onAddStaminaButtonPress, heroTag: ADD_STAMINA_HERO_TAG);
+            },
+          ),
+        );
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color.fromRGBO(158, 158, 158, 0.5)),
+          color: Colors.transparent,
         ),
-      );
-    },
-    child: const Icon(Icons.add, color: Colors.grey),
+        child: const Icon(Icons.add, color: Colors.grey),
+      ),
+    ),
   );
 }

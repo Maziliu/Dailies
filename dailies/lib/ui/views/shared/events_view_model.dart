@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class EventsViewModel with ServiceViewModelMixin {
   final EventRepositoryService _eventRepositoryService;
   final ValueNotifier<List<EventTimeSlotPair>> todayLoadedFlattenedEventsNotifier = ValueNotifier([]);
+  final ValueNotifier<List<EventTimeSlotPair>> selectedFlattenedEventsNotifier = ValueNotifier([]);
   final ValueNotifier<List<Event>> loadedEventsNotifier = ValueNotifier([]);
   late DateTime _currentLowerBound, _currentUpperBound;
 
@@ -29,6 +30,12 @@ class EventsViewModel with ServiceViewModelMixin {
       case Error<List<Event>>(error: final Exception exception):
         updateViewModelErrors(exception);
     }
+  }
+
+  Future<void> updateSelectedFlattenedEvents(DateTime selectedDay) async {
+    final eventsForDay = await getEventsForDay(selectedDay);
+    selectedFlattenedEventsNotifier.value =
+        eventsForDay.expand((event) => event.timeSlots.map((slot) => EventTimeSlotPair(first: event, second: slot))).toList();
   }
 
   void _updateTodaysEvents() {

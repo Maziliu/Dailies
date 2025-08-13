@@ -74,20 +74,23 @@ class _StaminaWidgetState extends State<StaminaWidget> {
       child: Hero(
         tag: heroTag,
         child: Card(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
-              ValueListenableBuilder<int>(
-                valueListenable: viewModel.currentStamina,
-                builder: (context, currentStamnina, _) {
-                  return Padding(
-                    padding: UIFormating.smallPadding(),
-                    child: Text('$currentStamnina/${viewModel.maxStamina}', style: const TextStyle(fontSize: 24)),
-                  );
-                },
-              ),
-            ],
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
+                UIFormating.smallHorizontalSpacing(),
+                ValueListenableBuilder<int>(
+                  valueListenable: viewModel.currentStamina,
+                  builder: (context, currentStamnina, _) {
+                    return Padding(
+                      padding: UIFormating.smallPadding(),
+                      child: Text('$currentStamnina/${viewModel.maxStamina}', style: const TextStyle(fontSize: 24)),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

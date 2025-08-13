@@ -12,6 +12,7 @@ class ScheduleListViewWidget extends StatelessWidget {
     if (_pairs.isEmpty) return _buildEmptyState(context);
 
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: _pairs.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
@@ -38,7 +39,7 @@ class ScheduleListViewWidget extends StatelessWidget {
               child: Icon(Icons.event_note_outlined, size: 40, color: colorScheme.primary),
             ),
             const SizedBox(height: 14),
-            Text('No Events', style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
+            Text('No Events', style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
           ],
         ),
       ),

@@ -1,15 +1,16 @@
 import 'package:dailies/common/utils/typedefs.dart';
+import 'package:dailies/ui/components/section.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
-import 'package:dailies/ui/views/shared%20view%20models/events_view_model.dart';
+import 'package:dailies/ui/components/ui_formating.dart';
+import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;
-  final int? _flex;
 
-  const ScheduleSection({super.key, required EventsViewModel eventsViewModel, int? flex}) : _eventsViewModel = eventsViewModel, _flex = flex;
+  const ScheduleSection({super.key, required EventsViewModel eventsViewModel}) : _eventsViewModel = eventsViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -17,28 +18,26 @@ class ScheduleSection extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    return Expanded(
-      flex: _flex ?? 1,
-      child: Container(
-        decoration: BoxDecoration(
-          color: colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          boxShadow: [BoxShadow(color: Colors.black.withAlpha(8), blurRadius: 8, offset: const Offset(0, -2))],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(8), blurRadius: 8, offset: const Offset(0, -2))],
+      ),
+      child: Padding(
+        padding: UIFormating.mediumPadding(),
+        child: Section(
           children: [
-            _buildHeader(context, textTheme, colorScheme),
-
+            SectionHeader(titleWidget: _buildHeader(context, textTheme, colorScheme)),
             Expanded(
-              child: ValueListenableBuilder<List<EventTimeSlotPair>>(
-                valueListenable: _eventsViewModel.todayLoadedFlattenedEventsNotifier,
-                builder: (context, pairs, _) {
-                  return Container(
-                    decoration: BoxDecoration(color: colorScheme.surface, borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20))),
-                    child: ScheduleListViewWidget(pairs: pairs, builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair)),
-                  );
-                },
+              child: SectionContent(
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                child: ValueListenableBuilder<List<EventTimeSlotPair>>(
+                  valueListenable: _eventsViewModel.todayLoadedFlattenedEventsNotifier,
+                  builder: (context, pairs, _) {
+                    return ScheduleListViewWidget(pairs: pairs, builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair));
+                  },
+                ),
               ),
             ),
           ],
@@ -95,7 +94,7 @@ class ScheduleSection extends StatelessWidget {
   }
 
   String _getSubtitleText(int eventCount) {
-    if (eventCount == 0) return 'No events scheduled';
-    return '$eventCount events scheduled';
+    if (eventCount == 0) return 'No events';
+    return '$eventCount events';
   }
 }

@@ -3,7 +3,6 @@ import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/data/dao/stamina_dao.dart';
 import 'package:dailies/data/mapper/stamina_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
-import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
 class StaminaRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseModel> {

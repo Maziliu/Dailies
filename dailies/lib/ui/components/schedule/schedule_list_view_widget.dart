@@ -32,12 +32,12 @@ class ScheduleListViewWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 80,
-              height: 80,
+              width: 70,
+              height: 70,
               decoration: BoxDecoration(color: colorScheme.primary.withAlpha(30), borderRadius: BorderRadius.circular(20)),
               child: Icon(Icons.event_note_outlined, size: 40, color: colorScheme.primary),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             Text('No Events', style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
           ],
         ),

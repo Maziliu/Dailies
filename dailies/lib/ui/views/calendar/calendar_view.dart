@@ -1,8 +1,4 @@
-import 'package:dailies/common/enums/time_slot_type.dart';
-import 'package:dailies/data/models/event.dart';
-import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/dependency_setup.dart';
-import 'package:dailies/service/repository/event_repository_service.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
@@ -63,36 +59,32 @@ class _CalendarViewState extends State<CalendarView> {
                   ),
                   UIFormating.smallVerticalSpacing(),
                   Expanded(
-                    child:
-                        viewModel.flattenedEvents.isEmpty
-                            ? const Center(child: Text("No events"))
-                            : ScheduleListViewWidget(
-                              pairs: viewModel.flattenedEvents,
-                              builder:
-                                  (pair) => InkWell(
-                                    onLongPress: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return DeleteConfirmationDialog(
-                                            itemName: pair.first.eventName,
-                                            onDelete: () async {
-                                              await viewModel.deleteEvent(pair.first);
-                                            },
-                                          );
-                                        },
-                                      );
+                    child: ScheduleListViewWidget(
+                      pairs: viewModel.flattenedEvents,
+                      builder:
+                          (pair) => InkWell(
+                            onLongPress: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DeleteConfirmationDialog(
+                                    itemName: pair.first.eventName,
+                                    onDelete: () async {
+                                      await viewModel.deleteEvent(pair.first);
                                     },
-                                    onTap: () => print('Tapped: ${pair.first.eventName} - ${pair.second.timeSlotType.name}'),
-                                    child: ScheduleItemWidget(eventTimeSlotPair: pair),
-                                  ),
-                            ),
+                                  );
+                                },
+                              );
+                            },
+                            onTap: () => print('Tapped: ${pair.first.eventName} - ${pair.second.timeSlotType.name}'),
+                            child: ScheduleItemWidget(eventTimeSlotPair: pair),
+                          ),
+                    ),
                   ),
                 ],
               ),
               floatingActionButton: FloatingActionButton(
                 elevation: 0,
-                heroTag: ADD_EVENT_HERO_TAG,
                 child: const Icon(Icons.add),
                 onPressed: () {
                   Navigator.of(context).push(

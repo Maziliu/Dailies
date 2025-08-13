@@ -2,9 +2,10 @@ import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
+import 'package:dailies/ui/mixins/service_view_model_mixin.dart';
 import 'package:flutter/material.dart';
 
-class EventsViewModel {
+class EventsViewModel with ServiceViewModelMixin {
   final EventRepositoryService _eventRepositoryService;
   final ValueNotifier<List<EventTimeSlotPair>> todayLoadedFlattenedEventsNotifier = ValueNotifier([]);
   final ValueNotifier<List<Event>> loadedEventsNotifier = ValueNotifier([]);
@@ -25,7 +26,8 @@ class EventsViewModel {
         loadedEventsNotifier.value = events;
         _updateTodaysEvents();
 
-      case Error<List<Event>>():
+      case Error<List<Event>>(error: final Exception exception):
+        updateViewModelErrors(exception);
     }
   }
 
@@ -68,7 +70,8 @@ class EventsViewModel {
           _currentLowerBound = lowerBound;
         }
 
-      case Error<List<Event>>():
+      case Error<List<Event>>(error: final Exception exception):
+        updateViewModelErrors(exception);
     }
   }
 
@@ -86,7 +89,8 @@ class EventsViewModel {
         loadedEventsNotifier.value = [...loadedEventsNotifier.value, event];
 
         if (event.timeSlots.first.isSameDay(DateTime.now())) _updateTodaysEvents();
-      case Error<int>():
+      case Error<int>(error: final Exception exception):
+        updateViewModelErrors(exception);
     }
   }
 
@@ -98,6 +102,7 @@ class EventsViewModel {
   }
 
   void dispose() {
+    todayLoadedFlattenedEventsNotifier.dispose();
     loadedEventsNotifier.dispose();
   }
 }

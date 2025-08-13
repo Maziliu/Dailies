@@ -3,6 +3,7 @@ import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
 import 'package:dailies/ui/views/shared%20view%20models/events_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;
@@ -59,7 +60,10 @@ class ScheduleSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Today\'s Schedule', style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+                    Text(
+                      DateFormat.yMMMMd().format(DateTime.now()),
+                      style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface),
+                    ),
                     const SizedBox(height: 2),
                     Text(
                       _getSubtitleText(pairs.length),

@@ -53,26 +53,25 @@ class ScheduleItemWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
 
-                  if (timeText != null) ...[
-                    const SizedBox(height: 4),
-                    Text(timeText, style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withAlpha(160), fontWeight: FontWeight.w500)),
-                  ],
-
                   if (event.location?.isNotEmpty == true) ...[
                     const SizedBox(height: 2),
                     Row(
                       children: [
-                        Icon(Icons.place_rounded, size: 14, color: colorScheme.onSurface.withAlpha(120)),
+                        Icon(Icons.place_rounded, size: 12, color: colorScheme.onSurface.withAlpha(120)),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             event.location!,
-                            style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withAlpha(120)),
+                            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withAlpha(120)),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
                     ),
+                  ],
+                  if (timeText != null) ...[
+                    const SizedBox(height: 4),
+                    Text(timeText, style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withAlpha(160), fontWeight: FontWeight.w500)),
                   ],
                 ],
               ),
@@ -113,7 +112,7 @@ class ScheduleItemWidget extends StatelessWidget {
       case TimeSlotType.Interval:
         return const Color(0xFF6366F1);
       case TimeSlotType.Deadline:
-        return const Color(0xFFEC4899);
+        return const Color.fromARGB(255, 228, 30, 129);
       case TimeSlotType.Unspecified:
         return colorScheme.primary;
     }

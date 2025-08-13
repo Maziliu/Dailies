@@ -19,13 +19,9 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
   DateTime get dateOfTimeSlot => DateTime(_dateOfTimeSlot.year, _dateOfTimeSlot.month, _dateOfTimeSlot.day);
 
   TimeSlotType get timeSlotType {
-    if (_startTime == null) {
-      if (_endTime == null) {
-        return TimeSlotType.Unspecified;
-      }
+    if (_startTime == null && _endTime == null) return TimeSlotType.Unspecified;
 
-      return TimeSlotType.Deadline;
-    }
+    if (_startTime == null) return TimeSlotType.Deadline;
 
     return TimeSlotType.Interval;
   }

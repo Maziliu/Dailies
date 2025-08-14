@@ -95,6 +95,8 @@ class EventsViewModel with ServiceViewModelMixin {
         event.id = eventId;
         loadedEventsNotifier.value = [...loadedEventsNotifier.value, event];
 
+        updateSelectedFlattenedEvents(event.timeSlots.first.dateOfTimeSlot);
+
         if (event.timeSlots.first.isSameDay(DateTime.now())) _updateTodaysEvents();
       case Error<int>(error: final Exception exception):
         updateViewModelErrors(exception);
@@ -104,6 +106,8 @@ class EventsViewModel with ServiceViewModelMixin {
   Future<void> deleteEvent(Event event) async {
     await _eventRepositoryService.deleteEvent(event);
     loadedEventsNotifier.value = loadedEventsNotifier.value.where((e) => e.id != event.id).toList();
+
+    updateSelectedFlattenedEvents(event.timeSlots.first.dateOfTimeSlot);
 
     if (event.timeSlots.first.isSameDay(DateTime.now())) _updateTodaysEvents();
   }

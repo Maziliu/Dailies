@@ -16,7 +16,6 @@ class ScheduleSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
 
     return Container(
       decoration: BoxDecoration(
@@ -28,7 +27,7 @@ class ScheduleSection extends StatelessWidget {
         padding: UIFormating.mediumPadding(),
         child: Section(
           children: [
-            SectionHeader(titleWidget: _buildHeader(context, textTheme, colorScheme)),
+            SectionHeader(titleWidget: _ScheduleHeader(eventsViewModel: _eventsViewModel)),
             Expanded(
               child: SectionContent(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
@@ -45,8 +44,24 @@ class ScheduleSection extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildHeader(BuildContext context, TextTheme textTheme, ColorScheme colorScheme) {
+String _getSubtitleText(int eventCount) {
+  if (eventCount == 0) return 'No events';
+  return '$eventCount events';
+}
+
+class _ScheduleHeader extends StatelessWidget {
+  final EventsViewModel _eventsViewModel;
+
+  const _ScheduleHeader({required EventsViewModel eventsViewModel}) : _eventsViewModel = eventsViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return ValueListenableBuilder<List<EventTimeSlotPair>>(
       valueListenable: _eventsViewModel.todayLoadedFlattenedEventsNotifier,
       builder: (context, pairs, _) {
@@ -91,10 +106,5 @@ class ScheduleSection extends StatelessWidget {
         );
       },
     );
-  }
-
-  String _getSubtitleText(int eventCount) {
-    if (eventCount == 0) return 'No events';
-    return '$eventCount events';
   }
 }

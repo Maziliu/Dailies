@@ -19,21 +19,19 @@ class CalendarSection extends StatelessWidget {
       child: Section(
         children: [
           SectionContent(
-            child: Expanded(
-              child: ValueListenableBuilder(
-                valueListenable: _calendarViewModel.selectedDayNotifier,
-                builder: (context, selectedDay, _) {
-                  return TableCalendar(
-                    headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
-                    focusedDay: selectedDay,
-                    firstDay: FIRST_CALENDAR_DAY,
-                    lastDay: LAST_CALENDAR_DAY,
-                    sixWeekMonthsEnforced: true,
-                    selectedDayPredicate: (day) => isSameDay(day, selectedDay),
-                    onDaySelected: (day, _) => _calendarViewModel.onDaySelect(day),
-                  );
-                },
-              ),
+            child: ValueListenableBuilder(
+              valueListenable: _calendarViewModel.selectedDayNotifier,
+              builder: (context, selectedDay, _) {
+                return TableCalendar(
+                  headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                  focusedDay: selectedDay,
+                  firstDay: FIRST_CALENDAR_DAY,
+                  lastDay: LAST_CALENDAR_DAY,
+                  sixWeekMonthsEnforced: true,
+                  selectedDayPredicate: (day) => isSameDay(day, selectedDay),
+                  onDaySelected: (day, _) => _calendarViewModel.onDaySelect(day),
+                );
+              },
             ),
           ),
         ],

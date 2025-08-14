@@ -11,7 +11,7 @@ class EventsSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;
   final CalendarViewModel _calendarViewModel;
 
-  late final VoidCallback _selectedEventsListener;
+  late final VoidCallback _selectedEventsListener, _loadedEventsUpdate;
 
   EventsSection({super.key, required EventsViewModel eventsViewModel, required CalendarViewModel calendarViewModel})
     : _eventsViewModel = eventsViewModel,

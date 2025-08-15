@@ -1,10 +1,9 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'drift_database.dart';
+part of '../data/database/drift/drift_database.dart';
 
 // ignore_for_file: type=lint
-class $DriftTimeSlotsTable extends DriftTimeSlots
-    with TableInfo<$DriftTimeSlotsTable, DriftTimeSlot> {
+class $DriftTimeSlotsTable extends DriftTimeSlots with TableInfo<$DriftTimeSlotsTable, DriftTimeSlot> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -18,13 +17,9 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
   );
-  static const VerificationMeta _nextTimeSlotIdMeta = const VerificationMeta(
-    'nextTimeSlotId',
-  );
+  static const VerificationMeta _nextTimeSlotIdMeta = const VerificationMeta('nextTimeSlotId');
   @override
   late final GeneratedColumn<int> nextTimeSlotId = GeneratedColumn<int>(
     'next_time_slot_id',
@@ -32,22 +27,12 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES drift_time_slots (id) ON DELETE CASCADE',
-    ),
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES drift_time_slots (id) ON DELETE CASCADE'),
   );
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
-  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
-    'date',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _startTimeMeta = const VerificationMeta(
-    'startTime',
-  );
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>('date', aliasedName, false, type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _startTimeMeta = const VerificationMeta('startTime');
   @override
   late final GeneratedColumn<DateTime> startTime = GeneratedColumn<DateTime>(
     'start_time',
@@ -56,9 +41,7 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _endTimeMeta = const VerificationMeta(
-    'endTime',
-  );
+  static const VerificationMeta _endTimeMeta = const VerificationMeta('endTime');
   @override
   late final GeneratedColumn<DateTime> endTime = GeneratedColumn<DateTime>(
     'end_time',
@@ -68,56 +51,32 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    nextTimeSlotId,
-    date,
-    startTime,
-    endTime,
-  ];
+  List<GeneratedColumn> get $columns => [id, nextTimeSlotId, date, startTime, endTime];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'drift_time_slots';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<DriftTimeSlot> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<DriftTimeSlot> instance, {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('next_time_slot_id')) {
-      context.handle(
-        _nextTimeSlotIdMeta,
-        nextTimeSlotId.isAcceptableOrUnknown(
-          data['next_time_slot_id']!,
-          _nextTimeSlotIdMeta,
-        ),
-      );
+      context.handle(_nextTimeSlotIdMeta, nextTimeSlotId.isAcceptableOrUnknown(data['next_time_slot_id']!, _nextTimeSlotIdMeta));
     }
     if (data.containsKey('date')) {
-      context.handle(
-        _dateMeta,
-        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
-      );
+      context.handle(_dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
     } else if (isInserting) {
       context.missing(_dateMeta);
     }
     if (data.containsKey('start_time')) {
-      context.handle(
-        _startTimeMeta,
-        startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta),
-      );
+      context.handle(_startTimeMeta, startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta));
     }
     if (data.containsKey('end_time')) {
-      context.handle(
-        _endTimeMeta,
-        endTime.isAcceptableOrUnknown(data['end_time']!, _endTimeMeta),
-      );
+      context.handle(_endTimeMeta, endTime.isAcceptableOrUnknown(data['end_time']!, _endTimeMeta));
     }
     return context;
   }
@@ -128,28 +87,11 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
   DriftTimeSlot map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DriftTimeSlot(
-      id:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id'],
-          )!,
-      nextTimeSlotId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}next_time_slot_id'],
-      ),
-      date:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}date'],
-          )!,
-      startTime: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}start_time'],
-      ),
-      endTime: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}end_time'],
-      ),
+      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      nextTimeSlotId: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}next_time_slot_id']),
+      date: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
+      startTime: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}start_time']),
+      endTime: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}end_time']),
     );
   }
 
@@ -165,13 +107,7 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
   final DateTime date;
   final DateTime? startTime;
   final DateTime? endTime;
-  const DriftTimeSlot({
-    required this.id,
-    this.nextTimeSlotId,
-    required this.date,
-    this.startTime,
-    this.endTime,
-  });
+  const DriftTimeSlot({required this.id, this.nextTimeSlotId, required this.date, this.startTime, this.endTime});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -192,26 +128,14 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
   DriftTimeSlotsCompanion toCompanion(bool nullToAbsent) {
     return DriftTimeSlotsCompanion(
       id: Value(id),
-      nextTimeSlotId:
-          nextTimeSlotId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(nextTimeSlotId),
+      nextTimeSlotId: nextTimeSlotId == null && nullToAbsent ? const Value.absent() : Value(nextTimeSlotId),
       date: Value(date),
-      startTime:
-          startTime == null && nullToAbsent
-              ? const Value.absent()
-              : Value(startTime),
-      endTime:
-          endTime == null && nullToAbsent
-              ? const Value.absent()
-              : Value(endTime),
+      startTime: startTime == null && nullToAbsent ? const Value.absent() : Value(startTime),
+      endTime: endTime == null && nullToAbsent ? const Value.absent() : Value(endTime),
     );
   }
 
-  factory DriftTimeSlot.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory DriftTimeSlot.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DriftTimeSlot(
       id: serializer.fromJson<int>(json['id']),
@@ -241,8 +165,7 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
     Value<DateTime?> endTime = const Value.absent(),
   }) => DriftTimeSlot(
     id: id ?? this.id,
-    nextTimeSlotId:
-        nextTimeSlotId.present ? nextTimeSlotId.value : this.nextTimeSlotId,
+    nextTimeSlotId: nextTimeSlotId.present ? nextTimeSlotId.value : this.nextTimeSlotId,
     date: date ?? this.date,
     startTime: startTime.present ? startTime.value : this.startTime,
     endTime: endTime.present ? endTime.value : this.endTime,
@@ -250,10 +173,7 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
   DriftTimeSlot copyWithCompanion(DriftTimeSlotsCompanion data) {
     return DriftTimeSlot(
       id: data.id.present ? data.id.value : this.id,
-      nextTimeSlotId:
-          data.nextTimeSlotId.present
-              ? data.nextTimeSlotId.value
-              : this.nextTimeSlotId,
+      nextTimeSlotId: data.nextTimeSlotId.present ? data.nextTimeSlotId.value : this.nextTimeSlotId,
       date: data.date.present ? data.date.value : this.date,
       startTime: data.startTime.present ? data.startTime.value : this.startTime,
       endTime: data.endTime.present ? data.endTime.value : this.endTime,
@@ -371,8 +291,7 @@ class DriftTimeSlotsCompanion extends UpdateCompanion<DriftTimeSlot> {
   }
 }
 
-class $DriftEventsTable extends DriftEvents
-    with TableInfo<$DriftEventsTable, DriftEvent> {
+class $DriftEventsTable extends DriftEvents with TableInfo<$DriftEventsTable, DriftEvent> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -386,13 +305,9 @@ class $DriftEventsTable extends DriftEvents
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
   );
-  static const VerificationMeta _eventNameMeta = const VerificationMeta(
-    'eventName',
-  );
+  static const VerificationMeta _eventNameMeta = const VerificationMeta('eventName');
   @override
   late final GeneratedColumn<String> eventName = GeneratedColumn<String>(
     'event_name',
@@ -401,20 +316,10 @@ class $DriftEventsTable extends DriftEvents
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _locationMeta = const VerificationMeta(
-    'location',
-  );
+  static const VerificationMeta _locationMeta = const VerificationMeta('location');
   @override
-  late final GeneratedColumn<String> location = GeneratedColumn<String>(
-    'location',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _timeSlotIdMeta = const VerificationMeta(
-    'timeSlotId',
-  );
+  late final GeneratedColumn<String> location = GeneratedColumn<String>('location', aliasedName, true, type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _timeSlotIdMeta = const VerificationMeta('timeSlotId');
   @override
   late final GeneratedColumn<int> timeSlotId = GeneratedColumn<int>(
     'time_slot_id',
@@ -422,9 +327,7 @@ class $DriftEventsTable extends DriftEvents
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES drift_time_slots (id) ON DELETE CASCADE',
-    ),
+    defaultConstraints: GeneratedColumn.constraintIsAlways('REFERENCES drift_time_slots (id) ON DELETE CASCADE'),
   );
   @override
   List<GeneratedColumn> get $columns => [id, eventName, location, timeSlotId];
@@ -434,37 +337,22 @@ class $DriftEventsTable extends DriftEvents
   String get actualTableName => $name;
   static const String $name = 'drift_events';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<DriftEvent> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<DriftEvent> instance, {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('event_name')) {
-      context.handle(
-        _eventNameMeta,
-        eventName.isAcceptableOrUnknown(data['event_name']!, _eventNameMeta),
-      );
+      context.handle(_eventNameMeta, eventName.isAcceptableOrUnknown(data['event_name']!, _eventNameMeta));
     } else if (isInserting) {
       context.missing(_eventNameMeta);
     }
     if (data.containsKey('location')) {
-      context.handle(
-        _locationMeta,
-        location.isAcceptableOrUnknown(data['location']!, _locationMeta),
-      );
+      context.handle(_locationMeta, location.isAcceptableOrUnknown(data['location']!, _locationMeta));
     }
     if (data.containsKey('time_slot_id')) {
-      context.handle(
-        _timeSlotIdMeta,
-        timeSlotId.isAcceptableOrUnknown(
-          data['time_slot_id']!,
-          _timeSlotIdMeta,
-        ),
-      );
+      context.handle(_timeSlotIdMeta, timeSlotId.isAcceptableOrUnknown(data['time_slot_id']!, _timeSlotIdMeta));
     } else if (isInserting) {
       context.missing(_timeSlotIdMeta);
     }
@@ -477,25 +365,10 @@ class $DriftEventsTable extends DriftEvents
   DriftEvent map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DriftEvent(
-      id:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id'],
-          )!,
-      eventName:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}event_name'],
-          )!,
-      location: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}location'],
-      ),
-      timeSlotId:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}time_slot_id'],
-          )!,
+      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      eventName: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}event_name'])!,
+      location: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}location']),
+      timeSlotId: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}time_slot_id'])!,
     );
   }
 
@@ -510,12 +383,7 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
   final String eventName;
   final String? location;
   final int timeSlotId;
-  const DriftEvent({
-    required this.id,
-    required this.eventName,
-    this.location,
-    required this.timeSlotId,
-  });
+  const DriftEvent({required this.id, required this.eventName, this.location, required this.timeSlotId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -532,18 +400,12 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
     return DriftEventsCompanion(
       id: Value(id),
       eventName: Value(eventName),
-      location:
-          location == null && nullToAbsent
-              ? const Value.absent()
-              : Value(location),
+      location: location == null && nullToAbsent ? const Value.absent() : Value(location),
       timeSlotId: Value(timeSlotId),
     );
   }
 
-  factory DriftEvent.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory DriftEvent.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DriftEvent(
       id: serializer.fromJson<int>(json['id']),
@@ -563,12 +425,7 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
     };
   }
 
-  DriftEvent copyWith({
-    int? id,
-    String? eventName,
-    Value<String?> location = const Value.absent(),
-    int? timeSlotId,
-  }) => DriftEvent(
+  DriftEvent copyWith({int? id, String? eventName, Value<String?> location = const Value.absent(), int? timeSlotId}) => DriftEvent(
     id: id ?? this.id,
     eventName: eventName ?? this.eventName,
     location: location.present ? location.value : this.location,
@@ -579,8 +436,7 @@ class DriftEvent extends DataClass implements Insertable<DriftEvent> {
       id: data.id.present ? data.id.value : this.id,
       eventName: data.eventName.present ? data.eventName.value : this.eventName,
       location: data.location.present ? data.location.value : this.location,
-      timeSlotId:
-          data.timeSlotId.present ? data.timeSlotId.value : this.timeSlotId,
+      timeSlotId: data.timeSlotId.present ? data.timeSlotId.value : this.timeSlotId,
     );
   }
 
@@ -618,19 +474,10 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
     this.location = const Value.absent(),
     this.timeSlotId = const Value.absent(),
   });
-  DriftEventsCompanion.insert({
-    this.id = const Value.absent(),
-    required String eventName,
-    this.location = const Value.absent(),
-    required int timeSlotId,
-  }) : eventName = Value(eventName),
-       timeSlotId = Value(timeSlotId);
-  static Insertable<DriftEvent> custom({
-    Expression<int>? id,
-    Expression<String>? eventName,
-    Expression<String>? location,
-    Expression<int>? timeSlotId,
-  }) {
+  DriftEventsCompanion.insert({this.id = const Value.absent(), required String eventName, this.location = const Value.absent(), required int timeSlotId})
+    : eventName = Value(eventName),
+      timeSlotId = Value(timeSlotId);
+  static Insertable<DriftEvent> custom({Expression<int>? id, Expression<String>? eventName, Expression<String>? location, Expression<int>? timeSlotId}) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventName != null) 'event_name': eventName,
@@ -639,12 +486,7 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
     });
   }
 
-  DriftEventsCompanion copyWith({
-    Value<int>? id,
-    Value<String>? eventName,
-    Value<String?>? location,
-    Value<int>? timeSlotId,
-  }) {
+  DriftEventsCompanion copyWith({Value<int>? id, Value<String>? eventName, Value<String?>? location, Value<int>? timeSlotId}) {
     return DriftEventsCompanion(
       id: id ?? this.id,
       eventName: eventName ?? this.eventName,
@@ -683,8 +525,7 @@ class DriftEventsCompanion extends UpdateCompanion<DriftEvent> {
   }
 }
 
-class $DriftStaminasTable extends DriftStaminas
-    with TableInfo<$DriftStaminasTable, DriftStamina> {
+class $DriftStaminasTable extends DriftStaminas with TableInfo<$DriftStaminasTable, DriftStamina> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -698,13 +539,9 @@ class $DriftStaminasTable extends DriftStaminas
     hasAutoIncrement: true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
+    defaultConstraints: GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'),
   );
-  static const VerificationMeta _gachaNameMeta = const VerificationMeta(
-    'gachaName',
-  );
+  static const VerificationMeta _gachaNameMeta = const VerificationMeta('gachaName');
   @override
   late final GeneratedColumn<String> gachaName = GeneratedColumn<String>(
     'gacha_name',
@@ -713,19 +550,10 @@ class $DriftStaminasTable extends DriftStaminas
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _maxStaminaMeta = const VerificationMeta(
-    'maxStamina',
-  );
+  static const VerificationMeta _maxStaminaMeta = const VerificationMeta('maxStamina');
   @override
-  late final GeneratedColumn<int> maxStamina = GeneratedColumn<int>(
-    'max_stamina',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _rechargeTimeInSecondsMeta =
-      const VerificationMeta('rechargeTimeInSeconds');
+  late final GeneratedColumn<int> maxStamina = GeneratedColumn<int>('max_stamina', aliasedName, false, type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _rechargeTimeInSecondsMeta = const VerificationMeta('rechargeTimeInSeconds');
   @override
   late final GeneratedColumn<int> rechargeTimeInSeconds = GeneratedColumn<int>(
     'recharge_time_in_seconds',
@@ -734,8 +562,7 @@ class $DriftStaminasTable extends DriftStaminas
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _staminaOfLatestResetMeta =
-      const VerificationMeta('staminaOfLatestReset');
+  static const VerificationMeta _staminaOfLatestResetMeta = const VerificationMeta('staminaOfLatestReset');
   @override
   late final GeneratedColumn<int> staminaOfLatestReset = GeneratedColumn<int>(
     'stamina_of_latest_reset',
@@ -744,21 +571,16 @@ class $DriftStaminasTable extends DriftStaminas
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _timeOfLastResetMeta = const VerificationMeta(
-    'timeOfLastReset',
-  );
+  static const VerificationMeta _timeOfLastResetMeta = const VerificationMeta('timeOfLastReset');
   @override
-  late final GeneratedColumn<DateTime> timeOfLastReset =
-      GeneratedColumn<DateTime>(
-        'time_of_last_reset',
-        aliasedName,
-        false,
-        type: DriftSqlType.dateTime,
-        requiredDuringInsert: true,
-      );
-  static const VerificationMeta _imageNameMeta = const VerificationMeta(
-    'imageName',
+  late final GeneratedColumn<DateTime> timeOfLastReset = GeneratedColumn<DateTime>(
+    'time_of_last_reset',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
   );
+  static const VerificationMeta _imageNameMeta = const VerificationMeta('imageName');
   @override
   late final GeneratedColumn<String> imageName = GeneratedColumn<String>(
     'image_name',
@@ -768,84 +590,46 @@ class $DriftStaminasTable extends DriftStaminas
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    gachaName,
-    maxStamina,
-    rechargeTimeInSeconds,
-    staminaOfLatestReset,
-    timeOfLastReset,
-    imageName,
-  ];
+  List<GeneratedColumn> get $columns => [id, gachaName, maxStamina, rechargeTimeInSeconds, staminaOfLatestReset, timeOfLastReset, imageName];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'drift_staminas';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<DriftStamina> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<DriftStamina> instance, {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('gacha_name')) {
-      context.handle(
-        _gachaNameMeta,
-        gachaName.isAcceptableOrUnknown(data['gacha_name']!, _gachaNameMeta),
-      );
+      context.handle(_gachaNameMeta, gachaName.isAcceptableOrUnknown(data['gacha_name']!, _gachaNameMeta));
     } else if (isInserting) {
       context.missing(_gachaNameMeta);
     }
     if (data.containsKey('max_stamina')) {
-      context.handle(
-        _maxStaminaMeta,
-        maxStamina.isAcceptableOrUnknown(data['max_stamina']!, _maxStaminaMeta),
-      );
+      context.handle(_maxStaminaMeta, maxStamina.isAcceptableOrUnknown(data['max_stamina']!, _maxStaminaMeta));
     } else if (isInserting) {
       context.missing(_maxStaminaMeta);
     }
     if (data.containsKey('recharge_time_in_seconds')) {
-      context.handle(
-        _rechargeTimeInSecondsMeta,
-        rechargeTimeInSeconds.isAcceptableOrUnknown(
-          data['recharge_time_in_seconds']!,
-          _rechargeTimeInSecondsMeta,
-        ),
-      );
+      context.handle(_rechargeTimeInSecondsMeta, rechargeTimeInSeconds.isAcceptableOrUnknown(data['recharge_time_in_seconds']!, _rechargeTimeInSecondsMeta));
     } else if (isInserting) {
       context.missing(_rechargeTimeInSecondsMeta);
     }
     if (data.containsKey('stamina_of_latest_reset')) {
-      context.handle(
-        _staminaOfLatestResetMeta,
-        staminaOfLatestReset.isAcceptableOrUnknown(
-          data['stamina_of_latest_reset']!,
-          _staminaOfLatestResetMeta,
-        ),
-      );
+      context.handle(_staminaOfLatestResetMeta, staminaOfLatestReset.isAcceptableOrUnknown(data['stamina_of_latest_reset']!, _staminaOfLatestResetMeta));
     } else if (isInserting) {
       context.missing(_staminaOfLatestResetMeta);
     }
     if (data.containsKey('time_of_last_reset')) {
-      context.handle(
-        _timeOfLastResetMeta,
-        timeOfLastReset.isAcceptableOrUnknown(
-          data['time_of_last_reset']!,
-          _timeOfLastResetMeta,
-        ),
-      );
+      context.handle(_timeOfLastResetMeta, timeOfLastReset.isAcceptableOrUnknown(data['time_of_last_reset']!, _timeOfLastResetMeta));
     } else if (isInserting) {
       context.missing(_timeOfLastResetMeta);
     }
     if (data.containsKey('image_name')) {
-      context.handle(
-        _imageNameMeta,
-        imageName.isAcceptableOrUnknown(data['image_name']!, _imageNameMeta),
-      );
+      context.handle(_imageNameMeta, imageName.isAcceptableOrUnknown(data['image_name']!, _imageNameMeta));
     }
     return context;
   }
@@ -856,40 +640,13 @@ class $DriftStaminasTable extends DriftStaminas
   DriftStamina map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DriftStamina(
-      id:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}id'],
-          )!,
-      gachaName:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}gacha_name'],
-          )!,
-      maxStamina:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}max_stamina'],
-          )!,
-      rechargeTimeInSeconds:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}recharge_time_in_seconds'],
-          )!,
-      staminaOfLatestReset:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}stamina_of_latest_reset'],
-          )!,
-      timeOfLastReset:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}time_of_last_reset'],
-          )!,
-      imageName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}image_name'],
-      ),
+      id: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      gachaName: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}gacha_name'])!,
+      maxStamina: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}max_stamina'])!,
+      rechargeTimeInSeconds: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}recharge_time_in_seconds'])!,
+      staminaOfLatestReset: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}stamina_of_latest_reset'])!,
+      timeOfLastReset: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}time_of_last_reset'])!,
+      imageName: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}image_name']),
     );
   }
 
@@ -939,28 +696,18 @@ class DriftStamina extends DataClass implements Insertable<DriftStamina> {
       rechargeTimeInSeconds: Value(rechargeTimeInSeconds),
       staminaOfLatestReset: Value(staminaOfLatestReset),
       timeOfLastReset: Value(timeOfLastReset),
-      imageName:
-          imageName == null && nullToAbsent
-              ? const Value.absent()
-              : Value(imageName),
+      imageName: imageName == null && nullToAbsent ? const Value.absent() : Value(imageName),
     );
   }
 
-  factory DriftStamina.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory DriftStamina.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DriftStamina(
       id: serializer.fromJson<int>(json['id']),
       gachaName: serializer.fromJson<String>(json['gachaName']),
       maxStamina: serializer.fromJson<int>(json['maxStamina']),
-      rechargeTimeInSeconds: serializer.fromJson<int>(
-        json['rechargeTimeInSeconds'],
-      ),
-      staminaOfLatestReset: serializer.fromJson<int>(
-        json['staminaOfLatestReset'],
-      ),
+      rechargeTimeInSeconds: serializer.fromJson<int>(json['rechargeTimeInSeconds']),
+      staminaOfLatestReset: serializer.fromJson<int>(json['staminaOfLatestReset']),
       timeOfLastReset: serializer.fromJson<DateTime>(json['timeOfLastReset']),
       imageName: serializer.fromJson<String?>(json['imageName']),
     );
@@ -1000,20 +747,10 @@ class DriftStamina extends DataClass implements Insertable<DriftStamina> {
     return DriftStamina(
       id: data.id.present ? data.id.value : this.id,
       gachaName: data.gachaName.present ? data.gachaName.value : this.gachaName,
-      maxStamina:
-          data.maxStamina.present ? data.maxStamina.value : this.maxStamina,
-      rechargeTimeInSeconds:
-          data.rechargeTimeInSeconds.present
-              ? data.rechargeTimeInSeconds.value
-              : this.rechargeTimeInSeconds,
-      staminaOfLatestReset:
-          data.staminaOfLatestReset.present
-              ? data.staminaOfLatestReset.value
-              : this.staminaOfLatestReset,
-      timeOfLastReset:
-          data.timeOfLastReset.present
-              ? data.timeOfLastReset.value
-              : this.timeOfLastReset,
+      maxStamina: data.maxStamina.present ? data.maxStamina.value : this.maxStamina,
+      rechargeTimeInSeconds: data.rechargeTimeInSeconds.present ? data.rechargeTimeInSeconds.value : this.rechargeTimeInSeconds,
+      staminaOfLatestReset: data.staminaOfLatestReset.present ? data.staminaOfLatestReset.value : this.staminaOfLatestReset,
+      timeOfLastReset: data.timeOfLastReset.present ? data.timeOfLastReset.value : this.timeOfLastReset,
       imageName: data.imageName.present ? data.imageName.value : this.imageName,
     );
   }
@@ -1033,15 +770,7 @@ class DriftStamina extends DataClass implements Insertable<DriftStamina> {
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    gachaName,
-    maxStamina,
-    rechargeTimeInSeconds,
-    staminaOfLatestReset,
-    timeOfLastReset,
-    imageName,
-  );
+  int get hashCode => Object.hash(id, gachaName, maxStamina, rechargeTimeInSeconds, staminaOfLatestReset, timeOfLastReset, imageName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1098,10 +827,8 @@ class DriftStaminasCompanion extends UpdateCompanion<DriftStamina> {
       if (id != null) 'id': id,
       if (gachaName != null) 'gacha_name': gachaName,
       if (maxStamina != null) 'max_stamina': maxStamina,
-      if (rechargeTimeInSeconds != null)
-        'recharge_time_in_seconds': rechargeTimeInSeconds,
-      if (staminaOfLatestReset != null)
-        'stamina_of_latest_reset': staminaOfLatestReset,
+      if (rechargeTimeInSeconds != null) 'recharge_time_in_seconds': rechargeTimeInSeconds,
+      if (staminaOfLatestReset != null) 'stamina_of_latest_reset': staminaOfLatestReset,
       if (timeOfLastReset != null) 'time_of_last_reset': timeOfLastReset,
       if (imageName != null) 'image_name': imageName,
     });
@@ -1120,8 +847,7 @@ class DriftStaminasCompanion extends UpdateCompanion<DriftStamina> {
       id: id ?? this.id,
       gachaName: gachaName ?? this.gachaName,
       maxStamina: maxStamina ?? this.maxStamina,
-      rechargeTimeInSeconds:
-          rechargeTimeInSeconds ?? this.rechargeTimeInSeconds,
+      rechargeTimeInSeconds: rechargeTimeInSeconds ?? this.rechargeTimeInSeconds,
       staminaOfLatestReset: staminaOfLatestReset ?? this.staminaOfLatestReset,
       timeOfLastReset: timeOfLastReset ?? this.timeOfLastReset,
       imageName: imageName ?? this.imageName,
@@ -1141,14 +867,10 @@ class DriftStaminasCompanion extends UpdateCompanion<DriftStamina> {
       map['max_stamina'] = Variable<int>(maxStamina.value);
     }
     if (rechargeTimeInSeconds.present) {
-      map['recharge_time_in_seconds'] = Variable<int>(
-        rechargeTimeInSeconds.value,
-      );
+      map['recharge_time_in_seconds'] = Variable<int>(rechargeTimeInSeconds.value);
     }
     if (staminaOfLatestReset.present) {
-      map['stamina_of_latest_reset'] = Variable<int>(
-        staminaOfLatestReset.value,
-      );
+      map['stamina_of_latest_reset'] = Variable<int>(staminaOfLatestReset.value);
     }
     if (timeOfLastReset.present) {
       map['time_of_last_reset'] = Variable<DateTime>(timeOfLastReset.value);
@@ -1181,104 +903,54 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DriftEventsTable driftEvents = $DriftEventsTable(this);
   late final $DriftStaminasTable driftStaminas = $DriftStaminasTable(this);
   @override
-  Iterable<TableInfo<Table, Object?>> get allTables =>
-      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  Iterable<TableInfo<Table, Object?>> get allTables => allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [
-    driftTimeSlots,
-    driftEvents,
-    driftStaminas,
-  ];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [driftTimeSlots, driftEvents, driftStaminas];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
     WritePropagation(
-      on: TableUpdateQuery.onTableName(
-        'drift_time_slots',
-        limitUpdateKind: UpdateKind.delete,
-      ),
+      on: TableUpdateQuery.onTableName('drift_time_slots', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('drift_time_slots', kind: UpdateKind.delete)],
     ),
     WritePropagation(
-      on: TableUpdateQuery.onTableName(
-        'drift_time_slots',
-        limitUpdateKind: UpdateKind.delete,
-      ),
+      on: TableUpdateQuery.onTableName('drift_time_slots', limitUpdateKind: UpdateKind.delete),
       result: [TableUpdate('drift_events', kind: UpdateKind.delete)],
     ),
   ]);
 }
 
 typedef $$DriftTimeSlotsTableCreateCompanionBuilder =
-    DriftTimeSlotsCompanion Function({
-      Value<int> id,
-      Value<int?> nextTimeSlotId,
-      required DateTime date,
-      Value<DateTime?> startTime,
-      Value<DateTime?> endTime,
-    });
+    DriftTimeSlotsCompanion Function({Value<int> id, Value<int?> nextTimeSlotId, required DateTime date, Value<DateTime?> startTime, Value<DateTime?> endTime});
 typedef $$DriftTimeSlotsTableUpdateCompanionBuilder =
-    DriftTimeSlotsCompanion Function({
-      Value<int> id,
-      Value<int?> nextTimeSlotId,
-      Value<DateTime> date,
-      Value<DateTime?> startTime,
-      Value<DateTime?> endTime,
-    });
+    DriftTimeSlotsCompanion Function({Value<int> id, Value<int?> nextTimeSlotId, Value<DateTime> date, Value<DateTime?> startTime, Value<DateTime?> endTime});
 
-final class $$DriftTimeSlotsTableReferences
-    extends BaseReferences<_$AppDatabase, $DriftTimeSlotsTable, DriftTimeSlot> {
-  $$DriftTimeSlotsTableReferences(
-    super.$_db,
-    super.$_table,
-    super.$_typedResult,
-  );
+final class $$DriftTimeSlotsTableReferences extends BaseReferences<_$AppDatabase, $DriftTimeSlotsTable, DriftTimeSlot> {
+  $$DriftTimeSlotsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $DriftTimeSlotsTable _nextTimeSlotIdTable(_$AppDatabase db) =>
-      db.driftTimeSlots.createAlias(
-        $_aliasNameGenerator(
-          db.driftTimeSlots.nextTimeSlotId,
-          db.driftTimeSlots.id,
-        ),
-      );
+      db.driftTimeSlots.createAlias($_aliasNameGenerator(db.driftTimeSlots.nextTimeSlotId, db.driftTimeSlots.id));
 
   $$DriftTimeSlotsTableProcessedTableManager? get nextTimeSlotId {
     final $_column = $_itemColumn<int>('next_time_slot_id');
     if ($_column == null) return null;
-    final manager = $$DriftTimeSlotsTableTableManager(
-      $_db,
-      $_db.driftTimeSlots,
-    ).filter((f) => f.id.sqlEquals($_column));
+    final manager = $$DriftTimeSlotsTableTableManager($_db, $_db.driftTimeSlots).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_nextTimeSlotIdTable($_db));
     if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
   }
 
-  static MultiTypedResultKey<$DriftEventsTable, List<DriftEvent>>
-  _driftEventsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.driftEvents,
-    aliasName: $_aliasNameGenerator(
-      db.driftTimeSlots.id,
-      db.driftEvents.timeSlotId,
-    ),
-  );
+  static MultiTypedResultKey<$DriftEventsTable, List<DriftEvent>> _driftEventsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.driftEvents, aliasName: $_aliasNameGenerator(db.driftTimeSlots.id, db.driftEvents.timeSlotId));
 
   $$DriftEventsTableProcessedTableManager get driftEventsRefs {
-    final manager = $$DriftEventsTableTableManager(
-      $_db,
-      $_db.driftEvents,
-    ).filter((f) => f.timeSlotId.id.sqlEquals($_itemColumn<int>('id')!));
+    final manager = $$DriftEventsTableTableManager($_db, $_db.driftEvents).filter((f) => f.timeSlotId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_driftEventsRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: cache));
   }
 }
 
-class $$DriftTimeSlotsTableFilterComposer
-    extends Composer<_$AppDatabase, $DriftTimeSlotsTable> {
+class $$DriftTimeSlotsTableFilterComposer extends Composer<_$AppDatabase, $DriftTimeSlotsTable> {
   $$DriftTimeSlotsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1286,25 +958,13 @@ class $$DriftTimeSlotsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<int> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get date => $composableBuilder(
-    column: $table.date,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<DateTime> get date => $composableBuilder(column: $table.date, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get startTime => $composableBuilder(
-    column: $table.startTime,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<DateTime> get startTime => $composableBuilder(column: $table.startTime, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get endTime => $composableBuilder(
-    column: $table.endTime,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<DateTime> get endTime => $composableBuilder(column: $table.endTime, builder: (column) => ColumnFilters(column));
 
   $$DriftTimeSlotsTableFilterComposer get nextTimeSlotId {
     final $$DriftTimeSlotsTableFilterComposer composer = $composerBuilder(
@@ -1313,50 +973,37 @@ class $$DriftTimeSlotsTableFilterComposer
       referencedTable: $db.driftTimeSlots,
       getReferencedColumn: (t) => t.id,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftTimeSlotsTableFilterComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftTimeSlotsTableFilterComposer(
             $db: $db,
             $table: $db.driftTimeSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 
-  Expression<bool> driftEventsRefs(
-    Expression<bool> Function($$DriftEventsTableFilterComposer f) f,
-  ) {
+  Expression<bool> driftEventsRefs(Expression<bool> Function($$DriftEventsTableFilterComposer f) f) {
     final $$DriftEventsTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.driftEvents,
       getReferencedColumn: (t) => t.timeSlotId,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftEventsTableFilterComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftEventsTableFilterComposer(
             $db: $db,
             $table: $db.driftEvents,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
   }
 }
 
-class $$DriftTimeSlotsTableOrderingComposer
-    extends Composer<_$AppDatabase, $DriftTimeSlotsTable> {
+class $$DriftTimeSlotsTableOrderingComposer extends Composer<_$AppDatabase, $DriftTimeSlotsTable> {
   $$DriftTimeSlotsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1364,25 +1011,13 @@ class $$DriftTimeSlotsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<int> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get date => $composableBuilder(
-    column: $table.date,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<DateTime> get date => $composableBuilder(column: $table.date, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get startTime => $composableBuilder(
-    column: $table.startTime,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<DateTime> get startTime => $composableBuilder(column: $table.startTime, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get endTime => $composableBuilder(
-    column: $table.endTime,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<DateTime> get endTime => $composableBuilder(column: $table.endTime, builder: (column) => ColumnOrderings(column));
 
   $$DriftTimeSlotsTableOrderingComposer get nextTimeSlotId {
     final $$DriftTimeSlotsTableOrderingComposer composer = $composerBuilder(
@@ -1391,25 +1026,19 @@ class $$DriftTimeSlotsTableOrderingComposer
       referencedTable: $db.driftTimeSlots,
       getReferencedColumn: (t) => t.id,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftTimeSlotsTableOrderingComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftTimeSlotsTableOrderingComposer(
             $db: $db,
             $table: $db.driftTimeSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 }
 
-class $$DriftTimeSlotsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $DriftTimeSlotsTable> {
+class $$DriftTimeSlotsTableAnnotationComposer extends Composer<_$AppDatabase, $DriftTimeSlotsTable> {
   $$DriftTimeSlotsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1417,17 +1046,13 @@ class $$DriftTimeSlotsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get date =>
-      $composableBuilder(column: $table.date, builder: (column) => column);
+  GeneratedColumn<DateTime> get date => $composableBuilder(column: $table.date, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get startTime =>
-      $composableBuilder(column: $table.startTime, builder: (column) => column);
+  GeneratedColumn<DateTime> get startTime => $composableBuilder(column: $table.startTime, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get endTime =>
-      $composableBuilder(column: $table.endTime, builder: (column) => column);
+  GeneratedColumn<DateTime> get endTime => $composableBuilder(column: $table.endTime, builder: (column) => column);
 
   $$DriftTimeSlotsTableAnnotationComposer get nextTimeSlotId {
     final $$DriftTimeSlotsTableAnnotationComposer composer = $composerBuilder(
@@ -1436,42 +1061,30 @@ class $$DriftTimeSlotsTableAnnotationComposer
       referencedTable: $db.driftTimeSlots,
       getReferencedColumn: (t) => t.id,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftTimeSlotsTableAnnotationComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftTimeSlotsTableAnnotationComposer(
             $db: $db,
             $table: $db.driftTimeSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 
-  Expression<T> driftEventsRefs<T extends Object>(
-    Expression<T> Function($$DriftEventsTableAnnotationComposer a) f,
-  ) {
+  Expression<T> driftEventsRefs<T extends Object>(Expression<T> Function($$DriftEventsTableAnnotationComposer a) f) {
     final $$DriftEventsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.driftEvents,
       getReferencedColumn: (t) => t.timeSlotId,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftEventsTableAnnotationComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftEventsTableAnnotationComposer(
             $db: $db,
             $table: $db.driftEvents,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return f(composer);
@@ -1493,23 +1106,14 @@ class $$DriftTimeSlotsTableTableManager
           DriftTimeSlot,
           PrefetchHooks Function({bool nextTimeSlotId, bool driftEventsRefs})
         > {
-  $$DriftTimeSlotsTableTableManager(
-    _$AppDatabase db,
-    $DriftTimeSlotsTable table,
-  ) : super(
+  $$DriftTimeSlotsTableTableManager(_$AppDatabase db, $DriftTimeSlotsTable table)
+    : super(
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer:
-              () => $$DriftTimeSlotsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () =>
-                  $$DriftTimeSlotsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer:
-              () => $$DriftTimeSlotsTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
+          createFilteringComposer: () => $$DriftTimeSlotsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$DriftTimeSlotsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$DriftTimeSlotsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -1517,13 +1121,7 @@ class $$DriftTimeSlotsTableTableManager
                 Value<DateTime> date = const Value.absent(),
                 Value<DateTime?> startTime = const Value.absent(),
                 Value<DateTime?> endTime = const Value.absent(),
-              }) => DriftTimeSlotsCompanion(
-                id: id,
-                nextTimeSlotId: nextTimeSlotId,
-                date: date,
-                startTime: startTime,
-                endTime: endTime,
-              ),
+              }) => DriftTimeSlotsCompanion(id: id, nextTimeSlotId: nextTimeSlotId, date: date, startTime: startTime, endTime: endTime),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -1531,56 +1129,22 @@ class $$DriftTimeSlotsTableTableManager
                 required DateTime date,
                 Value<DateTime?> startTime = const Value.absent(),
                 Value<DateTime?> endTime = const Value.absent(),
-              }) => DriftTimeSlotsCompanion.insert(
-                id: id,
-                nextTimeSlotId: nextTimeSlotId,
-                date: date,
-                startTime: startTime,
-                endTime: endTime,
-              ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          $$DriftTimeSlotsTableReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
-          prefetchHooksCallback: ({
-            nextTimeSlotId = false,
-            driftEventsRefs = false,
-          }) {
+              }) => DriftTimeSlotsCompanion.insert(id: id, nextTimeSlotId: nextTimeSlotId, date: date, startTime: startTime, endTime: endTime),
+          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), $$DriftTimeSlotsTableReferences(db, table, e))).toList(),
+          prefetchHooksCallback: ({nextTimeSlotId = false, driftEventsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [if (driftEventsRefs) db.driftEvents],
-              addJoins: <
-                T extends TableManagerState<
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic
-                >
-              >(state) {
+              addJoins: <T extends TableManagerState<dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic>>(
+                state,
+              ) {
                 if (nextTimeSlotId) {
                   state =
                       state.withJoin(
                             currentTable: table,
                             currentColumn: table.nextTimeSlotId,
-                            referencedTable: $$DriftTimeSlotsTableReferences
-                                ._nextTimeSlotIdTable(db),
-                            referencedColumn:
-                                $$DriftTimeSlotsTableReferences
-                                    ._nextTimeSlotIdTable(db)
-                                    .id,
+                            referencedTable: $$DriftTimeSlotsTableReferences._nextTimeSlotIdTable(db),
+                            referencedColumn: $$DriftTimeSlotsTableReferences._nextTimeSlotIdTable(db).id,
                           )
                           as T;
                 }
@@ -1590,25 +1154,11 @@ class $$DriftTimeSlotsTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (driftEventsRefs)
-                    await $_getPrefetchedData<
-                      DriftTimeSlot,
-                      $DriftTimeSlotsTable,
-                      DriftEvent
-                    >(
+                    await $_getPrefetchedData<DriftTimeSlot, $DriftTimeSlotsTable, DriftEvent>(
                       currentTable: table,
-                      referencedTable: $$DriftTimeSlotsTableReferences
-                          ._driftEventsRefsTable(db),
-                      managerFromTypedResult:
-                          (p0) =>
-                              $$DriftTimeSlotsTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).driftEventsRefs,
-                      referencedItemsForCurrentItem:
-                          (item, referencedItems) => referencedItems.where(
-                            (e) => e.timeSlotId == item.id,
-                          ),
+                      referencedTable: $$DriftTimeSlotsTableReferences._driftEventsRefsTable(db),
+                      managerFromTypedResult: (p0) => $$DriftTimeSlotsTableReferences(db, table, p0).driftEventsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) => referencedItems.where((e) => e.timeSlotId == item.id),
                       typedResults: items,
                     ),
                 ];
@@ -1634,46 +1184,27 @@ typedef $$DriftTimeSlotsTableProcessedTableManager =
       PrefetchHooks Function({bool nextTimeSlotId, bool driftEventsRefs})
     >;
 typedef $$DriftEventsTableCreateCompanionBuilder =
-    DriftEventsCompanion Function({
-      Value<int> id,
-      required String eventName,
-      Value<String?> location,
-      required int timeSlotId,
-    });
+    DriftEventsCompanion Function({Value<int> id, required String eventName, Value<String?> location, required int timeSlotId});
 typedef $$DriftEventsTableUpdateCompanionBuilder =
-    DriftEventsCompanion Function({
-      Value<int> id,
-      Value<String> eventName,
-      Value<String?> location,
-      Value<int> timeSlotId,
-    });
+    DriftEventsCompanion Function({Value<int> id, Value<String> eventName, Value<String?> location, Value<int> timeSlotId});
 
-final class $$DriftEventsTableReferences
-    extends BaseReferences<_$AppDatabase, $DriftEventsTable, DriftEvent> {
+final class $$DriftEventsTableReferences extends BaseReferences<_$AppDatabase, $DriftEventsTable, DriftEvent> {
   $$DriftEventsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $DriftTimeSlotsTable _timeSlotIdTable(_$AppDatabase db) =>
-      db.driftTimeSlots.createAlias(
-        $_aliasNameGenerator(db.driftEvents.timeSlotId, db.driftTimeSlots.id),
-      );
+      db.driftTimeSlots.createAlias($_aliasNameGenerator(db.driftEvents.timeSlotId, db.driftTimeSlots.id));
 
   $$DriftTimeSlotsTableProcessedTableManager get timeSlotId {
     final $_column = $_itemColumn<int>('time_slot_id')!;
 
-    final manager = $$DriftTimeSlotsTableTableManager(
-      $_db,
-      $_db.driftTimeSlots,
-    ).filter((f) => f.id.sqlEquals($_column));
+    final manager = $$DriftTimeSlotsTableTableManager($_db, $_db.driftTimeSlots).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_timeSlotIdTable($_db));
     if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
+    return ProcessedTableManager(manager.$state.copyWith(prefetchedData: [item]));
   }
 }
 
-class $$DriftEventsTableFilterComposer
-    extends Composer<_$AppDatabase, $DriftEventsTable> {
+class $$DriftEventsTableFilterComposer extends Composer<_$AppDatabase, $DriftEventsTable> {
   $$DriftEventsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1681,20 +1212,11 @@ class $$DriftEventsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<int> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get eventName => $composableBuilder(
-    column: $table.eventName,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<String> get eventName => $composableBuilder(column: $table.eventName, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get location => $composableBuilder(
-    column: $table.location,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<String> get location => $composableBuilder(column: $table.location, builder: (column) => ColumnFilters(column));
 
   $$DriftTimeSlotsTableFilterComposer get timeSlotId {
     final $$DriftTimeSlotsTableFilterComposer composer = $composerBuilder(
@@ -1703,25 +1225,19 @@ class $$DriftEventsTableFilterComposer
       referencedTable: $db.driftTimeSlots,
       getReferencedColumn: (t) => t.id,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftTimeSlotsTableFilterComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftTimeSlotsTableFilterComposer(
             $db: $db,
             $table: $db.driftTimeSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 }
 
-class $$DriftEventsTableOrderingComposer
-    extends Composer<_$AppDatabase, $DriftEventsTable> {
+class $$DriftEventsTableOrderingComposer extends Composer<_$AppDatabase, $DriftEventsTable> {
   $$DriftEventsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1729,20 +1245,11 @@ class $$DriftEventsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<int> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get eventName => $composableBuilder(
-    column: $table.eventName,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<String> get eventName => $composableBuilder(column: $table.eventName, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get location => $composableBuilder(
-    column: $table.location,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<String> get location => $composableBuilder(column: $table.location, builder: (column) => ColumnOrderings(column));
 
   $$DriftTimeSlotsTableOrderingComposer get timeSlotId {
     final $$DriftTimeSlotsTableOrderingComposer composer = $composerBuilder(
@@ -1751,25 +1258,19 @@ class $$DriftEventsTableOrderingComposer
       referencedTable: $db.driftTimeSlots,
       getReferencedColumn: (t) => t.id,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftTimeSlotsTableOrderingComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftTimeSlotsTableOrderingComposer(
             $db: $db,
             $table: $db.driftTimeSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
   }
 }
 
-class $$DriftEventsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $DriftEventsTable> {
+class $$DriftEventsTableAnnotationComposer extends Composer<_$AppDatabase, $DriftEventsTable> {
   $$DriftEventsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1777,14 +1278,11 @@ class $$DriftEventsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get eventName =>
-      $composableBuilder(column: $table.eventName, builder: (column) => column);
+  GeneratedColumn<String> get eventName => $composableBuilder(column: $table.eventName, builder: (column) => column);
 
-  GeneratedColumn<String> get location =>
-      $composableBuilder(column: $table.location, builder: (column) => column);
+  GeneratedColumn<String> get location => $composableBuilder(column: $table.location, builder: (column) => column);
 
   $$DriftTimeSlotsTableAnnotationComposer get timeSlotId {
     final $$DriftTimeSlotsTableAnnotationComposer composer = $composerBuilder(
@@ -1793,17 +1291,12 @@ class $$DriftEventsTableAnnotationComposer
       referencedTable: $db.driftTimeSlots,
       getReferencedColumn: (t) => t.id,
       builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$DriftTimeSlotsTableAnnotationComposer(
+          (joinBuilder, {$addJoinBuilderToRootComposer, $removeJoinBuilderFromRootComposer}) => $$DriftTimeSlotsTableAnnotationComposer(
             $db: $db,
             $table: $db.driftTimeSlots,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
+            $removeJoinBuilderFromRootComposer: $removeJoinBuilderFromRootComposer,
           ),
     );
     return composer;
@@ -1830,77 +1323,34 @@ class $$DriftEventsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer:
-              () => $$DriftEventsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () => $$DriftEventsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer:
-              () =>
-                  $$DriftEventsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () => $$DriftEventsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$DriftEventsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$DriftEventsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> eventName = const Value.absent(),
                 Value<String?> location = const Value.absent(),
                 Value<int> timeSlotId = const Value.absent(),
-              }) => DriftEventsCompanion(
-                id: id,
-                eventName: eventName,
-                location: location,
-                timeSlotId: timeSlotId,
-              ),
+              }) => DriftEventsCompanion(id: id, eventName: eventName, location: location, timeSlotId: timeSlotId),
           createCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                required String eventName,
-                Value<String?> location = const Value.absent(),
-                required int timeSlotId,
-              }) => DriftEventsCompanion.insert(
-                id: id,
-                eventName: eventName,
-                location: location,
-                timeSlotId: timeSlotId,
-              ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          $$DriftEventsTableReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
+              ({Value<int> id = const Value.absent(), required String eventName, Value<String?> location = const Value.absent(), required int timeSlotId}) =>
+                  DriftEventsCompanion.insert(id: id, eventName: eventName, location: location, timeSlotId: timeSlotId),
+          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), $$DriftEventsTableReferences(db, table, e))).toList(),
           prefetchHooksCallback: ({timeSlotId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
-              addJoins: <
-                T extends TableManagerState<
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic,
-                  dynamic
-                >
-              >(state) {
+              addJoins: <T extends TableManagerState<dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic>>(
+                state,
+              ) {
                 if (timeSlotId) {
                   state =
                       state.withJoin(
                             currentTable: table,
                             currentColumn: table.timeSlotId,
-                            referencedTable: $$DriftEventsTableReferences
-                                ._timeSlotIdTable(db),
-                            referencedColumn:
-                                $$DriftEventsTableReferences
-                                    ._timeSlotIdTable(db)
-                                    .id,
+                            referencedTable: $$DriftEventsTableReferences._timeSlotIdTable(db),
+                            referencedColumn: $$DriftEventsTableReferences._timeSlotIdTable(db).id,
                           )
                           as T;
                 }
@@ -1951,8 +1401,7 @@ typedef $$DriftStaminasTableUpdateCompanionBuilder =
       Value<String?> imageName,
     });
 
-class $$DriftStaminasTableFilterComposer
-    extends Composer<_$AppDatabase, $DriftStaminasTable> {
+class $$DriftStaminasTableFilterComposer extends Composer<_$AppDatabase, $DriftStaminasTable> {
   $$DriftStaminasTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1960,44 +1409,22 @@ class $$DriftStaminasTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<int> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get gachaName => $composableBuilder(
-    column: $table.gachaName,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<String> get gachaName => $composableBuilder(column: $table.gachaName, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get maxStamina => $composableBuilder(
-    column: $table.maxStamina,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<int> get maxStamina => $composableBuilder(column: $table.maxStamina, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get rechargeTimeInSeconds => $composableBuilder(
-    column: $table.rechargeTimeInSeconds,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<int> get rechargeTimeInSeconds => $composableBuilder(column: $table.rechargeTimeInSeconds, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<int> get staminaOfLatestReset => $composableBuilder(
-    column: $table.staminaOfLatestReset,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<int> get staminaOfLatestReset => $composableBuilder(column: $table.staminaOfLatestReset, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get timeOfLastReset => $composableBuilder(
-    column: $table.timeOfLastReset,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<DateTime> get timeOfLastReset => $composableBuilder(column: $table.timeOfLastReset, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get imageName => $composableBuilder(
-    column: $table.imageName,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnFilters<String> get imageName => $composableBuilder(column: $table.imageName, builder: (column) => ColumnFilters(column));
 }
 
-class $$DriftStaminasTableOrderingComposer
-    extends Composer<_$AppDatabase, $DriftStaminasTable> {
+class $$DriftStaminasTableOrderingComposer extends Composer<_$AppDatabase, $DriftStaminasTable> {
   $$DriftStaminasTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -2005,44 +1432,22 @@ class $$DriftStaminasTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<int> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get gachaName => $composableBuilder(
-    column: $table.gachaName,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<String> get gachaName => $composableBuilder(column: $table.gachaName, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get maxStamina => $composableBuilder(
-    column: $table.maxStamina,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<int> get maxStamina => $composableBuilder(column: $table.maxStamina, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get rechargeTimeInSeconds => $composableBuilder(
-    column: $table.rechargeTimeInSeconds,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<int> get rechargeTimeInSeconds => $composableBuilder(column: $table.rechargeTimeInSeconds, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<int> get staminaOfLatestReset => $composableBuilder(
-    column: $table.staminaOfLatestReset,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<int> get staminaOfLatestReset => $composableBuilder(column: $table.staminaOfLatestReset, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get timeOfLastReset => $composableBuilder(
-    column: $table.timeOfLastReset,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<DateTime> get timeOfLastReset => $composableBuilder(column: $table.timeOfLastReset, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get imageName => $composableBuilder(
-    column: $table.imageName,
-    builder: (column) => ColumnOrderings(column),
-  );
+  ColumnOrderings<String> get imageName => $composableBuilder(column: $table.imageName, builder: (column) => ColumnOrderings(column));
 }
 
-class $$DriftStaminasTableAnnotationComposer
-    extends Composer<_$AppDatabase, $DriftStaminasTable> {
+class $$DriftStaminasTableAnnotationComposer extends Composer<_$AppDatabase, $DriftStaminasTable> {
   $$DriftStaminasTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -2050,34 +1455,19 @@ class $$DriftStaminasTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get gachaName =>
-      $composableBuilder(column: $table.gachaName, builder: (column) => column);
+  GeneratedColumn<String> get gachaName => $composableBuilder(column: $table.gachaName, builder: (column) => column);
 
-  GeneratedColumn<int> get maxStamina => $composableBuilder(
-    column: $table.maxStamina,
-    builder: (column) => column,
-  );
+  GeneratedColumn<int> get maxStamina => $composableBuilder(column: $table.maxStamina, builder: (column) => column);
 
-  GeneratedColumn<int> get rechargeTimeInSeconds => $composableBuilder(
-    column: $table.rechargeTimeInSeconds,
-    builder: (column) => column,
-  );
+  GeneratedColumn<int> get rechargeTimeInSeconds => $composableBuilder(column: $table.rechargeTimeInSeconds, builder: (column) => column);
 
-  GeneratedColumn<int> get staminaOfLatestReset => $composableBuilder(
-    column: $table.staminaOfLatestReset,
-    builder: (column) => column,
-  );
+  GeneratedColumn<int> get staminaOfLatestReset => $composableBuilder(column: $table.staminaOfLatestReset, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get timeOfLastReset => $composableBuilder(
-    column: $table.timeOfLastReset,
-    builder: (column) => column,
-  );
+  GeneratedColumn<DateTime> get timeOfLastReset => $composableBuilder(column: $table.timeOfLastReset, builder: (column) => column);
 
-  GeneratedColumn<String> get imageName =>
-      $composableBuilder(column: $table.imageName, builder: (column) => column);
+  GeneratedColumn<String> get imageName => $composableBuilder(column: $table.imageName, builder: (column) => column);
 }
 
 class $$DriftStaminasTableTableManager
@@ -2091,10 +1481,7 @@ class $$DriftStaminasTableTableManager
           $$DriftStaminasTableAnnotationComposer,
           $$DriftStaminasTableCreateCompanionBuilder,
           $$DriftStaminasTableUpdateCompanionBuilder,
-          (
-            DriftStamina,
-            BaseReferences<_$AppDatabase, $DriftStaminasTable, DriftStamina>,
-          ),
+          (DriftStamina, BaseReferences<_$AppDatabase, $DriftStaminasTable, DriftStamina>),
           DriftStamina,
           PrefetchHooks Function()
         > {
@@ -2103,16 +1490,9 @@ class $$DriftStaminasTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer:
-              () => $$DriftStaminasTableFilterComposer($db: db, $table: table),
-          createOrderingComposer:
-              () =>
-                  $$DriftStaminasTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer:
-              () => $$DriftStaminasTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
+          createFilteringComposer: () => $$DriftStaminasTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$DriftStaminasTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$DriftStaminasTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -2149,16 +1529,7 @@ class $$DriftStaminasTableTableManager
                 timeOfLastReset: timeOfLastReset,
                 imageName: imageName,
               ),
-          withReferenceMapper:
-              (p0) =>
-                  p0
-                      .map(
-                        (e) => (
-                          e.readTable(table),
-                          BaseReferences(db, table, e),
-                        ),
-                      )
-                      .toList(),
+          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -2174,10 +1545,7 @@ typedef $$DriftStaminasTableProcessedTableManager =
       $$DriftStaminasTableAnnotationComposer,
       $$DriftStaminasTableCreateCompanionBuilder,
       $$DriftStaminasTableUpdateCompanionBuilder,
-      (
-        DriftStamina,
-        BaseReferences<_$AppDatabase, $DriftStaminasTable, DriftStamina>,
-      ),
+      (DriftStamina, BaseReferences<_$AppDatabase, $DriftStaminasTable, DriftStamina>),
       DriftStamina,
       PrefetchHooks Function()
     >;
@@ -2185,10 +1553,7 @@ typedef $$DriftStaminasTableProcessedTableManager =
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$DriftTimeSlotsTableTableManager get driftTimeSlots =>
-      $$DriftTimeSlotsTableTableManager(_db, _db.driftTimeSlots);
-  $$DriftEventsTableTableManager get driftEvents =>
-      $$DriftEventsTableTableManager(_db, _db.driftEvents);
-  $$DriftStaminasTableTableManager get driftStaminas =>
-      $$DriftStaminasTableTableManager(_db, _db.driftStaminas);
+  $$DriftTimeSlotsTableTableManager get driftTimeSlots => $$DriftTimeSlotsTableTableManager(_db, _db.driftTimeSlots);
+  $$DriftEventsTableTableManager get driftEvents => $$DriftEventsTableTableManager(_db, _db.driftEvents);
+  $$DriftStaminasTableTableManager get driftStaminas => $$DriftStaminasTableTableManager(_db, _db.driftStaminas);
 }

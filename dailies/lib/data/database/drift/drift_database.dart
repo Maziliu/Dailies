@@ -4,7 +4,7 @@ import 'package:dailies/data/database/drift/tables/drift_time_slots_table.dart';
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-part 'drift_database.g.dart';
+part '../../../generated/drift_database.g.dart';
 
 @DriftDatabase(tables: [DriftEvents, DriftTimeSlots, DriftStaminas])
 class AppDatabase extends _$AppDatabase {

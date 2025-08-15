@@ -3,7 +3,7 @@ import 'package:dailies/data/database/drift/tables/drift_time_slots_table.dart';
 import 'package:dailies/data/dao/time_slot_dao.dart';
 import 'package:drift/drift.dart';
 
-part 'drift_time_slot_dao.g.dart';
+part '../../../../../generated/drift_time_slot_dao.g.dart';
 
 @DriftAccessor(tables: [DriftTimeSlots])
 class DriftTimeSlotDao extends DatabaseAccessor<AppDatabase> with _$DriftTimeSlotDaoMixin implements TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion> {

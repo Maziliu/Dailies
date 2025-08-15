@@ -1,7 +1,11 @@
+import 'package:dailies/data/models/event.dart';
+import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
+import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
 import 'package:dailies/ui/components/section.dart';
+import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/shared/calendar_view_model.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +15,7 @@ class EventsSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;
   final CalendarViewModel _calendarViewModel;
 
-  late final VoidCallback _selectedEventsListener, _loadedEventsUpdate;
+  late final VoidCallback _selectedEventsListener;
 
   EventsSection({super.key, required EventsViewModel eventsViewModel, required CalendarViewModel calendarViewModel})
     : _eventsViewModel = eventsViewModel,
@@ -25,6 +29,7 @@ class EventsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
 
     return Container(
       decoration: BoxDecoration(
@@ -39,7 +44,38 @@ class EventsSection extends StatelessWidget {
           builder: (context, pairs, _) {
             return Section(
               children: [
-                SectionHeader(title: DateFormat.MMMMEEEEd().format(_calendarViewModel.selectedDay)),
+                SectionHeader(
+                  titleWidget: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: UIFormating.mediumPadding(),
+                        decoration: BoxDecoration(color: colorScheme.surface, borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
+                        child: Text(
+                          DateFormat.MMMMEEEEd().format(_calendarViewModel.selectedDay),
+                          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () async {
+                          final Event? newEvent = await Navigator.push(
+                            context,
+                            HeroDialogRoute(
+                              builder: (context) {
+                                return PopupCard.AddEvent(selectedDay: _calendarViewModel.selectedDay, heroTag: '');
+                              },
+                            ),
+                          );
+
+                          if (newEvent != null) {
+                            _eventsViewModel.addEvent(newEvent);
+                          }
+                        },
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: SectionContent(
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),

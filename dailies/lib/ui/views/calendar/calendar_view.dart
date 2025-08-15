@@ -17,39 +17,17 @@ final String ADD_EVENT_HERO_TAG = 'addEventHeroTag';
 class CalendarView extends StatelessWidget {
   const CalendarView({super.key});
 
-  Widget _buildFloatingActionButton(BuildContext context, EventsViewModel eventsViewModel, CalendarViewModel calendarViewModel) => FloatingActionButton(
-    elevation: 0,
-    child: const Icon(Icons.add),
-    onPressed: () async {
-      final Event? newEvent = await Navigator.push(
-        context,
-        HeroDialogRoute(
-          builder: (context) {
-            return PopupCard.AddEvent(selectedDay: calendarViewModel.selectedDay, heroTag: ADD_EVENT_HERO_TAG);
-          },
-        ),
-      );
-
-      if (newEvent != null) {
-        eventsViewModel.addEvent(newEvent);
-      }
-    },
-  );
-
   @override
   Widget build(BuildContext context) {
     final CalendarPageViewModel pageViewModel = context.watch<CalendarPageViewModel>();
 
     return Padding(
       padding: UIFormating.smallPadding(),
-      child: Scaffold(
-        body: Column(
-          children: [
-            CalendarSection(calendarViewModel: pageViewModel.calendarViewModel),
-            Expanded(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel, calendarViewModel: pageViewModel.calendarViewModel)),
-          ],
-        ),
-        floatingActionButton: _buildFloatingActionButton(context, pageViewModel.eventsViewModel, pageViewModel.calendarViewModel),
+      child: Column(
+        children: [
+          CalendarSection(calendarViewModel: pageViewModel.calendarViewModel),
+          Expanded(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel, calendarViewModel: pageViewModel.calendarViewModel)),
+        ],
       ),
     );
   }

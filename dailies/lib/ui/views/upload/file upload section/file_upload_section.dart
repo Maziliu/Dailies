@@ -11,77 +11,91 @@ class FileUploadSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding: UIFormating.mediumPadding(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              child: Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color.fromRGBO(158, 158, 158, 0.5)),
-                  color: Colors.transparent,
-                ),
-                child: Padding(
-                  padding: UIFormating.extraLargePadding(),
-                  child: const Column(children: [Icon(Icons.add, color: Colors.grey), Text('Upload Files')]),
-                ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InkWell(
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color.fromRGBO(158, 158, 158, 0.5)),
+                color: Colors.transparent,
               ),
-              onTap: () async {
-                final results = await FilePicker.platform.pickFiles(
-                  allowMultiple: true,
-                  type: FileType.custom,
-                  allowedExtensions: ['ics', 'pdf', 'txt', 'csv'],
-                );
-
-                if (results != null) {
-                  _fileUploadViewModel.uploadedFiles.value = results.files;
-                }
-              },
+              child: Padding(
+                padding: UIFormating.extraLargePadding(),
+                child: const Column(children: [Icon(Icons.add, color: Colors.grey), Text('Upload Files')]),
+              ),
             ),
-            ValueListenableBuilder(
+            onTap: () async {
+              final results = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.custom, allowedExtensions: ['ics', 'pdf', 'txt', 'csv']);
+
+              if (results != null) {
+                _fileUploadViewModel.uploadedFiles.value = results.files;
+              }
+            },
+          ),
+          SingleChildScrollView(
+            child: ValueListenableBuilder(
               valueListenable: _fileUploadViewModel.uploadedFiles,
               builder: (context, files, _) {
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: files.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Padding(
-                          padding: UIFormating.smallPadding(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(files[index].name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  Text('Size: ${_formatFileSize(files[index].size)}'),
-                                ],
-                              ),
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: files.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: Padding(
+                        padding: UIFormating.smallPadding(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(files[index].name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                Text('Size: ${_formatFileSize(files[index].size)}'),
+                              ],
+                            ),
 
-                              IconButton(
-                                onPressed: () {
-                                  _fileUploadViewModel.uploadedFiles.value =
-                                      _fileUploadViewModel.uploadedFiles.value.where((PlatformFile file) => file != files[index]).toList();
-                                },
-                                icon: const Icon(Icons.close),
-                              ),
-                            ],
-                          ),
+                            IconButton(
+                              onPressed: () {
+                                _fileUploadViewModel.uploadedFiles.value =
+                                    _fileUploadViewModel.uploadedFiles.value.where((PlatformFile file) => file != files[index]).toList();
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
+          ),
 
-            ElevatedButton(onPressed: () {}, child: const Text('Parse Files')),
-          ],
-        ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _fileUploadViewModel.uploadedFiles.value = [];
+                    },
+                    child: const Text('Clear'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(onPressed: () => _fileUploadViewModel.parseAllUploadedFiles, child: const Text('Parse Files')),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

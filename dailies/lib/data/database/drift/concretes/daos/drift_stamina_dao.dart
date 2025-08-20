@@ -1,9 +1,9 @@
 import 'package:dailies/data/dao/stamina_dao.dart';
 import 'package:dailies/data/database/drift/drift_database.dart';
-import 'package:dailies/data/database/drift/tables/drift_staminas_table.dart';
+import 'package:dailies/data/database/drift/tables/drift_staminas.dart';
 import 'package:drift/drift.dart';
 
-part '../../../../../generated/drift_stamina_dao.g.dart';
+part 'drift_stamina_dao.g.dart';
 
 @DriftAccessor(tables: [DriftStaminas])
 class DriftStaminaDao extends DatabaseAccessor<AppDatabase> with _$DriftStaminaDaoMixin implements StaminaDao<DriftStamina, DriftStaminasCompanion> {

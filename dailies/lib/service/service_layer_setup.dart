@@ -4,6 +4,7 @@ import 'package:dailies/data/repositories/stamina_repository.dart';
 import 'package:dailies/data/repositories/time_slot_repository.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
+import 'package:dailies/service/repository/time_slot_pattern_repository_service.dart';
 import 'package:dailies/service/repository/time_slot_repository_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -15,6 +16,7 @@ Future<void> setUpServiceLayer(GetIt injector) async {
     () => EventRepositoryService(
       timeSlotService: injector<TimeSlotRepositoryService>(),
       eventRepository: injector<EventRepository<DriftEvent, DriftEventsCompanion>>(),
+      patternService: injector<TimeSlotPatternRepositoryService>(),
     ),
   );
 

@@ -2,12 +2,12 @@ import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/app_model.dart';
 
 class TimeSlot extends AppModel implements Comparable<TimeSlot> {
-  int? nextTimeSlotId;
+  int? patternId, eventId;
   final DateTime _dateOfTimeSlot;
   final DateTime? _startTime;
   final DateTime? _endTime;
 
-  TimeSlot({super.id, this.nextTimeSlotId, startTime, DateTime? endTime, required DateTime dateOfTimeSlot})
+  TimeSlot({super.id, this.patternId, this.eventId, startTime, DateTime? endTime, required DateTime dateOfTimeSlot})
     : _dateOfTimeSlot = dateOfTimeSlot,
       _startTime = startTime,
       _endTime = endTime;
@@ -25,8 +25,6 @@ class TimeSlot extends AppModel implements Comparable<TimeSlot> {
 
     return TimeSlotType.Interval;
   }
-
-  bool get hasNextNode => nextTimeSlotId != null;
 
   bool isSameDay(DateTime other) {
     final thisDate = DateTime(_dateOfTimeSlot.year, _dateOfTimeSlot.month, _dateOfTimeSlot.day);

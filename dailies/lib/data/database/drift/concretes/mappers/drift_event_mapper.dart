@@ -13,15 +13,10 @@ class DriftEventMapper extends EventMapper<DriftEvent, DriftEventsCompanion> {
       id: (event.isNotSaved) ? const Value.absent() : Value(event.id),
       eventName: Value(event.eventName),
       location: Value(event.location),
-      timeSlotId: Value(event.timeSlotHeadId),
     );
   }
 
   @override
-  Event convertIncomingDatabaseModelToAppModel(DriftEvent incomingDatabaseModel) => Event(
-    id: incomingDatabaseModel.id,
-    eventName: incomingDatabaseModel.eventName,
-    location: incomingDatabaseModel.location,
-    timeSlotHeadId: incomingDatabaseModel.timeSlotId,
-  );
+  Event convertIncomingDatabaseModelToAppModel(DriftEvent incomingDatabaseModel) =>
+      Event(id: incomingDatabaseModel.id, eventName: incomingDatabaseModel.eventName, location: incomingDatabaseModel.location);
 }

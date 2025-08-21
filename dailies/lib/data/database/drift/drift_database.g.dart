@@ -723,9 +723,9 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
   late final GeneratedColumn<int> patternId = GeneratedColumn<int>(
     'pattern_id',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'REFERENCES drift_time_slot_patterns (id) ON DELETE CASCADE',
     ),
@@ -737,9 +737,9 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
   late final GeneratedColumn<int> eventId = GeneratedColumn<int>(
     'event_id',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.int,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'REFERENCES drift_events (id) ON DELETE CASCADE',
     ),
@@ -804,12 +804,16 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
         _patternIdMeta,
         patternId.isAcceptableOrUnknown(data['pattern_id']!, _patternIdMeta),
       );
+    } else if (isInserting) {
+      context.missing(_patternIdMeta);
     }
     if (data.containsKey('event_id')) {
       context.handle(
         _eventIdMeta,
         eventId.isAcceptableOrUnknown(data['event_id']!, _eventIdMeta),
       );
+    } else if (isInserting) {
+      context.missing(_eventIdMeta);
     }
     if (data.containsKey('date')) {
       context.handle(
@@ -845,14 +849,16 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
             DriftSqlType.int,
             data['${effectivePrefix}id'],
           )!,
-      patternId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}pattern_id'],
-      ),
-      eventId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}event_id'],
-      ),
+      patternId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}pattern_id'],
+          )!,
+      eventId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}event_id'],
+          )!,
       date:
           attachedDatabase.typeMapping.read(
             DriftSqlType.dateTime,
@@ -877,15 +883,15 @@ class $DriftTimeSlotsTable extends DriftTimeSlots
 
 class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
   final int id;
-  final int? patternId;
-  final int? eventId;
+  final int patternId;
+  final int eventId;
   final DateTime date;
   final DateTime? startTime;
   final DateTime? endTime;
   const DriftTimeSlot({
     required this.id,
-    this.patternId,
-    this.eventId,
+    required this.patternId,
+    required this.eventId,
     required this.date,
     this.startTime,
     this.endTime,
@@ -894,12 +900,8 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    if (!nullToAbsent || patternId != null) {
-      map['pattern_id'] = Variable<int>(patternId);
-    }
-    if (!nullToAbsent || eventId != null) {
-      map['event_id'] = Variable<int>(eventId);
-    }
+    map['pattern_id'] = Variable<int>(patternId);
+    map['event_id'] = Variable<int>(eventId);
     map['date'] = Variable<DateTime>(date);
     if (!nullToAbsent || startTime != null) {
       map['start_time'] = Variable<DateTime>(startTime);
@@ -913,14 +915,8 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
   DriftTimeSlotsCompanion toCompanion(bool nullToAbsent) {
     return DriftTimeSlotsCompanion(
       id: Value(id),
-      patternId:
-          patternId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(patternId),
-      eventId:
-          eventId == null && nullToAbsent
-              ? const Value.absent()
-              : Value(eventId),
+      patternId: Value(patternId),
+      eventId: Value(eventId),
       date: Value(date),
       startTime:
           startTime == null && nullToAbsent
@@ -940,8 +936,8 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DriftTimeSlot(
       id: serializer.fromJson<int>(json['id']),
-      patternId: serializer.fromJson<int?>(json['patternId']),
-      eventId: serializer.fromJson<int?>(json['eventId']),
+      patternId: serializer.fromJson<int>(json['patternId']),
+      eventId: serializer.fromJson<int>(json['eventId']),
       date: serializer.fromJson<DateTime>(json['date']),
       startTime: serializer.fromJson<DateTime?>(json['startTime']),
       endTime: serializer.fromJson<DateTime?>(json['endTime']),
@@ -952,8 +948,8 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'patternId': serializer.toJson<int?>(patternId),
-      'eventId': serializer.toJson<int?>(eventId),
+      'patternId': serializer.toJson<int>(patternId),
+      'eventId': serializer.toJson<int>(eventId),
       'date': serializer.toJson<DateTime>(date),
       'startTime': serializer.toJson<DateTime?>(startTime),
       'endTime': serializer.toJson<DateTime?>(endTime),
@@ -962,15 +958,15 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
 
   DriftTimeSlot copyWith({
     int? id,
-    Value<int?> patternId = const Value.absent(),
-    Value<int?> eventId = const Value.absent(),
+    int? patternId,
+    int? eventId,
     DateTime? date,
     Value<DateTime?> startTime = const Value.absent(),
     Value<DateTime?> endTime = const Value.absent(),
   }) => DriftTimeSlot(
     id: id ?? this.id,
-    patternId: patternId.present ? patternId.value : this.patternId,
-    eventId: eventId.present ? eventId.value : this.eventId,
+    patternId: patternId ?? this.patternId,
+    eventId: eventId ?? this.eventId,
     date: date ?? this.date,
     startTime: startTime.present ? startTime.value : this.startTime,
     endTime: endTime.present ? endTime.value : this.endTime,
@@ -1016,8 +1012,8 @@ class DriftTimeSlot extends DataClass implements Insertable<DriftTimeSlot> {
 
 class DriftTimeSlotsCompanion extends UpdateCompanion<DriftTimeSlot> {
   final Value<int> id;
-  final Value<int?> patternId;
-  final Value<int?> eventId;
+  final Value<int> patternId;
+  final Value<int> eventId;
   final Value<DateTime> date;
   final Value<DateTime?> startTime;
   final Value<DateTime?> endTime;
@@ -1031,12 +1027,14 @@ class DriftTimeSlotsCompanion extends UpdateCompanion<DriftTimeSlot> {
   });
   DriftTimeSlotsCompanion.insert({
     this.id = const Value.absent(),
-    this.patternId = const Value.absent(),
-    this.eventId = const Value.absent(),
+    required int patternId,
+    required int eventId,
     required DateTime date,
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
-  }) : date = Value(date);
+  }) : patternId = Value(patternId),
+       eventId = Value(eventId),
+       date = Value(date);
   static Insertable<DriftTimeSlot> custom({
     Expression<int>? id,
     Expression<int>? patternId,
@@ -1057,8 +1055,8 @@ class DriftTimeSlotsCompanion extends UpdateCompanion<DriftTimeSlot> {
 
   DriftTimeSlotsCompanion copyWith({
     Value<int>? id,
-    Value<int?>? patternId,
-    Value<int?>? eventId,
+    Value<int>? patternId,
+    Value<int>? eventId,
     Value<DateTime>? date,
     Value<DateTime?>? startTime,
     Value<DateTime?>? endTime,
@@ -2494,8 +2492,8 @@ typedef $$DriftTimeSlotPatternsTableProcessedTableManager =
 typedef $$DriftTimeSlotsTableCreateCompanionBuilder =
     DriftTimeSlotsCompanion Function({
       Value<int> id,
-      Value<int?> patternId,
-      Value<int?> eventId,
+      required int patternId,
+      required int eventId,
       required DateTime date,
       Value<DateTime?> startTime,
       Value<DateTime?> endTime,
@@ -2503,8 +2501,8 @@ typedef $$DriftTimeSlotsTableCreateCompanionBuilder =
 typedef $$DriftTimeSlotsTableUpdateCompanionBuilder =
     DriftTimeSlotsCompanion Function({
       Value<int> id,
-      Value<int?> patternId,
-      Value<int?> eventId,
+      Value<int> patternId,
+      Value<int> eventId,
       Value<DateTime> date,
       Value<DateTime?> startTime,
       Value<DateTime?> endTime,
@@ -2526,9 +2524,9 @@ final class $$DriftTimeSlotsTableReferences
         ),
       );
 
-  $$DriftTimeSlotPatternsTableProcessedTableManager? get patternId {
-    final $_column = $_itemColumn<int>('pattern_id');
-    if ($_column == null) return null;
+  $$DriftTimeSlotPatternsTableProcessedTableManager get patternId {
+    final $_column = $_itemColumn<int>('pattern_id')!;
+
     final manager = $$DriftTimeSlotPatternsTableTableManager(
       $_db,
       $_db.driftTimeSlotPatterns,
@@ -2545,9 +2543,9 @@ final class $$DriftTimeSlotsTableReferences
         $_aliasNameGenerator(db.driftTimeSlots.eventId, db.driftEvents.id),
       );
 
-  $$DriftEventsTableProcessedTableManager? get eventId {
-    final $_column = $_itemColumn<int>('event_id');
-    if ($_column == null) return null;
+  $$DriftEventsTableProcessedTableManager get eventId {
+    final $_column = $_itemColumn<int>('event_id')!;
+
     final manager = $$DriftEventsTableTableManager(
       $_db,
       $_db.driftEvents,
@@ -2818,8 +2816,8 @@ class $$DriftTimeSlotsTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<int?> patternId = const Value.absent(),
-                Value<int?> eventId = const Value.absent(),
+                Value<int> patternId = const Value.absent(),
+                Value<int> eventId = const Value.absent(),
                 Value<DateTime> date = const Value.absent(),
                 Value<DateTime?> startTime = const Value.absent(),
                 Value<DateTime?> endTime = const Value.absent(),
@@ -2834,8 +2832,8 @@ class $$DriftTimeSlotsTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<int?> patternId = const Value.absent(),
-                Value<int?> eventId = const Value.absent(),
+                required int patternId,
+                required int eventId,
                 required DateTime date,
                 Value<DateTime?> startTime = const Value.absent(),
                 Value<DateTime?> endTime = const Value.absent(),

@@ -1,7 +1,6 @@
 import 'package:dailies/data/models/event.dart';
-import 'package:dailies/ui/components/hero_dialog_route.dart';
+import 'package:dailies/ui/views/calendar/sub%20page/add_event_sub_page.dart';
 import 'package:dailies/ui/components/popup%20cards/delete_confirmation_popup_card.dart';
-import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
 import 'package:dailies/ui/components/section.dart';
@@ -60,11 +59,7 @@ class EventsSection extends StatelessWidget {
                         onPressed: () async {
                           final Event? newEvent = await Navigator.push(
                             context,
-                            HeroDialogRoute(
-                              builder: (context) {
-                                return PopupCard.AddEvent(selectedDay: _calendarViewModel.selectedDay, heroTag: '');
-                              },
-                            ),
+                            MaterialPageRoute(builder: (context) => AddEventSubPage(selectedDay: _calendarViewModel.selectedDay)),
                           );
 
                           if (newEvent != null) {

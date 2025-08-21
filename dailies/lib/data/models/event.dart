@@ -12,4 +12,6 @@ class Event extends AppModel {
 
   String get eventName => _eventName;
   String? get location => _location;
+
+  bool get isReaccuring => timeSlots.length > 1;
 }

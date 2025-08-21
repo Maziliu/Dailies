@@ -1,4 +1,3 @@
-import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 
@@ -7,9 +6,16 @@ class TimeSlotPattern extends AppModel {
   final List<TimeSlot> _anchorPoints = [];
   final String? _timeZoneId;
   final Duration? _frequency;
-  int? eventId;
+  late final int eventId;
 
-  TimeSlotPattern({super.id, this.eventId, DateTime? endPatternDate, String? anchorPointsString, String? timeZoneId, int? frequencyInSeconds})
+  TimeSlotPattern({super.id, required this.eventId, DateTime? endPatternDate, String? anchorPointsString, String? timeZoneId, int? frequencyInSeconds})
+    : _endPatternDate = endPatternDate,
+      _timeZoneId = timeZoneId,
+      _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds) {
+    anchorPoints = anchorPointsString;
+  }
+
+  TimeSlotPattern.UnSaved({super.id, DateTime? endPatternDate, String? anchorPointsString, String? timeZoneId, int? frequencyInSeconds})
     : _endPatternDate = endPatternDate,
       _timeZoneId = timeZoneId,
       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds) {
@@ -45,7 +51,13 @@ class TimeSlotPattern extends AppModel {
     for (final String triple in triples) {
       List<String> separated = triple.split(';');
       _anchorPoints.add(
-        TimeSlot(dateOfTimeSlot: DateTime.parse(separated[2]), startTime: DateTime.tryParse(separated[0]), endTime: DateTime.tryParse(separated[1])),
+        TimeSlot(
+          patternId: id,
+          eventId: eventId,
+          dateOfTimeSlot: DateTime.parse(separated[2]),
+          startTime: DateTime.tryParse(separated[0]),
+          endTime: DateTime.tryParse(separated[1]),
+        ),
       );
     }
 

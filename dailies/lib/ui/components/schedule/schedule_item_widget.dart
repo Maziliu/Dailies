@@ -77,7 +77,7 @@ class ScheduleItemWidget extends StatelessWidget {
               ),
             ),
 
-            if (event.isRecurring) Icon(Icons.sync_rounded, size: 16, color: colorScheme.onSurface.withAlpha(120)),
+            if (event.isReaccuring) Icon(Icons.sync_rounded, size: 16, color: colorScheme.onSurface.withAlpha(120)),
           ],
         ),
       ),
@@ -104,6 +104,8 @@ class ScheduleItemWidget extends StatelessWidget {
         return Icons.today_rounded;
       case TimeSlotType.Unspecified:
         return Icons.all_inclusive;
+      default:
+        return Icons.question_mark;
     }
   }
 
@@ -115,6 +117,8 @@ class ScheduleItemWidget extends StatelessWidget {
         return const Color.fromARGB(255, 228, 30, 129);
       case TimeSlotType.Unspecified:
         return colorScheme.primary;
+      default:
+        return colorScheme.error;
     }
   }
 }

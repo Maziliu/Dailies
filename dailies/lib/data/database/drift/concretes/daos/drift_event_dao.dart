@@ -20,4 +20,7 @@ class DriftEventDao extends DatabaseAccessor<AppDatabase> with _$DriftEventDaoMi
 
   @override
   Future<bool> updateEntry(DriftEventsCompanion updatedObject) => update(driftEvents).replace(updatedObject);
+
+  @override
+  Future<List<DriftEvent>> getAllEventsWithIds(List<int> ids) => (select(driftEvents)..where((event) => event.id.isIn(ids))).get();
 }

@@ -1,7 +1,6 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/common/utils/result_helpers.dart';
-import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
@@ -36,20 +35,21 @@ class TimeSlotRepositoryService {
       for (final TimeSlot timeSlot in pattern.anchorPointsList) {
         DateTime currentLoopDate = _determineEarliestTime(timeSlot);
         Duration offset = Duration(seconds: (patternLength.inSeconds + patternFrequency.inSeconds) * offsetCount);
-        currentLoopDate.add(offset);
+        currentLoopDate = currentLoopDate.add(offset);
 
         if (currentLoopDate.isAfter(limit) || (pattern.isFinite && currentLoopDate.isAfter(pattern.endPatternDate!))) break;
 
         timeSlots.add(
-          TimeSlot(dateOfTimeSlot: timeSlot.dateOfTimeSlot.add(offset), startTime: timeSlot.startTime?.add(offset), endTime: timeSlot.endTime?.add(offset)),
+          TimeSlot(
+            patternId: pattern.id,
+            eventId: eventId,
+            dateOfTimeSlot: timeSlot.dateOfTimeSlot.add(offset),
+            startTime: timeSlot.startTime?.add(offset),
+            endTime: timeSlot.endTime?.add(offset),
+          ),
         );
         offsetCount++;
       }
-    }
-
-    for (final TimeSlot timeSlot in timeSlots) {
-      timeSlot.eventId = eventId;
-      timeSlot.patternId = pattern.id;
     }
 
     return await _timeSlotRepository.insertAllTimeSlots(timeSlots);
@@ -63,6 +63,8 @@ class TimeSlotRepositoryService {
         return timeSlot.endTime!;
       case TimeSlotType.Unspecified:
         return DateTime(timeSlot.dateOfTimeSlot.year, timeSlot.dateOfTimeSlot.month, timeSlot.dateOfTimeSlot.day);
+      default:
+        return DateTime.now();
     }
   }
 

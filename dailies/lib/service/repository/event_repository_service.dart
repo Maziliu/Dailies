@@ -37,14 +37,27 @@ class EventRepositoryService {
   }
 
   Future<Result<List<Event>>> fetchAllEventsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
-    throw UnimplementedError();
+    Result timeSlotsResult = await _timeSlotService.fetchTimeSlotsBetweenDates(lowerBound, upperBound);
+    if (timeSlotsResult is Error) return Result.error(timeSlotsResult.error);
+
+    List<int> eventIds = [for (final TimeSlot timeSlot in (timeSlotsResult as Ok).value) timeSlot.eventId];
+    Result<List<AppModel>> eventsResult = await _eventRepository.getAllEventsWithIds(eventIds);
+
+    Result<List<Event>> events = performOperationOnResultIfNotError(eventsResult, (eventsResult) => eventsResult.map((event) => event as Event).toList());
+    if (events is Error) return events;
+
+    List<TimeSlot> timeSlots = timeSlotsResult.value;
+
+    for (final Event event in (events as Ok).value) {
+      for (final TimeSlot timeSlot in timeSlots) {
+        if (timeSlot.eventId == event.id) {
+          event.timeSlots.add(timeSlot);
+        }
+      }
+    }
+
+    return events;
   }
 
   Future<void> deleteEvent(Event event) => _eventRepository.deleteById(event.id);
-
-  //Assumes timeSlots is a random assortment of times that may or may not belong to the given event
-  //Note: TimeSlot is stored in linked list structure and this prob can be done more efficiently at the db level and is subject to change dep on current performance
-  void _constructEventWithTimes(Event event, List<TimeSlot> timeSlots) {
-    throw UnimplementedError();
-  }
 }

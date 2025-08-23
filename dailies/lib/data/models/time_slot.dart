@@ -2,15 +2,20 @@ import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/app_model.dart';
 
 class TimeSlot extends AppModel implements Comparable<TimeSlot> {
-  final int patternId, eventId;
+  late final int patternId, eventId;
   final DateTime _dateOfTimeSlot;
   final DateTime? _startTime;
   final DateTime? _endTime;
 
-  TimeSlot({super.id, required this.patternId, required this.eventId, startTime, DateTime? endTime, required DateTime dateOfTimeSlot})
+  TimeSlot({super.id, required this.patternId, required this.eventId, DateTime? startTime, DateTime? endTime, required DateTime dateOfTimeSlot})
     : _dateOfTimeSlot = dateOfTimeSlot,
       _startTime = startTime,
       _endTime = endTime;
+
+  TimeSlot.UnSaved({super.id, DateTime? startTime, DateTime? endTime, required DateTime dateOfTimeSlot})
+    : _startTime = startTime,
+      _endTime = endTime,
+      _dateOfTimeSlot = dateOfTimeSlot;
 
   DateTime? get startTime => _startTime;
   DateTime? get endTime => _endTime;

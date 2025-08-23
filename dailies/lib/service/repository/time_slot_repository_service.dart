@@ -63,8 +63,6 @@ class TimeSlotRepositoryService {
         return timeSlot.endTime!;
       case TimeSlotType.Unspecified:
         return DateTime(timeSlot.dateOfTimeSlot.year, timeSlot.dateOfTimeSlot.month, timeSlot.dateOfTimeSlot.day);
-      default:
-        return DateTime.now();
     }
   }
 

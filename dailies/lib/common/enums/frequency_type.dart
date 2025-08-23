@@ -1,1 +1,1 @@
-enum FrequencyType { Seconds, Minutes, Hours, Days, Weeks, Months, Years }
+enum FrequencyType { Seconds, Minutes, Hours, Days, Weeks }

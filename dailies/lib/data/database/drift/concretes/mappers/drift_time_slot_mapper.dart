@@ -10,7 +10,7 @@ class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCo
     TimeSlot timeSlot = appModel as TimeSlot;
 
     return DriftTimeSlotsCompanion(
-      id: Value.absentIfNull(timeSlot.id),
+      id: (timeSlot.isNotSaved) ? const Value.absent() : Value(timeSlot.id),
       patternId: Value.absentIfNull(timeSlot.patternId),
       date: Value(timeSlot.dateOfTimeSlot),
       startTime: Value(timeSlot.startTime),

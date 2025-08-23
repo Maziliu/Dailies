@@ -39,7 +39,7 @@ class EventsViewModel with ServiceViewModelMixin {
   }
 
   void _updateTodaysEvents() {
-    List<Event> events = loadedEventsNotifier.value.where((event) => event.timeSlots.any((slot) => slot.isSameDay(DateTime.now()))).toSet().toList()..sort();
+    List<Event> events = loadedEventsNotifier.value.where((event) => event.timeSlots.any((slot) => slot.isSameDay(DateTime.now()))).toSet().toList();
 
     todayLoadedFlattenedEventsNotifier.value =
         events.expand((event) => event.timeSlots.map((timeSlot) => EventTimeSlotPair(first: event, second: timeSlot))).toList();
@@ -85,7 +85,7 @@ class EventsViewModel with ServiceViewModelMixin {
   Future<List<Event>> getEventsForDay(DateTime day) async {
     await _loadMonthsEventsOutsideBounds(day);
 
-    return loadedEventsNotifier.value.where((event) => event.timeSlots.any((timeSlot) => timeSlot.isSameDay(day))).toSet().toList()..sort();
+    return loadedEventsNotifier.value.where((event) => event.timeSlots.any((timeSlot) => timeSlot.isSameDay(day))).toSet().toList();
   }
 
   Future<void> addEvent(Event event) async {

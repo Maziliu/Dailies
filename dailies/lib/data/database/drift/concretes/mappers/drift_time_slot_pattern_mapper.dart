@@ -10,7 +10,7 @@ class DriftTimeSlotPatternMapper implements TimeSlotPatternMapper<DriftTimeSlotP
     TimeSlotPattern timeSlotPattern = appModel as TimeSlotPattern;
 
     return DriftTimeSlotPatternsCompanion(
-      id: Value.absentIfNull(timeSlotPattern.id),
+      id: (timeSlotPattern.isNotSaved) ? const Value.absent() : Value(timeSlotPattern.id),
       eventId: Value.absentIfNull(timeSlotPattern.eventId),
       anchorPoints: Value.absentIfNull(timeSlotPattern.anchorPointsAsString),
       frequencyInSeconds: Value.absentIfNull(timeSlotPattern.frequency?.inSeconds),

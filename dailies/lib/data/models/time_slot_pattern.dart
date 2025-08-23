@@ -1,9 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 
 class TimeSlotPattern extends AppModel {
   final DateTime? _endPatternDate;
-  final List<TimeSlot> _anchorPoints = [];
+  final HeapPriorityQueue<TimeSlot> _anchorPoints = HeapPriorityQueue<TimeSlot>();
   final String? _timeZoneId;
   final Duration? _frequency;
   late final int eventId;
@@ -15,11 +16,18 @@ class TimeSlotPattern extends AppModel {
     anchorPoints = anchorPointsString;
   }
 
-  TimeSlotPattern.UnSaved({super.id, DateTime? endPatternDate, String? anchorPointsString, String? timeZoneId, int? frequencyInSeconds})
-    : _endPatternDate = endPatternDate,
-      _timeZoneId = timeZoneId,
-      _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds) {
+  TimeSlotPattern.UnSaved({
+    super.id,
+    DateTime? endPatternDate,
+    String? anchorPointsString,
+    String? timeZoneId,
+    int? frequencyInSeconds,
+    List<TimeSlot>? anchorPointsList,
+  }) : _endPatternDate = endPatternDate,
+       _timeZoneId = timeZoneId,
+       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds) {
     anchorPoints = anchorPointsString;
+    addAnchorPoints(anchorPointsList ?? []);
   }
 
   DateTime? get endPatternDate => _endPatternDate;
@@ -30,14 +38,16 @@ class TimeSlotPattern extends AppModel {
   bool get isReacurring => _frequency != null && endPatternDate != null;
   bool get isFinite => endPatternDate != null;
 
-  List<TimeSlot> get anchorPointsList => _anchorPoints;
+  List<TimeSlot> get anchorPointsList => _anchorPoints.toList();
 
   String? get anchorPointsAsString {
     if (_anchorPoints.isEmpty) return null;
+    final HeapPriorityQueue<TimeSlot> copy = HeapPriorityQueue()..addAll(_anchorPoints.toList());
 
     final List<String> stringTriples = [];
 
-    for (final TimeSlot timeSlot in _anchorPoints) {
+    while (copy.isNotEmpty) {
+      final timeSlot = copy.removeFirst();
       stringTriples.add('${timeSlot.startTime ?? ''};${timeSlot.endTime ?? ''};${timeSlot.dateOfTimeSlot}');
     }
     return stringTriples.join(',');
@@ -60,7 +70,13 @@ class TimeSlotPattern extends AppModel {
         ),
       );
     }
+  }
 
-    _anchorPoints.sort();
+  void addAnchorPoint(TimeSlot anchorPoint) {
+    _anchorPoints.add(anchorPoint);
+  }
+
+  void addAnchorPoints(List<TimeSlot> anchorPoints) {
+    _anchorPoints.addAll(anchorPoints);
   }
 }

@@ -23,11 +23,27 @@ class EventRepositoryService {
   Future<Result<int>> saveEvent(Event event) async {
     Result<int> eventResult = await _eventRepository.insert(event);
 
-    if (eventResult is Error) return eventResult;
+    switch (eventResult) {
+      case Ok<int>(value: final int eventId):
+        event.id = eventId;
+        event.pattern.eventId = eventId;
+      case Error<int>():
+        return eventResult;
+    }
 
     Result<int> patternResult = await _patternService.savePattern(event.pattern);
 
-    if (patternResult is Error) return patternResult;
+    switch (patternResult) {
+      case Ok<int>(value: final int patternId):
+        event.pattern.id = patternId;
+        print(event.pattern.id);
+        for (final TimeSlot timeSlot in event.pattern.anchorPointsList) {
+          timeSlot.eventId = event.id;
+          timeSlot.patternId = patternId;
+        }
+      case Error<int>():
+        return patternResult;
+    }
 
     Result<void> timeSlotResult = await _timeSlotService.generateTimeSlotsForNextYear(event.id, event.pattern);
 

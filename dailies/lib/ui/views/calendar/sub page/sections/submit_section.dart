@@ -1,8 +1,12 @@
-import 'package:dailies/common/enums/time_slot_type.dart';
+import 'package:dailies/common/enums/frequency_type.dart';
+import 'package:dailies/common/exceptions/ui_exceptions.dart';
+import 'package:dailies/common/utils/ui_helpers.dart';
 import 'package:dailies/data/models/event.dart';
+import 'package:dailies/data/models/time_slot.dart';
+import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/add_event_facade.dart';
-import 'package:dailies/ui/views/calendar/sub%20page/add_event_sub_page.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/event_details_section.dart';
+import 'package:dailies/ui/views/calendar/sub%20page/sections/pattern_details_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -22,6 +26,29 @@ class SubmitSection extends StatelessWidget {
        _viewModelFacade = viewModelFacade,
        _selectedDay = selectedDay;
 
+  Event _onPressedEventCreate(Map detailFields, Map? patternFields) {
+    final String eventName = detailFields[EVENT_NAME_FIELD_TAG]?.value;
+    final String? locationName = detailFields[LOCATION_NAME_FIELD_TAG]?.value;
+
+    final Event event = Event(eventName: eventName, location: locationName);
+
+    final TimeSlot referenceTimeSlot = _viewModelFacade.eventTypeSectionViewModel.constructTimeSlot(_selectedDay);
+    TimeSlotPattern pattern = TimeSlotPattern.UnSaved(anchorPointsList: [referenceTimeSlot]);
+
+    if (patternFields != null) {
+      final int? frequencyValue = int.tryParse(patternFields[FREQUENCY_FIELD_TAG]?.value as String);
+      final FrequencyType frequencyType = patternFields[FREQUENCY_TYPE_FIELD_TAG]?.value as FrequencyType;
+      final DateTime patternEndDate = patternFields[END_DATE_FIELD_TAG]?.value as DateTime;
+
+      pattern = _viewModelFacade.patternDetailsSectionViewModel.constructTimeSlotPattern(frequencyValue, frequencyType, patternEndDate, referenceTimeSlot);
+    }
+
+    event.pattern = pattern;
+    event.timeSlots.addAll(pattern.anchorPointsList);
+
+    return event;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -32,42 +59,23 @@ class SubmitSection extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ElevatedButton(
         onPressed: () {
-          if (_detailsFormKey.currentState?.validate() ?? false) {
-            final fields = _detailsFormKey.currentState?.fields;
+          final bool hasPattern = _viewModelFacade.patternDetailsSectionViewModel.patternSectionToggle.value;
 
-            final String eventName = fields?[EVENT_NAME_FIELD_TAG]?.value;
-            final String? locationName = fields?[LOCATION_NAME_FIELD_TAG]?.value;
-
-            DateTime? startTime;
-            DateTime? endTime;
-
-            if (_viewModelFacade.eventTypeSectionViewModel.selectedTimeSlotIndex.value == TimeSlotType.values.indexOf(TimeSlotType.Interval)) {
-              startTime = DateTime(
-                _selectedDay.year,
-                _selectedDay.month,
-                _selectedDay.day,
-                _viewModelFacade.eventTypeSectionViewModel.pickedStartTime.value.hour,
-                _viewModelFacade.eventTypeSectionViewModel.pickedStartTime.value.minute,
-              );
-              endTime = DateTime(
-                _selectedDay.year,
-                _selectedDay.month,
-                _selectedDay.day,
-                _viewModelFacade.eventTypeSectionViewModel.pickedEndTime.value.hour,
-                _viewModelFacade.eventTypeSectionViewModel.pickedEndTime.value.minute,
-              );
-            } else if (_viewModelFacade.eventTypeSectionViewModel.selectedTimeSlotIndex.value == TimeSlotType.values.indexOf(TimeSlotType.Deadline)) {
-              endTime = DateTime(
-                _selectedDay.year,
-                _selectedDay.month,
-                _selectedDay.day,
-                _viewModelFacade.eventTypeSectionViewModel.pickedDeadline.value.hour,
-                _viewModelFacade.eventTypeSectionViewModel.pickedDeadline.value.minute,
-              );
-            }
-
-            Navigator.pop(context, Event(eventName: eventName, location: locationName));
+          if ((_detailsFormKey.currentState?.validate() ?? false) == false) {
+            showErrorSnackbar(exception: IncompleteFormException(specificForm: 'Event Details'));
+            return;
           }
+          if ((_patternFormKey.currentState?.validate() ?? false) == false && hasPattern) {
+            showErrorSnackbar(exception: IncompleteFormException(specificForm: 'Event Pattern'));
+            return;
+          }
+
+          final Map? detailFields = _detailsFormKey.currentState?.fields;
+          final Map? patternFields = _patternFormKey.currentState?.fields;
+
+          Event event = _onPressedEventCreate(detailFields!, patternFields);
+
+          Navigator.pop(context, event);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,

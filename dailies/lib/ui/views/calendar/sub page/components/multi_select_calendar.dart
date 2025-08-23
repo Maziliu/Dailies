@@ -1,3 +1,4 @@
+import 'package:dailies/data/models/time_slot.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -60,4 +61,9 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
         if (!isSameDay(day, selectedDay)) day,
     };
   }
+
+  List<TimeSlot> generateAnchorPoints(TimeSlot referenceTimeSlot) =>
+      selectedDays.value
+          .map((day) => TimeSlot.UnSaved(dateOfTimeSlot: day, startTime: referenceTimeSlot.startTime, endTime: referenceTimeSlot.endTime))
+          .toList();
 }

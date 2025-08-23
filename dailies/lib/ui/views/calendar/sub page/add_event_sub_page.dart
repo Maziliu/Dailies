@@ -1,15 +1,11 @@
-import 'package:dailies/common/enums/time_slot_type.dart';
-import 'package:dailies/data/models/event.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/add_event_facade.dart';
-import 'package:dailies/ui/views/calendar/sub%20page/components/multi_select_calendar.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/event_details_section.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/event_type_section.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/pattern_details_section.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/submit_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class AddEventSubPage extends StatelessWidget {
   final DateTime _selectedDay;

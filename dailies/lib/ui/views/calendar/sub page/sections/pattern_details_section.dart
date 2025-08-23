@@ -2,9 +2,11 @@ import 'package:dailies/common/enums/frequency_type.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/components/listenable_row_toggle.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/components/multi_select_calendar.dart';
+import 'package:dailies/ui/views/calendar/sub%20page/sections/view%20models/pattern_details_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 const String FREQUENCY_FIELD_TAG = 'frequencyFieldTag';
 const String FREQUENCY_TYPE_FIELD_TAG = 'frequencyTypeFieldTag';
@@ -68,8 +70,9 @@ class PatternDetailsSection extends StatelessWidget {
                                     flex: 3,
                                     child: FormBuilderDropdown<FrequencyType>(
                                       name: FREQUENCY_TYPE_FIELD_TAG,
-                                      decoration: const InputDecoration(labelText: 'Type', border: OutlineInputBorder()),
+                                      decoration: const InputDecoration(labelText: 'Units', border: OutlineInputBorder()),
                                       items: FrequencyType.values.map((type) => DropdownMenuItem(value: type, child: Text(type.name))).toList(),
+                                      validator: FormBuilderValidators.required(errorText: 'Required'),
                                     ),
                                   ),
                                 ],
@@ -105,15 +108,4 @@ class PatternDetailsSection extends StatelessWidget {
       ),
     );
   }
-}
-
-class PatternDetailsSectionViewModel extends ChangeNotifier {
-  final MultiSelectCalendarViewModel calendarViewModel;
-
-  ValueNotifier<bool> patternSectionToggle = ValueNotifier<bool>(false);
-  ValueNotifier<bool> daylightSavingToggle = ValueNotifier<bool>(false);
-  ValueNotifier<bool> finitePatternToggle = ValueNotifier<bool>(false);
-  ValueNotifier<bool> repeatablePatternToggle = ValueNotifier<bool>(false);
-
-  PatternDetailsSectionViewModel({required DateTime selectedDay}) : calendarViewModel = MultiSelectCalendarViewModel(initialSelectedDay: selectedDay);
 }

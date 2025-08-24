@@ -1,9 +1,9 @@
 import 'package:dailies/data/database/drift/drift_database.dart';
-import 'package:dailies/data/database/drift/tables/drift_events_table.dart';
+import 'package:dailies/data/database/drift/tables/drift_events.dart';
 import 'package:dailies/data/dao/event_dao.dart';
 import 'package:drift/drift.dart';
 
-part '../../../../../generated/drift_event_dao.g.dart';
+part 'drift_event_dao.g.dart';
 
 @DriftAccessor(tables: [DriftEvents])
 class DriftEventDao extends DatabaseAccessor<AppDatabase> with _$DriftEventDaoMixin implements EventDao<DriftEvent, DriftEventsCompanion> {
@@ -22,5 +22,5 @@ class DriftEventDao extends DatabaseAccessor<AppDatabase> with _$DriftEventDaoMi
   Future<bool> updateEntry(DriftEventsCompanion updatedObject) => update(driftEvents).replace(updatedObject);
 
   @override
-  Future<List<DriftEvent>> getEventsWithTimeSlotIds(List<int> timeSlotIds) => (select(driftEvents)..where((event) => event.timeSlotId.isIn(timeSlotIds))).get();
+  Future<List<DriftEvent>> getAllEventsWithIds(List<int> ids) => (select(driftEvents)..where((event) => event.id.isIn(ids))).get();
 }

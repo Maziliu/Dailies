@@ -1,9 +1,9 @@
 import 'package:dailies/data/database/drift/drift_database.dart';
-import 'package:dailies/data/database/drift/tables/drift_time_slots_table.dart';
+import 'package:dailies/data/database/drift/tables/drift_time_slots.dart';
 import 'package:dailies/data/dao/time_slot_dao.dart';
 import 'package:drift/drift.dart';
 
-part '../../../../../generated/drift_time_slot_dao.g.dart';
+part 'drift_time_slot_dao.g.dart';
 
 @DriftAccessor(tables: [DriftTimeSlots])
 class DriftTimeSlotDao extends DatabaseAccessor<AppDatabase> with _$DriftTimeSlotDaoMixin implements TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion> {
@@ -24,4 +24,7 @@ class DriftTimeSlotDao extends DatabaseAccessor<AppDatabase> with _$DriftTimeSlo
   @override
   Future<List<DriftTimeSlot>> getTimeSlotsInDateTimeRange(DateTime lowerBound, DateTime upperBound) =>
       (select(driftTimeSlots)..where((timeSlot) => timeSlot.date.isBetweenValues(lowerBound, upperBound))).get();
+
+  @override
+  Future<void> insertAllTimeSlots(List<DriftTimeSlotsCompanion> timeSlots) => batch((batch) => batch.insertAll(driftTimeSlots, timeSlots));
 }

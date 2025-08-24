@@ -1,7 +1,7 @@
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
-import 'package:dailies/ui/components/stamina%20widget/stamina_widget.dart';
+import 'package:dailies/ui/views/overview/components/stamina%20widget/stamina_widget.dart';
 import 'package:dailies/ui/views/overview/gacha%20section/gacha_view_model.dart';
 import 'package:flutter/material.dart';
 

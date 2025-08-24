@@ -11,17 +11,19 @@ class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCo
 
     return DriftTimeSlotsCompanion(
       id: (timeSlot.isNotSaved) ? const Value.absent() : Value(timeSlot.id),
-      nextTimeSlotId: (timeSlot.hasNextNode) ? Value(timeSlot.nextTimeSlotId) : const Value.absent(),
+      patternId: Value.absentIfNull(timeSlot.patternId),
       date: Value(timeSlot.dateOfTimeSlot),
       startTime: Value(timeSlot.startTime),
       endTime: Value(timeSlot.endTime),
+      eventId: Value.absentIfNull(timeSlot.eventId),
     );
   }
 
   @override
   TimeSlot convertIncomingDatabaseModelToAppModel(DriftTimeSlot incomingDatabaseModel) => TimeSlot(
     id: incomingDatabaseModel.id,
-    nextTimeSlotId: incomingDatabaseModel.nextTimeSlotId,
+    eventId: incomingDatabaseModel.eventId,
+    patternId: incomingDatabaseModel.patternId,
     dateOfTimeSlot: incomingDatabaseModel.date,
     startTime: incomingDatabaseModel.startTime,
     endTime: incomingDatabaseModel.endTime,

@@ -1,4 +1,4 @@
-import 'package:dailies/generated/assets.gen.dart';
+import 'package:dailies/common/generated/assets.gen.dart';
 import 'package:dailies/ui/components/interface/animatable_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';

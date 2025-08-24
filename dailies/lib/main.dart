@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY = GlobalKey<ScaffoldMessengerState>();
+
 void main() async {
   // debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: GLOBAL_SCAFFOLD_MESSENGER_KEY,
       debugShowCheckedModeBanner: false,
       debugShowMaterialGrid: false,
       theme: defaultTheme,

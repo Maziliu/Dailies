@@ -1,119 +1,194 @@
+import 'dart:collection';
+
+import 'package:collection/collection.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
+import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
 import 'package:dailies/ui/mixins/service_view_model_mixin.dart';
+import 'package:dailies/ui/views/shared/calendar_view_model.dart';
 import 'package:flutter/material.dart';
 
 class EventsViewModel with ServiceViewModelMixin {
+  final CalendarViewModel _calendarViewModel;
   final EventRepositoryService _eventRepositoryService;
-  final ValueNotifier<List<EventTimeSlotPair>> todayLoadedFlattenedEventsNotifier = ValueNotifier([]);
-  final ValueNotifier<List<EventTimeSlotPair>> selectedFlattenedEventsNotifier = ValueNotifier([]);
-  final ValueNotifier<List<Event>> loadedEventsNotifier = ValueNotifier([]);
-  late DateTime _currentLowerBound, _currentUpperBound;
+  final ValueNotifier<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>> dateToTimeSlotsMap = ValueNotifier(SplayTreeMap());
+  final Map<int, Event> _idToEventMap = {}; // Note: There is currently no culling logic for this.
 
-  EventsViewModel({required EventRepositoryService eventRepositoryService}) : _eventRepositoryService = eventRepositoryService;
+  late final VoidCallback _selectedEventsListener;
+
+  EventsViewModel({required CalendarViewModel calendarViewModel, required EventRepositoryService eventRepositoryService})
+    : _calendarViewModel = calendarViewModel,
+      _eventRepositoryService = eventRepositoryService {
+    _selectedEventsListener = () => notifyMapChanged();
+    _calendarViewModel.selectedDayNotifier.addListener(_selectedEventsListener);
+  }
+
+  DateTime get selectedDay => _calendarViewModel.selectedDay;
+
+  Map<int, Event> get idToEventMap => _idToEventMap;
+
+  Event? eventLookup(int id) => _idToEventMap[id];
+
+  List<TimeSlot> timeSlotsLookup(DateTime date) {
+    final DateTime normalized = DateTime(date.year, date.month, date.day);
+
+    final HeapPriorityQueue<TimeSlot>? timeSlots = dateToTimeSlotsMap.value[normalized];
+
+    if (timeSlots == null) {
+      dateToTimeSlotsMap.value[normalized] = HeapPriorityQueue<TimeSlot>();
+      _loadMonthsEventsOutsideBounds(normalized);
+      return [];
+    }
+
+    return timeSlots.toList();
+  }
+
+  void _updateLoadedEvents(List<Event> events) {
+    for (final Event event in events) {
+      _idToEventMap[event.id] = event;
+      _addTimeSlotsToMap(event.timeSlots);
+      event.timeSlots.clear();
+    }
+
+    _clampCurrentlyLoadedEvents();
+    notifyMapChanged();
+  }
+
+  //The amount of days worth of events should not exceed a limit. This will cull the earliest ones excluding today + 7
+  void _clampCurrentlyLoadedEvents() {
+    const int LIMIT = 365;
+    final DateTime now = DateTime.now(), today = DateTime(now.year, now.month, now.day);
+
+    final Set<DateTime> protectedDates = Set.from(List.generate(8, (int index) => today.add(Duration(days: index))));
+
+    final SplayTreeMap<DateTime, HeapPriorityQueue> map = dateToTimeSlotsMap.value;
+
+    while (map.length > LIMIT) {
+      DateTime? deleteFirst = map.keys.firstWhereOrNull((DateTime key) => !protectedDates.contains(key));
+      DateTime? deleteLast = map.keys.lastWhereOrNull((DateTime key) => !protectedDates.contains(key));
+
+      if (deleteFirst == null && deleteLast == null) break;
+
+      DateTime? deleteCandidate;
+      if (deleteFirst != null && deleteLast != null) {
+        deleteCandidate = (deleteFirst.difference(selectedDay).abs().inSeconds < deleteLast.difference(selectedDay).abs().inSeconds) ? deleteLast : deleteFirst;
+      } else {
+        deleteCandidate = deleteFirst ?? deleteLast;
+      }
+
+      if (deleteCandidate == null) break;
+
+      print('Clamping: Removing date ${deleteCandidate.toIso8601String().split('T')[0]} from map');
+      map.remove(deleteCandidate);
+    }
+  }
+
+  void notifyMapChanged() {
+    dateToTimeSlotsMap.value = SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>.from(dateToTimeSlotsMap.value);
+  }
+
+  void _addTimeSlotsToMap(List<TimeSlot> timeSlots) {
+    for (TimeSlot timeSlot in timeSlots) {
+      final DateTime dateOfTimeSlot = timeSlot.dateOfTimeSlot;
+      final DateTime normalized = DateTime(dateOfTimeSlot.year, dateOfTimeSlot.month, dateOfTimeSlot.day);
+
+      dateToTimeSlotsMap.value.putIfAbsent(normalized, () => HeapPriorityQueue<TimeSlot>());
+      if (!dateToTimeSlotsMap.value[normalized]!.contains(timeSlot)) dateToTimeSlotsMap.value[normalized]!.add(timeSlot);
+    }
+  }
 
   //"Around" means entirety of last, this, and next month
   Future<void> loadEventsAround(DateTime day) async {
-    _currentLowerBound = DateTime(day.month == 1 ? day.year - 1 : day.year, day.month == 1 ? 12 : day.month - 1, 1);
+    final DateTime lowerBound = DateTime(day.month == 1 ? day.year - 1 : day.year, day.month == 1 ? 12 : day.month - 1, 1);
 
     DateTime firstDayMonthAfterUpperBound = DateTime(day.month >= 11 ? day.year + 1 : day.year, (day.month + 2) % 12 == 0 ? 12 : (day.month + 2) % 12, 1);
-    _currentUpperBound = firstDayMonthAfterUpperBound.subtract(const Duration(days: 1));
-
-    final result = await _eventRepositoryService.fetchAllEventsBetweenDates(_currentLowerBound, _currentUpperBound);
-    switch (result) {
-      case Ok<List<Event>>(value: final List<Event> events):
-        loadedEventsNotifier.value = events;
-        _updateTodaysEvents();
-
-      case Error<List<Event>>(error: final Exception exception):
-        updateViewModelErrors(exception);
-    }
-  }
-
-  Future<void> updateSelectedFlattenedEvents(DateTime selectedDay) async {
-    final eventsForDay = await getEventsForDay(selectedDay);
-    selectedFlattenedEventsNotifier.value =
-        eventsForDay.expand((event) => event.timeSlots.map((slot) => EventTimeSlotPair(first: event, second: slot))).toList();
-  }
-
-  void _updateTodaysEvents() {
-    List<Event> events = loadedEventsNotifier.value.where((event) => event.timeSlots.any((slot) => slot.isSameDay(DateTime.now()))).toSet().toList()..sort();
-
-    todayLoadedFlattenedEventsNotifier.value =
-        events.expand((event) => event.timeSlots.map((timeSlot) => EventTimeSlotPair(first: event, second: timeSlot))).toList();
-  }
-
-  Future<void> _loadMonthsEventsOutsideBounds(DateTime day) async {
-    if (day.isAfter(_currentLowerBound) && day.isBefore(_currentUpperBound)) return;
-
-    DateTime endOfTheMonth = DateTime(day.month == 12 ? day.year + 1 : day.year, day.month == 12 ? 1 : day.month + 1, 1).subtract(const Duration(days: 1));
-
-    DateTime beginningOfTheMonth = DateTime(day.month == 1 ? day.year - 1 : day.year, day.month == 1 ? 12 : day.month - 1, 1);
-
-    DateTime? lowerBound;
-    DateTime? upperBound;
-
-    if (day.isAfter(_currentUpperBound)) {
-      lowerBound = _currentUpperBound.add(const Duration(days: 1));
-      upperBound = endOfTheMonth;
-    } else if (day.isBefore(_currentLowerBound)) {
-      lowerBound = beginningOfTheMonth;
-      upperBound = _currentLowerBound.subtract(const Duration(days: 1));
-    } else {
-      return;
-    }
+    final DateTime upperBound = firstDayMonthAfterUpperBound.subtract(const Duration(days: 1));
 
     final result = await _eventRepositoryService.fetchAllEventsBetweenDates(lowerBound, upperBound);
     switch (result) {
-      case Ok<List<Event>>(value: final List<Event> newEvents):
-        loadedEventsNotifier.value = [...loadedEventsNotifier.value, ...newEvents];
-
-        if (upperBound.isAfter(_currentUpperBound)) {
-          _currentUpperBound = upperBound;
-        }
-        if (lowerBound.isBefore(_currentLowerBound)) {
-          _currentLowerBound = lowerBound;
-        }
+      case Ok<List<Event>>(value: final List<Event> events):
+        _updateLoadedEvents(events);
 
       case Error<List<Event>>(error: final Exception exception):
         updateViewModelErrors(exception);
     }
   }
 
-  Future<List<Event>> getEventsForDay(DateTime day) async {
-    await _loadMonthsEventsOutsideBounds(day);
+  DateTime _getBeginningOfTheMonth(DateTime day) => DateTime(day.year, day.month, 1);
+  DateTime _getEndOfTheMonth(DateTime day) =>
+      DateTime(day.month == 12 ? day.year + 1 : day.year, day.month == 12 ? 1 : day.month + 1, 1).subtract(const Duration(days: 1));
 
-    return loadedEventsNotifier.value.where((event) => event.timeSlots.any((timeSlot) => timeSlot.isSameDay(day))).toSet().toList()..sort();
+  Future<void> _loadMonthsEventsOutsideBounds(DateTime day) async {
+    DateTime beginningOfTheMonth = _getBeginningOfTheMonth(day);
+    DateTime endOfTheMonth = _getEndOfTheMonth(day);
+
+    _preInitializeMap(beginningOfTheMonth, endOfTheMonth);
+
+    final result = await _eventRepositoryService.fetchAllEventsBetweenDates(beginningOfTheMonth, endOfTheMonth);
+    switch (result) {
+      case Ok<List<Event>>(value: final List<Event> newEvents):
+        _updateLoadedEvents(newEvents);
+
+      case Error<List<Event>>(error: final Exception exception):
+        updateViewModelErrors(exception);
+    }
   }
 
-  Future<void> addEvent(Event event) async {
-    final result = await _eventRepositoryService.saveEvent(event);
-    switch (result) {
-      case Ok<int>(value: final int eventId):
-        event.id = eventId;
-        loadedEventsNotifier.value = [...loadedEventsNotifier.value, event];
+  void _preInitializeMap(DateTime lowerBound, DateTime upperBound) {
+    if (lowerBound.year != upperBound.year || lowerBound.month != upperBound.month) return; //TODO: ERROR Report
 
-        updateSelectedFlattenedEvents(event.timeSlots.first.dateOfTimeSlot);
-
-        if (event.timeSlots.first.isSameDay(DateTime.now())) _updateTodaysEvents();
-      case Error<int>(error: final Exception exception):
-        updateViewModelErrors(exception);
+    for (int i = lowerBound.day; i <= upperBound.day; i++) {
+      final DateTime key = DateTime(lowerBound.year, lowerBound.month, i);
+      if (dateToTimeSlotsMap.value[key] == null) {
+        dateToTimeSlotsMap.value[key] = HeapPriorityQueue<TimeSlot>();
+      }
     }
   }
 
   Future<void> deleteEvent(Event event) async {
     await _eventRepositoryService.deleteEvent(event);
-    loadedEventsNotifier.value = loadedEventsNotifier.value.where((e) => e.id != event.id).toList();
 
-    updateSelectedFlattenedEvents(event.timeSlots.first.dateOfTimeSlot);
+    final List<DateTime> keys = dateToTimeSlotsMap.value.keys.toList();
 
-    if (event.timeSlots.first.isSameDay(DateTime.now())) _updateTodaysEvents();
+    for (final DateTime key in keys) {
+      final HeapPriorityQueue<TimeSlot>? timeSlots = dateToTimeSlotsMap.value[key];
+      if (timeSlots == null) continue;
+
+      final List<TimeSlot> timeslotsList = timeSlots.toList();
+      final int lengthBeforeRemove = timeslotsList.length;
+      timeslotsList.removeWhere((TimeSlot timeslot) => timeslot.eventId == event.id);
+
+      if (lengthBeforeRemove != timeslotsList.length) {
+        HeapPriorityQueue<TimeSlot> edited = HeapPriorityQueue()..addAll(timeslotsList);
+        dateToTimeSlotsMap.value[key] = edited;
+      }
+    }
+
+    notifyMapChanged();
+  }
+
+  Future<void> addEvent(Event event) async {
+    Result<int> result = await _eventRepositoryService.saveEvent(event);
+
+    switch (result) {
+      case Ok():
+        refresh();
+      case Error(error: final Exception exception):
+        updateViewModelErrors(exception);
+    }
+  }
+
+  Future<void> refresh() async {
+    dateToTimeSlotsMap.value.clear();
+    _idToEventMap.clear();
+
+    await loadEventsAround(DateTime.now());
+    await loadEventsAround(selectedDay);
   }
 
   void dispose() {
-    todayLoadedFlattenedEventsNotifier.dispose();
-    loadedEventsNotifier.dispose();
+    dateToTimeSlotsMap.dispose();
   }
 }

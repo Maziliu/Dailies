@@ -12,6 +12,5 @@ class CalendarPageViewModel extends ChangeNotifier {
 
   Future<void> _initialize() async {
     await eventsViewModel.loadEventsAround(calendarViewModel.selectedDay);
-    eventsViewModel.updateSelectedFlattenedEvents(calendarViewModel.selectedDay);
   }
 }

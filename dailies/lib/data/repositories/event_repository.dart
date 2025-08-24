@@ -15,10 +15,10 @@ class EventRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with Repos
   }) : _dao = dao,
        _mapper = mapper;
 
-  Future<Result<List<AppModel>>> getEventsWithTimeSlotIds(List<int> timeSlotIds) async {
-    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getEventsWithTimeSlotIds(timeSlotIds));
+  Future<Result<List<AppModel>>> getAllEventsWithIds(List<int> ids) async {
+    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getAllEventsWithIds(ids));
 
-    return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
+    return performOperationOnResultIfNotError(results, (results) => results.map((result) => _mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
   }
 
   @override

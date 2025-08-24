@@ -3,6 +3,7 @@ import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/data/dao/time_slot_dao.dart';
 import 'package:dailies/data/mapper/time_slot_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
+import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
 class TimeSlotRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseModel> {
@@ -20,6 +21,12 @@ class TimeSlotRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with Re
 
     return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
   }
+
+  Future<Result<void>> insertAllTimeSlots(List<TimeSlot> timeSlots) async => guardedAsyncExcecute(() {
+    List<TOutgoingDatabaseModel> outgoingTimeSlots = timeSlots.map((timeSlot) => _mapper.convertAppModelToOutgoingDatabaseModel(timeSlot)).toList();
+
+    return _dao.insertAllTimeSlots(outgoingTimeSlots);
+  });
 
   @override
   TimeSlotDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> get dao => _dao;

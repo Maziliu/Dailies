@@ -35,7 +35,7 @@ class TimeSlotPattern extends AppModel {
   Duration? get frequency => _frequency;
 
   bool get isAffectedByDaylightSavings => _timeZoneId != null;
-  bool get isReacurring => _frequency != null && endPatternDate != null;
+  bool get isReacurring => _frequency != null;
   bool get isFinite => endPatternDate != null;
 
   List<TimeSlot> get anchorPointsList => _anchorPoints.toList();

@@ -36,9 +36,9 @@ class SubmitSection extends StatelessWidget {
     TimeSlotPattern pattern = TimeSlotPattern.UnSaved(anchorPointsList: [referenceTimeSlot]);
 
     if (patternFields != null) {
-      final int? frequencyValue = int.tryParse(patternFields[FREQUENCY_FIELD_TAG]?.value as String);
-      final FrequencyType frequencyType = patternFields[FREQUENCY_TYPE_FIELD_TAG]?.value as FrequencyType;
-      final DateTime patternEndDate = patternFields[END_DATE_FIELD_TAG]?.value as DateTime;
+      final int? frequencyValue = int.tryParse(patternFields[FREQUENCY_FIELD_TAG]?.value ?? '');
+      final FrequencyType? frequencyType = patternFields[FREQUENCY_TYPE_FIELD_TAG]?.value;
+      final DateTime? patternEndDate = patternFields[END_DATE_FIELD_TAG]?.value;
 
       pattern = _viewModelFacade.patternDetailsSectionViewModel.constructTimeSlotPattern(frequencyValue, frequencyType, patternEndDate, referenceTimeSlot);
     }
@@ -74,6 +74,8 @@ class SubmitSection extends StatelessWidget {
           final Map? patternFields = _patternFormKey.currentState?.fields;
 
           Event event = _onPressedEventCreate(detailFields!, patternFields);
+
+          print(event);
 
           Navigator.pop(context, event);
         },

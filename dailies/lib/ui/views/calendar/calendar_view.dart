@@ -22,7 +22,7 @@ class CalendarView extends StatelessWidget {
         child: Column(
           children: [
             CalendarSection(calendarViewModel: pageViewModel.calendarViewModel),
-            Expanded(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel, calendarViewModel: pageViewModel.calendarViewModel)),
+            Expanded(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel)),
           ],
         ),
       ),

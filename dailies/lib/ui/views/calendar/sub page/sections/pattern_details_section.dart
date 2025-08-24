@@ -58,9 +58,7 @@ class PatternDetailsSection extends StatelessWidget {
                                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                       validator: (value) {
                                         if (value == null || value.isEmpty) return "Required";
-                                        if (int.tryParse(value) == null || int.parse(value) <= 0) {
-                                          return "Must be non zero";
-                                        }
+
                                         return null;
                                       },
                                     ),

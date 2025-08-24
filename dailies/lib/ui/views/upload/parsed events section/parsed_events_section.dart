@@ -1,4 +1,6 @@
 import 'package:dailies/common/utils/typedefs.dart';
+import 'package:dailies/data/models/event.dart';
+import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
 import 'package:dailies/ui/components/section.dart';
@@ -25,10 +27,18 @@ class ParsedEventsSection extends StatelessWidget {
                     ValueListenableBuilder(
                       valueListenable: _parsedEventsViewModel.foundEvents,
                       builder: (context, events, _) {
-                        final List<EventTimeSlotPair> flattenedEvents =
-                            _parsedEventsViewModel.foundEvents.value.map((event) => EventTimeSlotPair(first: event, second: event.timeSlots.first)).toList();
+                        final Map<int, Event> idToEventMap = {for (final Event event in events) event.id: event};
+                        final List<TimeSlot> timeSlots = [for (final Event event in events) ...event.timeSlots];
 
-                        return ScheduleListViewWidget(pairs: flattenedEvents, builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair));
+                        for (final Event event in events) {
+                          event.timeSlots.clear();
+                        }
+
+                        return ScheduleListViewWidget(
+                          idToEventMap: idToEventMap,
+                          timeSlots: timeSlots,
+                          builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
+                        );
                       },
                     ),
                   ],

@@ -13,8 +13,10 @@ import 'package:get_it/get_it.dart';
 
 Future<void> setUpPresentationLayer(GetIt injector) async {
   //Service View Models
-  injector.registerLazySingleton<EventsViewModel>(() => EventsViewModel(eventRepositoryService: injector<EventRepositoryService>()));
   injector.registerLazySingleton<CalendarViewModel>(() => CalendarViewModel());
+  injector.registerLazySingleton<EventsViewModel>(
+    () => EventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), calendarViewModel: injector<CalendarViewModel>()),
+  );
   injector.registerLazySingleton<GachaViewModel>(() => GachaViewModel(staminaRepositoryService: injector<StaminaRepositoryService>()));
   injector.registerLazySingleton<FileUploadViewModel>(() => FileUploadViewModel());
   injector.registerLazySingleton<ParsedEventsViewModel>(() => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>()));

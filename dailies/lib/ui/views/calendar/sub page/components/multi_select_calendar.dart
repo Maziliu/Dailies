@@ -15,7 +15,7 @@ class MultiSelectCalendar extends StatelessWidget {
         return TableCalendar(
           firstDay: DateTime.utc(2020, 1, 1),
           lastDay: DateTime.utc(2030, 12, 31),
-          focusedDay: DateTime.now(),
+          focusedDay: _viewModel.getFocusedDay(),
           selectedDayPredicate: (day) {
             return selectedDays.any((selectedDay) => isSameDay(selectedDay, day));
           },
@@ -37,29 +37,65 @@ class MultiSelectCalendar extends StatelessWidget {
 }
 
 class MultiSelectCalendarViewModel extends ChangeNotifier {
-  final ValueNotifier<Set<DateTime>> selectedDays;
+  final ValueNotifier<List<DateTime>> selectedDays;
+  DateTime _lastInteractedDay = DateTime.now();
 
-  MultiSelectCalendarViewModel({Set<DateTime>? initialSelectedDays, DateTime? initialSelectedDay}) : selectedDays = ValueNotifier<Set<DateTime>>({}) {
-    final initialSet = <DateTime>{};
+  MultiSelectCalendarViewModel({Set<DateTime>? initialSelectedDays, DateTime? initialSelectedDay}) : selectedDays = ValueNotifier<List<DateTime>>([]) {
+    final initialList = <DateTime>[];
     if (initialSelectedDays != null) {
-      initialSet.addAll(initialSelectedDays.map((day) => DateTime(day.year, day.month, day.day)));
+      for (final day in initialSelectedDays) {
+        initialList.add(DateTime(day.year, day.month, day.day));
+      }
     }
     if (initialSelectedDay != null) {
-      initialSet.add(DateTime(initialSelectedDay.year, initialSelectedDay.month, initialSelectedDay.day));
+      final normalized = DateTime(initialSelectedDay.year, initialSelectedDay.month, initialSelectedDay.day);
+      if (!initialList.any((day) => isSameDay(day, normalized))) {
+        initialList.add(normalized);
+      }
+      _lastInteractedDay = normalized;
     }
-    selectedDays.value = initialSet;
+    selectedDays.value = initialList;
+  }
+
+  DateTime getFocusedDay() {
+    if (selectedDays.value.isEmpty) {
+      return DateTime.now();
+    }
+
+    DateTime closest = selectedDays.value.first;
+    int closestDifference = (_lastInteractedDay.difference(closest)).abs().inDays;
+
+    for (final day in selectedDays.value) {
+      final difference = (_lastInteractedDay.difference(day)).abs().inDays;
+      if (difference < closestDifference) {
+        closest = day;
+        closestDifference = difference;
+      }
+    }
+
+    return closest;
   }
 
   void addSelectedDay(DateTime day) {
     final normalized = DateTime(day.year, day.month, day.day);
-    selectedDays.value = {...selectedDays.value, normalized};
+    _lastInteractedDay = normalized;
+
+    final currentList = List<DateTime>.from(selectedDays.value);
+
+    currentList.removeWhere((existingDay) => isSameDay(existingDay, normalized));
+
+    currentList.add(normalized);
+
+    selectedDays.value = currentList;
   }
 
   void removeSelectedDay(DateTime selectedDay) {
-    selectedDays.value = {
-      for (final day in selectedDays.value)
-        if (!isSameDay(day, selectedDay)) day,
-    };
+    final normalized = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+    _lastInteractedDay = normalized;
+
+    final currentList = List<DateTime>.from(selectedDays.value);
+    currentList.removeWhere((day) => isSameDay(day, selectedDay));
+    selectedDays.value = currentList;
   }
 
   List<TimeSlot> generateAnchorPoints(TimeSlot referenceTimeSlot) =>

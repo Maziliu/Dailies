@@ -36,7 +36,6 @@ class EventRepositoryService {
     switch (patternResult) {
       case Ok<int>(value: final int patternId):
         event.pattern.id = patternId;
-        print(event.pattern.id);
         for (final TimeSlot timeSlot in event.pattern.anchorPointsList) {
           timeSlot.eventId = event.id;
           timeSlot.patternId = patternId;
@@ -75,5 +74,5 @@ class EventRepositoryService {
     return events;
   }
 
-  Future<void> deleteEvent(Event event) => _eventRepository.deleteById(event.id);
+  Future<Result<void>> deleteEvent(Event event) => _eventRepository.deleteById(event.id);
 }

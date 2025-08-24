@@ -30,25 +30,34 @@ class TimeSlotRepositoryService {
       DateTime limit = DateTime.now().add(const Duration(days: 365));
       Duration patternLength = _computePatternLength(timeSlots);
       Duration patternFrequency = pattern.frequency!;
+      Duration totalOffset = patternLength + patternFrequency;
 
-      int offsetCount = 1;
       for (final TimeSlot timeSlot in pattern.anchorPointsList) {
-        DateTime currentLoopDate = _determineEarliestTime(timeSlot);
-        Duration offset = Duration(seconds: (patternLength.inSeconds + patternFrequency.inSeconds) * offsetCount);
-        currentLoopDate = currentLoopDate.add(offset);
+        DateTime currentDate = _determineEarliestTime(timeSlot);
+        int offsetCount = 1;
 
-        if (currentLoopDate.isAfter(limit) || (pattern.isFinite && currentLoopDate.isAfter(pattern.endPatternDate!))) break;
+        while (true) {
+          Duration currentOffset = totalOffset * offsetCount;
+          DateTime nextDate = currentDate.add(currentOffset);
 
-        timeSlots.add(
-          TimeSlot(
-            patternId: pattern.id,
-            eventId: eventId,
-            dateOfTimeSlot: timeSlot.dateOfTimeSlot.add(offset),
-            startTime: timeSlot.startTime?.add(offset),
-            endTime: timeSlot.endTime?.add(offset),
-          ),
-        );
-        offsetCount++;
+          print(nextDate);
+
+          if (nextDate.isAfter(limit) || (pattern.isFinite && nextDate.isAfter(pattern.endPatternDate!))) {
+            break;
+          }
+
+          timeSlots.add(
+            TimeSlot(
+              patternId: pattern.id,
+              eventId: eventId,
+              dateOfTimeSlot: timeSlot.dateOfTimeSlot.add(currentOffset),
+              startTime: timeSlot.startTime,
+              endTime: timeSlot.endTime,
+            ),
+          );
+
+          offsetCount++;
+        }
       }
     }
 
@@ -66,17 +75,23 @@ class TimeSlotRepositoryService {
     }
   }
 
+  DateTime _determineLatestTime(TimeSlot timeSlot) {
+    switch (timeSlot.timeSlotType) {
+      case TimeSlotType.Unspecified:
+        return DateTime(
+          timeSlot.dateOfTimeSlot.year,
+          timeSlot.dateOfTimeSlot.month,
+          timeSlot.dateOfTimeSlot.day,
+        ).add(const Duration(days: 1)); //Dates are normalized so add a day to account for timestamp being at the begining of the day
+      default:
+        return timeSlot.endTime!;
+    }
+  }
+
   Duration _computePatternLength(List<TimeSlot> timeSlots) {
     TimeSlot firstTimeSlot = timeSlots.first, lastTimeSlot = timeSlots.last;
 
-    DateTime earliestTime = _determineEarliestTime(firstTimeSlot), latestTime;
-
-    switch (lastTimeSlot.timeSlotType) {
-      case TimeSlotType.Unspecified:
-        latestTime = DateTime(lastTimeSlot.dateOfTimeSlot.year, lastTimeSlot.dateOfTimeSlot.month, lastTimeSlot.dateOfTimeSlot.day);
-      default:
-        latestTime = lastTimeSlot.endTime!;
-    }
+    DateTime earliestTime = _determineEarliestTime(firstTimeSlot), latestTime = _determineLatestTime(lastTimeSlot);
 
     return latestTime.difference(earliestTime);
   }

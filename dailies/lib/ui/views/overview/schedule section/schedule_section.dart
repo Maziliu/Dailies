@@ -1,4 +1,8 @@
+import 'dart:collection';
+
+import 'package:collection/priority_queue.dart';
 import 'package:dailies/common/utils/typedefs.dart';
+import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/section.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
@@ -31,10 +35,16 @@ class ScheduleSection extends StatelessWidget {
             Expanded(
               child: SectionContent(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: ValueListenableBuilder<List<EventTimeSlotPair>>(
-                  valueListenable: _eventsViewModel.todayLoadedFlattenedEventsNotifier,
-                  builder: (context, pairs, _) {
-                    return ScheduleListViewWidget(pairs: pairs, builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair));
+                child: ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(
+                  valueListenable: _eventsViewModel.dateToTimeSlotsMap,
+                  builder: (context, map, _) {
+                    DateTime now = DateTime.now(), normalized = DateTime(now.year, now.month, now.day);
+
+                    return ScheduleListViewWidget(
+                      timeSlots: _eventsViewModel.timeSlotsLookup(normalized),
+                      idToEventMap: _eventsViewModel.idToEventMap,
+                      builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
+                    );
                   },
                 ),
               ),
@@ -62,9 +72,9 @@ class _ScheduleHeader extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    return ValueListenableBuilder<List<EventTimeSlotPair>>(
-      valueListenable: _eventsViewModel.todayLoadedFlattenedEventsNotifier,
-      builder: (context, pairs, _) {
+    return ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(
+      valueListenable: _eventsViewModel.dateToTimeSlotsMap,
+      builder: (context, map, _) {
         return Container(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
           decoration: BoxDecoration(color: colorScheme.surface, borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
@@ -78,11 +88,11 @@ class _ScheduleHeader extends StatelessWidget {
                       DateFormat.yMMMMd().format(DateTime.now()),
                       style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      _getSubtitleText(pairs.length),
-                      style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withAlpha(140), fontWeight: FontWeight.w500),
-                    ),
+                    // const SizedBox(height: 2),
+                    // Text(
+                    //   _getSubtitleText(pairs.length),
+                    //   style: textTheme.bodySmall?.copyWith(color: colorScheme.onSurface.withAlpha(140), fontWeight: FontWeight.w500),
+                    // ),
                   ],
                 ),
               ),
@@ -90,13 +100,13 @@ class _ScheduleHeader extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: pairs.isEmpty ? colorScheme.outline.withAlpha(30) : colorScheme.primary.withAlpha(30),
+                  color: map.isEmpty ? colorScheme.outline.withAlpha(30) : colorScheme.primary.withAlpha(30),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  pairs.length.toString(),
+                  _eventsViewModel.timeSlotsLookup(DateTime.now()).toList().length.toString(),
                   style: textTheme.labelMedium?.copyWith(
-                    color: pairs.isEmpty ? colorScheme.onSurface.withAlpha(120) : colorScheme.primary,
+                    color: map.isEmpty ? colorScheme.onSurface.withAlpha(120) : colorScheme.primary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -8,6 +8,10 @@ class CalendarViewModel {
 
   DateTime get selectedDay => selectedDayNotifier.value;
 
+  void procSelectedDayNotifier() {
+    selectedDayNotifier.value = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+  }
+
   void onDaySelect(DateTime day) {
     if (!isSameDay(day, selectedDayNotifier.value)) {
       selectedDayNotifier.value = day;

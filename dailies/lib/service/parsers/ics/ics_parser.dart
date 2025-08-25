@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -11,15 +12,21 @@ class ICSParser implements Parser {
   @override
   Future<Result<List<Event>>> parseFile(PlatformFile file) async {
     try {
-      if (file.bytes == null) {
-        return Result.error(Exception('File data is null'));
+      if (file.path == null) {
+        return Result.error(Exception('File path is null'));
+      }
+
+      File icsFile = File(file.path!);
+
+      if (!await icsFile.exists()) {
+        return Result.error(Exception('File does not exist'));
       }
 
       String icsContent;
       try {
-        icsContent = utf8.decode(file.bytes!);
+        icsContent = await icsFile.readAsString(encoding: utf8);
       } catch (e) {
-        return Result.error(Exception('Failed to decode file content: ${e.toString()}'));
+        return Result.error(Exception('Failed to read file content: ${e.toString()}'));
       }
 
       ICalendar iCalendar;
@@ -61,8 +68,19 @@ class ICSParser implements Parser {
               endPatternDate = recurrenceInfo['until'];
             }
 
-            if (event['dtstart'] is Map && event['dtstart']['TZID'] != null) {
-              timeZoneId = event['dtstart']['TZID'].toString();
+            // Extract timezone information
+            if (event['dtstart'] is Map && event['dtstart']['tzid'] != null) {
+              timeZoneId = event['dtstart']['tzid'].toString();
+            } else if (event['dtstart'] != null) {
+              // Try to extract from IcsDateTime object string
+              String dtstartStr = event['dtstart'].toString();
+              if (dtstartStr.startsWith('IcsDateTime{')) {
+                RegExp tzidRegex = RegExp(r'tzid:\s*([^,}]+)');
+                Match? match = tzidRegex.firstMatch(dtstartStr);
+                if (match != null) {
+                  timeZoneId = match.group(1)!.trim();
+                }
+              }
             }
 
             Event parsedEvent = Event(eventName: summary ?? 'Untitled Event', location: location);
@@ -82,6 +100,7 @@ class ICSParser implements Parser {
               );
 
               parsedEvent.pattern = pattern;
+              parsedEvent.timeSlots.add(anchorPoint);
             }
 
             events.add(parsedEvent);
@@ -149,7 +168,26 @@ class ICSParser implements Parser {
     if (dateTimeValue == null) return null;
 
     try {
-      String dateTimeStr = dateTimeValue.toString();
+      String dateTimeStr;
+
+      // Handle IcsDateTime objects
+      if (dateTimeValue is Map) {
+        dateTimeStr = dateTimeValue['dt']?.toString() ?? '';
+      } else {
+        dateTimeStr = dateTimeValue.toString();
+      }
+
+      // If it's still an IcsDateTime object string, try to extract the dt value
+      if (dateTimeStr.startsWith('IcsDateTime{')) {
+        RegExp dtRegex = RegExp(r'dt:\s*([^,}]+)');
+        Match? match = dtRegex.firstMatch(dateTimeStr);
+        if (match != null) {
+          dateTimeStr = match.group(1)!.trim();
+        } else {
+          print('Could not extract datetime from IcsDateTime object: $dateTimeStr');
+          return null;
+        }
+      }
 
       if (dateTimeStr.contains('T')) {
         //Format: YYYYMMDDTHHMMSS or YYYYMMDDTHHMMSSZ

@@ -30,13 +30,18 @@ class ParsedEventsSection extends StatelessWidget {
                         final Map<int, Event> idToEventMap = {for (final Event event in events) event.id: event};
                         final List<TimeSlot> timeSlots = [for (final Event event in events) ...event.timeSlots];
 
+                        print(idToEventMap);
+                        print(timeSlots);
+                        print([for (var event in events) event.pattern]);
                         for (final Event event in events) {
                           event.timeSlots.clear();
                         }
 
                         return ScheduleListViewWidget(
-                          idToEventMap: idToEventMap,
-                          timeSlots: timeSlots,
+                          pairs:
+                              events
+                                  .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
+                                  .toList(),
                           builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
                         );
                       },

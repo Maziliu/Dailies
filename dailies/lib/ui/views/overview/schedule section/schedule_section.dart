@@ -41,8 +41,12 @@ class ScheduleSection extends StatelessWidget {
                     DateTime now = DateTime.now(), normalized = DateTime(now.year, now.month, now.day);
 
                     return ScheduleListViewWidget(
-                      timeSlots: _eventsViewModel.timeSlotsLookup(normalized),
-                      idToEventMap: _eventsViewModel.idToEventMap,
+                      pairs:
+                          map[normalized]
+                              ?.toList()
+                              .map((TimeSlot timeslot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeslot.eventId)!, second: timeslot))
+                              .toList() ??
+                          [],
                       builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
                     );
                   },

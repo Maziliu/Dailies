@@ -1,4 +1,9 @@
+import 'dart:async';
+
+import 'package:dailies/common/exceptions/app_exception.dart';
+import 'package:dailies/common/utils/ui_helpers.dart';
 import 'package:dailies/dependency_setup.dart';
+import 'package:dailies/service/global_error_service.dart';
 import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';
 import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:dailies/ui/views/calendar/calendar_view.dart';
@@ -10,8 +15,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
+
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  late StreamSubscription<Exception> _errorSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _errorSubscription = injector<GloablErrorService>().errorStream.listen(_onError);
+  }
+
+  @override
+  void dispose() {
+    _errorSubscription.cancel();
+    super.dispose();
+  }
+
+  void _onError(Exception exception) {
+    showErrorSnackbar(message: exception.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +80,15 @@ class DashboardView extends StatelessWidget {
                 selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
                 unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
                 items: [
-                  BottomNavigationBarItem(icon: _buildNavIcon(Icons.dashboard_rounded, 0, viewModel.selectedTabIndex, colorScheme), label: 'Overview'),
-                  BottomNavigationBarItem(icon: _buildNavIcon(Icons.calendar_today_rounded, 1, viewModel.selectedTabIndex, colorScheme), label: 'Calendar'),
-                  BottomNavigationBarItem(icon: _buildNavIcon(Icons.cloud_upload_rounded, 2, viewModel.selectedTabIndex, colorScheme), label: 'Upload'),
+                  BottomNavigationBarItem(icon: _buildNavigationWidget(Icons.dashboard_rounded, 0, viewModel.selectedTabIndex, colorScheme), label: 'Overview'),
+                  BottomNavigationBarItem(
+                    icon: _buildNavigationWidget(Icons.calendar_today_rounded, 1, viewModel.selectedTabIndex, colorScheme),
+                    label: 'Calendar',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: _buildNavigationWidget(Icons.cloud_upload_rounded, 2, viewModel.selectedTabIndex, colorScheme),
+                    label: 'Upload',
+                  ),
                 ],
               ),
             ),
@@ -64,7 +98,7 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildNavIcon(IconData icon, int index, int selectedIndex, ColorScheme colorScheme) {
+  Widget _buildNavigationWidget(IconData icon, int index, int selectedIndex, ColorScheme colorScheme) {
     final isSelected = index == selectedIndex;
 
     return Icon(icon, size: 24, color: isSelected ? colorScheme.primary : colorScheme.onSurface.withAlpha(120));

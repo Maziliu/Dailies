@@ -2,15 +2,14 @@ import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:dailies/common/utils/result.dart';
-import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
-import 'package:dailies/ui/mixins/service_view_model_mixin.dart';
+import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:dailies/ui/views/shared/calendar_view_model.dart';
 import 'package:flutter/material.dart';
 
-class EventsViewModel with ServiceViewModelMixin {
+class EventsViewModel with ErrorStreamMixin {
   final CalendarViewModel _calendarViewModel;
   final EventRepositoryService _eventRepositoryService;
   final ValueNotifier<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>> dateToTimeSlotsMap = ValueNotifier(SplayTreeMap());
@@ -112,7 +111,7 @@ class EventsViewModel with ServiceViewModelMixin {
         _updateLoadedEvents(events);
 
       case Error<List<Event>>(error: final Exception exception):
-        updateViewModelErrors(exception);
+        emitError(exception);
     }
   }
 
@@ -132,7 +131,7 @@ class EventsViewModel with ServiceViewModelMixin {
         _updateLoadedEvents(newEvents);
 
       case Error<List<Event>>(error: final Exception exception):
-        updateViewModelErrors(exception);
+        emitError(exception);
     }
   }
 
@@ -176,7 +175,7 @@ class EventsViewModel with ServiceViewModelMixin {
       case Ok():
         refresh();
       case Error(error: final Exception exception):
-        updateViewModelErrors(exception);
+        emitError(exception);
     }
   }
 

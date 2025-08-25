@@ -1,10 +1,10 @@
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
-import 'package:dailies/ui/mixins/service_view_model_mixin.dart';
+import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:flutter/material.dart';
 
-class GachaViewModel extends ChangeNotifier with ServiceViewModelMixin {
+class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
   final StaminaRepositoryService _staminaRepositoryService;
   final ValueNotifier<List<Stamina>> staminas = ValueNotifier([]);
 
@@ -29,7 +29,7 @@ class GachaViewModel extends ChangeNotifier with ServiceViewModelMixin {
         stamina.id = id;
         staminas.value = [...staminas.value, stamina];
       case Error<int>(error: final Exception exception):
-        updateViewModelErrors(exception);
+        emitError(exception);
     }
   }
 
@@ -44,7 +44,7 @@ class GachaViewModel extends ChangeNotifier with ServiceViewModelMixin {
       case Ok<List<Stamina>>(value: final staminaList):
         staminas.value = staminaList;
       case Error<List<Stamina>>(error: final Exception exception):
-        updateViewModelErrors(exception);
+        emitError(exception);
     }
 
     for (Stamina s in staminas.value) {
@@ -59,7 +59,7 @@ class GachaViewModel extends ChangeNotifier with ServiceViewModelMixin {
       case Ok<int>():
         staminas.value = staminas.value.where((currrentStamina) => currrentStamina != stamina).toList();
       case Error<int>(error: final Exception exception):
-        updateViewModelErrors(exception);
+        emitError(exception);
     }
   }
 }

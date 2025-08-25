@@ -13,7 +13,7 @@ class EventsViewModel with ErrorStreamMixin {
   final CalendarViewModel _calendarViewModel;
   final EventRepositoryService _eventRepositoryService;
   final ValueNotifier<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>> dateToTimeSlotsMap = ValueNotifier(SplayTreeMap());
-  final Map<int, Event> _idToEventMap = {}; // Note: There is currently no culling logic for this.
+  final Map<int, Event> _idToEventMap = {}; // Note: There is currently no culling logic for this (aside from adding and deleting events that proc a refresh).
 
   late final VoidCallback _selectedEventsListener;
 

@@ -28,4 +28,7 @@ Future<void> setUpServiceLayer(GetIt injector) async {
   injector.registerLazySingleton(() => StaminaRepositoryService(repository: injector<StaminaRepository<DriftStamina, DriftStaminasCompanion>>()));
 
   injector.registerLazySingleton(() => TimeSlotPatternRepositoryService(patternRepository: injector<TimeSlotPatternRepository>()));
+
+  //Parser Services
+  injector.registerLazySingleton(() => FileParserService());
 }

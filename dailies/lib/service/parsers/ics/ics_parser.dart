@@ -56,31 +56,16 @@ class ICSParser implements Parser {
             }
 
             String? rrule = event['rrule']?.toString();
+            print(rrule);
             bool isRecurring = rrule != null;
 
             Duration? frequency;
             DateTime? endPatternDate;
-            String? timeZoneId;
 
             if (isRecurring) {
               final recurrenceInfo = _parseRecurrenceRule(rrule);
               frequency = recurrenceInfo['frequency'];
               endPatternDate = recurrenceInfo['until'];
-            }
-
-            // Extract timezone information
-            if (event['dtstart'] is Map && event['dtstart']['tzid'] != null) {
-              timeZoneId = event['dtstart']['tzid'].toString();
-            } else if (event['dtstart'] != null) {
-              // Try to extract from IcsDateTime object string
-              String dtstartStr = event['dtstart'].toString();
-              if (dtstartStr.startsWith('IcsDateTime{')) {
-                RegExp tzidRegex = RegExp(r'tzid:\s*([^,}]+)');
-                Match? match = tzidRegex.firstMatch(dtstartStr);
-                if (match != null) {
-                  timeZoneId = match.group(1)!.trim();
-                }
-              }
             }
 
             Event parsedEvent = Event(eventName: summary ?? 'Untitled Event', location: location);
@@ -94,7 +79,6 @@ class ICSParser implements Parser {
 
               TimeSlotPattern pattern = TimeSlotPattern.UnSaved(
                 endPatternDate: endPatternDate,
-                timeZoneId: timeZoneId,
                 frequencyInSeconds: frequency?.inSeconds,
                 anchorPointsList: [anchorPoint],
               );

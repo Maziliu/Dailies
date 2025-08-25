@@ -8,4 +8,5 @@ class DriftTimeSlotPatterns extends Table {
   IntColumn get frequencyInSeconds => integer().nullable()();
   DateTimeColumn get endDate => dateTime().nullable()();
   TextColumn get timeZoneId => text().nullable()();
+  TextColumn get rrule => text().nullable()();
 }

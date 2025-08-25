@@ -5,15 +5,29 @@ import 'package:dailies/data/models/time_slot.dart';
 class TimeSlotPattern extends AppModel {
   final DateTime? _endPatternDate;
   final HeapPriorityQueue<TimeSlot> _anchorPoints = HeapPriorityQueue<TimeSlot>();
+  final List<DateTime> _exclusionDates = [];
   final String? _timeZoneId;
   final Duration? _frequency;
+  final String? _recurranceRule;
   late final int eventId;
 
-  TimeSlotPattern({super.id, required this.eventId, DateTime? endPatternDate, String? anchorPointsString, String? timeZoneId, int? frequencyInSeconds})
-    : _endPatternDate = endPatternDate,
-      _timeZoneId = timeZoneId,
-      _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds) {
+  TimeSlotPattern({
+    super.id,
+    required this.eventId,
+    DateTime? endPatternDate,
+    String? anchorPointsString,
+    String? timeZoneId,
+    int? frequencyInSeconds,
+    String? recurranceRule,
+    String? exclusionDateString,
+    List<DateTime>? exclusionDates,
+  }) : _endPatternDate = endPatternDate,
+       _timeZoneId = timeZoneId,
+       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds),
+       _recurranceRule = recurranceRule {
     anchorPoints = anchorPointsString;
+    _exclusionDates.addAll(exclusionDates ?? []);
+    _exclusionDates.addAll(exclusionDateString?.split(';').map((String dateString) => DateTime.parse(dateString)).toList() ?? []);
   }
 
   TimeSlotPattern.UnSaved({
@@ -22,21 +36,27 @@ class TimeSlotPattern extends AppModel {
     String? anchorPointsString,
     String? timeZoneId,
     int? frequencyInSeconds,
+    String? recurranceRule,
     List<TimeSlot>? anchorPointsList,
+    List<DateTime>? exclusionDates,
   }) : _endPatternDate = endPatternDate,
        _timeZoneId = timeZoneId,
-       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds) {
+       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds),
+       _recurranceRule = recurranceRule {
     anchorPoints = anchorPointsString;
     addAnchorPoints(anchorPointsList ?? []);
+    _exclusionDates.addAll(exclusionDates ?? []);
   }
 
   DateTime? get endPatternDate => _endPatternDate;
   String? get timeZoneId => _timeZoneId;
   Duration? get frequency => _frequency;
+  String? get recurranceRule => _recurranceRule;
 
   bool get isAffectedByDaylightSavings => _timeZoneId != null;
   bool get isReacurring => _frequency != null;
   bool get isFinite => endPatternDate != null;
+  bool get hasRecurranceRule => _recurranceRule != null;
 
   List<TimeSlot> get anchorPointsList => _anchorPoints.toList();
 
@@ -52,6 +72,8 @@ class TimeSlotPattern extends AppModel {
     }
     return stringTriples.join(',');
   }
+
+  String? get exclusionDatesAsString => (_exclusionDates.isNotEmpty) ? _exclusionDates.join(';') : null;
 
   set anchorPoints(String? encodedString) {
     if (encodedString == null) return;

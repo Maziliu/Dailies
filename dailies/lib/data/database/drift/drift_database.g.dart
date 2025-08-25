@@ -333,6 +333,15 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _rruleMeta = const VerificationMeta('rrule');
+  @override
+  late final GeneratedColumn<String> rrule = GeneratedColumn<String>(
+    'rrule',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -341,6 +350,7 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
     frequencyInSeconds,
     endDate,
     timeZoneId,
+    rrule,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -398,6 +408,12 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
         ),
       );
     }
+    if (data.containsKey('rrule')) {
+      context.handle(
+        _rruleMeta,
+        rrule.isAcceptableOrUnknown(data['rrule']!, _rruleMeta),
+      );
+    }
     return context;
   }
 
@@ -433,6 +449,10 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
         DriftSqlType.string,
         data['${effectivePrefix}time_zone_id'],
       ),
+      rrule: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rrule'],
+      ),
     );
   }
 
@@ -450,6 +470,7 @@ class DriftTimeSlotPattern extends DataClass
   final int? frequencyInSeconds;
   final DateTime? endDate;
   final String? timeZoneId;
+  final String? rrule;
   const DriftTimeSlotPattern({
     required this.id,
     required this.eventId,
@@ -457,6 +478,7 @@ class DriftTimeSlotPattern extends DataClass
     this.frequencyInSeconds,
     this.endDate,
     this.timeZoneId,
+    this.rrule,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -474,6 +496,9 @@ class DriftTimeSlotPattern extends DataClass
     }
     if (!nullToAbsent || timeZoneId != null) {
       map['time_zone_id'] = Variable<String>(timeZoneId);
+    }
+    if (!nullToAbsent || rrule != null) {
+      map['rrule'] = Variable<String>(rrule);
     }
     return map;
   }
@@ -498,6 +523,8 @@ class DriftTimeSlotPattern extends DataClass
           timeZoneId == null && nullToAbsent
               ? const Value.absent()
               : Value(timeZoneId),
+      rrule:
+          rrule == null && nullToAbsent ? const Value.absent() : Value(rrule),
     );
   }
 
@@ -513,6 +540,7 @@ class DriftTimeSlotPattern extends DataClass
       frequencyInSeconds: serializer.fromJson<int?>(json['frequencyInSeconds']),
       endDate: serializer.fromJson<DateTime?>(json['endDate']),
       timeZoneId: serializer.fromJson<String?>(json['timeZoneId']),
+      rrule: serializer.fromJson<String?>(json['rrule']),
     );
   }
   @override
@@ -525,6 +553,7 @@ class DriftTimeSlotPattern extends DataClass
       'frequencyInSeconds': serializer.toJson<int?>(frequencyInSeconds),
       'endDate': serializer.toJson<DateTime?>(endDate),
       'timeZoneId': serializer.toJson<String?>(timeZoneId),
+      'rrule': serializer.toJson<String?>(rrule),
     };
   }
 
@@ -535,6 +564,7 @@ class DriftTimeSlotPattern extends DataClass
     Value<int?> frequencyInSeconds = const Value.absent(),
     Value<DateTime?> endDate = const Value.absent(),
     Value<String?> timeZoneId = const Value.absent(),
+    Value<String?> rrule = const Value.absent(),
   }) => DriftTimeSlotPattern(
     id: id ?? this.id,
     eventId: eventId ?? this.eventId,
@@ -545,6 +575,7 @@ class DriftTimeSlotPattern extends DataClass
             : this.frequencyInSeconds,
     endDate: endDate.present ? endDate.value : this.endDate,
     timeZoneId: timeZoneId.present ? timeZoneId.value : this.timeZoneId,
+    rrule: rrule.present ? rrule.value : this.rrule,
   );
   DriftTimeSlotPattern copyWithCompanion(DriftTimeSlotPatternsCompanion data) {
     return DriftTimeSlotPattern(
@@ -561,6 +592,7 @@ class DriftTimeSlotPattern extends DataClass
       endDate: data.endDate.present ? data.endDate.value : this.endDate,
       timeZoneId:
           data.timeZoneId.present ? data.timeZoneId.value : this.timeZoneId,
+      rrule: data.rrule.present ? data.rrule.value : this.rrule,
     );
   }
 
@@ -572,7 +604,8 @@ class DriftTimeSlotPattern extends DataClass
           ..write('anchorPoints: $anchorPoints, ')
           ..write('frequencyInSeconds: $frequencyInSeconds, ')
           ..write('endDate: $endDate, ')
-          ..write('timeZoneId: $timeZoneId')
+          ..write('timeZoneId: $timeZoneId, ')
+          ..write('rrule: $rrule')
           ..write(')'))
         .toString();
   }
@@ -585,6 +618,7 @@ class DriftTimeSlotPattern extends DataClass
     frequencyInSeconds,
     endDate,
     timeZoneId,
+    rrule,
   );
   @override
   bool operator ==(Object other) =>
@@ -595,7 +629,8 @@ class DriftTimeSlotPattern extends DataClass
           other.anchorPoints == this.anchorPoints &&
           other.frequencyInSeconds == this.frequencyInSeconds &&
           other.endDate == this.endDate &&
-          other.timeZoneId == this.timeZoneId);
+          other.timeZoneId == this.timeZoneId &&
+          other.rrule == this.rrule);
 }
 
 class DriftTimeSlotPatternsCompanion
@@ -606,6 +641,7 @@ class DriftTimeSlotPatternsCompanion
   final Value<int?> frequencyInSeconds;
   final Value<DateTime?> endDate;
   final Value<String?> timeZoneId;
+  final Value<String?> rrule;
   const DriftTimeSlotPatternsCompanion({
     this.id = const Value.absent(),
     this.eventId = const Value.absent(),
@@ -613,6 +649,7 @@ class DriftTimeSlotPatternsCompanion
     this.frequencyInSeconds = const Value.absent(),
     this.endDate = const Value.absent(),
     this.timeZoneId = const Value.absent(),
+    this.rrule = const Value.absent(),
   });
   DriftTimeSlotPatternsCompanion.insert({
     this.id = const Value.absent(),
@@ -621,6 +658,7 @@ class DriftTimeSlotPatternsCompanion
     this.frequencyInSeconds = const Value.absent(),
     this.endDate = const Value.absent(),
     this.timeZoneId = const Value.absent(),
+    this.rrule = const Value.absent(),
   }) : eventId = Value(eventId);
   static Insertable<DriftTimeSlotPattern> custom({
     Expression<int>? id,
@@ -629,6 +667,7 @@ class DriftTimeSlotPatternsCompanion
     Expression<int>? frequencyInSeconds,
     Expression<DateTime>? endDate,
     Expression<String>? timeZoneId,
+    Expression<String>? rrule,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -638,6 +677,7 @@ class DriftTimeSlotPatternsCompanion
         'frequency_in_seconds': frequencyInSeconds,
       if (endDate != null) 'end_date': endDate,
       if (timeZoneId != null) 'time_zone_id': timeZoneId,
+      if (rrule != null) 'rrule': rrule,
     });
   }
 
@@ -648,6 +688,7 @@ class DriftTimeSlotPatternsCompanion
     Value<int?>? frequencyInSeconds,
     Value<DateTime?>? endDate,
     Value<String?>? timeZoneId,
+    Value<String?>? rrule,
   }) {
     return DriftTimeSlotPatternsCompanion(
       id: id ?? this.id,
@@ -656,6 +697,7 @@ class DriftTimeSlotPatternsCompanion
       frequencyInSeconds: frequencyInSeconds ?? this.frequencyInSeconds,
       endDate: endDate ?? this.endDate,
       timeZoneId: timeZoneId ?? this.timeZoneId,
+      rrule: rrule ?? this.rrule,
     );
   }
 
@@ -680,6 +722,9 @@ class DriftTimeSlotPatternsCompanion
     if (timeZoneId.present) {
       map['time_zone_id'] = Variable<String>(timeZoneId.value);
     }
+    if (rrule.present) {
+      map['rrule'] = Variable<String>(rrule.value);
+    }
     return map;
   }
 
@@ -691,7 +736,8 @@ class DriftTimeSlotPatternsCompanion
           ..write('anchorPoints: $anchorPoints, ')
           ..write('frequencyInSeconds: $frequencyInSeconds, ')
           ..write('endDate: $endDate, ')
-          ..write('timeZoneId: $timeZoneId')
+          ..write('timeZoneId: $timeZoneId, ')
+          ..write('rrule: $rrule')
           ..write(')'))
         .toString();
   }
@@ -2034,6 +2080,7 @@ typedef $$DriftTimeSlotPatternsTableCreateCompanionBuilder =
       Value<int?> frequencyInSeconds,
       Value<DateTime?> endDate,
       Value<String?> timeZoneId,
+      Value<String?> rrule,
     });
 typedef $$DriftTimeSlotPatternsTableUpdateCompanionBuilder =
     DriftTimeSlotPatternsCompanion Function({
@@ -2043,6 +2090,7 @@ typedef $$DriftTimeSlotPatternsTableUpdateCompanionBuilder =
       Value<int?> frequencyInSeconds,
       Value<DateTime?> endDate,
       Value<String?> timeZoneId,
+      Value<String?> rrule,
     });
 
 final class $$DriftTimeSlotPatternsTableReferences
@@ -2136,6 +2184,11 @@ class $$DriftTimeSlotPatternsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get rrule => $composableBuilder(
+    column: $table.rrule,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$DriftEventsTableFilterComposer get eventId {
     final $$DriftEventsTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -2219,6 +2272,11 @@ class $$DriftTimeSlotPatternsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get rrule => $composableBuilder(
+    column: $table.rrule,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$DriftEventsTableOrderingComposer get eventId {
     final $$DriftEventsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -2272,6 +2330,9 @@ class $$DriftTimeSlotPatternsTableAnnotationComposer
     column: $table.timeZoneId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get rrule =>
+      $composableBuilder(column: $table.rrule, builder: (column) => column);
 
   $$DriftEventsTableAnnotationComposer get eventId {
     final $$DriftEventsTableAnnotationComposer composer = $composerBuilder(
@@ -2367,6 +2428,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 Value<int?> frequencyInSeconds = const Value.absent(),
                 Value<DateTime?> endDate = const Value.absent(),
                 Value<String?> timeZoneId = const Value.absent(),
+                Value<String?> rrule = const Value.absent(),
               }) => DriftTimeSlotPatternsCompanion(
                 id: id,
                 eventId: eventId,
@@ -2374,6 +2436,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 frequencyInSeconds: frequencyInSeconds,
                 endDate: endDate,
                 timeZoneId: timeZoneId,
+                rrule: rrule,
               ),
           createCompanionCallback:
               ({
@@ -2383,6 +2446,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 Value<int?> frequencyInSeconds = const Value.absent(),
                 Value<DateTime?> endDate = const Value.absent(),
                 Value<String?> timeZoneId = const Value.absent(),
+                Value<String?> rrule = const Value.absent(),
               }) => DriftTimeSlotPatternsCompanion.insert(
                 id: id,
                 eventId: eventId,
@@ -2390,6 +2454,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 frequencyInSeconds: frequencyInSeconds,
                 endDate: endDate,
                 timeZoneId: timeZoneId,
+                rrule: rrule,
               ),
           withReferenceMapper:
               (p0) =>

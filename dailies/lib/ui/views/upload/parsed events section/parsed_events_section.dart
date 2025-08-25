@@ -18,38 +18,34 @@ class ParsedEventsSection extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          Section(
-            children: [
-              const SectionHeader(title: 'Found Events'),
-              SectionContent(
-                child: Column(
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: _parsedEventsViewModel.foundEvents,
-                      builder: (context, events, _) {
-                        final Map<int, Event> idToEventMap = {for (final Event event in events) event.id: event};
-                        final List<TimeSlot> timeSlots = [for (final Event event in events) ...event.timeSlots];
-
-                        print(idToEventMap);
-                        print(timeSlots);
-                        print([for (var event in events) event.pattern]);
-                        for (final Event event in events) {
-                          event.timeSlots.clear();
-                        }
-
-                        return ScheduleListViewWidget(
-                          pairs:
-                              events
-                                  .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
-                                  .toList(),
-                          builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
-                        );
-                      },
+          Expanded(
+            child: Section(
+              children: [
+                const SectionHeader(title: 'Found Events'),
+                Expanded(
+                  child: SectionContent(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ValueListenableBuilder(
+                            valueListenable: _parsedEventsViewModel.foundEvents,
+                            builder: (context, events, _) {
+                              return ScheduleListViewWidget(
+                                pairs:
+                                    events
+                                        .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
+                                        .toList(),
+                                builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             children: [

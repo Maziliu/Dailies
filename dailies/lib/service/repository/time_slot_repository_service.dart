@@ -5,7 +5,6 @@ import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/data/repositories/time_slot_repository.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class TimeSlotRepositoryService {
   final TimeSlotRepository _timeSlotRepository;

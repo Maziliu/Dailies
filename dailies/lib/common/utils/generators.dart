@@ -1,5 +1,3 @@
-import 'package:collection/collection.dart';
-import 'package:dailies/common/enums/days_of_the_week.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/service/parsers/ics/rrule%20parser/recurrance_pattern.dart';

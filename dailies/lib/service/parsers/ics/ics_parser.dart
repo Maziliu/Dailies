@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dailies/common/enums/days_of_the_week.dart';
 import 'package:dailies/common/utils/generators.dart';
 import 'package:dailies/common/utils/parser_helpers.dart';
 import 'package:dailies/common/utils/result.dart';
@@ -8,7 +7,6 @@ import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
-import 'package:dailies/service/parsers/ics/rrule%20parser/recurrance_pattern.dart';
 import 'package:dailies/service/parsers/parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';

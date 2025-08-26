@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dailies/common/exceptions/app_exception.dart';
 
 class GloablErrorService {
   final StreamController<Exception> _errorStream = StreamController<Exception>.broadcast();

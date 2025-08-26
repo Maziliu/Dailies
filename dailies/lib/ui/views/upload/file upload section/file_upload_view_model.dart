@@ -1,4 +1,3 @@
-import 'package:dailies/service/parsers/file_parser_service.dart';
 import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';

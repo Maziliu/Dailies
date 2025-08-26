@@ -1,6 +1,4 @@
 import 'package:dailies/common/utils/typedefs.dart';
-import 'package:dailies/data/models/event.dart';
-import 'package:dailies/data/models/time_slot.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleListViewWidget extends StatelessWidget {

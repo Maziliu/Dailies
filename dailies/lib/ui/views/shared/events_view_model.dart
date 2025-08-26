@@ -13,18 +13,13 @@ class EventsViewModel with ErrorStreamMixin {
   final CalendarViewModel _calendarViewModel;
   final EventRepositoryService _eventRepositoryService;
   final ValueNotifier<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>> dateToTimeSlotsMap = ValueNotifier(SplayTreeMap());
-  final Map<int, Event> _idToEventMap = {}; // Note: There is currently no culling logic for this.
-
-  late final VoidCallback _selectedEventsListener;
+  final Map<int, Event> _idToEventMap = {}; // Note: There is currently no culling logic for this (aside from adding and deleting events that proc a refresh).
 
   EventsViewModel({required CalendarViewModel calendarViewModel, required EventRepositoryService eventRepositoryService})
     : _calendarViewModel = calendarViewModel,
-      _eventRepositoryService = eventRepositoryService {
-    _selectedEventsListener = () => notifyMapChanged();
-    _calendarViewModel.selectedDayNotifier.addListener(_selectedEventsListener);
-  }
+      _eventRepositoryService = eventRepositoryService;
 
-  DateTime get selectedDay => _calendarViewModel.selectedDay;
+  ValueNotifier<DateTime> get selectedDayNotifier => _calendarViewModel.selectedDayNotifier;
 
   Map<int, Event> get idToEventMap => _idToEventMap;
 
@@ -32,6 +27,7 @@ class EventsViewModel with ErrorStreamMixin {
 
   List<TimeSlot> timeSlotsLookup(DateTime date) {
     final DateTime normalized = DateTime(date.year, date.month, date.day);
+    print('looked up ${normalized.toString()}');
 
     final HeapPriorityQueue<TimeSlot>? timeSlots = dateToTimeSlotsMap.value[normalized];
 
@@ -72,7 +68,10 @@ class EventsViewModel with ErrorStreamMixin {
 
       DateTime? deleteCandidate;
       if (deleteFirst != null && deleteLast != null) {
-        deleteCandidate = (deleteFirst.difference(selectedDay).abs().inSeconds < deleteLast.difference(selectedDay).abs().inSeconds) ? deleteLast : deleteFirst;
+        deleteCandidate =
+            (deleteFirst.difference(_calendarViewModel.selectedDay).abs().inSeconds < deleteLast.difference(_calendarViewModel.selectedDay).abs().inSeconds)
+                ? deleteLast
+                : deleteFirst;
       } else {
         deleteCandidate = deleteFirst ?? deleteLast;
       }
@@ -166,6 +165,7 @@ class EventsViewModel with ErrorStreamMixin {
     }
 
     notifyMapChanged();
+    _calendarViewModel.procSelectedDayNotifier();
   }
 
   Future<void> addEvent(Event event) async {
@@ -184,7 +184,9 @@ class EventsViewModel with ErrorStreamMixin {
     _idToEventMap.clear();
 
     await loadEventsAround(DateTime.now());
-    await loadEventsAround(selectedDay);
+    await loadEventsAround(_calendarViewModel.selectedDay);
+
+    _calendarViewModel.procSelectedDayNotifier();
   }
 
   void dispose() {

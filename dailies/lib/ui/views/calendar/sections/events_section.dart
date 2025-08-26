@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/add_event_sub_page.dart';
@@ -31,8 +32,8 @@ class EventsSection extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsGeometry.fromLTRB(16, 0, 16, 16),
         child: ValueListenableBuilder(
-          valueListenable: _eventsViewModel.dateToTimeSlotsMap,
-          builder: (context, map, _) {
+          valueListenable: _eventsViewModel.selectedDayNotifier,
+          builder: (context, selectedDay, _) {
             return Section(
               children: [
                 SectionHeader(
@@ -43,7 +44,7 @@ class EventsSection extends StatelessWidget {
                         padding: UIFormating.mediumPadding(),
                         decoration: BoxDecoration(color: colorScheme.surface, borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
                         child: Text(
-                          DateFormat.MMMMEEEEd().format(_eventsViewModel.selectedDay),
+                          DateFormat.MMMMEEEEd().format(selectedDay),
                           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface),
                         ),
                       ),
@@ -51,7 +52,7 @@ class EventsSection extends StatelessWidget {
                         onPressed: () async {
                           final Event? newEvent = await Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddEventSubPage(selectedDay: _eventsViewModel.selectedDay)),
+                            MaterialPageRoute(builder: (context) => AddEventSubPage(selectedDay: selectedDay)),
                           );
 
                           if (newEvent != null) {
@@ -67,8 +68,11 @@ class EventsSection extends StatelessWidget {
                   child: SectionContent(
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: ScheduleListViewWidget(
-                      timeSlots: _eventsViewModel.timeSlotsLookup(_eventsViewModel.selectedDay),
-                      idToEventMap: _eventsViewModel.idToEventMap,
+                      pairs:
+                          _eventsViewModel
+                              .timeSlotsLookup(selectedDay)
+                              .map((TimeSlot timeSlot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeSlot.eventId)!, second: timeSlot))
+                              .toList(),
                       builder:
                           (pair) => InkWell(
                             onLongPress: () {

@@ -301,6 +301,17 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _exclusionDatesMeta = const VerificationMeta(
+    'exclusionDates',
+  );
+  @override
+  late final GeneratedColumn<String> exclusionDates = GeneratedColumn<String>(
+    'exclusion_dates',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _frequencyInSecondsMeta =
       const VerificationMeta('frequencyInSeconds');
   @override
@@ -333,14 +344,25 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _rruleMeta = const VerificationMeta('rrule');
+  @override
+  late final GeneratedColumn<String> rrule = GeneratedColumn<String>(
+    'rrule',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     eventId,
     anchorPoints,
+    exclusionDates,
     frequencyInSeconds,
     endDate,
     timeZoneId,
+    rrule,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -374,6 +396,15 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
         ),
       );
     }
+    if (data.containsKey('exclusion_dates')) {
+      context.handle(
+        _exclusionDatesMeta,
+        exclusionDates.isAcceptableOrUnknown(
+          data['exclusion_dates']!,
+          _exclusionDatesMeta,
+        ),
+      );
+    }
     if (data.containsKey('frequency_in_seconds')) {
       context.handle(
         _frequencyInSecondsMeta,
@@ -396,6 +427,12 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
           data['time_zone_id']!,
           _timeZoneIdMeta,
         ),
+      );
+    }
+    if (data.containsKey('rrule')) {
+      context.handle(
+        _rruleMeta,
+        rrule.isAcceptableOrUnknown(data['rrule']!, _rruleMeta),
       );
     }
     return context;
@@ -421,6 +458,10 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
         DriftSqlType.string,
         data['${effectivePrefix}anchor_points'],
       ),
+      exclusionDates: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exclusion_dates'],
+      ),
       frequencyInSeconds: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}frequency_in_seconds'],
@@ -432,6 +473,10 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
       timeZoneId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}time_zone_id'],
+      ),
+      rrule: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rrule'],
       ),
     );
   }
@@ -447,16 +492,20 @@ class DriftTimeSlotPattern extends DataClass
   final int id;
   final int eventId;
   final String? anchorPoints;
+  final String? exclusionDates;
   final int? frequencyInSeconds;
   final DateTime? endDate;
   final String? timeZoneId;
+  final String? rrule;
   const DriftTimeSlotPattern({
     required this.id,
     required this.eventId,
     this.anchorPoints,
+    this.exclusionDates,
     this.frequencyInSeconds,
     this.endDate,
     this.timeZoneId,
+    this.rrule,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -466,6 +515,9 @@ class DriftTimeSlotPattern extends DataClass
     if (!nullToAbsent || anchorPoints != null) {
       map['anchor_points'] = Variable<String>(anchorPoints);
     }
+    if (!nullToAbsent || exclusionDates != null) {
+      map['exclusion_dates'] = Variable<String>(exclusionDates);
+    }
     if (!nullToAbsent || frequencyInSeconds != null) {
       map['frequency_in_seconds'] = Variable<int>(frequencyInSeconds);
     }
@@ -474,6 +526,9 @@ class DriftTimeSlotPattern extends DataClass
     }
     if (!nullToAbsent || timeZoneId != null) {
       map['time_zone_id'] = Variable<String>(timeZoneId);
+    }
+    if (!nullToAbsent || rrule != null) {
+      map['rrule'] = Variable<String>(rrule);
     }
     return map;
   }
@@ -486,6 +541,10 @@ class DriftTimeSlotPattern extends DataClass
           anchorPoints == null && nullToAbsent
               ? const Value.absent()
               : Value(anchorPoints),
+      exclusionDates:
+          exclusionDates == null && nullToAbsent
+              ? const Value.absent()
+              : Value(exclusionDates),
       frequencyInSeconds:
           frequencyInSeconds == null && nullToAbsent
               ? const Value.absent()
@@ -498,6 +557,8 @@ class DriftTimeSlotPattern extends DataClass
           timeZoneId == null && nullToAbsent
               ? const Value.absent()
               : Value(timeZoneId),
+      rrule:
+          rrule == null && nullToAbsent ? const Value.absent() : Value(rrule),
     );
   }
 
@@ -510,9 +571,11 @@ class DriftTimeSlotPattern extends DataClass
       id: serializer.fromJson<int>(json['id']),
       eventId: serializer.fromJson<int>(json['eventId']),
       anchorPoints: serializer.fromJson<String?>(json['anchorPoints']),
+      exclusionDates: serializer.fromJson<String?>(json['exclusionDates']),
       frequencyInSeconds: serializer.fromJson<int?>(json['frequencyInSeconds']),
       endDate: serializer.fromJson<DateTime?>(json['endDate']),
       timeZoneId: serializer.fromJson<String?>(json['timeZoneId']),
+      rrule: serializer.fromJson<String?>(json['rrule']),
     );
   }
   @override
@@ -522,9 +585,11 @@ class DriftTimeSlotPattern extends DataClass
       'id': serializer.toJson<int>(id),
       'eventId': serializer.toJson<int>(eventId),
       'anchorPoints': serializer.toJson<String?>(anchorPoints),
+      'exclusionDates': serializer.toJson<String?>(exclusionDates),
       'frequencyInSeconds': serializer.toJson<int?>(frequencyInSeconds),
       'endDate': serializer.toJson<DateTime?>(endDate),
       'timeZoneId': serializer.toJson<String?>(timeZoneId),
+      'rrule': serializer.toJson<String?>(rrule),
     };
   }
 
@@ -532,19 +597,24 @@ class DriftTimeSlotPattern extends DataClass
     int? id,
     int? eventId,
     Value<String?> anchorPoints = const Value.absent(),
+    Value<String?> exclusionDates = const Value.absent(),
     Value<int?> frequencyInSeconds = const Value.absent(),
     Value<DateTime?> endDate = const Value.absent(),
     Value<String?> timeZoneId = const Value.absent(),
+    Value<String?> rrule = const Value.absent(),
   }) => DriftTimeSlotPattern(
     id: id ?? this.id,
     eventId: eventId ?? this.eventId,
     anchorPoints: anchorPoints.present ? anchorPoints.value : this.anchorPoints,
+    exclusionDates:
+        exclusionDates.present ? exclusionDates.value : this.exclusionDates,
     frequencyInSeconds:
         frequencyInSeconds.present
             ? frequencyInSeconds.value
             : this.frequencyInSeconds,
     endDate: endDate.present ? endDate.value : this.endDate,
     timeZoneId: timeZoneId.present ? timeZoneId.value : this.timeZoneId,
+    rrule: rrule.present ? rrule.value : this.rrule,
   );
   DriftTimeSlotPattern copyWithCompanion(DriftTimeSlotPatternsCompanion data) {
     return DriftTimeSlotPattern(
@@ -554,6 +624,10 @@ class DriftTimeSlotPattern extends DataClass
           data.anchorPoints.present
               ? data.anchorPoints.value
               : this.anchorPoints,
+      exclusionDates:
+          data.exclusionDates.present
+              ? data.exclusionDates.value
+              : this.exclusionDates,
       frequencyInSeconds:
           data.frequencyInSeconds.present
               ? data.frequencyInSeconds.value
@@ -561,6 +635,7 @@ class DriftTimeSlotPattern extends DataClass
       endDate: data.endDate.present ? data.endDate.value : this.endDate,
       timeZoneId:
           data.timeZoneId.present ? data.timeZoneId.value : this.timeZoneId,
+      rrule: data.rrule.present ? data.rrule.value : this.rrule,
     );
   }
 
@@ -570,9 +645,11 @@ class DriftTimeSlotPattern extends DataClass
           ..write('id: $id, ')
           ..write('eventId: $eventId, ')
           ..write('anchorPoints: $anchorPoints, ')
+          ..write('exclusionDates: $exclusionDates, ')
           ..write('frequencyInSeconds: $frequencyInSeconds, ')
           ..write('endDate: $endDate, ')
-          ..write('timeZoneId: $timeZoneId')
+          ..write('timeZoneId: $timeZoneId, ')
+          ..write('rrule: $rrule')
           ..write(')'))
         .toString();
   }
@@ -582,9 +659,11 @@ class DriftTimeSlotPattern extends DataClass
     id,
     eventId,
     anchorPoints,
+    exclusionDates,
     frequencyInSeconds,
     endDate,
     timeZoneId,
+    rrule,
   );
   @override
   bool operator ==(Object other) =>
@@ -593,9 +672,11 @@ class DriftTimeSlotPattern extends DataClass
           other.id == this.id &&
           other.eventId == this.eventId &&
           other.anchorPoints == this.anchorPoints &&
+          other.exclusionDates == this.exclusionDates &&
           other.frequencyInSeconds == this.frequencyInSeconds &&
           other.endDate == this.endDate &&
-          other.timeZoneId == this.timeZoneId);
+          other.timeZoneId == this.timeZoneId &&
+          other.rrule == this.rrule);
 }
 
 class DriftTimeSlotPatternsCompanion
@@ -603,41 +684,51 @@ class DriftTimeSlotPatternsCompanion
   final Value<int> id;
   final Value<int> eventId;
   final Value<String?> anchorPoints;
+  final Value<String?> exclusionDates;
   final Value<int?> frequencyInSeconds;
   final Value<DateTime?> endDate;
   final Value<String?> timeZoneId;
+  final Value<String?> rrule;
   const DriftTimeSlotPatternsCompanion({
     this.id = const Value.absent(),
     this.eventId = const Value.absent(),
     this.anchorPoints = const Value.absent(),
+    this.exclusionDates = const Value.absent(),
     this.frequencyInSeconds = const Value.absent(),
     this.endDate = const Value.absent(),
     this.timeZoneId = const Value.absent(),
+    this.rrule = const Value.absent(),
   });
   DriftTimeSlotPatternsCompanion.insert({
     this.id = const Value.absent(),
     required int eventId,
     this.anchorPoints = const Value.absent(),
+    this.exclusionDates = const Value.absent(),
     this.frequencyInSeconds = const Value.absent(),
     this.endDate = const Value.absent(),
     this.timeZoneId = const Value.absent(),
+    this.rrule = const Value.absent(),
   }) : eventId = Value(eventId);
   static Insertable<DriftTimeSlotPattern> custom({
     Expression<int>? id,
     Expression<int>? eventId,
     Expression<String>? anchorPoints,
+    Expression<String>? exclusionDates,
     Expression<int>? frequencyInSeconds,
     Expression<DateTime>? endDate,
     Expression<String>? timeZoneId,
+    Expression<String>? rrule,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventId != null) 'event_id': eventId,
       if (anchorPoints != null) 'anchor_points': anchorPoints,
+      if (exclusionDates != null) 'exclusion_dates': exclusionDates,
       if (frequencyInSeconds != null)
         'frequency_in_seconds': frequencyInSeconds,
       if (endDate != null) 'end_date': endDate,
       if (timeZoneId != null) 'time_zone_id': timeZoneId,
+      if (rrule != null) 'rrule': rrule,
     });
   }
 
@@ -645,17 +736,21 @@ class DriftTimeSlotPatternsCompanion
     Value<int>? id,
     Value<int>? eventId,
     Value<String?>? anchorPoints,
+    Value<String?>? exclusionDates,
     Value<int?>? frequencyInSeconds,
     Value<DateTime?>? endDate,
     Value<String?>? timeZoneId,
+    Value<String?>? rrule,
   }) {
     return DriftTimeSlotPatternsCompanion(
       id: id ?? this.id,
       eventId: eventId ?? this.eventId,
       anchorPoints: anchorPoints ?? this.anchorPoints,
+      exclusionDates: exclusionDates ?? this.exclusionDates,
       frequencyInSeconds: frequencyInSeconds ?? this.frequencyInSeconds,
       endDate: endDate ?? this.endDate,
       timeZoneId: timeZoneId ?? this.timeZoneId,
+      rrule: rrule ?? this.rrule,
     );
   }
 
@@ -671,6 +766,9 @@ class DriftTimeSlotPatternsCompanion
     if (anchorPoints.present) {
       map['anchor_points'] = Variable<String>(anchorPoints.value);
     }
+    if (exclusionDates.present) {
+      map['exclusion_dates'] = Variable<String>(exclusionDates.value);
+    }
     if (frequencyInSeconds.present) {
       map['frequency_in_seconds'] = Variable<int>(frequencyInSeconds.value);
     }
@@ -679,6 +777,9 @@ class DriftTimeSlotPatternsCompanion
     }
     if (timeZoneId.present) {
       map['time_zone_id'] = Variable<String>(timeZoneId.value);
+    }
+    if (rrule.present) {
+      map['rrule'] = Variable<String>(rrule.value);
     }
     return map;
   }
@@ -689,9 +790,11 @@ class DriftTimeSlotPatternsCompanion
           ..write('id: $id, ')
           ..write('eventId: $eventId, ')
           ..write('anchorPoints: $anchorPoints, ')
+          ..write('exclusionDates: $exclusionDates, ')
           ..write('frequencyInSeconds: $frequencyInSeconds, ')
           ..write('endDate: $endDate, ')
-          ..write('timeZoneId: $timeZoneId')
+          ..write('timeZoneId: $timeZoneId, ')
+          ..write('rrule: $rrule')
           ..write(')'))
         .toString();
   }
@@ -2031,18 +2134,22 @@ typedef $$DriftTimeSlotPatternsTableCreateCompanionBuilder =
       Value<int> id,
       required int eventId,
       Value<String?> anchorPoints,
+      Value<String?> exclusionDates,
       Value<int?> frequencyInSeconds,
       Value<DateTime?> endDate,
       Value<String?> timeZoneId,
+      Value<String?> rrule,
     });
 typedef $$DriftTimeSlotPatternsTableUpdateCompanionBuilder =
     DriftTimeSlotPatternsCompanion Function({
       Value<int> id,
       Value<int> eventId,
       Value<String?> anchorPoints,
+      Value<String?> exclusionDates,
       Value<int?> frequencyInSeconds,
       Value<DateTime?> endDate,
       Value<String?> timeZoneId,
+      Value<String?> rrule,
     });
 
 final class $$DriftTimeSlotPatternsTableReferences
@@ -2121,6 +2228,11 @@ class $$DriftTimeSlotPatternsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get exclusionDates => $composableBuilder(
+    column: $table.exclusionDates,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get frequencyInSeconds => $composableBuilder(
     column: $table.frequencyInSeconds,
     builder: (column) => ColumnFilters(column),
@@ -2133,6 +2245,11 @@ class $$DriftTimeSlotPatternsTableFilterComposer
 
   ColumnFilters<String> get timeZoneId => $composableBuilder(
     column: $table.timeZoneId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rrule => $composableBuilder(
+    column: $table.rrule,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2204,6 +2321,11 @@ class $$DriftTimeSlotPatternsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get exclusionDates => $composableBuilder(
+    column: $table.exclusionDates,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get frequencyInSeconds => $composableBuilder(
     column: $table.frequencyInSeconds,
     builder: (column) => ColumnOrderings(column),
@@ -2216,6 +2338,11 @@ class $$DriftTimeSlotPatternsTableOrderingComposer
 
   ColumnOrderings<String> get timeZoneId => $composableBuilder(
     column: $table.timeZoneId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rrule => $composableBuilder(
+    column: $table.rrule,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2260,6 +2387,11 @@ class $$DriftTimeSlotPatternsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get exclusionDates => $composableBuilder(
+    column: $table.exclusionDates,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<int> get frequencyInSeconds => $composableBuilder(
     column: $table.frequencyInSeconds,
     builder: (column) => column,
@@ -2272,6 +2404,9 @@ class $$DriftTimeSlotPatternsTableAnnotationComposer
     column: $table.timeZoneId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get rrule =>
+      $composableBuilder(column: $table.rrule, builder: (column) => column);
 
   $$DriftEventsTableAnnotationComposer get eventId {
     final $$DriftEventsTableAnnotationComposer composer = $composerBuilder(
@@ -2364,32 +2499,40 @@ class $$DriftTimeSlotPatternsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> eventId = const Value.absent(),
                 Value<String?> anchorPoints = const Value.absent(),
+                Value<String?> exclusionDates = const Value.absent(),
                 Value<int?> frequencyInSeconds = const Value.absent(),
                 Value<DateTime?> endDate = const Value.absent(),
                 Value<String?> timeZoneId = const Value.absent(),
+                Value<String?> rrule = const Value.absent(),
               }) => DriftTimeSlotPatternsCompanion(
                 id: id,
                 eventId: eventId,
                 anchorPoints: anchorPoints,
+                exclusionDates: exclusionDates,
                 frequencyInSeconds: frequencyInSeconds,
                 endDate: endDate,
                 timeZoneId: timeZoneId,
+                rrule: rrule,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int eventId,
                 Value<String?> anchorPoints = const Value.absent(),
+                Value<String?> exclusionDates = const Value.absent(),
                 Value<int?> frequencyInSeconds = const Value.absent(),
                 Value<DateTime?> endDate = const Value.absent(),
                 Value<String?> timeZoneId = const Value.absent(),
+                Value<String?> rrule = const Value.absent(),
               }) => DriftTimeSlotPatternsCompanion.insert(
                 id: id,
                 eventId: eventId,
                 anchorPoints: anchorPoints,
+                exclusionDates: exclusionDates,
                 frequencyInSeconds: frequencyInSeconds,
                 endDate: endDate,
                 timeZoneId: timeZoneId,
+                rrule: rrule,
               ),
           withReferenceMapper:
               (p0) =>

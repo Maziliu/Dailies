@@ -1,0 +1,79 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Business Calendar//Business Events 1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+
+BEGIN:VEVENT
+UID:meeting-001@business.com
+DTSTART:20250827T140000Z
+DTEND:20250827T150000Z
+DTSTAMP:20250826T120000Z
+RRULE:FREQ=WEEKLY;BYDAY=WE
+ORGANIZER;CN=John Smith:mailto:john.smith@business.com
+SUMMARY:Team Weekly Standup
+DESCRIPTION:Weekly team meeting to discuss progress and blockers
+LOCATION:Conference Room A
+STATUS:CONFIRMED
+SEQUENCE:0
+CATEGORIES:MEETING,WORK
+END:VEVENT
+
+BEGIN:VEVENT
+UID:workshop-002@business.com
+DTSTART:20250828T090000Z
+DTEND:20250828T170000Z
+DTSTAMP:20250826T120000Z
+ORGANIZER;CN=Jane Doe:mailto:jane.doe@business.com
+SUMMARY:React Development Workshop
+DESCRIPTION:Full-day workshop covering React hooks\, context\, and performance optimization. Bring your laptop!
+LOCATION:Training Center\, Building B
+STATUS:CONFIRMED
+SEQUENCE:0
+CATEGORIES:WORKSHOP,DEVELOPMENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Workshop starts in 30 minutes
+TRIGGER:-PT30M
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+UID:deadline-005@business.com
+DTSTART;VALUE=DATE:20250905
+DTEND;VALUE=DATE:20250906
+DTSTAMP:20250826T120000Z
+SUMMARY:Project Deadline - Q3 Report
+DESCRIPTION:Final submission deadline for Q3 quarterly report
+STATUS:CONFIRMED
+SEQUENCE:0
+CATEGORIES:DEADLINE,WORK
+PRIORITY:1
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Project deadline in 3 days!
+TRIGGER:-P3D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Project deadline tomorrow!
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+UID:conference-007@business.com
+DTSTART:20251010T080000Z
+DTEND:20251012T180000Z
+DTSTAMP:20250826T120000Z
+ORGANIZER;CN=Tech Conference Inc:mailto:info@techconf.com
+SUMMARY:Annual Tech Conference 2025
+DESCRIPTION:Three-day conference featuring the latest in technology trends\, networking opportunities\, and keynote speakers.
+LOCATION:Convention Center\, Downtown
+URL:https://techconf.com/2025
+STATUS:CONFIRMED
+SEQUENCE:0
+CATEGORIES:CONFERENCE,PROFESSIONAL
+END:VEVENT
+
+END:VCALENDAR

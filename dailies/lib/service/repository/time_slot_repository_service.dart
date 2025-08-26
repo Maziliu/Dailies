@@ -1,10 +1,11 @@
-import 'package:dailies/common/enums/time_slot_type.dart';
+import 'package:dailies/common/utils/generators.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/data/repositories/time_slot_repository.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class TimeSlotRepositoryService {
   final TimeSlotRepository _timeSlotRepository;
@@ -24,43 +25,13 @@ class TimeSlotRepositoryService {
   Future<Result<void>> saveAllTimeSlots(List<TimeSlot> timeSlots) async => await _timeSlotRepository.insertAllTimeSlots(timeSlots);
 
   Future<Result<void>> generateTimeSlotsForNextYear(int eventId, TimeSlotPattern pattern) async {
-    List<TimeSlot> timeSlots = [...pattern.anchorPointsList];
+    List<TimeSlot> timeSlots = generateTimeSlots(pattern);
 
-    if (pattern.isReacurring) {
-      DateTime limit = DateTime.now().add(const Duration(days: 365));
-      Duration patternFrequency = pattern.frequency!;
-      Duration totalOffset = patternFrequency;
-
-      for (final TimeSlot timeSlot in pattern.anchorPointsList) {
-        DateTime currentDate = _normalizeDate(timeSlot.dateOfTimeSlot);
-        int offsetCount = 1;
-
-        while (true) {
-          Duration currentOffset = totalOffset * offsetCount;
-          DateTime nextDate = currentDate.toUtc().add(currentOffset);
-          print(_normalizeDate(nextDate));
-
-          if (nextDate.isAfter(limit) || (pattern.isFinite && nextDate.isAfter(pattern.endPatternDate!))) {
-            break;
-          }
-
-          timeSlots.add(
-            TimeSlot(
-              patternId: pattern.id,
-              eventId: eventId,
-              dateOfTimeSlot: _normalizeDate(nextDate),
-              startTime: timeSlot.startTime,
-              endTime: timeSlot.endTime,
-            ),
-          );
-
-          offsetCount++;
-        }
-      }
+    for (final TimeSlot timeSlot in timeSlots) {
+      timeSlot.eventId = eventId;
+      timeSlot.patternId = pattern.id;
     }
 
     return await _timeSlotRepository.insertAllTimeSlots(timeSlots);
   }
-
-  DateTime _normalizeDate(DateTime date) => DateTime(date.year, date.month, date.day);
 }

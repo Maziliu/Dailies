@@ -14,4 +14,8 @@ class Event extends AppModel {
   String? get location => _location;
 
   bool get isReaccuring => timeSlots.length > 1;
+
+  @override
+  String toString() =>
+      'Event{id: $id, eventName: "$_eventName", location: ${_location != null ? '"$_location"' : 'null'}, isRecurring: $isReaccuring, timeSlots: ${timeSlots.toString()}, pattern: ${pattern.toString()}}';
 }

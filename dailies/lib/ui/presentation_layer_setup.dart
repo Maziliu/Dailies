@@ -1,3 +1,4 @@
+import 'package:dailies/service/parsers/file_parser_service.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
 import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';
@@ -19,7 +20,9 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
   );
   injector.registerLazySingleton<GachaViewModel>(() => GachaViewModel(staminaRepositoryService: injector<StaminaRepositoryService>()));
   injector.registerLazySingleton<FileUploadViewModel>(() => FileUploadViewModel());
-  injector.registerLazySingleton<ParsedEventsViewModel>(() => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>()));
+  injector.registerLazySingleton<ParsedEventsViewModel>(
+    () => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), eventsViewModel: injector<EventsViewModel>()),
+  );
 
   //Page View Models
   injector.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
@@ -30,6 +33,10 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
     () => CalendarPageViewModel(calendarViewModel: injector<CalendarViewModel>(), eventsViewModel: injector<EventsViewModel>()),
   );
   injector.registerLazySingleton<UploadViewModel>(
-    () => UploadViewModel(fileUploadViewModel: injector<FileUploadViewModel>(), parsedEventsViewModel: injector<ParsedEventsViewModel>()),
+    () => UploadViewModel(
+      fileUploadViewModel: injector<FileUploadViewModel>(),
+      parsedEventsViewModel: injector<ParsedEventsViewModel>(),
+      fileParserService: injector<FileParserService>(),
+    ),
   );
 }

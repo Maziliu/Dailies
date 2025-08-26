@@ -4,25 +4,21 @@ import 'package:dailies/data/models/time_slot.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleListViewWidget extends StatelessWidget {
-  final List<TimeSlot> _timeSlots;
-  final Map<int, Event> _idToEventMap;
+  final List<EventTimeSlotPair> _pairs;
   final ScheduleListBuilder _builder;
 
-  const ScheduleListViewWidget({super.key, required List<TimeSlot> timeSlots, required Map<int, Event> idToEventMap, required ScheduleListBuilder builder})
-    : _timeSlots = timeSlots,
-      _idToEventMap = idToEventMap,
-      _builder = builder;
+  const ScheduleListViewWidget({super.key, required List<EventTimeSlotPair> pairs, required ScheduleListBuilder builder}) : _pairs = pairs, _builder = builder;
 
   @override
   Widget build(BuildContext context) {
-    if (_timeSlots.isEmpty) return _buildEmptyState(context);
+    if (_pairs.isEmpty) return _buildEmptyState(context);
 
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: _timeSlots.length,
+      itemCount: _pairs.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        return _builder(EventTimeSlotPair(first: _idToEventMap[_timeSlots[index].eventId]!, second: _timeSlots[index]));
+        return _builder(_pairs[index]);
       },
     );
   }

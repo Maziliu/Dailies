@@ -165,6 +165,7 @@ class EventsViewModel with ErrorStreamMixin {
     }
 
     notifyMapChanged();
+    _calendarViewModel.procSelectedDayNotifier();
   }
 
   Future<void> addEvent(Event event) async {

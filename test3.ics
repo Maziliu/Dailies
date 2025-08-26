@@ -9,6 +9,7 @@ UID:meeting-001@business.com
 DTSTART:20250827T140000Z
 DTEND:20250827T150000Z
 DTSTAMP:20250826T120000Z
+RRULE:FREQ=WEEKLY;BYDAY=WE
 ORGANIZER;CN=John Smith:mailto:john.smith@business.com
 SUMMARY:Team Weekly Standup
 DESCRIPTION:Weekly team meeting to discuss progress and blockers

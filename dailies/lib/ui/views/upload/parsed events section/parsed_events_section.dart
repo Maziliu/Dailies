@@ -63,7 +63,12 @@ class ParsedEventsSection extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(onPressed: () => _parsedEventsViewModel.saveAllEvents, child: const Text('Add Found Events')),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await _parsedEventsViewModel.saveAllEvents();
+                    },
+                    child: const Text('Add Found Events'),
+                  ),
                 ),
               ),
             ],

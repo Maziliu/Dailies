@@ -17,6 +17,7 @@ class DriftTimeSlotPatternMapper implements TimeSlotPatternMapper<DriftTimeSlotP
       endDate: Value.absentIfNull(timeSlotPattern.endPatternDate),
       timeZoneId: Value.absentIfNull(timeSlotPattern.timeZoneId),
       rrule: Value.absentIfNull(timeSlotPattern.recurranceRule),
+      exclusionDates: Value.absentIfNull(timeSlotPattern.exclusionDatesAsString),
     );
   }
 
@@ -29,5 +30,6 @@ class DriftTimeSlotPatternMapper implements TimeSlotPatternMapper<DriftTimeSlotP
     endPatternDate: incomingDatabaseModel.endDate,
     timeZoneId: incomingDatabaseModel.timeZoneId,
     recurranceRule: incomingDatabaseModel.rrule,
+    exclusionDateString: incomingDatabaseModel.exclusionDates,
   );
 }

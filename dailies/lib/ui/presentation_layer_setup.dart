@@ -20,7 +20,9 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
   );
   injector.registerLazySingleton<GachaViewModel>(() => GachaViewModel(staminaRepositoryService: injector<StaminaRepositoryService>()));
   injector.registerLazySingleton<FileUploadViewModel>(() => FileUploadViewModel());
-  injector.registerLazySingleton<ParsedEventsViewModel>(() => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>()));
+  injector.registerLazySingleton<ParsedEventsViewModel>(
+    () => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), eventsViewModel: injector<EventsViewModel>()),
+  );
 
   //Page View Models
   injector.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());

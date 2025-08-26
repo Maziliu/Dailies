@@ -301,6 +301,17 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _exclusionDatesMeta = const VerificationMeta(
+    'exclusionDates',
+  );
+  @override
+  late final GeneratedColumn<String> exclusionDates = GeneratedColumn<String>(
+    'exclusion_dates',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _frequencyInSecondsMeta =
       const VerificationMeta('frequencyInSeconds');
   @override
@@ -347,6 +358,7 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
     id,
     eventId,
     anchorPoints,
+    exclusionDates,
     frequencyInSeconds,
     endDate,
     timeZoneId,
@@ -381,6 +393,15 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
         anchorPoints.isAcceptableOrUnknown(
           data['anchor_points']!,
           _anchorPointsMeta,
+        ),
+      );
+    }
+    if (data.containsKey('exclusion_dates')) {
+      context.handle(
+        _exclusionDatesMeta,
+        exclusionDates.isAcceptableOrUnknown(
+          data['exclusion_dates']!,
+          _exclusionDatesMeta,
         ),
       );
     }
@@ -437,6 +458,10 @@ class $DriftTimeSlotPatternsTable extends DriftTimeSlotPatterns
         DriftSqlType.string,
         data['${effectivePrefix}anchor_points'],
       ),
+      exclusionDates: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exclusion_dates'],
+      ),
       frequencyInSeconds: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}frequency_in_seconds'],
@@ -467,6 +492,7 @@ class DriftTimeSlotPattern extends DataClass
   final int id;
   final int eventId;
   final String? anchorPoints;
+  final String? exclusionDates;
   final int? frequencyInSeconds;
   final DateTime? endDate;
   final String? timeZoneId;
@@ -475,6 +501,7 @@ class DriftTimeSlotPattern extends DataClass
     required this.id,
     required this.eventId,
     this.anchorPoints,
+    this.exclusionDates,
     this.frequencyInSeconds,
     this.endDate,
     this.timeZoneId,
@@ -487,6 +514,9 @@ class DriftTimeSlotPattern extends DataClass
     map['event_id'] = Variable<int>(eventId);
     if (!nullToAbsent || anchorPoints != null) {
       map['anchor_points'] = Variable<String>(anchorPoints);
+    }
+    if (!nullToAbsent || exclusionDates != null) {
+      map['exclusion_dates'] = Variable<String>(exclusionDates);
     }
     if (!nullToAbsent || frequencyInSeconds != null) {
       map['frequency_in_seconds'] = Variable<int>(frequencyInSeconds);
@@ -511,6 +541,10 @@ class DriftTimeSlotPattern extends DataClass
           anchorPoints == null && nullToAbsent
               ? const Value.absent()
               : Value(anchorPoints),
+      exclusionDates:
+          exclusionDates == null && nullToAbsent
+              ? const Value.absent()
+              : Value(exclusionDates),
       frequencyInSeconds:
           frequencyInSeconds == null && nullToAbsent
               ? const Value.absent()
@@ -537,6 +571,7 @@ class DriftTimeSlotPattern extends DataClass
       id: serializer.fromJson<int>(json['id']),
       eventId: serializer.fromJson<int>(json['eventId']),
       anchorPoints: serializer.fromJson<String?>(json['anchorPoints']),
+      exclusionDates: serializer.fromJson<String?>(json['exclusionDates']),
       frequencyInSeconds: serializer.fromJson<int?>(json['frequencyInSeconds']),
       endDate: serializer.fromJson<DateTime?>(json['endDate']),
       timeZoneId: serializer.fromJson<String?>(json['timeZoneId']),
@@ -550,6 +585,7 @@ class DriftTimeSlotPattern extends DataClass
       'id': serializer.toJson<int>(id),
       'eventId': serializer.toJson<int>(eventId),
       'anchorPoints': serializer.toJson<String?>(anchorPoints),
+      'exclusionDates': serializer.toJson<String?>(exclusionDates),
       'frequencyInSeconds': serializer.toJson<int?>(frequencyInSeconds),
       'endDate': serializer.toJson<DateTime?>(endDate),
       'timeZoneId': serializer.toJson<String?>(timeZoneId),
@@ -561,6 +597,7 @@ class DriftTimeSlotPattern extends DataClass
     int? id,
     int? eventId,
     Value<String?> anchorPoints = const Value.absent(),
+    Value<String?> exclusionDates = const Value.absent(),
     Value<int?> frequencyInSeconds = const Value.absent(),
     Value<DateTime?> endDate = const Value.absent(),
     Value<String?> timeZoneId = const Value.absent(),
@@ -569,6 +606,8 @@ class DriftTimeSlotPattern extends DataClass
     id: id ?? this.id,
     eventId: eventId ?? this.eventId,
     anchorPoints: anchorPoints.present ? anchorPoints.value : this.anchorPoints,
+    exclusionDates:
+        exclusionDates.present ? exclusionDates.value : this.exclusionDates,
     frequencyInSeconds:
         frequencyInSeconds.present
             ? frequencyInSeconds.value
@@ -585,6 +624,10 @@ class DriftTimeSlotPattern extends DataClass
           data.anchorPoints.present
               ? data.anchorPoints.value
               : this.anchorPoints,
+      exclusionDates:
+          data.exclusionDates.present
+              ? data.exclusionDates.value
+              : this.exclusionDates,
       frequencyInSeconds:
           data.frequencyInSeconds.present
               ? data.frequencyInSeconds.value
@@ -602,6 +645,7 @@ class DriftTimeSlotPattern extends DataClass
           ..write('id: $id, ')
           ..write('eventId: $eventId, ')
           ..write('anchorPoints: $anchorPoints, ')
+          ..write('exclusionDates: $exclusionDates, ')
           ..write('frequencyInSeconds: $frequencyInSeconds, ')
           ..write('endDate: $endDate, ')
           ..write('timeZoneId: $timeZoneId, ')
@@ -615,6 +659,7 @@ class DriftTimeSlotPattern extends DataClass
     id,
     eventId,
     anchorPoints,
+    exclusionDates,
     frequencyInSeconds,
     endDate,
     timeZoneId,
@@ -627,6 +672,7 @@ class DriftTimeSlotPattern extends DataClass
           other.id == this.id &&
           other.eventId == this.eventId &&
           other.anchorPoints == this.anchorPoints &&
+          other.exclusionDates == this.exclusionDates &&
           other.frequencyInSeconds == this.frequencyInSeconds &&
           other.endDate == this.endDate &&
           other.timeZoneId == this.timeZoneId &&
@@ -638,6 +684,7 @@ class DriftTimeSlotPatternsCompanion
   final Value<int> id;
   final Value<int> eventId;
   final Value<String?> anchorPoints;
+  final Value<String?> exclusionDates;
   final Value<int?> frequencyInSeconds;
   final Value<DateTime?> endDate;
   final Value<String?> timeZoneId;
@@ -646,6 +693,7 @@ class DriftTimeSlotPatternsCompanion
     this.id = const Value.absent(),
     this.eventId = const Value.absent(),
     this.anchorPoints = const Value.absent(),
+    this.exclusionDates = const Value.absent(),
     this.frequencyInSeconds = const Value.absent(),
     this.endDate = const Value.absent(),
     this.timeZoneId = const Value.absent(),
@@ -655,6 +703,7 @@ class DriftTimeSlotPatternsCompanion
     this.id = const Value.absent(),
     required int eventId,
     this.anchorPoints = const Value.absent(),
+    this.exclusionDates = const Value.absent(),
     this.frequencyInSeconds = const Value.absent(),
     this.endDate = const Value.absent(),
     this.timeZoneId = const Value.absent(),
@@ -664,6 +713,7 @@ class DriftTimeSlotPatternsCompanion
     Expression<int>? id,
     Expression<int>? eventId,
     Expression<String>? anchorPoints,
+    Expression<String>? exclusionDates,
     Expression<int>? frequencyInSeconds,
     Expression<DateTime>? endDate,
     Expression<String>? timeZoneId,
@@ -673,6 +723,7 @@ class DriftTimeSlotPatternsCompanion
       if (id != null) 'id': id,
       if (eventId != null) 'event_id': eventId,
       if (anchorPoints != null) 'anchor_points': anchorPoints,
+      if (exclusionDates != null) 'exclusion_dates': exclusionDates,
       if (frequencyInSeconds != null)
         'frequency_in_seconds': frequencyInSeconds,
       if (endDate != null) 'end_date': endDate,
@@ -685,6 +736,7 @@ class DriftTimeSlotPatternsCompanion
     Value<int>? id,
     Value<int>? eventId,
     Value<String?>? anchorPoints,
+    Value<String?>? exclusionDates,
     Value<int?>? frequencyInSeconds,
     Value<DateTime?>? endDate,
     Value<String?>? timeZoneId,
@@ -694,6 +746,7 @@ class DriftTimeSlotPatternsCompanion
       id: id ?? this.id,
       eventId: eventId ?? this.eventId,
       anchorPoints: anchorPoints ?? this.anchorPoints,
+      exclusionDates: exclusionDates ?? this.exclusionDates,
       frequencyInSeconds: frequencyInSeconds ?? this.frequencyInSeconds,
       endDate: endDate ?? this.endDate,
       timeZoneId: timeZoneId ?? this.timeZoneId,
@@ -712,6 +765,9 @@ class DriftTimeSlotPatternsCompanion
     }
     if (anchorPoints.present) {
       map['anchor_points'] = Variable<String>(anchorPoints.value);
+    }
+    if (exclusionDates.present) {
+      map['exclusion_dates'] = Variable<String>(exclusionDates.value);
     }
     if (frequencyInSeconds.present) {
       map['frequency_in_seconds'] = Variable<int>(frequencyInSeconds.value);
@@ -734,6 +790,7 @@ class DriftTimeSlotPatternsCompanion
           ..write('id: $id, ')
           ..write('eventId: $eventId, ')
           ..write('anchorPoints: $anchorPoints, ')
+          ..write('exclusionDates: $exclusionDates, ')
           ..write('frequencyInSeconds: $frequencyInSeconds, ')
           ..write('endDate: $endDate, ')
           ..write('timeZoneId: $timeZoneId, ')
@@ -2077,6 +2134,7 @@ typedef $$DriftTimeSlotPatternsTableCreateCompanionBuilder =
       Value<int> id,
       required int eventId,
       Value<String?> anchorPoints,
+      Value<String?> exclusionDates,
       Value<int?> frequencyInSeconds,
       Value<DateTime?> endDate,
       Value<String?> timeZoneId,
@@ -2087,6 +2145,7 @@ typedef $$DriftTimeSlotPatternsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<int> eventId,
       Value<String?> anchorPoints,
+      Value<String?> exclusionDates,
       Value<int?> frequencyInSeconds,
       Value<DateTime?> endDate,
       Value<String?> timeZoneId,
@@ -2166,6 +2225,11 @@ class $$DriftTimeSlotPatternsTableFilterComposer
 
   ColumnFilters<String> get anchorPoints => $composableBuilder(
     column: $table.anchorPoints,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get exclusionDates => $composableBuilder(
+    column: $table.exclusionDates,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2257,6 +2321,11 @@ class $$DriftTimeSlotPatternsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get exclusionDates => $composableBuilder(
+    column: $table.exclusionDates,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get frequencyInSeconds => $composableBuilder(
     column: $table.frequencyInSeconds,
     builder: (column) => ColumnOrderings(column),
@@ -2315,6 +2384,11 @@ class $$DriftTimeSlotPatternsTableAnnotationComposer
 
   GeneratedColumn<String> get anchorPoints => $composableBuilder(
     column: $table.anchorPoints,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get exclusionDates => $composableBuilder(
+    column: $table.exclusionDates,
     builder: (column) => column,
   );
 
@@ -2425,6 +2499,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> eventId = const Value.absent(),
                 Value<String?> anchorPoints = const Value.absent(),
+                Value<String?> exclusionDates = const Value.absent(),
                 Value<int?> frequencyInSeconds = const Value.absent(),
                 Value<DateTime?> endDate = const Value.absent(),
                 Value<String?> timeZoneId = const Value.absent(),
@@ -2433,6 +2508,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 id: id,
                 eventId: eventId,
                 anchorPoints: anchorPoints,
+                exclusionDates: exclusionDates,
                 frequencyInSeconds: frequencyInSeconds,
                 endDate: endDate,
                 timeZoneId: timeZoneId,
@@ -2443,6 +2519,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 Value<int> id = const Value.absent(),
                 required int eventId,
                 Value<String?> anchorPoints = const Value.absent(),
+                Value<String?> exclusionDates = const Value.absent(),
                 Value<int?> frequencyInSeconds = const Value.absent(),
                 Value<DateTime?> endDate = const Value.absent(),
                 Value<String?> timeZoneId = const Value.absent(),
@@ -2451,6 +2528,7 @@ class $$DriftTimeSlotPatternsTableTableManager
                 id: id,
                 eventId: eventId,
                 anchorPoints: anchorPoints,
+                exclusionDates: exclusionDates,
                 frequencyInSeconds: frequencyInSeconds,
                 endDate: endDate,
                 timeZoneId: timeZoneId,

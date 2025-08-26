@@ -9,7 +9,7 @@ class TimeSlotPattern extends AppModel {
   final String? _timeZoneId;
   final Duration? _frequency;
   final String? _recurranceRule;
-  late final int eventId;
+  late int eventId;
 
   TimeSlotPattern({
     super.id,

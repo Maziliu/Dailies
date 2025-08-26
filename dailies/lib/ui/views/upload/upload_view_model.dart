@@ -38,6 +38,7 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
     ];
 
     _parsedEventsViewModel.foundEvents.value = events;
+
     for (final Exception error in errors) {
       emitError(error);
     }

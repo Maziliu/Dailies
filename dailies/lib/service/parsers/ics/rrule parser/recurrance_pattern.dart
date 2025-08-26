@@ -1,5 +1,6 @@
 import 'package:dailies/common/enums/days_of_the_week.dart';
 import 'package:dailies/common/enums/rrule_frequency.dart';
+import 'package:dailies/common/utils/parser_helpers.dart';
 import 'package:dailies/service/parsers/ics/rrule%20parser/by_day_rule.dart';
 
 const int ITERATION_LIMIT = 10000;
@@ -51,7 +52,7 @@ class RecurrencePattern {
     final frequency = RRuleFrequency.fromString(parsedRules['FREQ']!);
     final interval = int.tryParse(parsedRules['INTERVAL'] ?? '1') ?? 1;
     final count = parsedRules.containsKey('COUNT') ? int.tryParse(parsedRules['COUNT']!) : null;
-    final until = parsedRules.containsKey('UNTIL') ? parseUntilTagValue(parsedRules['UNTIL']!) : null;
+    final until = parsedRules.containsKey('UNTIL') ? parseDateString(parsedRules['UNTIL']!) : null;
 
     List<ByDayRule>? byDay;
     if (parsedRules.containsKey('BYDAY')) {
@@ -119,32 +120,6 @@ class RecurrencePattern {
     return rules;
   }
 
-  static DateTime parseUntilTagValue(String until) {
-    if (until.length == 8) {
-      //YYYYMMDD format
-      final year = int.parse(until.substring(0, 4));
-      final month = int.parse(until.substring(4, 6));
-      final day = int.parse(until.substring(6, 8));
-      return DateTime(year, month, day);
-    } else if (until.length == 15 || until.length == 16) {
-      //YYYYMMDDTHHMMSS or YYYYMMDDTHHMMSSZ format
-      final year = int.parse(until.substring(0, 4));
-      final month = int.parse(until.substring(4, 6));
-      final day = int.parse(until.substring(6, 8));
-      final hour = int.parse(until.substring(9, 11));
-      final minute = int.parse(until.substring(11, 13));
-      final second = int.parse(until.substring(13, 15));
-
-      if (until.endsWith('Z')) {
-        return DateTime.utc(year, month, day, hour, minute, second);
-      } else {
-        return DateTime(year, month, day, hour, minute, second);
-      }
-    }
-
-    throw ArgumentError('Invalid UNTIL date format: $until');
-  }
-
   bool _isSameNormalizedDay(DateTime first, DateTime second) {
     return first.year == second.year && first.month == second.month && first.day == second.day;
   }
@@ -185,11 +160,7 @@ class RecurrencePattern {
     return occurrences;
   }
 
-  bool _isExcluded(DateTime date) {
-    return excludeDates.any((exDate) {
-      return _isSameNormalizedDay(date, exDate);
-    });
-  }
+  bool _isExcluded(DateTime date) => excludeDates.any((exDate) => _isSameNormalizedDay(date, exDate));
 
   bool _matchesRule(DateTime date, DateTime start) {
     //BYMONTH

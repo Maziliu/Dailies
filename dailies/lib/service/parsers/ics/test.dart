@@ -31,6 +31,9 @@ void main() {
     print('  ${date.toIso8601String().split('T')[0]} ($dayName)');
   }
 
+  Map<DaysOfTheWeek, DateTime> anchorPointMap = {for (final DateTime date in classOccurrences.reversed) DaysOfTheWeek.fromDateTime(date): date};
+  print(anchorPointMap);
+
   // Example 2: Every weekday for 10 days
   print('\n2. Every weekday for 10 days:');
   final weekdayPattern = RecurrencePattern.fromRRule('FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=10');

@@ -2,7 +2,7 @@ import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/data/models/app_model.dart';
 
 class TimeSlot extends AppModel implements Comparable<TimeSlot> {
-  late final int patternId, eventId;
+  late int patternId, eventId;
   final DateTime _dateOfTimeSlot;
   final DateTime? _startTime;
   final DateTime? _endTime;

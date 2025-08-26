@@ -9,6 +9,14 @@ Future<Result<T>> guardedAsyncExcecute<T>(Future<T> Function() operation, [Excep
   }
 }
 
+Result<T> gaurdedExectute<T>(Function() operation, [Exception? exceptionToThrow]) {
+  try {
+    return Result.ok(operation());
+  } on Exception catch (caughtException) {
+    return Result.error(exceptionToThrow ?? caughtException);
+  }
+}
+
 Result<T> performOperationOnResultIfNotError<T, K>(Result<K> result, T Function(K subject) operation) {
   try {
     switch (result) {

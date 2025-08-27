@@ -38,7 +38,7 @@ class SubmitSection extends StatelessWidget {
           foregroundColor: colorScheme.onPrimary,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        child: const Text('Create Event'),
+        child: const Text('Create'),
       ),
     );
   }

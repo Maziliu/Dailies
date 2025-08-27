@@ -5,6 +5,8 @@ import 'package:dailies/ui/views/dashboard/dashboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest_all.dart';
+import 'package:timezone/standalone.dart';
 
 final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY = GlobalKey<ScaffoldMessengerState>();
 
@@ -15,6 +17,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent, systemNavigationBarColor: Colors.black));
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.top]);
+
   await setUpDependencies();
   runApp(const MainApp());
 }

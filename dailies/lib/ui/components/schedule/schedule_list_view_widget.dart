@@ -29,18 +29,20 @@ class ScheduleListViewWidget extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(color: colorScheme.primary.withAlpha(30), borderRadius: BorderRadius.circular(20)),
-              child: Icon(Icons.event_note_outlined, size: 40, color: colorScheme.primary),
-            ),
-            const SizedBox(height: 14),
-            Text('No Events', style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(color: colorScheme.primary.withAlpha(30), borderRadius: BorderRadius.circular(20)),
+                child: Icon(Icons.event_note_outlined, size: 40, color: colorScheme.primary),
+              ),
+              const SizedBox(height: 14),
+              Text('No Events', style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.onSurface)),
+            ],
+          ),
         ),
       ),
     );

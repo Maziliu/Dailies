@@ -5,7 +5,7 @@ import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_view_model.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   final FileParserService _fileParserService;
@@ -26,13 +26,14 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   ParsedEventsViewModel get parsedEventsViewModel => _parsedEventsViewModel;
 
   Future<void> _parseFiles(List<PlatformFile> files) async {
-    List<Result<List<Event>>> results = await _fileParserService.parseFiles(files);
+    final results = await compute(_backgroundParseFiles, {'service': _fileParserService, 'files': files});
 
-    List<Event> events = [
+    final List<Event> events = [
       for (final Result result in results)
-        if (result is Ok) ...result.value,
+        if (result is Ok<List<Event>>) ...result.value,
     ];
-    List<Exception> errors = [
+
+    final List<Exception> errors = [
       for (final Result result in results)
         if (result is Error) result.error,
     ];
@@ -43,4 +44,10 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
       emitError(error);
     }
   }
+}
+
+Future<List<Result<List<Event>>>> _backgroundParseFiles(Map<String, dynamic> params) async {
+  final FileParserService service = params['service'];
+  final List<PlatformFile> files = params['files'];
+  return await service.parseFiles(files);
 }

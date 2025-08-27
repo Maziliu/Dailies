@@ -30,8 +30,14 @@ class _StaminaWidgetState extends State<StaminaWidget> {
     super.initState();
     viewModel = _StaminaWidgetViewModel(stamina: widget._stamina, staminaRepositoryService: injector<StaminaRepositoryService>());
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      viewModel.decrementTimer();
+      Future.microtask(() => viewModel.decrementTimer());
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -39,6 +45,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
     final String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
     final String heroTag = '$SET_STAMINA_HERO_TAG/${widget._stamina.id}';
     return InkWell(
+      key: ValueKey(widget._stamina.id),
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () async {
@@ -100,7 +107,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
 
 class _StaminaWidgetViewModel extends ChangeNotifier {
   final ValueNotifier<int> currentStamina = ValueNotifier<int>(0);
-  final ValueNotifier<int> timeUntilNextStaminaInSeconds = ValueNotifier<int>(0);
+  int _timeUntilNextStaminaInSeconds = 0;
   final Stamina _stamina;
   final StaminaRepositoryService _staminaRepositoryService;
 
@@ -108,7 +115,7 @@ class _StaminaWidgetViewModel extends ChangeNotifier {
     : _stamina = stamina,
       _staminaRepositoryService = staminaRepositoryService {
     currentStamina.value = _computeCurrentStamina(_stamina.rechargeTime, _stamina.timeOfLastReset, _stamina.staminaOfLastestReset);
-    timeUntilNextStaminaInSeconds.value = _computeTimeUntilNextRefreshInSeconds(_stamina.rechargeTime, _stamina.timeOfLastReset);
+    _timeUntilNextStaminaInSeconds = _computeTimeUntilNextRefreshInSeconds(_stamina.rechargeTime, _stamina.timeOfLastReset);
   }
 
   int get maxStamina => _stamina.maxStamina;
@@ -119,20 +126,19 @@ class _StaminaWidgetViewModel extends ChangeNotifier {
     _stamina.timeOfLastReset = DateTime.now();
 
     await _staminaRepositoryService.updateStamina(_stamina);
-    notifyListeners();
   }
 
   void decrementTimer() {
-    if (timeUntilNextStaminaInSeconds.value > 0) {
-      timeUntilNextStaminaInSeconds.value--;
+    if (_timeUntilNextStaminaInSeconds > 0) {
+      _timeUntilNextStaminaInSeconds--;
     } else {
-      timeUntilNextStaminaInSeconds.value = _stamina.rechargeTime.inSeconds;
+      _timeUntilNextStaminaInSeconds = _stamina.rechargeTime.inSeconds;
       currentStamina.value++;
     }
   }
 
   void spendStaminaTo(int? stamina) {
-    timeUntilNextStaminaInSeconds.value = 0;
+    _timeUntilNextStaminaInSeconds = 0;
     currentStamina.value = stamina ?? 0;
   }
 

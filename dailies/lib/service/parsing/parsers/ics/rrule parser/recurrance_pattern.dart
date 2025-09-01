@@ -1,7 +1,7 @@
 import 'package:dailies/common/enums/days_of_the_week.dart';
 import 'package:dailies/common/enums/rrule_frequency.dart';
 import 'package:dailies/common/utils/parser_helpers.dart';
-import 'package:dailies/service/parsers/ics/rrule%20parser/by_day_rule.dart';
+import 'package:dailies/service/parsing/parsers/ics/rrule%20parser/by_day_rule.dart';
 
 const int ITERATION_LIMIT = 10000;
 

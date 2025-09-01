@@ -7,11 +7,11 @@ import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
-import 'package:dailies/service/parsers/parser.dart';
+import 'package:dailies/service/parsing/parsers/parser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
 
-class ICSParser implements Parser {
+class ICSParser extends Parser {
   @override
   Future<Result<List<Event>>> parseFile(PlatformFile file) async {
     if (file.path == null) return Result.error(Exception("ICS file path is null"));

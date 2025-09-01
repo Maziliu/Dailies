@@ -1,6 +1,6 @@
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
-import 'package:dailies/service/parsers/file_parser_service.dart';
+import 'package:dailies/service/parsing/file_parser_service.dart';
 import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_view_model.dart';

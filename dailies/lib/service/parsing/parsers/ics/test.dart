@@ -1,6 +1,6 @@
 import 'package:dailies/common/enums/days_of_the_week.dart';
 import 'package:dailies/common/utils/parser_helpers.dart';
-import 'package:dailies/service/parsers/ics/rrule%20parser/recurrance_pattern.dart';
+import 'package:dailies/service/parsing/parsers/ics/rrule%20parser/recurrance_pattern.dart';
 
 void main() {
   print('Testing RRULE Implementation with EXDATE support\n');

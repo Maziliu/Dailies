@@ -43,6 +43,9 @@ class FileUploadSection extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: files.length,
                   itemBuilder: (context, index) {
+                    final int CHARACTER_LIMIT = 37;
+                    final String fileName =
+                        (files[index].name.length > CHARACTER_LIMIT) ? '${files[index].name.substring(0, CHARACTER_LIMIT)} ...' : files[index].name;
                     return Card(
                       child: Padding(
                         padding: UIFormating.smallPadding(),
@@ -52,7 +55,7 @@ class FileUploadSection extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(files[index].name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                Text(fileName, style: const TextStyle(fontWeight: FontWeight.bold)),
                                 Text('Size: ${_formatFileSize(files[index].size)}'),
                               ],
                             ),

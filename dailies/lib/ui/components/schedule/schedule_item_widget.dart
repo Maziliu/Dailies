@@ -88,7 +88,7 @@ class ScheduleItemWidget extends StatelessWidget {
     switch (slot.timeSlotType) {
       case TimeSlotType.Interval:
         return "${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - "
-            "${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
+            "${(slot.endTime == null) ? '' : TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
       case TimeSlotType.Deadline:
         return "Due ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
       default:

@@ -1,7 +1,6 @@
 import 'dart:async';
 
-
-class GloablErrorService {
+class GlobalErrorService {
   final StreamController<Exception> _errorStream = StreamController<Exception>.broadcast();
 
   Stream<Exception> get errorStream => _errorStream.stream;

@@ -25,7 +25,7 @@ class EventTypeSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Event Type', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            Text('Type', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
             UIFormating.smallVerticalSpacing(),
             ValueListenableBuilder(
               valueListenable: _viewModel.selectedTimeSlotIndex,

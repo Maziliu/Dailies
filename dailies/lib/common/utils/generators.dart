@@ -1,6 +1,6 @@
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
-import 'package:dailies/service/parsers/ics/rrule%20parser/recurrance_pattern.dart';
+import 'package:dailies/service/parsing/parsers/ics/rrule%20parser/recurrance_pattern.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 List<TimeSlot> generateTimeSlots(TimeSlotPattern pattern, {int limitInDays = 365}) =>

@@ -1,0 +1,43 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//AI Calendar Parser//EN
+BEGIN:VEVENT
+DTSTAMP:20251009T235959Z
+DTEND:20251009T235959Z
+SUMMARY:Proposal (Group) Deadline
+DESCRIPTION:You will write a proposal (750-1000 words plus appendices) outlining what you aim to achieve in your formal report. Secondary and primary research will be necessary to complete the proposal. Weight: 10%
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20250916T000000Z
+DTSTART:20250916T000000Z
+DTEND:20250918T235959Z
+SUMMARY:Quiz 1: Planning and Writing Ethical AI
+DESCRIPTION:Quiz open-book and asynchronous on D2L. Available from Sept 16 to Sept 18. Must be submitted within 48 hours of availability.
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251021T000000Z
+DTSTART:20251021T000000Z
+DTEND:20251023T235959Z
+SUMMARY:Quiz 2: Formal Reports & Proposals
+DESCRIPTION:Quiz open-book and asynchronous on D2L. Available from Oct 21 to Oct 23. Must be submitted within 48 hours of availability.
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251030T235959Z
+DTEND:20251030T235959Z
+SUMMARY:Proposal (Group) Due
+DESCRIPTION:Proposal due by Oct 30. Weight: 10%
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251118T000000Z
+DTSTART:20251118T000000Z
+DTEND:20251120T235959Z
+SUMMARY:Quiz 3: Communicating for Employment
+DESCRIPTION:Quiz open-book and asynchronous on D2L. Available from Nov 18 to Nov 20. Must be submitted within 48 hours of availability.
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20251203T235959Z
+DTEND:20251203T235959Z
+SUMMARY:Final Report Deadline
+DESCRIPTION:Final Report due by Dec 3.
+END:VEVENT
+END:VCALENDAR

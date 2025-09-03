@@ -1,8 +1,9 @@
 import 'package:dailies/common/exceptions/parser_exceptions.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
-import 'package:dailies/service/parsers/ics/ics_parser.dart';
-import 'package:dailies/service/parsers/parser.dart';
+import 'package:dailies/service/parsing/parsers/ics/ics_parser.dart';
+import 'package:dailies/service/parsing/parsers/parser.dart';
+import 'package:dailies/service/parsing/parsers/pdf/pdf_parser.dart';
 import 'package:file_picker/file_picker.dart';
 
 class FileParserService {
@@ -19,7 +20,7 @@ class FileParserService {
         continue;
       }
 
-      results.add(await _fileParser!.parseFile(file));
+      results.add(await _fileParser!.parseFile(file.path));
     }
 
     return results;
@@ -29,6 +30,9 @@ class FileParserService {
     switch (file.extension) {
       case 'ics':
         _fileParser = ICSParser();
+
+      case 'pdf':
+        _fileParser = PDFParser();
 
       default:
         _fileParser = null;

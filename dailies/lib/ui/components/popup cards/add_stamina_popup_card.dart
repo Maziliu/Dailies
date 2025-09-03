@@ -1,4 +1,5 @@
 import 'package:dailies/common/generated/assets.gen.dart';
+import 'package:dailies/common/utils/ui_helpers.dart';
 import 'package:dailies/ui/components/interface/animatable_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
@@ -27,18 +28,6 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
       _rechargeTimeFieldTag = 'rechargeTime',
       _currentStamina = 'currentStamina',
       _energyType = 'energyType';
-
-  String _formatAssetName(String filename) {
-    final nameWithoutExtension = filename.split('.').first;
-
-    final noUnderscoresOrNonAlphaNumeric = nameWithoutExtension.replaceAll(RegExp(r'[^a-zA-Z0-9]+'), ' ');
-
-    final words = noUnderscoresOrNonAlphaNumeric.split(' ').where((word) => word.isNotEmpty);
-
-    final capitalizedWords = words.map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase());
-
-    return capitalizedWords.join(' ');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +92,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                               children: [
                                 SizedBox(width: 40, height: 40, child: asset.image(fit: BoxFit.contain)),
                                 const SizedBox(width: 10),
-                                Text(_formatAssetName(asset.path.split('/').last)),
+                                Text(formatAssetName(asset.path.split('/').last)),
                               ],
                             ),
                           ),

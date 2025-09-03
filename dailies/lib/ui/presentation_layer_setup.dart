@@ -1,4 +1,4 @@
-import 'package:dailies/service/parsers/file_parser_service.dart';
+import 'package:dailies/service/parsing/file_parser_service.dart';
 import 'package:dailies/service/repository/event_repository_service.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
 import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dailies/common/utils/generators.dart';
 import 'package:dailies/common/utils/parser_helpers.dart';
@@ -8,20 +7,19 @@ import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/service/parsing/parsers/parser.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
 
 class ICSParser extends Parser {
   @override
   Future<Result<List<Event>>> parseFile(String? filePath) async {
-    if (filePath == null) return Result.error(Exception("ICS file path is null"));
+    if (filePath == null) return Result.error(Exception('ICS file path is null'));
 
-    File icsFile = File(filePath);
-    if (!(await icsFile.exists())) return Result.error(Exception("ICS file does not exist $filePath"));
+    final File icsFile = File(filePath);
+    if (!icsFile.existsSync()) return Result.error(Exception('ICS file does not exist $filePath'));
 
     String icsContent;
     try {
-      icsContent = await icsFile.readAsString(encoding: utf8);
+      icsContent = await icsFile.readAsString();
     } catch (exception) {
       return Result.error(Exception('Failed to read file content: ${exception.toString()}'));
     }
@@ -37,26 +35,26 @@ class ICSParser extends Parser {
   }
 
   static Result<List<Event>> parseICalendar(ICalendar iCalendar) {
-    List<Event> events = [];
-    for (var eventData in iCalendar.data) {
+    final List<Event> events = [];
+    for (final eventData in iCalendar.data) {
       if (eventData['type'] != 'VEVENT') continue;
 
-      Result result = gaurdedExectute(() {
-        String? summary = eventData['summary']?.toString();
-        String? location = eventData['location']?.toString();
-        DateTime? startTime = eventData['dtstart']?.toDateTime();
-        DateTime startDate = eventData['dtstamp'].toDateTime();
-        DateTime? endTime = eventData['dtend']?.toDateTime();
-        String? recurranceRule = eventData['rrule']?.toString();
-        List? exclusionDates = eventData['exdate']?.map((date) => date.toDateTime()).toList() ?? [];
+      final Result result = gaurdedExectute(() {
+        final String? summary = eventData['summary']?.toString();
+        final String? location = eventData['location']?.toString();
+        final DateTime? startTime = eventData['dtstart']?.toDateTime();
+        final DateTime startDate = eventData['dtstamp'].toDateTime();
+        final DateTime? endTime = eventData['dtend']?.toDateTime();
+        final String? recurranceRule = eventData['rrule']?.toString();
+        final List? exclusionDates = eventData['exdate']?.map((date) => date.toDateTime()).toList() ?? [];
 
-        Event event = Event(eventName: summary ?? 'Untitled', location: location);
+        final Event event = Event(eventName: summary ?? 'Untitled', location: location);
 
         TimeSlotPattern? pattern;
 
         if (recurranceRule != null) {
           //RRule patterns will carry a reference. The normalize component does not matter only the relative times
-          TimeSlot reference = TimeSlot.UnSaved(dateOfTimeSlot: startDate, startTime: startTime, endTime: endTime);
+          final TimeSlot reference = TimeSlot.UnSaved(dateOfTimeSlot: startDate, startTime: startTime, endTime: endTime);
 
           pattern = TimeSlotPattern.UnSaved(
             recurranceRule: recurranceRule,
@@ -65,7 +63,7 @@ class ICSParser extends Parser {
           );
         } else {
           //No rrule means this is a oneshot event but I represent these with pattern of 1
-          TimeSlot anchorPoint = TimeSlot.UnSaved(dateOfTimeSlot: startDate, startTime: startTime, endTime: endTime);
+          final TimeSlot anchorPoint = TimeSlot.UnSaved(dateOfTimeSlot: startDate, startTime: startTime, endTime: endTime);
           pattern = TimeSlotPattern.UnSaved(
             endPatternDate: (endTime != null) ? normalizeDateTime(endTime) : null,
             exclusionDates: exclusionDates?.map((date) => date as DateTime).toList(),

@@ -1,11 +1,11 @@
 import 'dart:collection';
 
-import 'package:collection/priority_queue.dart';
+import 'package:collection/collection.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/time_slot.dart';
-import 'package:dailies/ui/components/section.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
+import 'package:dailies/ui/components/section.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ScheduleSection extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -38,7 +38,7 @@ class ScheduleSection extends StatelessWidget {
                 child: ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(
                   valueListenable: _eventsViewModel.dateToTimeSlotsMap,
                   builder: (context, map, _) {
-                    DateTime now = DateTime.now(), normalized = DateTime(now.year, now.month, now.day);
+                    final DateTime now = DateTime.now(), normalized = DateTime(now.year, now.month, now.day);
 
                     return ScheduleListViewWidget(
                       pairs:

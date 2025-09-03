@@ -4,12 +4,12 @@ mixin TextChunkerMixin {
   List<String> _extractChunks(String content, {bool splitByLines = false}) {
     final parts =
         splitByLines
-            ? content.split("\n") //for table rows
+            ? content.split('\n') //for table rows
             : content.split(RegExp(r'(?<=[.!?])\s+'));
 
     final sentences = parts.map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
 
-    List<String> chunks = [];
+    final List<String> chunks = [];
     for (int i = 0; i < sentences.length; i++) {
       if (_isRelevantSentence(sentences[i])) {
         final before = (i > 0 && !splitByLines) ? sentences[i - 1] : '';

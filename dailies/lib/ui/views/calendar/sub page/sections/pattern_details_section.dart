@@ -57,8 +57,8 @@ class PatternDetailsSection extends StatelessWidget {
                                       decoration: const InputDecoration(labelText: 'Time Until Next Repeat', border: OutlineInputBorder()),
                                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) return "Required";
-                                        if (int.tryParse(value)! <= 0) return "Must be greater than 0";
+                                        if (value == null || value.isEmpty) return 'Required';
+                                        if (int.tryParse(value)! <= 0) return 'Must be greater than 0';
 
                                         return null;
                                       },

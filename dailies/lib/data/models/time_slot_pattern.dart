@@ -27,7 +27,7 @@ class TimeSlotPattern extends AppModel {
        _recurranceRule = recurranceRule {
     anchorPoints = anchorPointsString;
     _exclusionDates.addAll(exclusionDates ?? []);
-    _exclusionDates.addAll(exclusionDateString?.split(';').map((String dateString) => DateTime.parse(dateString)).toList() ?? []);
+    _exclusionDates.addAll(exclusionDateString?.split(';').map(DateTime.parse).toList() ?? []);
   }
 
   TimeSlotPattern.UnSaved({
@@ -78,10 +78,10 @@ class TimeSlotPattern extends AppModel {
   set anchorPoints(String? encodedString) {
     if (encodedString == null) return;
 
-    List<String> triples = encodedString.split(',');
+    final List<String> triples = encodedString.split(',');
 
     for (final String triple in triples) {
-      List<String> separated = triple.split(';');
+      final List<String> separated = triple.split(';');
       _anchorPoints.add(
         TimeSlot(
           patternId: id,

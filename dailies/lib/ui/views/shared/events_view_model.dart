@@ -61,8 +61,8 @@ class EventsViewModel with ErrorStreamMixin {
     final SplayTreeMap<DateTime, HeapPriorityQueue> map = dateToTimeSlotsMap.value;
 
     while (map.length > LIMIT) {
-      DateTime? deleteFirst = map.keys.firstWhereOrNull((DateTime key) => !protectedDates.contains(key));
-      DateTime? deleteLast = map.keys.lastWhereOrNull((DateTime key) => !protectedDates.contains(key));
+      final DateTime? deleteFirst = map.keys.firstWhereOrNull((DateTime key) => !protectedDates.contains(key));
+      final DateTime? deleteLast = map.keys.lastWhereOrNull((DateTime key) => !protectedDates.contains(key));
 
       if (deleteFirst == null && deleteLast == null) break;
 
@@ -88,20 +88,20 @@ class EventsViewModel with ErrorStreamMixin {
   }
 
   void _addTimeSlotsToMap(List<TimeSlot> timeSlots) {
-    for (TimeSlot timeSlot in timeSlots) {
+    for (final TimeSlot timeSlot in timeSlots) {
       final DateTime dateOfTimeSlot = timeSlot.dateOfTimeSlot;
       final DateTime normalized = DateTime(dateOfTimeSlot.year, dateOfTimeSlot.month, dateOfTimeSlot.day);
 
-      dateToTimeSlotsMap.value.putIfAbsent(normalized, () => HeapPriorityQueue<TimeSlot>());
+      dateToTimeSlotsMap.value.putIfAbsent(normalized, HeapPriorityQueue<TimeSlot>.new);
       if (!dateToTimeSlotsMap.value[normalized]!.contains(timeSlot)) dateToTimeSlotsMap.value[normalized]!.add(timeSlot);
     }
   }
 
   //"Around" means entirety of last, this, and next month
   Future<void> loadEventsAround(DateTime day) async {
-    final DateTime lowerBound = DateTime(day.month == 1 ? day.year - 1 : day.year, day.month == 1 ? 12 : day.month - 1, 1);
+    final DateTime lowerBound = DateTime(day.month == 1 ? day.year - 1 : day.year, day.month == 1 ? 12 : day.month - 1);
 
-    DateTime firstDayMonthAfterUpperBound = DateTime(day.month >= 11 ? day.year + 1 : day.year, (day.month + 2) % 12 == 0 ? 12 : (day.month + 2) % 12, 1);
+    final DateTime firstDayMonthAfterUpperBound = DateTime(day.month >= 11 ? day.year + 1 : day.year, (day.month + 2) % 12 == 0 ? 12 : (day.month + 2) % 12);
     final DateTime upperBound = firstDayMonthAfterUpperBound.subtract(const Duration(days: 1));
 
     final result = await _eventRepositoryService.fetchAllEventsBetweenDates(lowerBound, upperBound);
@@ -114,13 +114,13 @@ class EventsViewModel with ErrorStreamMixin {
     }
   }
 
-  DateTime _getBeginningOfTheMonth(DateTime day) => DateTime(day.year, day.month, 1);
+  DateTime _getBeginningOfTheMonth(DateTime day) => DateTime(day.year, day.month);
   DateTime _getEndOfTheMonth(DateTime day) =>
-      DateTime(day.month == 12 ? day.year + 1 : day.year, day.month == 12 ? 1 : day.month + 1, 1).subtract(const Duration(days: 1));
+      DateTime(day.month == 12 ? day.year + 1 : day.year, day.month == 12 ? 1 : day.month + 1).subtract(const Duration(days: 1));
 
   Future<void> _loadMonthsEventsOutsideBounds(DateTime day) async {
-    DateTime beginningOfTheMonth = _getBeginningOfTheMonth(day);
-    DateTime endOfTheMonth = _getEndOfTheMonth(day);
+    final DateTime beginningOfTheMonth = _getBeginningOfTheMonth(day);
+    final DateTime endOfTheMonth = _getEndOfTheMonth(day);
 
     _preInitializeMap(beginningOfTheMonth, endOfTheMonth);
 
@@ -159,7 +159,7 @@ class EventsViewModel with ErrorStreamMixin {
       timeslotsList.removeWhere((TimeSlot timeslot) => timeslot.eventId == event.id);
 
       if (lengthBeforeRemove != timeslotsList.length) {
-        HeapPriorityQueue<TimeSlot> edited = HeapPriorityQueue()..addAll(timeslotsList);
+        final HeapPriorityQueue<TimeSlot> edited = HeapPriorityQueue()..addAll(timeslotsList);
         dateToTimeSlotsMap.value[key] = edited;
       }
     }
@@ -169,7 +169,7 @@ class EventsViewModel with ErrorStreamMixin {
   }
 
   Future<void> addEvent(Event event) async {
-    Result<int> result = await _eventRepositoryService.saveEvent(event);
+    final Result<int> result = await _eventRepositoryService.saveEvent(event);
 
     switch (result) {
       case Ok():

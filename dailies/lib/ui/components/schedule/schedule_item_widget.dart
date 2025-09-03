@@ -26,7 +26,7 @@ class ScheduleItemWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outline.withAlpha(50), width: 1),
+        border: Border.all(color: colorScheme.outline.withAlpha(50)),
         boxShadow: [BoxShadow(color: Colors.black.withAlpha(12), blurRadius: 4, offset: const Offset(0, 2))],
       ),
       child: Padding(
@@ -87,10 +87,10 @@ class ScheduleItemWidget extends StatelessWidget {
   String? _formatTimeText(BuildContext context, TimeSlot slot) {
     switch (slot.timeSlotType) {
       case TimeSlotType.Interval:
-        return "${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - "
+        return '${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - '
             "${(slot.endTime == null) ? '' : TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
       case TimeSlotType.Deadline:
-        return "Due ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
+        return 'Due ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}';
       default:
         return null;
     }

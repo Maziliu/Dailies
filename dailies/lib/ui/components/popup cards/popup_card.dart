@@ -9,11 +9,11 @@ class PopupCard extends StatelessWidget {
 
   const PopupCard({super.key, required Widget innerContentWidget, required String heroTag}) : _innerContentWidget = innerContentWidget, _heroTag = heroTag;
 
-  factory PopupCard.AddStamina({Key? key, required void Function(String, int, Duration, int, String?) onSubmit, required String heroTag}) {
+  factory PopupCard.AddStamina({required void Function(String, int, Duration, int, String?) onSubmit, required String heroTag}) {
     return PopupCard(innerContentWidget: AddStaminaPopupCard(onSubmit: onSubmit, heroTag: heroTag), heroTag: heroTag);
   }
 
-  factory PopupCard.SetStamina({Key? key, required String heroTag}) {
+  factory PopupCard.SetStamina({required String heroTag}) {
     return PopupCard(innerContentWidget: SetStaminaPopupCard(heroTag: heroTag), heroTag: heroTag);
   }
 
@@ -25,7 +25,7 @@ class PopupCard extends StatelessWidget {
         padding: UIFormating.extraLargePadding(),
         child: Hero(
           tag: _heroTag,
-          child: Material(elevation: 0, borderRadius: UIFormating.mediumCircularBorderRadius(), color: colorScheme.surface, child: _innerContentWidget),
+          child: Material(borderRadius: UIFormating.mediumCircularBorderRadius(), color: colorScheme.surface, child: _innerContentWidget),
         ),
       ),
     );

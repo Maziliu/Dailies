@@ -14,18 +14,18 @@ class StaminaRepositoryService {
       _notificationService = notificationService;
 
   Future<Result<List<Stamina>>> fetchAllStaminas() async {
-    Result<List<AppModel>> results = await _repository.getAllStamina();
+    final Result<List<AppModel>> results = await _repository.getAllStamina();
 
     return performOperationOnResultIfNotError(results, (resultList) => resultList.map((result) => result as Stamina).toList());
   }
 
   Future<Result<int>> saveStamina(Stamina stamina) async {
-    Result<int> staminaResult = await _repository.insert(stamina);
+    final Result<int> staminaResult = await _repository.insert(stamina);
 
     if (staminaResult is Ok) {
       stamina.id = (staminaResult as Ok).value;
 
-      Result notificationResult = await guardedAsyncExcecute(() {
+      final Result notificationResult = await guardedAsyncExcecute(() {
         final DateTime notificationTime = _calculateNotificationTime(stamina);
         return _notificationService.scheduleGachaTimerNotification(stamina, notificationTime, _calculateNotificationStamina(stamina));
       });
@@ -37,10 +37,10 @@ class StaminaRepositoryService {
   }
 
   Future<Result<bool>> updateStamina(Stamina updatedStamina) async {
-    Result<bool> updateResult = await _repository.update(updatedStamina);
+    final Result<bool> updateResult = await _repository.update(updatedStamina);
 
     if (updateResult is Ok) {
-      Result notificationResult = await guardedAsyncExcecute(() {
+      final Result notificationResult = await guardedAsyncExcecute(() {
         final DateTime notificationTime = _calculateNotificationTime(updatedStamina);
         return _notificationService.scheduleGachaTimerNotification(updatedStamina, notificationTime, _calculateNotificationStamina(updatedStamina));
       });
@@ -52,7 +52,7 @@ class StaminaRepositoryService {
   }
 
   Future<Result<int>> deleteStamina(Stamina stamina) async {
-    Result notificationResult = await guardedAsyncExcecute(() => _notificationService.cancelScheduledNotification(stamina.id));
+    final Result notificationResult = await guardedAsyncExcecute(() => _notificationService.cancelScheduledNotification(stamina.id));
 
     if (notificationResult is Error) return Result.error(notificationResult.error);
 
@@ -62,8 +62,8 @@ class StaminaRepositoryService {
   int _calculateNotificationStamina(Stamina stamina) => (stamina.maxStamina * 0.95) ~/ 1;
 
   DateTime _calculateNotificationTime(Stamina stamina) {
-    int notificationStamina = _calculateNotificationStamina(stamina);
-    int timeToNotifyInSeconds = (notificationStamina - stamina.staminaOfLastestReset) * stamina.rechargeTime.inSeconds;
+    final int notificationStamina = _calculateNotificationStamina(stamina);
+    final int timeToNotifyInSeconds = (notificationStamina - stamina.staminaOfLastestReset) * stamina.rechargeTime.inSeconds;
 
     print(timeToNotifyInSeconds);
 

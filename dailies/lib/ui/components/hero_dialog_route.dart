@@ -16,7 +16,7 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   Color get barrierColor => Colors.black54;
 
   @override
-  String get barrierLabel => "Dialog";
+  String get barrierLabel => 'Dialog';
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {

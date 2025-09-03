@@ -1,6 +1,6 @@
+import 'package:dailies/data/dao/event_dao.dart';
 import 'package:dailies/data/database/drift/drift_database.dart';
 import 'package:dailies/data/database/drift/tables/drift_events.dart';
-import 'package:dailies/data/dao/event_dao.dart';
 import 'package:drift/drift.dart';
 
 part 'drift_event_dao.g.dart';

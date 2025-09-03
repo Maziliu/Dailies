@@ -7,7 +7,7 @@ import 'package:drift/drift.dart';
 class DriftStaminaMapper implements StaminaMapper<DriftStamina, DriftStaminasCompanion> {
   @override
   DriftStaminasCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
-    Stamina stamina = appModel as Stamina;
+    final Stamina stamina = appModel as Stamina;
 
     return DriftStaminasCompanion(
       id: stamina.isNotSaved ? const Value.absent() : Value(stamina.id),

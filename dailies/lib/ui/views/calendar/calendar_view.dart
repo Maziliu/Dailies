@@ -1,6 +1,6 @@
 import 'package:dailies/ui/components/ui_formating.dart';
-import 'package:dailies/ui/views/calendar/sections/calendar_section.dart';
 import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';
+import 'package:dailies/ui/views/calendar/sections/calendar_section.dart';
 import 'package:dailies/ui/views/calendar/sections/events_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -17,13 +17,13 @@ class TimeSlotRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with Re
        _mapper = mapper;
 
   Future<Result<List<AppModel>>> getTimeSlotsBetween(DateTime lowerBound, DateTime upperBound) async {
-    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getTimeSlotsInDateTimeRange(lowerBound, upperBound));
+    final Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getTimeSlotsInDateTimeRange(lowerBound, upperBound));
 
     return performOperationOnResultIfNotError(results, (results) => results.map((result) => mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
   }
 
   Future<Result<void>> insertAllTimeSlots(List<TimeSlot> timeSlots) async => guardedAsyncExcecute(() {
-    List<TOutgoingDatabaseModel> outgoingTimeSlots = timeSlots.map((timeSlot) => _mapper.convertAppModelToOutgoingDatabaseModel(timeSlot)).toList();
+    final List<TOutgoingDatabaseModel> outgoingTimeSlots = timeSlots.map(_mapper.convertAppModelToOutgoingDatabaseModel).toList();
 
     return _dao.insertAllTimeSlots(outgoingTimeSlots);
   });

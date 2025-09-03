@@ -16,7 +16,7 @@ class ParsedEventsViewModel extends ChangeNotifier with ErrorStreamMixin {
 
   Future<void> saveAllEvents() async {
     for (final Event event in foundEvents.value) {
-      Result result = await _eventRepositoryService.saveEvent(event);
+      final Result result = await _eventRepositoryService.saveEvent(event);
       if (result is Error) emitError(result.error);
     }
 

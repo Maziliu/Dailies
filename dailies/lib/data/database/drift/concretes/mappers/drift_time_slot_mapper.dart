@@ -7,7 +7,7 @@ import 'package:drift/drift.dart';
 class DriftTimeSlotMapper extends TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion> {
   @override
   DriftTimeSlotsCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
-    TimeSlot timeSlot = appModel as TimeSlot;
+    final TimeSlot timeSlot = appModel as TimeSlot;
 
     return DriftTimeSlotsCompanion(
       id: (timeSlot.isNotSaved) ? const Value.absent() : Value(timeSlot.id),

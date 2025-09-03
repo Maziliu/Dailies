@@ -42,15 +42,15 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
                 name: _setStaminaToTag,
                 decoration: const InputDecoration(labelText: 'Remaining Stamina'),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validator: (value) => (value == null) ? "Required" : null,
+                validator: (value) => (value == null) ? 'Required' : null,
               ),
               UIFormating.mediumVerticalSpacing(),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    Map<String, dynamic>? fields = _formKey.currentState?.fields;
+                    final Map<String, dynamic>? fields = _formKey.currentState?.fields;
 
-                    int remainingStamina = int.parse(fields?[_setStaminaToTag].value ?? '0');
+                    final int remainingStamina = int.parse(fields?[_setStaminaToTag].value ?? '0');
 
                     Navigator.pop(context, remainingStamina);
                   }

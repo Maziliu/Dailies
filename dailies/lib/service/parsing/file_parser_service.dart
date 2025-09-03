@@ -20,7 +20,7 @@ class FileParserService {
         continue;
       }
 
-      results.add(await _fileParser!.parseFile(file));
+      results.add(await _fileParser!.parseFile(file.path));
     }
 
     return results;

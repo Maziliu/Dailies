@@ -6,5 +6,5 @@ import 'package:dailies/data/models/event.dart';
 import 'package:file_picker/file_picker.dart';
 
 abstract class Parser {
-  Future<Result<List<Event>>> parseFile(PlatformFile file);
+  Future<Result<List<Event>>> parseFile(String? filePath);
 }

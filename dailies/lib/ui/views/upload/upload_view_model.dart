@@ -26,7 +26,7 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   ParsedEventsViewModel get parsedEventsViewModel => _parsedEventsViewModel;
 
   Future<void> _parseFiles(List<PlatformFile> files) async {
-    final results = await compute(_backgroundParseFiles, {'service': _fileParserService, 'files': files});
+    final results = await _backgroundParseFiles(files);
 
     final List<Event> events = [
       for (final Result result in results)
@@ -46,8 +46,4 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 }
 
-Future<List<Result<List<Event>>>> _backgroundParseFiles(Map<String, dynamic> params) async {
-  final FileParserService service = params['service'];
-  final List<PlatformFile> files = params['files'];
-  return await service.parseFiles(files);
-}
+Future<List<Result<List<Event>>>> _backgroundParseFiles(List<PlatformFile> files) async => await FileParserService().parseFiles(files);

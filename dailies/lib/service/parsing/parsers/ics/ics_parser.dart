@@ -13,11 +13,11 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 
 class ICSParser extends Parser {
   @override
-  Future<Result<List<Event>>> parseFile(PlatformFile file) async {
-    if (file.path == null) return Result.error(Exception("ICS file path is null"));
+  Future<Result<List<Event>>> parseFile(String? filePath) async {
+    if (filePath == null) return Result.error(Exception("ICS file path is null"));
 
-    File icsFile = File(file.path!);
-    if (!(await icsFile.exists())) return Result.error(Exception("ICS file does not exist ${file.path}"));
+    File icsFile = File(filePath);
+    if (!(await icsFile.exists())) return Result.error(Exception("ICS file does not exist $filePath"));
 
     String icsContent;
     try {
@@ -33,20 +33,19 @@ class ICSParser extends Parser {
       return Result.error(Exception('Failed to parse ICS file: ${e.toString()}'));
     }
 
-    return _parseICalendar(iCalendar);
+    return parseICalendar(iCalendar);
   }
 
-  Result<List<Event>> _parseICalendar(ICalendar iCalendar) {
+  static Result<List<Event>> parseICalendar(ICalendar iCalendar) {
     List<Event> events = [];
     for (var eventData in iCalendar.data) {
       if (eventData['type'] != 'VEVENT') continue;
-      if (eventData['dtstart'] == null) return Result.error(Exception('Incorrectly formated file. VEVENT must have DTSTART'));
 
       Result result = gaurdedExectute(() {
         String? summary = eventData['summary']?.toString();
         String? location = eventData['location']?.toString();
-        DateTime startTime = eventData['dtstart'].toDateTime();
-        DateTime startDate = normalizeDateTime(startTime);
+        DateTime? startTime = eventData['dtstart']?.toDateTime();
+        DateTime startDate = eventData['dtstamp'].toDateTime();
         DateTime? endTime = eventData['dtend']?.toDateTime();
         String? recurranceRule = eventData['rrule']?.toString();
         List? exclusionDates = eventData['exdate']?.map((date) => date.toDateTime()).toList() ?? [];
@@ -56,7 +55,7 @@ class ICSParser extends Parser {
         TimeSlotPattern? pattern;
 
         if (recurranceRule != null) {
-          //RRule patterns will carry a reference. The normalize component does not matter only the relative timesll
+          //RRule patterns will carry a reference. The normalize component does not matter only the relative times
           TimeSlot reference = TimeSlot.UnSaved(dateOfTimeSlot: startDate, startTime: startTime, endTime: endTime);
 
           pattern = TimeSlotPattern.UnSaved(

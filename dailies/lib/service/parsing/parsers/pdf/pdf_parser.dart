@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dailies/common/utils/result.dart';
+import 'package:dailies/common/utils/result_helpers.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/service/parsing/mixin/llm_prompter_mixin.dart';
 import 'package:dailies/service/parsing/mixin/text_chunker_mixin.dart';
@@ -30,6 +31,9 @@ class PDFParser extends Parser with TextChunkerMixin, LLMPrompterMixin {
     Result<String> llmResult = await promptLLM(chunks.join('\n'));
 
     if (llmResult is Error) return Result.error((llmResult as Error).error);
+
+    Result<ICalendar> iCalendarResult = gaurdedExectute(() => ICalendar.fromString((llmResult as Ok).value));
+    if (iCalendarResult is Error) return Result.error((iCalendarResult as Error).error);
 
     return ICSParser.parseICalendar(ICalendar.fromString((llmResult as Ok).value));
   }

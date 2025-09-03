@@ -85,14 +85,14 @@ class PDFParser extends Parser {
     if (RegExp(r'electronically\s+approved', caseSensitive: false).hasMatch(chunk)) return false;
 
     final eventKeywords = RegExp(
-          r'(due|deadline|exam|test|assignment|lab|class|lecture|meeting|event|schedule|submit|quiz|project|presentation|workshop|seminar|conference|report)',
+          r'(due|deadline|exam|test|assignment|lab|class|lecture|meeting|event|schedule|submit|quiz|project|presentation|workshop|seminar|conference|report|midterm|final)',
           caseSensitive: false,
         ),
         timeKeywords = RegExp(r'(at\s+\d{1,2}:\d{2}|pm|am|\d+\s+minutes?|hours?)', caseSensitive: false);
 
     if (eventKeywords.hasMatch(chunk) || timeKeywords.hasMatch(chunk)) return true;
 
-    if (RegExp(r'(week|assignment|lab)\s+\d+', caseSensitive: false).hasMatch(chunk)) return true; //Prob structuered data like tables and shcedules
+    if (RegExp(r'(week|assignment|lab)\s+\d+', caseSensitive: false).hasMatch(chunk)) return true; //structuered data like tables and shcedules
 
     final RegExp dateRegex = RegExp(
       r'(\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b|' //ex: 01/09/2025

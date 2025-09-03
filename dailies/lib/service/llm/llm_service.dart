@@ -25,13 +25,13 @@ class LLMService {
             "role": "system",
             "content": """
                   You are a parser for a calendar app. 
-                  Given a block of text, extract all deadlines, assignments, events, and quizzes. 
+                  Given a block of text, extract all deadlines, assignments, events, quizzes, exams. 
                   Respond only in valid ICS (iCalendar) format.
 
                   Rules:
                   - Do not use VALUE=DATE.
                   - Set DTSTAMP to the date/time of the actual event in YYYYMMDDTHHMMSSZ format.
-                  - Deadlines: include only DTEND (set to same value as DTSTAMP), omit DTSTART.
+                  - Deadlines: include only DTEND (set to same value as DTSTAMP), omit DTSTART. if no time is given assume 11:59 pm
                   - Intervals (events with a start and end): include both DTSTART and DTEND, where DTSTAMP matches the event start time.
                   - Undefined (no specific date or time): set DTSTAMP to current date and omit both DTSTART and DTEND.
                   - Always include SUMMARY and DESCRIPTION.

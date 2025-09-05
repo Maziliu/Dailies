@@ -16,9 +16,9 @@ class EventRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with Repos
        _mapper = mapper;
 
   Future<Result<List<AppModel>>> getAllEventsWithIds(List<int> ids) async {
-    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getAllEventsWithIds(ids));
+    final Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getAllEventsWithIds(ids));
 
-    return performOperationOnResultIfNotError(results, (results) => results.map((result) => _mapper.convertIncomingDatabaseModelToAppModel(result)).toList());
+    return performOperationOnResultIfNotError(results, (results) => results.map(_mapper.convertIncomingDatabaseModelToAppModel).toList());
   }
 
   @override

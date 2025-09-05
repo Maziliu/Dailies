@@ -16,11 +16,11 @@ class StaminaRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with Rep
        _mapper = mapper;
 
   Future<Result<List<AppModel>>> getAllStamina() async {
-    Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(() => _dao.getAllStaminaEntries());
+    final Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(_dao.getAllStaminaEntries);
 
     return performOperationOnResultIfNotError(
       results,
-      (resultList) => resultList.map((result) => _mapper.convertIncomingDatabaseModelToAppModel(result)).toList(),
+      (resultList) => resultList.map(_mapper.convertIncomingDatabaseModelToAppModel).toList(),
     );
   }
 

@@ -28,7 +28,7 @@ class EventDetailsSection extends StatelessWidget {
               FormBuilderTextField(
                 name: EVENT_NAME_FIELD_TAG,
                 decoration: const InputDecoration(labelText: 'Event Name', border: OutlineInputBorder()),
-                validator: (value) => (value == null) ? "Required" : null,
+                validator: (value) => (value == null) ? 'Required' : null,
               ),
               UIFormating.mediumVerticalSpacing(),
               FormBuilderTextField(name: LOCATION_NAME_FIELD_TAG, decoration: const InputDecoration(labelText: 'Location', border: OutlineInputBorder())),

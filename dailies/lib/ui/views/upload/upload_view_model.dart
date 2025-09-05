@@ -8,17 +8,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
 class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
-  final FileParserService _fileParserService;
   final FileUploadViewModel _fileUploadViewModel;
   final ParsedEventsViewModel _parsedEventsViewModel;
 
-  UploadViewModel({
-    required FileParserService fileParserService,
-    required FileUploadViewModel fileUploadViewModel,
-    required ParsedEventsViewModel parsedEventsViewModel,
-  }) : _fileParserService = fileParserService,
-       _fileUploadViewModel = fileUploadViewModel,
-       _parsedEventsViewModel = parsedEventsViewModel {
+  UploadViewModel({required FileUploadViewModel fileUploadViewModel, required ParsedEventsViewModel parsedEventsViewModel})
+    : _fileUploadViewModel = fileUploadViewModel,
+      _parsedEventsViewModel = parsedEventsViewModel {
     _fileUploadViewModel.parseFilesCallback = _parseFiles;
   }
 

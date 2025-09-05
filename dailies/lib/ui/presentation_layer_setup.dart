@@ -14,18 +14,18 @@ import 'package:get_it/get_it.dart';
 
 Future<void> setUpPresentationLayer(GetIt injector) async {
   //Service View Models
-  injector.registerLazySingleton<CalendarViewModel>(() => CalendarViewModel());
+  injector.registerLazySingleton<CalendarViewModel>(CalendarViewModel.new);
   injector.registerLazySingleton<EventsViewModel>(
     () => EventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), calendarViewModel: injector<CalendarViewModel>()),
   );
   injector.registerLazySingleton<GachaViewModel>(() => GachaViewModel(staminaRepositoryService: injector<StaminaRepositoryService>()));
-  injector.registerLazySingleton<FileUploadViewModel>(() => FileUploadViewModel());
+  injector.registerLazySingleton<FileUploadViewModel>(FileUploadViewModel.new);
   injector.registerLazySingleton<ParsedEventsViewModel>(
     () => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), eventsViewModel: injector<EventsViewModel>()),
   );
 
   //Page View Models
-  injector.registerLazySingleton<DashboardViewModel>(() => DashboardViewModel());
+  injector.registerLazySingleton<DashboardViewModel>(DashboardViewModel.new);
   injector.registerLazySingleton<OverviewPageViewModel>(
     () => OverviewPageViewModel(staminaViewModel: injector<GachaViewModel>(), eventsViewModel: injector<EventsViewModel>()),
   );
@@ -33,10 +33,6 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
     () => CalendarPageViewModel(calendarViewModel: injector<CalendarViewModel>(), eventsViewModel: injector<EventsViewModel>()),
   );
   injector.registerLazySingleton<UploadViewModel>(
-    () => UploadViewModel(
-      fileUploadViewModel: injector<FileUploadViewModel>(),
-      parsedEventsViewModel: injector<ParsedEventsViewModel>(),
-      fileParserService: injector<FileParserService>(),
-    ),
+    () => UploadViewModel(fileUploadViewModel: injector<FileUploadViewModel>(), parsedEventsViewModel: injector<ParsedEventsViewModel>()),
   );
 }

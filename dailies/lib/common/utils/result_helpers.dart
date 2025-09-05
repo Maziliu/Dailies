@@ -20,9 +20,9 @@ Result<T> gaurdedExectute<T>(Function() operation, [Exception? exceptionToThrow]
 Result<T> performOperationOnResultIfNotError<T, K>(Result<K> result, T Function(K subject) operation) {
   try {
     switch (result) {
-      case Ok<K>(value: K value):
+      case Ok<K>(value: final K value):
         return Result.ok(operation(value));
-      case Error<K>(error: Exception exception):
+      case Error<K>(error: final Exception exception):
         return Result.error(exception);
     }
   } on Exception {

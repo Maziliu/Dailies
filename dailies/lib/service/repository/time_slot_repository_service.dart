@@ -16,7 +16,7 @@ class TimeSlotRepositoryService {
   Future<void> deleteTimeSlot(int timeSlotId) => _timeSlotRepository.deleteById(timeSlotId);
 
   Future<Result<List<TimeSlot>>> fetchTimeSlotsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
-    Result<List<AppModel>> results = await _timeSlotRepository.getTimeSlotsBetween(lowerBound, upperBound);
+    final Result<List<AppModel>> results = await _timeSlotRepository.getTimeSlotsBetween(lowerBound, upperBound);
 
     return performOperationOnResultIfNotError(results, (results) => results.map((result) => result as TimeSlot).toList());
   }
@@ -24,7 +24,7 @@ class TimeSlotRepositoryService {
   Future<Result<void>> saveAllTimeSlots(List<TimeSlot> timeSlots) async => await _timeSlotRepository.insertAllTimeSlots(timeSlots);
 
   Future<Result<void>> generateTimeSlotsForNextYear(int eventId, TimeSlotPattern pattern) async {
-    List<TimeSlot> timeSlots = generateTimeSlots(pattern);
+    final List<TimeSlot> timeSlots = generateTimeSlots(pattern);
 
     for (final TimeSlot timeSlot in timeSlots) {
       timeSlot.eventId = eventId;

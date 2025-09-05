@@ -25,12 +25,12 @@ void main() {
   final classOccurrences = classPattern.generateOccurrences(start, maxCount: 15);
 
   print('Class schedule (first 15 occurrences):');
-  for (var date in classOccurrences) {
+  for (final date in classOccurrences) {
     final dayName = DaysOfTheWeek.fromDateTime(date).name;
     print('  ${date.toIso8601String().split('T')[0]} ($dayName)');
   }
 
-  Map<DaysOfTheWeek, DateTime> anchorPointMap = {for (final DateTime date in classOccurrences.reversed) DaysOfTheWeek.fromDateTime(date): date};
+  final Map<DaysOfTheWeek, DateTime> anchorPointMap = {for (final DateTime date in classOccurrences.reversed) DaysOfTheWeek.fromDateTime(date): date};
   print(anchorPointMap);
 
   // Example 2: Every weekday for 10 days
@@ -39,7 +39,7 @@ void main() {
 
   final start2 = DateTime(2025, 8, 4); // Monday, Aug 4, 2025
   final weekdayOccurrences = weekdayPattern.generateOccurrences(start2);
-  for (var date in weekdayOccurrences) {
+  for (final date in weekdayOccurrences) {
     print('  ${date.toIso8601String().split('T')[0]} (${DaysOfTheWeek.fromDateTime(date).name})');
   }
 
@@ -54,7 +54,7 @@ void main() {
   );
 
   final excludedOccurrences = dailyWithExclusions.generateOccurrences(start2);
-  for (var date in excludedOccurrences) {
+  for (final date in excludedOccurrences) {
     print('  ${date.toIso8601String().split('T')[0]} (${DaysOfTheWeek.fromDateTime(date).name})');
   }
 
@@ -64,7 +64,7 @@ void main() {
 
   final parsedExDates = parseExclusionDates(exDateLines);
   print('Parsed exclude dates:');
-  for (var exDate in parsedExDates) {
+  for (final exDate in parsedExDates) {
     print('  ${exDate.toIso8601String().split('T')[0]}');
   }
 }

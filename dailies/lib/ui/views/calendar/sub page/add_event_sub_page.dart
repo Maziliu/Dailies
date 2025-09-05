@@ -32,7 +32,7 @@ class AddEventSubPage extends StatelessWidget {
               UIFormating.smallVerticalSpacing(),
               PatternDetailsSection(formKey: patternFormKey, patternDetailsSectionViewModel: viewModelFacade.patternDetailsSectionViewModel),
               UIFormating.extraLargeVerticalSpacing(),
-              SubmitSection(detailsFormKey: detailsFormKey, patternFormKey: patternFormKey, viewModelFacade: viewModelFacade, selectedDay: _selectedDay),
+              SubmitSection(detailsFormKey: detailsFormKey, patternFormKey: patternFormKey, viewModelFacade: viewModelFacade),
             ],
           ),
         ),

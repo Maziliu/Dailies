@@ -51,7 +51,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
               FormBuilderTextField(
                 name: _gachaNameFieldTag,
                 decoration: const InputDecoration(labelText: 'Gacha Name'),
-                validator: (value) => (value == null) ? "Required" : null,
+                validator: (value) => (value == null) ? 'Required' : null,
               ),
 
               UIFormating.smallVerticalSpacing(),
@@ -59,7 +59,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                 name: _maxStaminaFieldTag,
                 decoration: const InputDecoration(labelText: 'Max Stamina'),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                validator: (value) => (value == null) ? "Required" : null,
+                validator: (value) => (value == null) ? 'Required' : null,
               ),
               UIFormating.smallVerticalSpacing(),
               FormBuilderTextField(
@@ -69,9 +69,9 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                 validator:
                     (value) =>
                         (value == null)
-                            ? "Required"
+                            ? 'Required'
                             : (int.parse(value) <= 0)
-                            ? "Must be non zero"
+                            ? 'Must be non zero'
                             : null,
               ),
               UIFormating.smallVerticalSpacing(),
@@ -105,7 +105,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    Map<String, dynamic>? fields = _formKey.currentState?.fields;
+                    final Map<String, dynamic>? fields = _formKey.currentState?.fields;
 
                     final String gachaName = fields?[_gachaNameFieldTag].value;
                     final int rechargeTimeInSeconds = int.parse(fields?[_rechargeTimeFieldTag].value),

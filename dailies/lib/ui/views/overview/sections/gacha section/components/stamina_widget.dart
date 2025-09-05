@@ -69,7 +69,7 @@ class _StaminaWidgetState extends State<StaminaWidget> {
         }
       },
       onDoubleTap: () async {
-        await viewModel.resetStaminaTo(staminaLevel: 0);
+        await viewModel.resetStaminaTo();
       },
       onLongPress: () {
         showDialog(
@@ -150,14 +150,14 @@ class _StaminaWidgetViewModel extends ChangeNotifier {
   }
 
   int _computeTimeUntilNextRefreshInSeconds(Duration rechargeTime, DateTime timeOfLastRecharge) {
-    Duration timeSinceLastRecharge = DateTime.now().difference(timeOfLastRecharge);
-    int secondsIntoCurrentCycle = timeSinceLastRecharge.inSeconds % rechargeTime.inSeconds;
+    final Duration timeSinceLastRecharge = DateTime.now().difference(timeOfLastRecharge);
+    final int secondsIntoCurrentCycle = timeSinceLastRecharge.inSeconds % rechargeTime.inSeconds;
 
     return rechargeTime.inSeconds - secondsIntoCurrentCycle;
   }
 
   int _computeCurrentStamina(Duration rechargeTime, DateTime timeOfLastRecharge, int staminaOfLastReset) {
-    Duration timeSinceLastRecharge = DateTime.now().difference(timeOfLastRecharge);
+    final Duration timeSinceLastRecharge = DateTime.now().difference(timeOfLastRecharge);
     return (timeSinceLastRecharge.inSeconds / rechargeTime.inSeconds).floor() + staminaOfLastReset;
   }
 }

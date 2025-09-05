@@ -110,7 +110,7 @@ class RecurrencePattern {
   static Map<String, String> _parseRRule(String rrule) {
     final Map<String, String> rules = {};
 
-    for (String pair in rrule.split(';')) {
+    for (final String pair in rrule.split(';')) {
       final values = pair.split('=');
       if (values.length == 2) {
         rules[values[0].trim().toUpperCase()] = values[1].trim();
@@ -171,7 +171,7 @@ class RecurrencePattern {
     //BYMONTHDAY
     if (byMonthDay != null) {
       bool matchesMonthDay = false;
-      for (int day in byMonthDay!) {
+      for (final int day in byMonthDay!) {
         if (day > 0 && date.day == day) {
           matchesMonthDay = true;
           break;
@@ -190,7 +190,7 @@ class RecurrencePattern {
     //BYDAY
     if (byDay != null) {
       bool matchesByDay = false;
-      for (ByDayRule rule in byDay!) {
+      for (final ByDayRule rule in byDay!) {
         if (_matchesByDayRule(date, rule)) {
           matchesByDay = true;
           break;
@@ -240,7 +240,7 @@ class RecurrencePattern {
     final targetWeekday = DaysOfTheWeek.fromDateTime(date);
 
     if (position > 0) {
-      DateTime firstOfMonth = DateTime(date.year, date.month, 1);
+      DateTime firstOfMonth = DateTime(date.year, date.month);
       while (DaysOfTheWeek.fromDateTime(firstOfMonth) != targetWeekday) {
         firstOfMonth = firstOfMonth.add(const Duration(days: 1));
         if (firstOfMonth.month != date.month) {

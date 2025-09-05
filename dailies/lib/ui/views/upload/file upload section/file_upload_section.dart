@@ -94,9 +94,7 @@ class FileUploadSection extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: () {
-                      _fileUploadViewModel.parseAllUploadedFiles();
-                    },
+                    onPressed: _fileUploadViewModel.parseAllUploadedFiles,
                     child: const Text('Parse Files'),
                   ),
                 ),

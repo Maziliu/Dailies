@@ -13,7 +13,7 @@ import 'package:get_it/get_it.dart';
 
 Future<void> setUpServiceLayer(GetIt injector) async {
   //Error Stream
-  injector.registerLazySingleton(() => GlobalErrorService());
+  injector.registerLazySingleton(GlobalErrorService.new);
 
   //Repo Services
   injector.registerLazySingleton(() => TimeSlotRepositoryService(timeSlotRepository: injector<TimeSlotRepository<DriftTimeSlot, DriftTimeSlotsCompanion>>()));
@@ -29,7 +29,4 @@ Future<void> setUpServiceLayer(GetIt injector) async {
   injector.registerLazySingleton(() => StaminaRepositoryService(repository: injector<StaminaRepository<DriftStamina, DriftStaminasCompanion>>()));
 
   injector.registerLazySingleton(() => TimeSlotPatternRepositoryService(patternRepository: injector<TimeSlotPatternRepository>()));
-
-  //Parser Services
-  injector.registerLazySingleton(() => FileParserService());
 }

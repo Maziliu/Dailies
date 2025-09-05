@@ -21,7 +21,7 @@ class EventRepositoryService {
        _eventRepository = eventRepository;
 
   Future<Result<int>> saveEvent(Event event) async {
-    Result<int> eventResult = await _eventRepository.insert(event);
+    final Result<int> eventResult = await _eventRepository.insert(event);
 
     switch (eventResult) {
       case Ok<int>(value: final int eventId):
@@ -31,7 +31,7 @@ class EventRepositoryService {
         return eventResult;
     }
 
-    Result<int> patternResult = await _patternService.savePattern(event.pattern);
+    final Result<int> patternResult = await _patternService.savePattern(event.pattern);
 
     switch (patternResult) {
       case Ok<int>(value: final int patternId):
@@ -44,7 +44,7 @@ class EventRepositoryService {
         return patternResult;
     }
 
-    Result<void> timeSlotResult = await _timeSlotService.generateTimeSlotsForNextYear(event.id, event.pattern);
+    final Result<void> timeSlotResult = await _timeSlotService.generateTimeSlotsForNextYear(event.id, event.pattern);
 
     if (timeSlotResult is Error) return Result.error(timeSlotResult.error);
 
@@ -52,16 +52,16 @@ class EventRepositoryService {
   }
 
   Future<Result<List<Event>>> fetchAllEventsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
-    Result timeSlotsResult = await _timeSlotService.fetchTimeSlotsBetweenDates(lowerBound, upperBound);
+    final Result timeSlotsResult = await _timeSlotService.fetchTimeSlotsBetweenDates(lowerBound, upperBound);
     if (timeSlotsResult is Error) return Result.error(timeSlotsResult.error);
 
-    List<int> eventIds = [for (final TimeSlot timeSlot in (timeSlotsResult as Ok).value) timeSlot.eventId];
-    Result<List<AppModel>> eventsResult = await _eventRepository.getAllEventsWithIds(eventIds);
+    final List<int> eventIds = [for (final TimeSlot timeSlot in (timeSlotsResult as Ok).value) timeSlot.eventId];
+    final Result<List<AppModel>> eventsResult = await _eventRepository.getAllEventsWithIds(eventIds);
 
-    Result<List<Event>> events = performOperationOnResultIfNotError(eventsResult, (eventsResult) => eventsResult.map((event) => event as Event).toList());
+    final Result<List<Event>> events = performOperationOnResultIfNotError(eventsResult, (eventsResult) => eventsResult.map((event) => event as Event).toList());
     if (events is Error) return events;
 
-    List<TimeSlot> timeSlots = timeSlotsResult.value;
+    final List<TimeSlot> timeSlots = timeSlotsResult.value;
 
     for (final Event event in (events as Ok).value) {
       for (final TimeSlot timeSlot in timeSlots) {

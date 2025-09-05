@@ -10,7 +10,7 @@ class StaminaRepositoryService {
   StaminaRepositoryService({required StaminaRepository repository}) : _repository = repository;
 
   Future<Result<List<Stamina>>> fetchAllStaminas() async {
-    Result<List<AppModel>> results = await _repository.getAllStamina();
+    final Result<List<AppModel>> results = await _repository.getAllStamina();
 
     return performOperationOnResultIfNotError(results, (resultList) => resultList.map((result) => result as Stamina).toList());
   }
@@ -24,8 +24,8 @@ class StaminaRepositoryService {
   int _calculateNotificationStamina(Stamina stamina) => (stamina.maxStamina * 0.95) ~/ 1;
 
   DateTime _calculateNotificationTime(Stamina stamina) {
-    int notificationStamina = _calculateNotificationStamina(stamina);
-    int timeToNotifyInSeconds = (notificationStamina - stamina.staminaOfLastestReset) * stamina.rechargeTime.inSeconds;
+    final int notificationStamina = _calculateNotificationStamina(stamina);
+    final int timeToNotifyInSeconds = (notificationStamina - stamina.staminaOfLastestReset) * stamina.rechargeTime.inSeconds;
 
     print(timeToNotifyInSeconds);
 

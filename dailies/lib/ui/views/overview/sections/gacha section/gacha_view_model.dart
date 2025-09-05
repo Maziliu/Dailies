@@ -13,7 +13,7 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 
   void onAddStaminaButtonPress(String gachaName, int maxStamina, Duration rechargeTime, int staminaOfLastestReset, String? imageName) async {
-    Stamina stamina = Stamina(
+    final Stamina stamina = Stamina(
       rechargeTime: rechargeTime,
       maxStamina: maxStamina,
       gachaTitle: gachaName,
@@ -22,7 +22,7 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
       staminaOfLastestReset: staminaOfLastestReset,
     );
 
-    Result<int> id = await _staminaRepositoryService.saveStamina(stamina);
+    final Result<int> id = await _staminaRepositoryService.saveStamina(stamina);
 
     switch (id) {
       case Ok<int>(value: final int id):
@@ -38,7 +38,7 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 
   Future<void> loadAllStaminas() async {
-    Result<List<Stamina>> results = await _staminaRepositoryService.fetchAllStaminas();
+    final Result<List<Stamina>> results = await _staminaRepositoryService.fetchAllStaminas();
 
     switch (results) {
       case Ok<List<Stamina>>(value: final staminaList):
@@ -47,13 +47,13 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
         emitError(exception);
     }
 
-    for (Stamina s in staminas.value) {
-      print("Name of Gacha: ${s.gachaTitle} Stamina of last reset: ${s.staminaOfLastestReset} Time of last save: ${s.timeOfLastReset.toString()}");
+    for (final Stamina s in staminas.value) {
+      print('Name of Gacha: ${s.gachaTitle} Stamina of last reset: ${s.staminaOfLastestReset} Time of last save: ${s.timeOfLastReset.toString()}');
     }
   }
 
   void deleteStamina(Stamina stamina) async {
-    Result<int> result = await _staminaRepositoryService.deleteStamina(stamina);
+    final Result<int> result = await _staminaRepositoryService.deleteStamina(stamina);
 
     switch (result) {
       case Ok<int>():

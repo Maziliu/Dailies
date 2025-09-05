@@ -12,7 +12,6 @@ class SubmitSection extends StatelessWidget {
     required GlobalKey<FormBuilderState> detailsFormKey,
     required GlobalKey<FormBuilderState> patternFormKey,
     required AddEventFacade viewModelFacade,
-    required DateTime selectedDay,
   }) : _detailsFormKey = detailsFormKey,
        _patternFormKey = patternFormKey,
        _viewModelFacade = viewModelFacade;
@@ -27,7 +26,7 @@ class SubmitSection extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ElevatedButton(
         onPressed: () {
-          Event? event = _viewModelFacade.createEvent(detailsFormKey: _detailsFormKey, patternFormKey: _patternFormKey);
+          final Event? event = _viewModelFacade.createEvent(detailsFormKey: _detailsFormKey, patternFormKey: _patternFormKey);
 
           if (event != null) {
             Navigator.pop(context, event);

@@ -1,12 +1,10 @@
 import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/ui/themes/themes.dart';
-import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:dailies/ui/views/dashboard/dashboard_view.dart';
+import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:timezone/data/latest_all.dart';
-import 'package:timezone/standalone.dart';
 
 final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY = GlobalKey<ScaffoldMessengerState>();
 
@@ -30,7 +28,6 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       scaffoldMessengerKey: GLOBAL_SCAFFOLD_MESSENGER_KEY,
       debugShowCheckedModeBanner: false,
-      debugShowMaterialGrid: false,
       theme: defaultTheme,
       home: ChangeNotifierProvider(create: (_) => injector<DashboardViewModel>(), child: const DashboardView()),
     );

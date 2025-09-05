@@ -10,7 +10,7 @@ class UploadView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UploadViewModel uploadViewModel = context.watch<UploadViewModel>();
+    final UploadViewModel uploadViewModel = context.watch<UploadViewModel>();
 
     return Padding(
       padding: UIFormating.largePadding(),

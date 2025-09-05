@@ -7,7 +7,7 @@ import 'package:drift/drift.dart';
 class DriftEventMapper extends EventMapper<DriftEvent, DriftEventsCompanion> {
   @override
   DriftEventsCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
-    Event event = appModel as Event;
+    final Event event = appModel as Event;
 
     return DriftEventsCompanion(
       id: (event.isNotSaved) ? const Value.absent() : Value(event.id),

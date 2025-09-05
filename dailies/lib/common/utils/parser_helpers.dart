@@ -1,7 +1,7 @@
 List<DateTime> parseExclusionDates(List<String> exDateLines) {
   final excludeDates = <DateTime>[];
 
-  for (String line in exDateLines) {
+  for (final String line in exDateLines) {
     if (line.toUpperCase().startsWith('EXDATE')) {
       final colonIndex = line.indexOf(':');
       if (colonIndex != -1) {

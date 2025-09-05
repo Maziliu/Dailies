@@ -26,7 +26,7 @@ class PatternDetailsSectionViewModel extends ChangeNotifier {
 
     return TimeSlotPattern.UnSaved(
       endPatternDate: patternEndDate,
-      timeZoneId: (isDaylightSaving) ? DateTime.now().timeZoneName : null,
+      timeZoneId: isDaylightSaving ? DateTime.now().timeZoneName : null,
       frequencyInSeconds: frequency?.inSeconds,
       anchorPointsList: calendarViewModel.generateAnchorPoints(referenceTimeSlot),
     );

@@ -13,7 +13,7 @@ class MultiSelectCalendar extends StatelessWidget {
       valueListenable: _viewModel.selectedDays,
       builder: (context, selectedDays, _) {
         return TableCalendar(
-          firstDay: DateTime.utc(2020, 1, 1),
+          firstDay: DateTime.utc(2020),
           lastDay: DateTime.utc(2030, 12, 31),
           focusedDay: _viewModel.getFocusedDay(),
           selectedDayPredicate: (day) {
@@ -63,10 +63,10 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
     }
 
     DateTime closest = selectedDays.value.first;
-    int closestDifference = (_lastInteractedDay.difference(closest)).abs().inDays;
+    int closestDifference = _lastInteractedDay.difference(closest).abs().inDays;
 
     for (final day in selectedDays.value) {
-      final difference = (_lastInteractedDay.difference(day)).abs().inDays;
+      final difference = _lastInteractedDay.difference(day).abs().inDays;
       if (difference < closestDifference) {
         closest = day;
         closestDifference = difference;

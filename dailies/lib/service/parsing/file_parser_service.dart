@@ -10,9 +10,9 @@ class FileParserService {
   Parser? _fileParser;
 
   Future<List<Result<List<Event>>>> parseFiles(List<PlatformFile> files) async {
-    List<Result<List<Event>>> results = [];
+    final List<Result<List<Event>>> results = [];
 
-    for (PlatformFile file in files) {
+    for (final PlatformFile file in files) {
       _determineFileParser(file);
 
       if (_fileParser == null) {

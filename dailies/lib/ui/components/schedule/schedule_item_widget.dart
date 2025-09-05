@@ -66,10 +66,10 @@ class ScheduleItemWidget extends StatelessWidget {
   String? _formatTimeText(BuildContext context, TimeSlot slot) {
     switch (slot.timeSlotType) {
       case TimeSlotType.Interval:
-        return "${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - "
+        return '${TimeOfDay.fromDateTime(slot.startTime!).format(context)} - '
             "${(slot.endTime == null) ? '' : TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
       case TimeSlotType.Deadline:
-        return "Due ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}";
+        return 'Due ${TimeOfDay.fromDateTime(slot.endTime!).format(context)}';
       default:
         return null;
     }

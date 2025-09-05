@@ -30,24 +30,21 @@ class TodaySection extends StatelessWidget {
             children: [Expanded(child: Text('Today', style: textTheme.headlineLarge)), Text(DateFormat.yMMMMd().format(DateTime.now()))],
           ),
         ),
-        SizedBox(
-          height: MAX_SECTION_HEIGHT,
-          child: ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(
-            valueListenable: _eventsViewModel.dateToTimeSlotsMap,
-            builder: (context, map, _) {
-              DateTime now = DateTime.now(), normalized = DateTime(now.year, now.month, now.day);
+        ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(
+          valueListenable: _eventsViewModel.dateToTimeSlotsMap,
+          builder: (context, map, _) {
+            final DateTime now = DateTime.now(), normalized = DateTime(now.year, now.month, now.day);
 
-              return ScheduleListViewWidget(
-                pairs:
-                    map[normalized]
-                        ?.toList()
-                        .map((TimeSlot timeslot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeslot.eventId)!, second: timeslot))
-                        .toList() ??
-                    [],
-                builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
-              );
-            },
-          ),
+            return ScheduleListViewWidget(
+              pairs:
+                  map[normalized]
+                      ?.toList()
+                      .map((TimeSlot timeslot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeslot.eventId)!, second: timeslot))
+                      .toList() ??
+                  [],
+              builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
+            );
+          },
         ),
       ],
     );

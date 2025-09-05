@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
+import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -13,7 +14,7 @@ class EventsViewModel with ErrorStreamMixin {
   final CalendarViewModel _calendarViewModel;
   final EventRepositoryService _eventRepositoryService;
   final ValueNotifier<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>> dateToTimeSlotsMap = ValueNotifier(SplayTreeMap());
-  final Map<int, Event> _idToEventMap = {}; // Note: There is currently no culling logic for this (aside from adding and deleting events that proc a refresh).
+  final Map<int, Event> _idToEventMap = {}; //Note: There is currently no culling logic for this (aside from adding and deleting events that proc a refresh).
 
   EventsViewModel({required CalendarViewModel calendarViewModel, required EventRepositoryService eventRepositoryService})
     : _calendarViewModel = calendarViewModel,
@@ -191,5 +192,17 @@ class EventsViewModel with ErrorStreamMixin {
 
   void dispose() {
     dateToTimeSlotsMap.dispose();
+  }
+
+  List<TimeSlot> getUpcomingEvents() {
+    List<TimeSlot> timeSlots = [];
+
+    for (final HeapPriorityQueue queue in dateToTimeSlotsMap.value.values) {
+      for (final TimeSlot timeSlot in queue.toList()) {
+        if (timeSlot.timeSlotType == TimeSlotType.Deadline) timeSlots.add(timeSlot);
+      }
+    }
+
+    return timeSlots.sorted();
   }
 }

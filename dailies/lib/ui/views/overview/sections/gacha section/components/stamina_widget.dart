@@ -44,6 +44,12 @@ class _StaminaWidgetState extends State<StaminaWidget> {
   Widget build(BuildContext context) {
     final String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
     final String heroTag = '$SET_STAMINA_HERO_TAG/${widget._stamina.id}';
+
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    final Stamina stamina = widget._stamina;
+
     return InkWell(
       key: ValueKey(widget._stamina.id),
       splashColor: Colors.transparent,
@@ -78,26 +84,27 @@ class _StaminaWidgetState extends State<StaminaWidget> {
           },
         );
       },
-      child: Hero(
-        tag: heroTag,
-        child: Card(
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
-                UIFormating.smallHorizontalSpacing(),
-                ValueListenableBuilder<int>(
-                  valueListenable: viewModel.currentStamina,
-                  builder: (context, currentStamnina, _) {
-                    return Padding(
-                      padding: UIFormating.smallPadding(),
-                      child: Text('$currentStamnina/${viewModel.maxStamina}', style: const TextStyle(fontSize: 24)),
-                    );
-                  },
-                ),
-              ],
-            ),
+      child: Card(
+        child: Padding(
+          padding: UIFormating.smallPadding(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
+                  UIFormating.smallHorizontalSpacing(),
+                  Text(stamina.gachaTitle, style: textTheme.headlineLarge, overflow: TextOverflow.ellipsis),
+                ],
+              ),
+              ValueListenableBuilder<int>(
+                valueListenable: viewModel.currentStamina,
+                builder: (context, currentStamnina, _) {
+                  return Text('$currentStamnina / ${viewModel.maxStamina}', style: textTheme.headlineLarge);
+                },
+              ),
+            ],
           ),
         ),
       ),

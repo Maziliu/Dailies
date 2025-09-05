@@ -2,12 +2,17 @@ import 'package:dailies/common/enums/time_slot_type.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
+import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ScheduleItemWidget extends StatelessWidget {
   final EventTimeSlotPair _eventTimeSlotPair;
+  final bool _showDate;
 
-  const ScheduleItemWidget({super.key, required EventTimeSlotPair eventTimeSlotPair}) : _eventTimeSlotPair = eventTimeSlotPair;
+  const ScheduleItemWidget({super.key, required EventTimeSlotPair eventTimeSlotPair, bool showDate = false})
+    : _eventTimeSlotPair = eventTimeSlotPair,
+      _showDate = showDate;
 
   @override
   Widget build(BuildContext context) {
@@ -21,63 +26,37 @@ class ScheduleItemWidget extends StatelessWidget {
 
     final Color eventColour = _getEventColour(timeSlot.timeSlotType, colorScheme);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: colorScheme.outline.withAlpha(50), width: 1),
-        boxShadow: [BoxShadow(color: Colors.black.withAlpha(12), blurRadius: 4, offset: const Offset(0, 2))],
-      ),
+    return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: UIFormating.mediumPadding(),
         child: Row(
           children: [
             Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(color: eventColour.withAlpha(40), borderRadius: BorderRadius.circular(8)),
-              child: Icon(_getIconForTimeSlotType(timeSlot.timeSlotType), color: eventColour, size: 20),
+              margin: const EdgeInsets.only(right: 16),
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(color: eventColour.withAlpha(40), borderRadius: UIFormating.smallCircularBorderRadius()),
+              child: Icon(_getIconForTimeSlotType(timeSlot.timeSlotType), color: eventColour, size: 30),
             ),
-            const SizedBox(width: 16),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    event.eventName,
-                    style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.onSurface),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                  if (event.location?.isNotEmpty == true) ...[
-                    const SizedBox(height: 2),
-                    Row(
-                      children: [
-                        Icon(Icons.place_rounded, size: 12, color: colorScheme.onSurface.withAlpha(120)),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            event.location!,
-                            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withAlpha(120)),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                  if (timeText != null) ...[
-                    const SizedBox(height: 4),
-                    Text(timeText, style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface.withAlpha(160), fontWeight: FontWeight.w500)),
-                  ],
+                  Text(event.eventName, style: textTheme.headlineMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  if (event.location?.isNotEmpty == true) Text(event.location!, style: textTheme.bodyMedium, overflow: TextOverflow.ellipsis),
+                  if (timeText != null) Text(timeText, style: textTheme.bodyMedium),
                 ],
               ),
             ),
-
-            if (event.isReaccuring) Icon(Icons.sync_rounded, size: 16, color: colorScheme.onSurface.withAlpha(120)),
+            UIFormating.mediumHorizontalSpacing(),
+            if (_showDate)
+              Column(
+                children: [
+                  Text(DateFormat.MMM().format(timeSlot.dateOfTimeSlot), style: textTheme.bodyMedium),
+                  Text(DateFormat.d().format(timeSlot.dateOfTimeSlot), style: textTheme.bodyMedium),
+                ],
+              ),
           ],
         ),
       ),

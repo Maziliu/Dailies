@@ -35,7 +35,7 @@ class ParsedEventsSection extends StatelessWidget {
                                     events
                                         .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
                                         .toList(),
-                                builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),
+                                builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
                               );
                             },
                           ),

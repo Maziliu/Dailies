@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dailies/common/utils/ui_helpers.dart';
 import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/service/global_error_service.dart';
@@ -11,7 +10,6 @@ import 'package:dailies/ui/views/overview/overview_view.dart';
 import 'package:dailies/ui/views/upload/upload_view.dart';
 import 'package:dailies/ui/views/upload/upload_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class DashboardView extends StatefulWidget {
@@ -40,39 +38,32 @@ class _DashboardViewState extends State<DashboardView> {
     showErrorSnackbar(message: exception.toString());
   }
 
+  List<Widget> _getViews() {
+    return [
+      ChangeNotifierProvider.value(value: injector<OverviewPageViewModel>(), child: const OverviewView()),
+      ChangeNotifierProvider.value(value: injector<CalendarPageViewModel>(), child: const CalendarView()),
+      ChangeNotifierProvider.value(value: injector<UploadViewModel>(), child: const UploadView()),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    return Scaffold(
+      body: SafeArea(
+        bottom: false,
+        child: Consumer<DashboardViewModel>(
+          builder: (context, viewModel, child) {
+            final views = _getViews();
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: colorScheme.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
-        systemNavigationBarColor: colorScheme.surface,
-        systemNavigationBarIconBrightness: colorScheme.brightness == Brightness.dark ? Brightness.light : Brightness.dark,
-      ),
-      child: Scaffold(
-        backgroundColor: colorScheme.surface,
-        body: SafeArea(
-          bottom: false,
-          child: Consumer<DashboardViewModel>(
-            builder: (context, viewModel, child) {
-              return IndexedStack(
-                index: viewModel.selectedTabIndex,
-                children: [
-                  ChangeNotifierProvider.value(value: injector<OverviewPageViewModel>(), child: const OverviewView()),
-                  ChangeNotifierProvider.value(value: injector<CalendarPageViewModel>(), child: const CalendarView()),
-                  ChangeNotifierProvider.value(value: injector<UploadViewModel>(), child: const UploadView()),
-                ],
-              );
-            },
-          ),
-        ),
-        bottomNavigationBar: Consumer<DashboardViewModel>(
-          builder: (context, viewModel, _) {
-            return DashboardNavigationBar(currentIndex: viewModel.selectedTabIndex, onTap: viewModel.updateSelectedTab, colorScheme: colorScheme);
+            return IndexedStack(index: viewModel.selectedTabIndex, children: views);
           },
         ),
+      ),
+      bottomNavigationBar: Consumer<DashboardViewModel>(
+        builder: (context, viewModel, _) {
+          return DashboardNavigationBar(currentIndex: viewModel.selectedTabIndex, onTap: viewModel.updateSelectedTab, colorScheme: colorScheme);
+        },
       ),
     );
   }

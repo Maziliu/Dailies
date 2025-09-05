@@ -1,4 +1,4 @@
-import 'package:dailies/ui/views/overview/gacha%20section/gacha_view_model.dart';
+import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_view_model.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:flutter/material.dart';
 

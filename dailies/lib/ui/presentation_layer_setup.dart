@@ -5,7 +5,7 @@ import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';
 import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
 import 'package:dailies/ui/views/shared/calendar_view_model.dart';
 import 'package:dailies/ui/views/overview/overview_page_view_model.dart';
-import 'package:dailies/ui/views/overview/gacha%20section/gacha_view_model.dart';
+import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_view_model.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_view_model.dart';

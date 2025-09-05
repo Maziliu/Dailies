@@ -25,12 +25,10 @@ class StaminaRepositoryService {
     if (staminaResult is Ok) {
       stamina.id = (staminaResult as Ok).value;
 
-      Result notificationResult = await guardedAsyncExcecute(() {
+      await guardedAsyncExcecute(() {
         final DateTime notificationTime = _calculateNotificationTime(stamina);
         return _notificationService.scheduleGachaTimerNotification(stamina, notificationTime, _calculateNotificationStamina(stamina));
       });
-
-      if (notificationResult is Error) return Result.error(notificationResult.error);
     }
 
     return staminaResult;
@@ -40,21 +38,17 @@ class StaminaRepositoryService {
     Result<bool> updateResult = await _repository.update(updatedStamina);
 
     if (updateResult is Ok) {
-      Result notificationResult = await guardedAsyncExcecute(() {
+      guardedAsyncExcecute(() {
         final DateTime notificationTime = _calculateNotificationTime(updatedStamina);
         return _notificationService.scheduleGachaTimerNotification(updatedStamina, notificationTime, _calculateNotificationStamina(updatedStamina));
       });
-
-      if (notificationResult is Error) return Result.error(notificationResult.error);
     }
 
     return updateResult;
   }
 
   Future<Result<int>> deleteStamina(Stamina stamina) async {
-    Result notificationResult = await guardedAsyncExcecute(() => _notificationService.cancelScheduledNotification(stamina.id));
-
-    if (notificationResult is Error) return Result.error(notificationResult.error);
+    guardedAsyncExcecute(() => _notificationService.cancelScheduledNotification(stamina.id));
 
     return _repository.deleteById(stamina.id);
   }
@@ -67,6 +61,6 @@ class StaminaRepositoryService {
 
     print(timeToNotifyInSeconds);
 
-    return stamina.timeOfLastReset.toUtc().add(Duration(seconds: timeToNotifyInSeconds * 2));
+    return stamina.timeOfLastReset.toUtc().add(Duration(seconds: timeToNotifyInSeconds));
   }
 }

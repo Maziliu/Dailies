@@ -1,5 +1,4 @@
 import 'package:dailies/ui/components/section.dart';
-import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/shared/calendar_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -14,28 +13,23 @@ class CalendarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: UIFormating.mediumPadding(),
-      child: Section(
-        children: [
-          SectionContent(
-            child: ValueListenableBuilder(
-              valueListenable: _calendarViewModel.selectedDayNotifier,
-              builder: (context, selectedDay, _) {
-                return TableCalendar(
-                  headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
-                  focusedDay: selectedDay,
-                  firstDay: FIRST_CALENDAR_DAY,
-                  lastDay: LAST_CALENDAR_DAY,
-                  sixWeekMonthsEnforced: true,
-                  selectedDayPredicate: (day) => isSameDay(day, selectedDay),
-                  onDaySelected: (day, _) => _calendarViewModel.onDaySelect(day),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+    return Section(
+      children: [
+        ValueListenableBuilder(
+          valueListenable: _calendarViewModel.selectedDayNotifier,
+          builder: (context, selectedDay, _) {
+            return TableCalendar(
+              headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+              focusedDay: selectedDay,
+              firstDay: FIRST_CALENDAR_DAY,
+              lastDay: LAST_CALENDAR_DAY,
+              sixWeekMonthsEnforced: true,
+              selectedDayPredicate: (day) => isSameDay(day, selectedDay),
+              onDaySelected: (day, _) => _calendarViewModel.onDaySelect(day),
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -18,12 +18,9 @@ class CalendarView extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding: UIFormating.smallPadding(),
+        padding: UIFormating.mediumPadding(),
         child: Column(
-          children: [
-            CalendarSection(calendarViewModel: pageViewModel.calendarViewModel),
-            Expanded(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel)),
-          ],
+          children: [CalendarSection(calendarViewModel: pageViewModel.calendarViewModel), EventsSection(eventsViewModel: pageViewModel.eventsViewModel)],
         ),
       ),
     );

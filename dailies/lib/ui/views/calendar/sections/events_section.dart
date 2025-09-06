@@ -1,3 +1,4 @@
+import 'package:dailies/common/app_constants.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -43,30 +44,33 @@ class EventsSection extends StatelessWidget {
                 ],
               ),
             ),
-            ScheduleListViewWidget(
-              pairs:
-                  _eventsViewModel
-                      .timeSlotsLookup(selectedDay)
-                      .map((TimeSlot timeSlot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeSlot.eventId)!, second: timeSlot))
-                      .toList(),
-              builder:
-                  (pair) => InkWell(
-                    onLongPress: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return DeleteConfirmationDialog(
-                            itemName: pair.first.eventName,
-                            onDelete: () async {
-                              await _eventsViewModel.deleteEvent(pair.first);
-                            },
-                          );
-                        },
-                      );
-                    },
-                    onTap: () => print('Tapped: ${pair.first.eventName} - ${pair.second.timeSlotType.name}'),
-                    child: ScheduleItemWidget(eventTimeSlotPair: pair),
-                  ),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MAX_SECTION_HEIGHT * 1.5),
+              child: ScheduleListViewWidget(
+                pairs:
+                    _eventsViewModel
+                        .timeSlotsLookup(selectedDay)
+                        .map((TimeSlot timeSlot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeSlot.eventId)!, second: timeSlot))
+                        .toList(),
+                builder:
+                    (pair) => InkWell(
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DeleteConfirmationDialog(
+                              itemName: pair.first.eventName,
+                              onDelete: () async {
+                                await _eventsViewModel.deleteEvent(pair.first);
+                              },
+                            );
+                          },
+                        );
+                      },
+                      onTap: () => print('Tapped: ${pair.first.eventName} - ${pair.second.timeSlotType.name}'),
+                      child: ScheduleItemWidget(eventTimeSlotPair: pair),
+                    ),
+              ),
             ),
           ],
         );

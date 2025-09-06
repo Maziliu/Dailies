@@ -27,6 +27,8 @@ class ScheduleItemWidget extends StatelessWidget {
     final Color eventColour = _getEventColour(timeSlot.timeSlotType, colorScheme);
 
     return Card(
+      elevation: 0,
+      color: Colors.black26,
       child: Padding(
         padding: UIFormating.mediumPadding(),
         child: Row(

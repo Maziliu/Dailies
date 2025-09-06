@@ -10,11 +10,12 @@ class FileUploadSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          InkWell(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: UIFormating.mediumPadding(),
+          child: InkWell(
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
@@ -24,40 +25,43 @@ class FileUploadSection extends StatelessWidget {
               ),
               child: Padding(
                 padding: UIFormating.extraLargePadding(),
-                child: const Column(children: [Icon(Icons.add, color: Colors.grey), Text('Upload Files')]),
+                child: const Column(children: [Icon(Icons.file_upload_outlined, color: Colors.grey), Text('Upload Files')]),
               ),
             ),
             onTap: () async {
-              final results = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.custom, allowedExtensions: ['ics', 'pdf', 'txt', 'csv']);
+              final picked = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.custom, allowedExtensions: ['ics', 'pdf']);
 
-              if (results != null) {
-                _fileUploadViewModel.uploadedFiles.value = results.files;
-              }
+              if (picked != null) _fileUploadViewModel.uploadedFiles.value = picked.files;
             },
           ),
-          SingleChildScrollView(
-            child: ValueListenableBuilder(
-              valueListenable: _fileUploadViewModel.uploadedFiles,
-              builder: (context, files, _) {
-                return ListView.builder(
+        ),
+        ValueListenableBuilder(
+          valueListenable: _fileUploadViewModel.uploadedFiles,
+          builder: (context, files, clearButton) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('   Files (${files.length})'), if (clearButton != null) clearButton]),
+                ListView.builder(
                   shrinkWrap: true,
                   itemCount: files.length,
                   itemBuilder: (context, index) {
-                    final int CHARACTER_LIMIT = 37;
-                    final String fileName =
-                        (files[index].name.length > CHARACTER_LIMIT) ? '${files[index].name.substring(0, CHARACTER_LIMIT)} ...' : files[index].name;
                     return Card(
+                      color: Colors.black26,
+                      elevation: 0,
                       child: Padding(
-                        padding: UIFormating.smallPadding(),
+                        padding: const EdgeInsetsGeometry.fromLTRB(12, 8, 8, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(fileName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                Text('Size: ${_formatFileSize(files[index].size)}'),
-                              ],
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(files[index].name, style: const TextStyle(fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis, maxLines: 1),
+                                  Text('Size: ${_formatFileSize(files[index].size)}'),
+                                ],
+                              ),
                             ),
 
                             IconButton(
@@ -72,37 +76,20 @@ class FileUploadSection extends StatelessWidget {
                       ),
                     );
                   },
-                );
-              },
-            ),
-          ),
-
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _fileUploadViewModel.uploadedFiles.value = [];
-                    },
-                    child: const Text('Clear'),
-                  ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: _fileUploadViewModel.parseAllUploadedFiles,
-                    child: const Text('Parse Files'),
-                  ),
-                ),
-              ),
-            ],
+                if (files.isNotEmpty) UIFormating.mediumVerticalSpacing(),
+                if (files.isNotEmpty) Center(child: ElevatedButton(onPressed: _fileUploadViewModel.parseAllUploadedFiles, child: const Text('Parse Files'))),
+              ],
+            );
+          },
+          child: TextButton(
+            onPressed: () {
+              _fileUploadViewModel.uploadedFiles.value = [];
+            },
+            child: const Text('Clear'),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

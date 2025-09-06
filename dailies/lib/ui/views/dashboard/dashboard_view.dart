@@ -81,7 +81,8 @@ class DashboardNavigationBar extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(splashFactory: NoSplash.splashFactory),
       child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.shifting,
         backgroundColor: Colors.transparent,
         elevation: 0,
         onTap: onTap,

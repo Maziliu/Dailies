@@ -1,4 +1,3 @@
-
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
 

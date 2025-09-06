@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
-import 'package:dailies/common/app_constants.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';

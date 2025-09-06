@@ -195,7 +195,7 @@ class EventsViewModel with ErrorStreamMixin {
   }
 
   List<TimeSlot> getUpcomingEvents() {
-    List<TimeSlot> timeSlots = [];
+    final List<TimeSlot> timeSlots = [];
 
     for (final HeapPriorityQueue queue in dateToTimeSlotsMap.value.values) {
       for (final TimeSlot timeSlot in queue.toList()) {

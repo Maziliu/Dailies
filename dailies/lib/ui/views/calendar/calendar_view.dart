@@ -17,10 +17,12 @@ class CalendarView extends StatelessWidget {
     final CalendarPageViewModel pageViewModel = context.watch<CalendarPageViewModel>();
 
     return Scaffold(
-      body: Padding(
-        padding: UIFormating.mediumPadding(),
-        child: Column(
-          children: [CalendarSection(calendarViewModel: pageViewModel.calendarViewModel), EventsSection(eventsViewModel: pageViewModel.eventsViewModel)],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: UIFormating.mediumPadding(),
+          child: Column(
+            children: [CalendarSection(calendarViewModel: pageViewModel.calendarViewModel), EventsSection(eventsViewModel: pageViewModel.eventsViewModel)],
+          ),
         ),
       ),
     );

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const double BORDER_RADIUS = 8;
-const Color UI_ELEMENTS_BACKGROUND_COLOUR = Color(0xFF5F6AC4);
+const Color UI_ELEMENTS_BACKGROUND_COLOUR = Color(0xFF8B5CF6);
 const APP_FOREGROUND_COLOUR = Color(0xFF1E1E2F);
 const Color BOTTOM_NAV_BACKGROUND_COLOR = Color(0xFF1E1E2F);
 const Color BOTTOM_NAV_SELECTED_COLOR = UI_ELEMENTS_BACKGROUND_COLOUR;
@@ -10,12 +11,13 @@ const double BOTTOM_NAV_SELECTED_ICON_SIZE = 28.0;
 const double BOTTOM_NAV_UNSELECTED_ICON_SIZE = 24.0;
 
 final ThemeData defaultTheme = ThemeData(
+  fontFamily: GoogleFonts.outfit().fontFamily,
   colorScheme: ColorScheme.fromSeed(seedColor: APP_FOREGROUND_COLOUR, brightness: Brightness.dark),
   useMaterial3: true,
   textTheme: const TextTheme(
-    headlineLarge: TextStyle(color: Color(0xFFFFFFFF), fontSize: 20, fontWeight: FontWeight.w700, letterSpacing: -0.8, height: 1.1, fontFamily: 'Inter'),
-    headlineMedium: TextStyle(color: Color(0xFFFFFFFF), fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.2, height: 1.2, fontFamily: 'Inter'),
-    bodySmall: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 0, height: 1.3, fontFamily: 'Inter'),
+    headlineLarge: TextStyle(color: Color(0xFFFFFFFF), fontSize: 20, fontWeight: FontWeight.w700, height: 1.1),
+    headlineMedium: TextStyle(color: Color(0xFFFFFFFF), fontSize: 16, fontWeight: FontWeight.w600, height: 1.2),
+    bodySmall: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12, fontWeight: FontWeight.w500, height: 1.3),
   ),
   appBarTheme: const AppBarTheme(elevation: 0, scrolledUnderElevation: 0, backgroundColor: Color.fromARGB(120, 37, 37, 53)),
   elevatedButtonTheme: ElevatedButtonThemeData(

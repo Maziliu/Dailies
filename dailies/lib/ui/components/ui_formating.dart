@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 
 class UIFormating {
-  static const double _smallPadding = 8, _mediumPadding = 16, _largePadding = 24, _extraLargePadding = 32;
-  static const double _smallSpacing = 8, _mediumSpacing = 16, _largeSpacing = 24, _extraLargeSpacing = 32;
-  static const double _smallBorderRadius = 8, _mediumBorderRadius = 16, _largeBorderRadius = 24, _extraLargeBorderRadius = 32;
+  static const double _small = 8, _medium = 16, _large = 24, _extraLarge = 32;
 
-  static EdgeInsetsGeometry smallPadding() => const EdgeInsets.all(_smallPadding);
-  static EdgeInsetsGeometry mediumPadding() => const EdgeInsets.all(_mediumPadding);
-  static EdgeInsetsGeometry largePadding() => const EdgeInsets.all(_largePadding);
-  static EdgeInsetsGeometry extraLargePadding() => const EdgeInsets.all(_extraLargePadding);
+  static EdgeInsetsGeometry smallPadding() => const EdgeInsets.all(_small);
+  static EdgeInsetsGeometry mediumPadding() => const EdgeInsets.all(_medium);
+  static EdgeInsetsGeometry largePadding() => const EdgeInsets.all(_large);
+  static EdgeInsetsGeometry extraLargePadding() => const EdgeInsets.all(_extraLarge);
 
-  static SizedBox smallVerticalSpacing() => const SizedBox(height: _smallSpacing);
-  static SizedBox mediumVerticalSpacing() => const SizedBox(height: _mediumSpacing);
-  static SizedBox largeVerticalSpacing() => const SizedBox(height: _largeSpacing);
-  static SizedBox extraLargeVerticalSpacing() => const SizedBox(height: _extraLargeSpacing);
+  static SizedBox smallVerticalSpacing() => const SizedBox(height: _small);
+  static SizedBox mediumVerticalSpacing() => const SizedBox(height: _medium);
+  static SizedBox largeVerticalSpacing() => const SizedBox(height: _large);
+  static SizedBox extraLargeVerticalSpacing() => const SizedBox(height: _extraLarge);
 
-  static SizedBox smallHorizontalSpacing() => const SizedBox(width: _smallSpacing);
-  static SizedBox mediumHorizontalSpacing() => const SizedBox(width: _mediumSpacing);
-  static SizedBox largeHorizontalSpacing() => const SizedBox(width: _largeSpacing);
-  static SizedBox extraLargeHorizontalSpacing() => const SizedBox(width: _extraLargeSpacing);
+  static SizedBox smallHorizontalSpacing() => const SizedBox(width: _small);
+  static SizedBox mediumHorizontalSpacing() => const SizedBox(width: _medium);
+  static SizedBox largeHorizontalSpacing() => const SizedBox(width: _large);
+  static SizedBox extraLargeHorizontalSpacing() => const SizedBox(width: _extraLarge);
 
-  static BorderRadius smallCircularBorderRadius() => BorderRadius.circular(_smallBorderRadius);
-  static BorderRadius mediumCircularBorderRadius() => BorderRadius.circular(_mediumBorderRadius);
-  static BorderRadius largeCircularBorderRadius() => BorderRadius.circular(_largeBorderRadius);
-  static BorderRadius extraLargeCircularBorderRadius() => BorderRadius.circular(_extraLargeBorderRadius);
+  static BorderRadius smallCircularBorderRadius() => BorderRadius.circular(_small);
+  static BorderRadius mediumCircularBorderRadius() => BorderRadius.circular(_medium);
+  static BorderRadius largeCircularBorderRadius() => BorderRadius.circular(_large);
+  static BorderRadius extraLargeCircularBorderRadius() => BorderRadius.circular(_extraLarge);
 }

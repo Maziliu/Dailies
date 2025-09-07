@@ -85,6 +85,8 @@ class _StaminaWidgetState extends State<StaminaWidget> {
         );
       },
       child: Card(
+        elevation: 0,
+        color: Colors.black26,
         child: Padding(
           padding: UIFormating.smallPadding(),
           child: Row(

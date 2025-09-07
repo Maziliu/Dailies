@@ -1,3 +1,4 @@
+import 'package:dailies/common/exceptions/llm_exceptions.dart';
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/service/llm/llm_service.dart';
 
@@ -11,7 +12,12 @@ mixin LLMPrompterMixin {
     for (final String model in models) {
       final Result<String> result = await LLMService.prompt(model: model, content: content);
 
-      if (result is Ok) return result;
+      switch (result) {
+        case Ok<String>():
+          return result;
+        case Error<String>(error: final error):
+          if (error is NoAPIKeyException || error is InsufficientCreditsException || error is RateLimitedException) return result;
+      }
     }
 
     return Result.error(Exception('All models failed'));

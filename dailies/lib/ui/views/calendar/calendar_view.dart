@@ -1,3 +1,4 @@
+import 'package:dailies/ui/components/section_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/calendar_page_view_model.dart';
 import 'package:dailies/ui/views/calendar/sections/calendar_section.dart';
@@ -15,13 +16,20 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CalendarPageViewModel pageViewModel = context.watch<CalendarPageViewModel>();
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return Scaffold(
+      appBar: AppBar(title: Text('Calendar', style: textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         child: Padding(
           padding: UIFormating.mediumPadding(),
           child: Column(
-            children: [CalendarSection(calendarViewModel: pageViewModel.calendarViewModel), EventsSection(eventsViewModel: pageViewModel.eventsViewModel)],
+            children: [
+              SectionCard(child: CalendarSection(calendarViewModel: pageViewModel.calendarViewModel)),
+              UIFormating.mediumVerticalSpacing(),
+              SectionCard(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel)),
+            ],
           ),
         ),
       ),

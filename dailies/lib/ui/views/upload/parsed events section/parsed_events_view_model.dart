@@ -15,6 +15,8 @@ class ParsedEventsViewModel extends ChangeNotifier with ErrorStreamMixin {
       _eventsViewModel = eventsViewModel;
 
   Future<void> saveAllEvents() async {
+    if (foundEvents.value.isEmpty) return;
+
     for (final Event event in foundEvents.value) {
       final Result result = await _eventRepositoryService.saveEvent(event);
       if (result is Error) emitError(result.error);
@@ -22,5 +24,9 @@ class ParsedEventsViewModel extends ChangeNotifier with ErrorStreamMixin {
 
     foundEvents.value = [];
     _eventsViewModel.refresh();
+  }
+
+  void clearFoundEvents() {
+    foundEvents.value = [];
   }
 }

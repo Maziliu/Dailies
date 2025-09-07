@@ -1,3 +1,4 @@
+import 'package:dailies/ui/components/section_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/overview/overview_page_view_model.dart';
 import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_section.dart';
@@ -13,17 +14,21 @@ class OverviewView extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageViewModel = context.watch<OverviewPageViewModel>();
 
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Scaffold(
+      appBar: AppBar(title: Text('Overview', style: textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GachaSection(viewModel: pageViewModel.staminaViewModel),
+            SectionCard(child: GachaSection(viewModel: pageViewModel.staminaViewModel)),
             UIFormating.mediumVerticalSpacing(),
-            TodaySection(eventsViewModel: pageViewModel.eventsViewModel),
+            SectionCard(child: TodaySection(eventsViewModel: pageViewModel.eventsViewModel)),
             UIFormating.mediumVerticalSpacing(),
-            UpcomingSection(eventsViewModel: pageViewModel.eventsViewModel),
+            SectionCard(child: UpcomingSection(eventsViewModel: pageViewModel.eventsViewModel)),
           ],
         ),
       ),

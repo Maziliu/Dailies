@@ -1,3 +1,4 @@
+import 'package:dailies/ui/components/section_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_section.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_section.dart';
@@ -11,14 +12,20 @@ class UploadView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UploadViewModel uploadViewModel = context.watch<UploadViewModel>();
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
-    return Padding(
-      padding: UIFormating.largePadding(),
-      child: Column(
-        children: [
-          FileUploadSection(fileUploadViewModel: uploadViewModel.fileUploadViewModel),
-          ParsedEventsSection(parsedEventsViewModel: uploadViewModel.parsedEventsViewModel),
-        ],
+    return Scaffold(
+      appBar: AppBar(title: Text('Upload', style: textTheme.headlineLarge?.copyWith(fontSize: 24))),
+      body: SingleChildScrollView(
+        padding: UIFormating.mediumPadding(),
+        child: Column(
+          children: [
+            SectionCard(child: FileUploadSection(fileUploadViewModel: uploadViewModel.fileUploadViewModel)),
+            UIFormating.mediumVerticalSpacing(),
+            SectionCard(child: ParsedEventsSection(parsedEventsViewModel: uploadViewModel.parsedEventsViewModel)),
+          ],
+        ),
       ),
     );
   }

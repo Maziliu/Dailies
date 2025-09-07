@@ -1,3 +1,4 @@
+
 mixin TextChunkerMixin {
   String _stripContent(String content) => content.replaceAll(RegExp(r'[\r\n]+'), ' ').trim(); //Remove all the large spaces
 
@@ -68,9 +69,14 @@ mixin TextChunkerMixin {
     return false;
   }
 
-  List<String> chunkText(String rawText) {
+  List<String> chunkText(String rawText, Function(double)? onProgress) {
     final List<String> sentenceChunks = _extractChunks(_stripContent(rawText));
+
+    onProgress?.call(0.5);
+
     final List<String> lineChunks = _extractChunks(rawText, splitByLines: true);
+
+    onProgress?.call(1.0);
 
     return {...sentenceChunks, ...lineChunks}.toList();
   }

@@ -1,7 +1,6 @@
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
-import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/overview/sections/gacha%20section/components/add_stamina_transparent_button.dart';
 import 'package:dailies/ui/views/overview/sections/gacha%20section/components/stamina_widget.dart';
 import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_view_model.dart';

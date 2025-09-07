@@ -22,7 +22,8 @@ class UploadView extends StatelessWidget {
         child: Column(
           children: [
             SectionCard(child: FileUploadSection(fileUploadViewModel: uploadViewModel.fileUploadViewModel)),
-            // ParsedEventsSection(parsedEventsViewModel: uploadViewModel.parsedEventsViewModel),
+            UIFormating.mediumVerticalSpacing(),
+            SectionCard(child: ParsedEventsSection(parsedEventsViewModel: uploadViewModel.parsedEventsViewModel)),
           ],
         ),
       ),

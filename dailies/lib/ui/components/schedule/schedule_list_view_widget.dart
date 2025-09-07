@@ -44,7 +44,7 @@ class ScheduleListViewWidget extends StatelessWidget {
                     Icon(Icons.calendar_today_outlined, size: 48, color: colorScheme.onSurface.withValues(alpha: 0.4)),
                     const SizedBox(height: 16),
                     Text(
-                      'Schedule is clear',
+                      'Nothing here',
                       style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500),
                     ),
                   ],

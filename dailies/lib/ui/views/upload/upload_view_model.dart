@@ -1,6 +1,7 @@
 import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/service/parsing/file_parser_service.dart';
+import 'package:dailies/service/parsing/parse_progress.dart';
 import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_view_model.dart';
@@ -20,8 +21,8 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   FileUploadViewModel get fileUploadViewModel => _fileUploadViewModel;
   ParsedEventsViewModel get parsedEventsViewModel => _parsedEventsViewModel;
 
-  Future<void> _parseFiles(List<PlatformFile> files) async {
-    final results = await _backgroundParseFiles(files);
+  Future<void> _parseFiles(List<PlatformFile> files, Function(String, ParseProgress) onProgress) async {
+    final results = await _backgroundParseFiles(files, onProgress);
 
     final List<Event> events = [
       for (final Result result in results)
@@ -41,4 +42,5 @@ class UploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 }
 
-Future<List<Result<List<Event>>>> _backgroundParseFiles(List<PlatformFile> files) async => await FileParserService().parseFiles(files);
+Future<List<Result<List<Event>>>> _backgroundParseFiles(List<PlatformFile> files, Function(String, ParseProgress) onProgress) async =>
+    await FileParserService().parseFiles(files, onProgress);

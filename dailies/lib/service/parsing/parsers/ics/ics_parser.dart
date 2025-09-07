@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dailies/common/enums/parse_stage.dart';
 import 'package:dailies/common/utils/generators.dart';
 import 'package:dailies/common/utils/parser_helpers.dart';
 import 'package:dailies/common/utils/result.dart';
@@ -11,7 +12,7 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 
 class ICSParser extends Parser {
   @override
-  Future<Result<List<Event>>> parseFile(String? filePath) async {
+  Future<Result<List<Event>>> parseFile(String? filePath, {Function(ParseStage, double, String?)? onProgress}) async {
     if (filePath == null) return Result.error(Exception('ICS file path is null'));
 
     final File icsFile = File(filePath);
@@ -31,12 +32,21 @@ class ICSParser extends Parser {
       return Result.error(Exception('Failed to parse ICS file: ${e.toString()}'));
     }
 
-    return parseICalendar(iCalendar);
+    onProgress?.call(ParseStage.ICS_PARSING, 0.0, 'ICS Parsing...');
+
+    return parseICalendar(iCalendar, (double progress) {
+      onProgress?.call(ParseStage.ICS_PARSING, progress, 'ICS Parsing... ${(progress * 100).toInt()}%');
+    });
   }
 
-  static Result<List<Event>> parseICalendar(ICalendar iCalendar) {
+  static Result<List<Event>> parseICalendar(ICalendar iCalendar, Function(double)? onProgress) {
     final List<Event> events = [];
+
+    int i = 0;
     for (final eventData in iCalendar.data) {
+      onProgress?.call(i / iCalendar.data.length);
+      i++;
+
       if (eventData['type'] != 'VEVENT') continue;
 
       final Result result = gaurdedExectute(() {
@@ -84,8 +94,6 @@ class ICSParser extends Parser {
           return Result.error(exception);
       }
     }
-
-    print(events.length);
 
     for (final Event event in events) {
       event.timeSlots = generateTimeSlots(event.pattern);

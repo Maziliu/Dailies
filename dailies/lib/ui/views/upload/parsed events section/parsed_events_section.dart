@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+import 'package:dailies/common/app_constants.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -15,66 +17,37 @@ class ParsedEventsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Expanded(
-            child: Section(
+    return Column(
+      children: [
+        ValueListenableBuilder(
+          valueListenable: _parsedEventsViewModel.foundEvents,
+          builder: (context, events, clearButton) {
+            return Column(
               children: [
-                const SectionHeader(title: 'Found Events'),
-                Expanded(
-                  child: SectionContent(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: ValueListenableBuilder(
-                            valueListenable: _parsedEventsViewModel.foundEvents,
-                            builder: (context, events, _) {
-                              return ScheduleListViewWidget(
-                                pairs:
-                                    events
-                                        .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
-                                        .toList(),
-                                builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text('    Found (${events.expand((event) => event.timeSlots).length})'), if (clearButton != null) clearButton],
+                ),
+                SizedBox(
+                  height: MAX_SECTION_HEIGHT,
+                  child: ScheduleListViewWidget(
+                    pairs: events
+                        .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
+                        .sorted((a, b) => a.second.compareTo(b.second)),
+                    builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
                   ),
                 ),
               ],
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: UIFormating.smallPadding(),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _parsedEventsViewModel.foundEvents.value = [];
-                    },
-                    child: const Text('Clear'),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      await _parsedEventsViewModel.saveAllEvents();
-                    },
-                    child: const Text('Add Found Events'),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+            );
+          },
+          child: TextButton(onPressed: _parsedEventsViewModel.clearFoundEvents, child: const Text('Clear')),
+        ),
+
+        Padding(
+          padding: UIFormating.smallPadding(),
+          child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events')),
+        ),
+      ],
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:dailies/ui/components/section.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/themes/themes.dart';
 import 'package:dailies/ui/views/shared/calendar_view_model.dart';

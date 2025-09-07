@@ -94,7 +94,7 @@ class DashboardNavigationBar extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded, size: 24), label: 'Overview'),
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today_rounded, size: 24), label: 'Calendar'),
-          BottomNavigationBarItem(icon: Icon(Icons.cloud_upload_rounded, size: 24), label: 'Upload'),
+          BottomNavigationBarItem(icon: Icon(Icons.file_upload_outlined, size: 24), label: 'Upload'),
         ],
       ),
     );

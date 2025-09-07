@@ -67,7 +67,7 @@ class EventsSection extends StatelessWidget {
                           },
                         );
                       },
-                      onTap: () => print('Tapped: ${pair.first.eventName} - ${pair.second.timeSlotType.name}'),
+                      onTap: () {},
                       child: ScheduleItemWidget(eventTimeSlotPair: pair),
                     ),
               ),

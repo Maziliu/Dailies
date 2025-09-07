@@ -151,10 +151,7 @@ class RecurrencePattern {
         if (count != null && generatedCount >= count!) break;
       }
 
-      if (iterations >= ITERATION_LIMIT) {
-        print('Warning: Reached iteration limit, stopping generation');
-        break;
-      }
+      if (iterations >= ITERATION_LIMIT) break;
     }
 
     return occurrences;

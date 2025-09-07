@@ -46,10 +46,6 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
       case Error<List<Stamina>>(error: final Exception exception):
         emitError(exception);
     }
-
-    for (final Stamina s in staminas.value) {
-      print('Name of Gacha: ${s.gachaTitle} Stamina of last reset: ${s.staminaOfLastestReset} Time of last save: ${s.timeOfLastReset.toString()}');
-    }
   }
 
   void deleteStamina(Stamina stamina) async {

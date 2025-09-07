@@ -37,15 +37,15 @@ class ParsedEventsSection extends StatelessWidget {
                     builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
                   ),
                 ),
+                if (events.isNotEmpty)
+                  Padding(
+                    padding: UIFormating.smallPadding(),
+                    child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events')),
+                  ),
               ],
             );
           },
           child: TextButton(onPressed: _parsedEventsViewModel.clearFoundEvents, child: const Text('Clear')),
-        ),
-
-        Padding(
-          padding: UIFormating.smallPadding(),
-          child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events')),
         ),
       ],
     );

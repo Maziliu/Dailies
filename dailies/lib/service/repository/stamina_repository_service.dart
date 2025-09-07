@@ -21,14 +21,14 @@ class StaminaRepositoryService {
 
   Future<Result<int>> deleteStamina(Stamina stamina) async => _repository.deleteById(stamina.id);
 
-  int _calculateNotificationStamina(Stamina stamina) => (stamina.maxStamina * 0.95) ~/ 1;
+  // int _calculateNotificationStamina(Stamina stamina) => (stamina.maxStamina * 0.95) ~/ 1;
 
-  DateTime _calculateNotificationTime(Stamina stamina) {
-    final int notificationStamina = _calculateNotificationStamina(stamina);
-    final int timeToNotifyInSeconds = (notificationStamina - stamina.staminaOfLastestReset) * stamina.rechargeTime.inSeconds;
+  // DateTime _calculateNotificationTime(Stamina stamina) {
+  //   final int notificationStamina = _calculateNotificationStamina(stamina);
+  //   final int timeToNotifyInSeconds = (notificationStamina - stamina.staminaOfLastestReset) * stamina.rechargeTime.inSeconds;
 
-    print(timeToNotifyInSeconds);
+  //   print(timeToNotifyInSeconds);
 
-    return stamina.timeOfLastReset.toUtc().add(Duration(seconds: timeToNotifyInSeconds));
-  }
+  //   return stamina.timeOfLastReset.toUtc().add(Duration(seconds: timeToNotifyInSeconds));
+  // }
 }

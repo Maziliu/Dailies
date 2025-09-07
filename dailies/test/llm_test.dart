@@ -11,7 +11,6 @@ void main() {
     );
 
     if (response is Ok<String>) {
-      print(response.value);
       expect(response.value, contains('VCALENDAR'));
     } else {
       fail('LLMService returned error: ${(response as Error).error}');

@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 
@@ -25,10 +26,6 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
     return Container(
       width: double.infinity,
       padding: UIFormating.smallPadding(),
@@ -37,8 +34,8 @@ class SectionHeader extends StatelessWidget {
           _titleWidget ??
           Container(
             padding: UIFormating.mediumPadding(),
-            decoration: BoxDecoration(color: colorScheme.surface, borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
-            child: Text(_title ?? '', style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+            decoration: BoxDecoration(color: context.colorScheme.surface, borderRadius: const BorderRadius.vertical(top: Radius.circular(20))),
+            child: Text(_title ?? '', style: context.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700, color: context.colorScheme.onSurface)),
           ),
     );
   }

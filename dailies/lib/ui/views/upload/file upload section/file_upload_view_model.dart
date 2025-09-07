@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dailies/service/parsing/file_parser_service.dart';
 import 'package:dailies/service/parsing/parse_progress.dart';
 import 'package:dailies/ui/mixins/error_stream_mixin.dart';
 import 'package:file_picker/file_picker.dart';

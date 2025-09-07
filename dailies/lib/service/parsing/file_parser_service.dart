@@ -44,10 +44,7 @@ class FileParserService {
 
       switch (result) {
         case Ok<List<Event>>():
-          onProgress?.call(
-            file.name,
-            ParseProgress(currentStage: ParseStage.COMPLETED, stageProgress: 1.0, overallProgress: 1.0, statusMessage: 'Parse completed successfully!'),
-          );
+          onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.COMPLETED, stageProgress: 1.0, overallProgress: 1.0, statusMessage: 'Completed!'));
         case Error<List<Event>>(error: final error):
           onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.ERROR, errorMessage: error.toString()));
       }

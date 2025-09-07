@@ -1,4 +1,5 @@
 import 'package:dailies/common/generated/assets.gen.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/ui_helpers.dart';
 import 'package:dailies/ui/components/interface/animatable_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
@@ -31,9 +32,6 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
     return SingleChildScrollView(
       child: Padding(
         padding: UIFormating.largePadding(),
@@ -44,7 +42,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
               Center(
                 child: Text(
                   'Create New Gacha Widget',
-                  style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface),
+                  style: context.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: context.colorScheme.onSurface),
                 ),
               ),
               UIFormating.largeVerticalSpacing(),
@@ -119,7 +117,7 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                     Navigator.of(context).pop();
                   }
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary),
+                style: ElevatedButton.styleFrom(backgroundColor: context.colorScheme.primary, foregroundColor: context.colorScheme.onPrimary),
                 child: const Text('Create Widget'),
               ),
             ],

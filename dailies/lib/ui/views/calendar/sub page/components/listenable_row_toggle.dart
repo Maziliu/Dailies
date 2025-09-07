@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,6 @@ class ListenableRowToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return ValueListenableBuilder(
       valueListenable: _toggleListenable,
       builder: (context, toggleState, _) {
@@ -23,7 +22,7 @@ class ListenableRowToggle extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(_labelText, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+                Text(_labelText, style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
                 Switch(value: toggleState, onChanged: (bool newState) => _toggleSwitch(newState, _toggleListenable)),
               ],
             ),

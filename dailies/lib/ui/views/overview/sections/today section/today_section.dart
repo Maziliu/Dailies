@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
@@ -17,16 +18,13 @@ class TodaySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Column(
       children: [
         Padding(
           padding: UIFormating.smallPadding(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [Expanded(child: Text('Today', style: textTheme.headlineLarge)), Text(DateFormat.yMMMMd().format(DateTime.now()))],
+            children: [Expanded(child: Text('Today', style: context.textTheme.headlineLarge)), Text(DateFormat.yMMMMd().format(DateTime.now()))],
           ),
         ),
         ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(

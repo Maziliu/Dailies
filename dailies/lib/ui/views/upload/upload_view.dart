@@ -16,7 +16,7 @@ class UploadView extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Upload', style: textTheme.headlineLarge?.copyWith(fontSize: 24))),
+      // appBar: AppBar(title: Text('Upload', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(

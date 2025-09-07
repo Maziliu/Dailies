@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class ScheduleListViewWidget extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       'Nothing here',
-                      style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500),
+                      style: context.textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),

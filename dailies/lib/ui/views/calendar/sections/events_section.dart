@@ -1,4 +1,5 @@
 import 'package:dailies/common/app_constants.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -30,7 +31,7 @@ class EventsSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(DateFormat.MMMMEEEEd().format(selectedDay), style: textTheme.headlineLarge),
+                  Text(DateFormat.MMMMEEEEd().format(selectedDay), style: context.textTheme.headlineLarge),
                   IconButton(
                     onPressed: () async {
                       final Event? newEvent = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddEventSubPage(selectedDay: selectedDay)));

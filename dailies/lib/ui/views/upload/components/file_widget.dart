@@ -1,4 +1,5 @@
 import 'package:dailies/common/enums/parse_stage.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/ui_helpers.dart';
 import 'package:dailies/service/parsing/parse_progress.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
@@ -17,17 +18,10 @@ class FileWidget extends StatelessWidget {
       _fileUploadViewModel = fileUploadViewModel,
       _progress = progress;
 
-  bool _showRemoveFileButton(ParseProgress? progress) =>
-      progress?.currentStage != ParseStage.STRIPPING &&
-      progress?.currentStage != ParseStage.LLM_PROCESSING &&
-      progress?.currentStage != ParseStage.ICS_PARSING &&
-      progress?.currentStage != ParseStage.COMPLETED;
+  bool _showRemoveFileButton(ParseProgress? progress) => progress?.currentStage == ParseStage.ERROR;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Card(
       color: Colors.black26,
       elevation: 0,
@@ -47,11 +41,12 @@ class FileWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(_file.name, overflow: TextOverflow.ellipsis, maxLines: 1, style: const TextStyle(color: Colors.white)),
-                            Text('Size: ${formatFileSize(_file.size)}', style: textTheme.bodySmall),
+                            Text('Size: ${formatFileSize(_file.size)}', style: context.textTheme.bodySmall),
 
-                            if (_progress?.statusMessage != null) Text(_progress!.statusMessage!, style: textTheme.bodySmall),
+                            if (_progress?.statusMessage != null) Text(_progress!.statusMessage!, style: context.textTheme.bodySmall),
 
-                            if (_progress?.errorMessage != null) Text(_progress!.errorMessage!, style: textTheme.bodySmall?.copyWith(color: Colors.red)),
+                            if (_progress?.errorMessage != null)
+                              Text(_progress!.errorMessage!, style: context.textTheme.bodySmall?.copyWith(color: Colors.red)),
                           ],
                         ),
                       ),

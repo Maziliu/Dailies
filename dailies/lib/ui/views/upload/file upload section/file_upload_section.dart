@@ -1,8 +1,5 @@
-import 'package:dailies/common/app_constants.dart';
-import 'package:dailies/common/enums/parse_stage.dart';
-import 'package:dailies/service/parsing/file_parser_service.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/service/parsing/parse_progress.dart';
-import 'package:dailies/service/parsing/parsers/parser.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/upload/components/file_widget.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
@@ -18,9 +15,6 @@ class FileUploadSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -39,7 +33,7 @@ class FileUploadSection extends StatelessWidget {
                 child: Column(
                   children: [
                     const Icon(Icons.file_upload_outlined, color: Colors.grey),
-                    Text('Upload Files', style: textTheme.headlineMedium?.copyWith(color: Colors.grey[400])),
+                    Text('Upload Files', style: context.textTheme.headlineMedium?.copyWith(color: Colors.grey[400])),
                   ],
                 ),
               ),

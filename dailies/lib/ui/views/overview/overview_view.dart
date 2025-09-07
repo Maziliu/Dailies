@@ -18,7 +18,7 @@ class OverviewView extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Overview', style: textTheme.headlineLarge?.copyWith(fontSize: 24))),
+      // appBar: AppBar(title: Text('Overview', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(

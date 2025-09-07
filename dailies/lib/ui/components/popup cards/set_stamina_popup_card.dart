@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/interface/animatable_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,6 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-
     return SingleChildScrollView(
       child: Padding(
         padding: UIFormating.largePadding(),
@@ -35,7 +33,10 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
-                child: Text('Set Remaining Stamina', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface)),
+                child: Text(
+                  'Set Remaining Stamina',
+                  style: context.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: context.colorScheme.onSurface),
+                ),
               ),
               UIFormating.largeVerticalSpacing(),
               FormBuilderTextField(
@@ -55,7 +56,7 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
                     Navigator.pop(context, remainingStamina);
                   }
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: colorScheme.primary, foregroundColor: colorScheme.onPrimary),
+                style: ElevatedButton.styleFrom(backgroundColor: context.colorScheme.primary, foregroundColor: context.colorScheme.onPrimary),
                 child: const Text('Set'),
               ),
             ],

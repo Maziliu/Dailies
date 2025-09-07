@@ -1,4 +1,5 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/components/listenable_time_picker_button.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/view%20models/event_type_section_view_model.dart';
@@ -15,8 +16,6 @@ class EventTypeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -25,7 +24,7 @@ class EventTypeSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Type', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            Text('Type', style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
             UIFormating.smallVerticalSpacing(),
             ValueListenableBuilder(
               valueListenable: _viewModel.selectedTimeSlotIndex,

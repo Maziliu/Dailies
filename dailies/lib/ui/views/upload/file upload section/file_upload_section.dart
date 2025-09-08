@@ -3,15 +3,18 @@ import 'package:dailies/service/parsing/parse_progress.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/upload/components/file_widget.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
+import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/configure_sub_page.dart';
+import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_section_view_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
-const List<String> SUPPORTED_FILE_EXTENSIONS = ['ics', 'pdf'];
-
 class FileUploadSection extends StatelessWidget {
   final FileUploadViewModel _fileUploadViewModel;
+  final ConfigurationSectionViewModel _configurationSectionViewModel;
 
-  const FileUploadSection({super.key, required FileUploadViewModel fileUploadViewModel}) : _fileUploadViewModel = fileUploadViewModel;
+  const FileUploadSection({super.key, required FileUploadViewModel fileUploadViewModel, required ConfigurationSectionViewModel configurationSectionViewModel})
+    : _fileUploadViewModel = fileUploadViewModel,
+      _configurationSectionViewModel = configurationSectionViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +75,56 @@ class FileUploadSection extends StatelessWidget {
                   },
                 ),
 
-                if (files.isNotEmpty) UIFormating.mediumVerticalSpacing(),
-                if (files.isNotEmpty) Center(child: ElevatedButton(onPressed: _fileUploadViewModel.parseAllUploadedFiles, child: const Text('Parse Files'))),
+                if (files.isNotEmpty) _buildActionButtons(_fileUploadViewModel.requiresLLMParsing, context),
               ],
             );
           },
           child: TextButton(onPressed: _fileUploadViewModel.clearUploadedFiles, child: const Text('Clear')),
         ),
       ],
+    );
+  }
+
+  Widget _buildActionButtons(bool showEditButton, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Center(
+        child: Column(
+          children: [
+            UIFormating.mediumVerticalSpacing(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                if (showEditButton)
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _configurationSectionViewModel.clearConfigurations();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ConfigureSubPage(
+                                  viewModel: _configurationSectionViewModel,
+                                  files:
+                                      _fileUploadViewModel.uploadedFiles.value
+                                          .where((PlatformFile file) => LLM_REQUIRED_FILE_EXTENSIONS.contains(file.extension))
+                                          .toList(),
+                                ),
+                          ),
+                        );
+                      },
+                      child: const Text('Configure'),
+                    ),
+                  ),
+                if (showEditButton) UIFormating.smallHorizontalSpacing(),
+                Expanded(child: ElevatedButton(onPressed: _fileUploadViewModel.parseAllUploadedFiles, child: const Text('Parse'))),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

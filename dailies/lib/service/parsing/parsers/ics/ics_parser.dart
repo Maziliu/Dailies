@@ -12,7 +12,7 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 
 class ICSParser extends Parser {
   @override
-  Future<Result<List<Event>>> parseFile(String? filePath, {Function(ParseStage, double, String?)? onProgress}) async {
+  Future<Result<List<Event>>> parseFile(Map<String, dynamic>? params, String? filePath, {Function(ParseStage, double, String?)? onProgress}) async {
     if (filePath == null) return Result.error(Exception('ICS file path is null'));
 
     final File icsFile = File(filePath);

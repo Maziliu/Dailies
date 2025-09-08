@@ -12,16 +12,17 @@ class UploadView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UploadViewModel uploadViewModel = context.watch<UploadViewModel>();
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Scaffold(
-      // appBar: AppBar(title: Text('Upload', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(
           children: [
-            SectionCard(child: FileUploadSection(fileUploadViewModel: uploadViewModel.fileUploadViewModel)),
+            SectionCard(
+              child: FileUploadSection(
+                fileUploadViewModel: uploadViewModel.fileUploadViewModel,
+                configurationSectionViewModel: uploadViewModel.configurationSectionViewModel,
+              ),
+            ),
             UIFormating.mediumVerticalSpacing(),
             SectionCard(child: ParsedEventsSection(parsedEventsViewModel: uploadViewModel.parsedEventsViewModel)),
           ],

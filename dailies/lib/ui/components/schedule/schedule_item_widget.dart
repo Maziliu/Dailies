@@ -21,11 +21,7 @@ class ScheduleItemWidget extends StatelessWidget {
     final TimeSlot timeSlot = _eventTimeSlotPair.second;
     final String? timeText = _formatTimeText(context, timeSlot);
 
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
-    final Color eventColour = _getEventColour(timeSlot.timeSlotType, colorScheme);
+    final Color eventColour = _getEventColour(timeSlot.timeSlotType, context.colorScheme);
 
     return Card(
       elevation: 0,

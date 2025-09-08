@@ -36,17 +36,34 @@ class ParsedEventsSection extends StatelessWidget {
                     builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
                   ),
                 ),
-                if (events.isNotEmpty)
-                  Padding(
-                    padding: UIFormating.smallPadding(),
-                    child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events')),
-                  ),
+                if (events.isNotEmpty) _buildActionButtons(),
               ],
             );
           },
           child: TextButton(onPressed: _parsedEventsViewModel.clearFoundEvents, child: const Text('Clear')),
         ),
       ],
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Center(
+        child: Column(
+          children: [
+            UIFormating.mediumVerticalSpacing(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(child: ElevatedButton(onPressed: () {}, child: const Text('Edit'))),
+                UIFormating.smallHorizontalSpacing(),
+                Expanded(child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events'))),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

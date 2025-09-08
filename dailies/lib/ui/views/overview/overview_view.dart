@@ -13,10 +13,6 @@ class OverviewView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pageViewModel = context.watch<OverviewPageViewModel>();
-
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Scaffold(
       // appBar: AppBar(title: Text('Overview', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(

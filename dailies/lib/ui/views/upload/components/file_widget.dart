@@ -18,7 +18,7 @@ class FileWidget extends StatelessWidget {
       _fileUploadViewModel = fileUploadViewModel,
       _progress = progress;
 
-  bool _showRemoveFileButton(ParseProgress? progress) => progress?.currentStage == ParseStage.ERROR;
+  bool _showRemoveFileButton(ParseProgress? progress) => progress == null || progress.currentStage == ParseStage.ERROR;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +40,13 @@ class FileWidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_file.name, overflow: TextOverflow.ellipsis, maxLines: 1, style: const TextStyle(color: Colors.white)),
-                            Text('Size: ${formatFileSize(_file.size)}', style: context.textTheme.bodySmall),
+                            Text(_file.name, overflow: TextOverflow.ellipsis, maxLines: 1, style: context.textTheme.headlineMedium),
+                            Text('Size: ${formatFileSize(_file.size)}', style: context.textTheme.bodyMedium),
 
-                            if (_progress?.statusMessage != null) Text(_progress!.statusMessage!, style: context.textTheme.bodySmall),
+                            if (_progress?.statusMessage != null) Text(_progress!.statusMessage!, style: context.textTheme.bodyMedium),
 
                             if (_progress?.errorMessage != null)
-                              Text(_progress!.errorMessage!, style: context.textTheme.bodySmall?.copyWith(color: Colors.red)),
+                              Text(_progress!.errorMessage!, style: context.textTheme.bodyMedium?.copyWith(color: Colors.red)),
                           ],
                         ),
                       ),
@@ -99,11 +99,11 @@ class FileWidget extends StatelessWidget {
   Widget _buildFileTypeIcon(PlatformFile file) {
     switch (file.extension) {
       case 'pdf':
-        return const Icon(Icons.picture_as_pdf, color: Colors.red);
+        return const Icon(Icons.picture_as_pdf, color: Colors.red, size: 30);
       case 'ics':
-        return const Icon(Icons.calendar_today, color: Colors.grey);
+        return const Icon(Icons.calendar_today, color: Colors.grey, size: 30);
       default:
-        return const Icon(Icons.file_copy, color: Colors.grey);
+        return const Icon(Icons.file_copy, color: Colors.grey, size: 30);
     }
   }
 }

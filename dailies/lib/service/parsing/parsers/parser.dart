@@ -3,5 +3,9 @@ import 'package:dailies/common/utils/result.dart';
 import 'package:dailies/data/models/event.dart';
 
 abstract class Parser {
-  Future<Result<List<Event>>> parseFile(String? filePath, {Function(ParseStage stage, double progress, String? message)? onProgress});
+  Future<Result<List<Event>>> parseFile(
+    Map<String, dynamic>? configuration,
+    String? filePath, {
+    Function(ParseStage stage, double progress, String? message)? onProgress,
+  });
 }

@@ -21,7 +21,6 @@ List<TimeSlot> _generateFromParameters(TimeSlotPattern pattern, int limitInDays)
       while (true) {
         final Duration currentOffset = totalOffset * offsetCount;
         final DateTime nextDate = currentDate.toUtc().add(currentOffset);
-        print(normalizeDate(nextDate));
 
         if (nextDate.isAfter(limit) || (pattern.isFinite && nextDate.isAfter(pattern.endPatternDate!))) {
           break;
@@ -42,9 +41,6 @@ List<TimeSlot> _generateFromRecurranceRule(TimeSlotPattern pattern, int limit) {
   final TimeSlot reference = pattern.anchorPointsList.first;
 
   final List<DateTime> timeSlotDates = rrulePattern.generateOccurrences(reference.dateOfTimeSlot, maxCount: limit);
-
-  print(pattern.recurranceRule);
-  print(timeSlotDates.length);
 
   return timeSlotDates.map((DateTime date) => TimeSlot.UnSaved(dateOfTimeSlot: date, startTime: reference.startTime, endTime: reference.endTime)).toList();
 }

@@ -1,15 +1,18 @@
 import 'dart:async';
 
-import 'package:dailies/service/parsing/file_parser_service.dart';
 import 'package:dailies/service/parsing/parse_progress.dart';
 import 'package:dailies/ui/mixins/error_stream_mixin.dart';
+import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_section_view_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+final List<String> LLM_REQUIRED_FILE_EXTENSIONS = ['pdf'];
+final List<String> SUPPORTED_FILE_EXTENSIONS = ['ics', ...LLM_REQUIRED_FILE_EXTENSIONS];
+
 class FileUploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   final ValueNotifier<List<PlatformFile>> uploadedFiles = ValueNotifier<List<PlatformFile>>([]);
-
   final StreamController<Map<String, ParseProgress>> _progressController = StreamController<Map<String, ParseProgress>>.broadcast();
+
   Stream<Map<String, ParseProgress>> get progressStream => _progressController.stream;
 
   Map<String, ParseProgress> _parseProgress = {};
@@ -38,10 +41,13 @@ class FileUploadViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 
   void removeUploadedFile(PlatformFile fileToRemove) {
-    uploadedFiles.value = uploadedFiles.value.where((PlatformFile file) => file != fileToRemove).toList();
+    uploadedFiles.value = uploadedFiles.value.where((file) => file != fileToRemove).toList();
+
     _parseProgress.remove(fileToRemove.name);
     _progressController.add(Map.from(_parseProgress));
   }
+
+  bool get requiresLLMParsing => uploadedFiles.value.any((PlatformFile file) => LLM_REQUIRED_FILE_EXTENSIONS.contains(file.extension));
 
   @override
   void dispose() {

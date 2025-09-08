@@ -5,7 +5,6 @@ import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
-import 'package:dailies/ui/components/section.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_view_model.dart';
 import 'package:flutter/material.dart';
@@ -37,17 +36,34 @@ class ParsedEventsSection extends StatelessWidget {
                     builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
                   ),
                 ),
+                if (events.isNotEmpty) _buildActionButtons(),
               ],
             );
           },
           child: TextButton(onPressed: _parsedEventsViewModel.clearFoundEvents, child: const Text('Clear')),
         ),
-
-        Padding(
-          padding: UIFormating.smallPadding(),
-          child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events')),
-        ),
       ],
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Center(
+        child: Column(
+          children: [
+            UIFormating.mediumVerticalSpacing(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(child: ElevatedButton(onPressed: () {}, child: const Text('Edit'))),
+                UIFormating.smallHorizontalSpacing(),
+                Expanded(child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events'))),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

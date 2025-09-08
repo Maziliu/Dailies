@@ -13,7 +13,11 @@ import 'package:file_picker/file_picker.dart';
 class FileParserService {
   Parser? _fileParser;
 
-  Future<List<Result<List<Event>>>> parseFiles(List<PlatformFile> files, Function(String fileName, ParseProgress progress)? onProgress) async {
+  Future<List<Result<List<Event>>>> parseFiles(
+    List<PlatformFile> files,
+    Map<String, Map<String, dynamic>> configurations,
+    Function(String fileName, ParseProgress progress)? onProgress,
+  ) async {
     final List<Result<List<Event>>> results = [];
 
     for (final PlatformFile file in files) {
@@ -28,6 +32,7 @@ class FileParserService {
       onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.PENDING, statusMessage: 'Starting parse...'));
 
       final result = await _fileParser!.parseFile(
+        configurations.containsKey(file.name) ? configurations[file.name] : null,
         file.path,
         onProgress: (stage, progress, message) {
           onProgress?.call(
@@ -44,10 +49,7 @@ class FileParserService {
 
       switch (result) {
         case Ok<List<Event>>():
-          onProgress?.call(
-            file.name,
-            ParseProgress(currentStage: ParseStage.COMPLETED, stageProgress: 1.0, overallProgress: 1.0, statusMessage: 'Parse completed successfully!'),
-          );
+          onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.COMPLETED, stageProgress: 1.0, overallProgress: 1.0, statusMessage: 'Completed!'));
         case Error<List<Event>>(error: final error):
           onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.ERROR, errorMessage: error.toString()));
       }

@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
@@ -13,9 +14,6 @@ class GachaSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,7 +22,7 @@ class GachaSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Gachas', style: textTheme.headlineLarge),
+              Text('Gachas', style: context.textTheme.headlineLarge),
               IconButton(
                 onPressed: () {
                   Navigator.of(context).push(

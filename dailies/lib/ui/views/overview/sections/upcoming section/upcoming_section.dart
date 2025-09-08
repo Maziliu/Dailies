@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:dailies/common/app_constants.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
@@ -16,12 +17,10 @@ class UpcomingSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(padding: const EdgeInsetsGeometry.fromLTRB(8, 8, 8, 12), child: Text('Upcoming', style: textTheme.headlineLarge)),
+        Padding(padding: const EdgeInsetsGeometry.fromLTRB(8, 8, 8, 12), child: Text('Upcoming', style: context.textTheme.headlineLarge)),
         SizedBox(
           height: MAX_SECTION_HEIGHT,
           child: ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(

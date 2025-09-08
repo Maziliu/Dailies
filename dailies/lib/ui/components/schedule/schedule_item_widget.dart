@@ -1,4 +1,5 @@
 import 'package:dailies/common/enums/time_slot_type.dart';
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -20,11 +21,7 @@ class ScheduleItemWidget extends StatelessWidget {
     final TimeSlot timeSlot = _eventTimeSlotPair.second;
     final String? timeText = _formatTimeText(context, timeSlot);
 
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
-    final Color eventColour = _getEventColour(timeSlot.timeSlotType, colorScheme);
+    final Color eventColour = _getEventColour(timeSlot.timeSlotType, context.colorScheme);
 
     return Card(
       elevation: 0,
@@ -45,9 +42,9 @@ class ScheduleItemWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(event.eventName, style: textTheme.headlineMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  if (event.location?.isNotEmpty == true) Text(event.location!, style: textTheme.bodyMedium, overflow: TextOverflow.ellipsis),
-                  if (timeText != null) Text(timeText, style: textTheme.bodyMedium),
+                  Text(event.eventName, style: context.textTheme.headlineMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  if (event.location?.isNotEmpty == true) Text(event.location!, style: context.textTheme.bodyMedium, overflow: TextOverflow.ellipsis),
+                  if (timeText != null) Text(timeText, style: context.textTheme.bodyMedium),
                 ],
               ),
             ),
@@ -55,8 +52,8 @@ class ScheduleItemWidget extends StatelessWidget {
             if (_showDate)
               Column(
                 children: [
-                  Text(DateFormat.MMM().format(timeSlot.dateOfTimeSlot), style: textTheme.bodyMedium),
-                  Text(DateFormat.d().format(timeSlot.dateOfTimeSlot), style: textTheme.bodyMedium),
+                  Text(DateFormat.MMM().format(timeSlot.dateOfTimeSlot), style: context.textTheme.bodyMedium),
+                  Text(DateFormat.d().format(timeSlot.dateOfTimeSlot), style: context.textTheme.bodyMedium),
                 ],
               ),
           ],

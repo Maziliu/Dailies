@@ -43,7 +43,7 @@ class LLMService {
                   Today is ${DateTime.now().toUtc()}.
         ''',
               },
-              {'role': 'user', 'content': content},
+              {'role': 'user', 'content': '$additionalInstructions. $content'},
             ],
             'extra': {'reasoning': false},
           }),

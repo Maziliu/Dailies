@@ -28,7 +28,6 @@ class EventsViewModel with ErrorStreamMixin {
 
   List<TimeSlot> timeSlotsLookup(DateTime date) {
     final DateTime normalized = DateTime(date.year, date.month, date.day);
-    print('looked up ${normalized.toString()}');
 
     final HeapPriorityQueue<TimeSlot>? timeSlots = dateToTimeSlotsMap.value[normalized];
 
@@ -79,7 +78,6 @@ class EventsViewModel with ErrorStreamMixin {
 
       if (deleteCandidate == null) break;
 
-      print('Clamping: Removing date ${deleteCandidate.toIso8601String().split('T')[0]} from map');
       map.remove(deleteCandidate);
     }
   }

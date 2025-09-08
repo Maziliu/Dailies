@@ -16,11 +16,8 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CalendarPageViewModel pageViewModel = context.watch<CalendarPageViewModel>();
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
     return Scaffold(
-      appBar: AppBar(title: Text('Calendar', style: textTheme.headlineLarge?.copyWith(fontSize: 24))),
+      // appBar: AppBar(title: Text('Calendar', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         child: Padding(
           padding: UIFormating.mediumPadding(),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/service/repository/stamina_repository_service.dart';
@@ -44,9 +45,6 @@ class _StaminaWidgetState extends State<StaminaWidget> {
   Widget build(BuildContext context) {
     final String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
     final String heroTag = '$SET_STAMINA_HERO_TAG/${widget._stamina.id}';
-
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
 
     final Stamina stamina = widget._stamina;
 
@@ -97,13 +95,13 @@ class _StaminaWidgetState extends State<StaminaWidget> {
                 children: [
                   SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
                   UIFormating.smallHorizontalSpacing(),
-                  Text(stamina.gachaTitle, style: textTheme.headlineLarge, overflow: TextOverflow.ellipsis),
+                  Text(stamina.gachaTitle, style: context.textTheme.headlineLarge, overflow: TextOverflow.ellipsis),
                 ],
               ),
               ValueListenableBuilder<int>(
                 valueListenable: viewModel.currentStamina,
                 builder: (context, currentStamnina, _) {
-                  return Text('$currentStamnina / ${viewModel.maxStamina}', style: textTheme.headlineLarge);
+                  return Text('$currentStamnina / ${viewModel.maxStamina}', style: context.textTheme.headlineLarge);
                 },
               ),
             ],

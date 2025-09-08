@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -12,7 +13,6 @@ class EventDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return FormBuilder(
       key: _formKey,
       child: Card(
@@ -23,7 +23,7 @@ class EventDetailsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Event Details', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              Text('Event Details', style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
               UIFormating.smallVerticalSpacing(),
               FormBuilderTextField(
                 name: EVENT_NAME_FIELD_TAG,

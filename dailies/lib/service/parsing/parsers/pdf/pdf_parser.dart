@@ -13,7 +13,7 @@ import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PDFParser extends Parser with TextChunkerMixin, LLMPrompterMixin {
   @override
-  Future<Result<List<Event>>> parseFile(String? filePath, {Function(ParseStage, double, String?)? onProgress}) async {
+  Future<Result<List<Event>>> parseFile(Map<String, dynamic>? configuration, String? filePath, {Function(ParseStage, double, String?)? onProgress}) async {
     if (filePath == null) return Result.error(Exception('PDF file path is null'));
 
     final File pdfFile = File(filePath);
@@ -21,19 +21,26 @@ class PDFParser extends Parser with TextChunkerMixin, LLMPrompterMixin {
       return Result.error(Exception('PDF file does not exist $filePath'));
     }
 
+    String inputText;
+
     final PdfDocument document = PdfDocument(inputBytes: await pdfFile.readAsBytes());
     final PdfTextExtractor extractor = PdfTextExtractor(document);
 
-    onProgress?.call(ParseStage.STRIPPING, 0.0, 'Chunking PDF...');
+    if (configuration?['allowCondense'] ?? false) {
+      onProgress?.call(ParseStage.STRIPPING, 0.0, 'Chunking PDF...');
 
-    final List<String> chunks = chunkText(extractor.extractTextLines().map((line) => line.text).join('\n'), (progress) {
-      onProgress?.call(ParseStage.STRIPPING, progress, 'Extracting... ${(progress * 100).toInt()}%');
-    });
+      final List<String> chunks = chunkText(extractor.extractTextLines().map((line) => line.text).join('\n'), (progress) {
+        onProgress?.call(ParseStage.STRIPPING, progress, 'Extracting... ${(progress * 100).toInt()}%');
+      });
 
+      inputText = chunks.join('\n');
+    } else {
+      inputText = extractor.extractTextLines().map((line) => line.text).join('\n');
+    }
     document.dispose();
 
     onProgress?.call(ParseStage.LLM_PROCESSING, 0.0, 'Processing with AI...');
-    final Result<String> llmResult = await promptLLM(chunks.join('\n'));
+    final Result<String> llmResult = await promptLLM(inputText, configuration?['instructions'] ?? '');
 
     if (llmResult is Error) return Result.error((llmResult as Error).error);
 

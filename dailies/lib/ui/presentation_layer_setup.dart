@@ -7,6 +7,7 @@ import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_view_mo
 import 'package:dailies/ui/views/shared/calendar_view_model.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/file_upload_view_model.dart';
+import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_section_view_model.dart';
 import 'package:dailies/ui/views/upload/parsed%20events%20section/parsed_events_view_model.dart';
 import 'package:dailies/ui/views/upload/upload_view_model.dart';
 import 'package:get_it/get_it.dart';
@@ -23,6 +24,9 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
     () => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), eventsViewModel: injector<EventsViewModel>()),
   );
 
+  //Sub Page View Models
+  injector.registerLazySingleton<ConfigurationSectionViewModel>(ConfigurationSectionViewModel.new);
+
   //Page View Models
   injector.registerLazySingleton<DashboardViewModel>(DashboardViewModel.new);
   injector.registerLazySingleton<OverviewPageViewModel>(
@@ -32,6 +36,10 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
     () => CalendarPageViewModel(calendarViewModel: injector<CalendarViewModel>(), eventsViewModel: injector<EventsViewModel>()),
   );
   injector.registerLazySingleton<UploadViewModel>(
-    () => UploadViewModel(fileUploadViewModel: injector<FileUploadViewModel>(), parsedEventsViewModel: injector<ParsedEventsViewModel>()),
+    () => UploadViewModel(
+      fileUploadViewModel: injector<FileUploadViewModel>(),
+      parsedEventsViewModel: injector<ParsedEventsViewModel>(),
+      configurationSectionViewModel: injector<ConfigurationSectionViewModel>(),
+    ),
   );
 }

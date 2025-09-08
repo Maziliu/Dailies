@@ -1,3 +1,4 @@
+import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,6 @@ class ScheduleListViewWidget extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
     return Center(
       child: Padding(
         padding: UIFormating.extraLargePadding(),
@@ -41,11 +39,11 @@ class ScheduleListViewWidget extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.calendar_today_outlined, size: 48, color: colorScheme.onSurface.withValues(alpha: 0.4)),
+                    Icon(Icons.calendar_today_outlined, size: 48, color: context.colorScheme.onSurface.withValues(alpha: 0.4)),
                     const SizedBox(height: 16),
                     Text(
                       'Nothing here',
-                      style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500),
+                      style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),

@@ -40,6 +40,18 @@ class EventsViewModel with ErrorStreamMixin {
     return timeSlots.toList();
   }
 
+  Map<DateTime, List<TimeSlot>> timeSlotRangeLookup(DateTime lowerBound, DateTime upperBound) {
+    final Map<DateTime, List<TimeSlot>> result = {};
+    DateTime current = lowerBound;
+
+    while (!current.isAfter(upperBound)) {
+      result[current] = timeSlotsLookup(current);
+      current = current.add(const Duration(days: 1));
+    }
+
+    return result;
+  }
+
   void _updateLoadedEvents(List<Event> events) {
     for (final Event event in events) {
       _idToEventMap[event.id] = event;

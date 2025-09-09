@@ -1,1 +1,1 @@
-final double MAX_SECTION_HEIGHT = 300;
+final double MAX_SECTION_HEIGHT = 400;

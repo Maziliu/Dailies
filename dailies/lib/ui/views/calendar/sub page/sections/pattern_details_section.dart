@@ -1,5 +1,5 @@
 import 'package:dailies/common/enums/days_of_the_week.dart';
-import 'package:dailies/common/enums/frequency_type.dart';
+import 'package:dailies/common/enums/rrule_frequency.dart';
 import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/section_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
@@ -86,14 +86,14 @@ class PatternDetailsSection extends StatelessWidget {
                                 UIFormating.mediumHorizontalSpacing(),
                                 Expanded(
                                   flex: 3,
-                                  child: FormBuilderDropdown<FrequencyType>(
+                                  child: FormBuilderDropdown<RRuleFrequency>(
                                     name: FREQUENCY_TYPE_FIELD_TAG,
                                     decoration: const InputDecoration(
                                       labelText: 'Units',
                                       border: OutlineInputBorder(),
                                     ),
                                     items:
-                                        FrequencyType.values
+                                        RRuleFrequency.values
                                             .map(
                                               (type) => DropdownMenuItem(
                                                 value: type,

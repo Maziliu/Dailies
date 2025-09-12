@@ -1,5 +1,5 @@
 import 'package:dailies/common/enums/days_of_the_week.dart';
-import 'package:dailies/common/enums/frequency_type.dart';
+import 'package:dailies/common/enums/rrule_frequency.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/components/multi_select_calendar.dart';
@@ -12,7 +12,9 @@ class PatternDetailsSectionViewModel extends ChangeNotifier {
   ValueNotifier<bool> daylightSavingToggle = ValueNotifier<bool>(false);
   ValueNotifier<bool> finitePatternToggle = ValueNotifier<bool>(false);
   ValueNotifier<bool> repeatablePatternToggle = ValueNotifier<bool>(false);
-  ValueNotifier<List<bool>> selectedDays = ValueNotifier(DaysOfTheWeek.values.map((_) => false).toList());
+  ValueNotifier<List<bool>> selectedDays = ValueNotifier(
+    DaysOfTheWeek.values.map((_) => false).toList(),
+  );
 
   List<bool> get getSelectedDays => selectedDays.value;
 
@@ -22,38 +24,55 @@ class PatternDetailsSectionViewModel extends ChangeNotifier {
     selectedDays.value = updatedDays;
   }
 
-  PatternDetailsSectionViewModel({required DateTime selectedDay}) : calendarViewModel = MultiSelectCalendarViewModel(initialSelectedDay: selectedDay);
+  PatternDetailsSectionViewModel({required DateTime selectedDay})
+    : calendarViewModel = MultiSelectCalendarViewModel(
+        initialSelectedDay: selectedDay,
+      );
 
-  TimeSlotPattern constructTimeSlotPattern(int? frequencyValue, FrequencyType? frequencyType, DateTime? patternEndDate, TimeSlot referenceTimeSlot) {
+  TimeSlotPattern constructTimeSlotPattern(
+    int? frequencyValue,
+    RRuleFrequency? frequencyType,
+    DateTime? patternEndDate,
+    TimeSlot referenceTimeSlot,
+  ) {
     final bool isDaylightSaving = daylightSavingToggle.value;
     final bool isRepeatable = repeatablePatternToggle.value;
 
-    Duration? frequency;
+    String rrule = '';
 
     if (isRepeatable) {
-      frequency = _determineDuration(frequencyValue!, frequencyType!);
+      final selectedDaysOfWeek =
+          DaysOfTheWeek.values
+              .asMap()
+              .entries
+              .where((entry) => selectedDays.value[entry.key])
+              .map((entry) => entry.value)
+              .toList();
+
+      if (selectedDaysOfWeek.isNotEmpty) {
+        rrule +=
+            'FREQ=${frequencyType.toString().split('.').last.toUpperCase()};INTERVAL=$frequencyValue;BYDAY=${selectedDaysOfWeek.map((day) => day.icalCode).join(',')}';
+      } else {
+        rrule +=
+            'FREQ=${frequencyType.toString().split('.').last.toUpperCase()};INTERVAL=$frequencyValue';
+      }
+
+      if (finitePatternToggle.value && patternEndDate != null) {
+        final untilString =
+            '${patternEndDate.toUtc().toIso8601String().replaceAll('-', '').replaceAll(':', '').split('.').first}Z';
+        rrule += ';UNTIL=$untilString';
+      }
     }
+
+    print('Generated RRULE: $rrule');
 
     return TimeSlotPattern.UnSaved(
+      recurranceRule: rrule.isNotEmpty ? rrule : null,
       endPatternDate: patternEndDate,
       timeZoneId: isDaylightSaving ? DateTime.now().timeZoneName : null,
-      frequencyInSeconds: frequency?.inSeconds,
-      anchorPointsList: calendarViewModel.generateAnchorPoints(referenceTimeSlot),
+      anchorPointsList: calendarViewModel.generateAnchorPoints(
+        referenceTimeSlot,
+      ),
     );
-  }
-
-  Duration _determineDuration(int value, FrequencyType units) {
-    switch (units) {
-      case FrequencyType.Seconds:
-        return Duration(seconds: value);
-      case FrequencyType.Minutes:
-        return Duration(minutes: value);
-      case FrequencyType.Hours:
-        return Duration(hours: value);
-      case FrequencyType.Days:
-        return Duration(days: value);
-      case FrequencyType.Weeks:
-        return Duration(days: value * 7);
-    }
   }
 }

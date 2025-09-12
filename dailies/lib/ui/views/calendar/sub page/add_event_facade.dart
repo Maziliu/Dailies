@@ -1,4 +1,4 @@
-import 'package:dailies/common/enums/frequency_type.dart';
+import 'package:dailies/common/enums/rrule_frequency.dart';
 import 'package:dailies/common/exceptions/ui_exceptions.dart';
 import 'package:dailies/data/models/event.dart';
 import 'package:dailies/data/models/time_slot.dart';
@@ -22,15 +22,21 @@ class AddEventFacade with ErrorStreamMixin {
   AddEventFacade({required DateTime selectedDay})
     : _selectedDay = selectedDay,
       eventTypeSectionViewModel = EventTypeSectionViewModel(),
-      patternDetailsSectionViewModel = PatternDetailsSectionViewModel(selectedDay: selectedDay);
+      patternDetailsSectionViewModel = PatternDetailsSectionViewModel(
+        selectedDay: selectedDay,
+      );
 
-  Event? createEvent({required GlobalKey<FormBuilderState> detailsFormKey, required GlobalKey<FormBuilderState> patternFormKey}) {
+  Event? createEvent({
+    required GlobalKey<FormBuilderState> detailsFormKey,
+    required GlobalKey<FormBuilderState> patternFormKey,
+  }) {
     if (!_validateForm(detailsFormKey)) {
       emitError(IncompleteFormException(specificForm: 'Event Details'));
       return null;
     }
 
-    if (!_validateForm(patternFormKey) && patternDetailsSectionViewModel.patternSectionToggle.value) {
+    if (!_validateForm(patternFormKey) &&
+        patternDetailsSectionViewModel.patternSectionToggle.value) {
       emitError(IncompleteFormException(specificForm: 'Event Pattern'));
       return null;
     }
@@ -47,15 +53,26 @@ class AddEventFacade with ErrorStreamMixin {
 
     final Event event = Event(eventName: eventName, location: locationName);
 
-    final TimeSlot referenceTimeSlot = eventTypeSectionViewModel.constructTimeSlot(_selectedDay);
-    TimeSlotPattern pattern = TimeSlotPattern.UnSaved(anchorPointsList: [referenceTimeSlot]);
+    final TimeSlot referenceTimeSlot = eventTypeSectionViewModel
+        .constructTimeSlot(_selectedDay);
+    TimeSlotPattern pattern = TimeSlotPattern.UnSaved(
+      anchorPointsList: [referenceTimeSlot],
+    );
 
     if (patternFields != null) {
-      final int? frequencyValue = int.tryParse(patternFields[FREQUENCY_FIELD_TAG]?.value ?? '');
-      final FrequencyType? frequencyType = patternFields[FREQUENCY_TYPE_FIELD_TAG]?.value;
+      final int? frequencyValue = int.tryParse(
+        patternFields[FREQUENCY_FIELD_TAG]?.value ?? '',
+      );
+      final RRuleFrequency? frequencyType =
+          patternFields[FREQUENCY_TYPE_FIELD_TAG]?.value;
       final DateTime? patternEndDate = patternFields[END_DATE_FIELD_TAG]?.value;
 
-      pattern = patternDetailsSectionViewModel.constructTimeSlotPattern(frequencyValue, frequencyType, patternEndDate, referenceTimeSlot);
+      pattern = patternDetailsSectionViewModel.constructTimeSlotPattern(
+        frequencyValue,
+        frequencyType,
+        patternEndDate,
+        referenceTimeSlot,
+      );
     }
 
     event.pattern = pattern;
@@ -64,5 +81,6 @@ class AddEventFacade with ErrorStreamMixin {
     return event;
   }
 
-  bool _validateForm(GlobalKey<FormBuilderState> formKey) => formKey.currentState?.validate() ?? false;
+  bool _validateForm(GlobalKey<FormBuilderState> formKey) =>
+      formKey.currentState?.validate() ?? false;
 }

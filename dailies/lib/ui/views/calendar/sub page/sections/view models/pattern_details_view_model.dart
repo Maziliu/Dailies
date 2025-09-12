@@ -1,3 +1,4 @@
+import 'package:dailies/common/enums/days_of_the_week.dart';
 import 'package:dailies/common/enums/frequency_type.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
@@ -11,6 +12,15 @@ class PatternDetailsSectionViewModel extends ChangeNotifier {
   ValueNotifier<bool> daylightSavingToggle = ValueNotifier<bool>(false);
   ValueNotifier<bool> finitePatternToggle = ValueNotifier<bool>(false);
   ValueNotifier<bool> repeatablePatternToggle = ValueNotifier<bool>(false);
+  ValueNotifier<List<bool>> selectedDays = ValueNotifier(DaysOfTheWeek.values.map((_) => false).toList());
+
+  List<bool> get getSelectedDays => selectedDays.value;
+
+  void toggleSelectedDay(int index) {
+    final List<bool> updatedDays = List.from(selectedDays.value);
+    updatedDays[index] = !updatedDays[index];
+    selectedDays.value = updatedDays;
+  }
 
   PatternDetailsSectionViewModel({required DateTime selectedDay}) : calendarViewModel = MultiSelectCalendarViewModel(initialSelectedDay: selectedDay);
 

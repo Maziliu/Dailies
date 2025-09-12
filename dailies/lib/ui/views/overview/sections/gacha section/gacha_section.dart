@@ -2,10 +2,11 @@ import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/data/models/stamina.dart';
 import 'package:dailies/ui/components/hero_dialog_route.dart';
 import 'package:dailies/ui/components/popup%20cards/popup_card.dart';
-import 'package:dailies/ui/views/overview/sections/gacha%20section/components/add_stamina_transparent_button.dart';
 import 'package:dailies/ui/views/overview/sections/gacha%20section/components/stamina_widget.dart';
 import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_view_model.dart';
 import 'package:flutter/material.dart';
+
+const String ADD_STAMINA_HERO_TAG = 'addStaminaHeroTag';
 
 class GachaSection extends StatelessWidget {
   final GachaViewModel _viewModel;

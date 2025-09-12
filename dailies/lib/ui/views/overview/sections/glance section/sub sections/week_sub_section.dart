@@ -5,7 +5,6 @@ import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_empty_state.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
-import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +41,13 @@ class WeekSubSection extends StatelessWidget {
 
         return SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               for (final entry in timeSlots.entries)
                 if (entry.value.isNotEmpty) ...[
+                  UIFormating.smallVerticalSpacing(),
                   Padding(
-                    padding: const EdgeInsetsGeometry.fromLTRB(8, 8, 0, 0),
+                    padding: const EdgeInsetsGeometry.fromLTRB(8, 0, 0, 8),
                     child: Text(
                       DateFormat.MMMMEEEEd().format(entry.key),
                       style: Theme.of(context).textTheme.titleMedium,

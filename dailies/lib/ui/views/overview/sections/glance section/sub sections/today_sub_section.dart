@@ -1,15 +1,12 @@
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
-import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/data/models/time_slot.dart';
 import 'package:dailies/ui/components/schedule/schedule_item_widget.dart';
 import 'package:dailies/ui/components/schedule/schedule_list_view_widget.dart';
-import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/shared/events_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TodaySubSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;

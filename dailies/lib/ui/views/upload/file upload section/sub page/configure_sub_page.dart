@@ -1,12 +1,10 @@
 import 'package:dailies/common/utils/build_context_extensions.dart';
-import 'package:dailies/dependency_setup.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_section.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_section_view_model.dart';
 import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_submit_section.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ConfigureSubPage extends StatelessWidget {
   final ConfigurationSectionViewModel _viewModel;

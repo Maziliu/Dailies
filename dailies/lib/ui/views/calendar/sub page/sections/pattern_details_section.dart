@@ -4,7 +4,6 @@ import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/section_card.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/components/listenable_row_toggle.dart';
-import 'package:dailies/ui/views/calendar/sub%20page/components/multi_select_calendar.dart';
 import 'package:dailies/ui/views/calendar/sub%20page/sections/view%20models/pattern_details_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,7 +1,5 @@
-import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/common/utils/typedefs.dart';
 import 'package:dailies/ui/components/schedule/schedule_empty_state.dart';
-import 'package:dailies/ui/components/ui_formating.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleListViewWidget extends StatelessWidget {

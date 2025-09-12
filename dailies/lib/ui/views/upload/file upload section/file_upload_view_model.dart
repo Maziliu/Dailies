@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dailies/service/parsing/parse_progress.dart';
 import 'package:dailies/ui/mixins/error_stream_mixin.dart';
-import 'package:dailies/ui/views/upload/file%20upload%20section/sub%20page/sections/configuration_section_view_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 

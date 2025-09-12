@@ -35,7 +35,7 @@ class WeekSubSection extends StatelessWidget {
                 if (entry.value.isNotEmpty) ...[
                   Padding(
                     padding: const EdgeInsetsGeometry.fromLTRB(8, 8, 0, 0),
-                    child: Text(DateFormat.yMMMMd().format(entry.key), style: Theme.of(context).textTheme.titleMedium),
+                    child: Text(DateFormat.MMMMEEEEd().format(entry.key), style: Theme.of(context).textTheme.titleMedium),
                   ),
                   ...entry.value.map(
                     (timeslot) =>

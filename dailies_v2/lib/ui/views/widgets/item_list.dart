@@ -1,19 +1,23 @@
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
 
-class ScheduleList<T> extends StatelessWidget {
+class ItemList<T> extends StatelessWidget {
   final List<T> items;
   final Widget Function(T item) itemBuilder;
+  final bool? showEmptyState;
 
-  const ScheduleList({
+  const ItemList({
     super.key,
     required this.items,
     required this.itemBuilder,
+    this.showEmptyState,
   });
 
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
+      if (!(showEmptyState ?? true)) return SizedBox.shrink();
+
       return _EmptyState();
     }
 

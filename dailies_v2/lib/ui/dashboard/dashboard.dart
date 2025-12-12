@@ -2,7 +2,7 @@ import 'package:dailies_v2/ui/state/dashboard_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/views/calendar/calendar_view.dart';
 import 'package:dailies_v2/ui/views/overview/overview_view.dart';
-import 'package:dailies_v2/ui/views/upload_view.dart';
+import 'package:dailies_v2/ui/views/upload/upload_view.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {

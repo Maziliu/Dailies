@@ -1,6 +1,6 @@
 import 'package:dailies_v2/models/event_model.dart';
-import 'package:dailies_v2/ui/views/overview/carousel/schedule_list_item.dart';
-import 'package:dailies_v2/ui/views/overview/carousel/schedule_list.dart';
+import 'package:dailies_v2/ui/views/widgets/item_list.dart';
+import 'package:dailies_v2/ui/views/widgets/schedule_list_item.dart';
 import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {
@@ -10,7 +10,7 @@ class EventsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScheduleList<EventModel>(
+    return ItemList<EventModel>(
       items: events,
       itemBuilder: (event) {
         return ScheduleItem(

@@ -1,7 +1,7 @@
 import 'package:dailies_v2/database/database.dart';
 
 class EventModel {
-  final int id;
+  final int? id;
   final String uid;
   final String calendarId;
 

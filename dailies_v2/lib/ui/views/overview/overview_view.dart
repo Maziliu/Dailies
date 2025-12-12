@@ -2,6 +2,7 @@ import 'package:dailies_v2/models/event_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/today_carousel_page.dart';
+import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';
 import 'package:flutter/material.dart';
 
 class OverviewView extends StatelessWidget {
@@ -13,8 +14,10 @@ class OverviewView extends StatelessWidget {
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(
+          spacing: 4,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            GachaSection(),
             EventCarousel(
               pages: [TodayCarouselPage(events: fakeTodayEvents())],
             ),

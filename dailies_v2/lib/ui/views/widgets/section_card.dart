@@ -7,7 +7,12 @@ class SectionCard extends StatelessWidget {
   const SectionCard({
     super.key,
     required Widget child,
-    EdgeInsetsGeometry padding = const EdgeInsetsGeometry.all(16),
+    EdgeInsetsGeometry padding = const EdgeInsetsGeometry.fromLTRB(
+      12,
+      0,
+      12,
+      0,
+    ),
   }) : _child = child,
        _padding = padding;
 

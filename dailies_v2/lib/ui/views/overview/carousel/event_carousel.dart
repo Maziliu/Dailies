@@ -1,3 +1,4 @@
+import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/widgets/section_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,10 +31,12 @@ class _EventCarouselState extends State<EventCarousel> {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
       child: Column(
+        spacing: 8,
         children: [
           Padding(
-            padding: const EdgeInsetsGeometry.fromLTRB(12, 8, 12, 8),
+            padding: const EdgeInsetsGeometry.fromLTRB(4, 8, 4, 0),
             child: IndexedStack(
               index: _index,
               children: [
@@ -96,7 +99,7 @@ class _Header extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(child: Text(title, style: textTheme.headlineLarge)),
         Text(subtitle),

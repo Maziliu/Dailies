@@ -1,9 +1,9 @@
 import 'package:dailies_v2/models/event_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
-import 'package:dailies_v2/ui/views/overview/carousel/carousel_page.dart';
 import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';
 import 'package:dailies_v2/ui/views/overview/upcoming/upcoming_section.dart';
+import 'package:dailies_v2/ui/views/widgets/events_list.dart';
 import 'package:flutter/material.dart';
 
 class OverviewView extends StatelessWidget {
@@ -21,9 +21,9 @@ class OverviewView extends StatelessWidget {
             GachaSection(),
             EventCarousel(
               pages: [
-                CarouselPage(events: fakeTodayEvents()),
-                CarouselPage(events: fakeTodayEvents()),
-                CarouselPage(events: fakeTodayEvents()),
+                EventsList(events: fakeTodayEvents()),
+                EventsList(events: fakeTodayEvents()),
+                EventsList(events: fakeTodayEvents()),
               ],
             ),
             UpcomingSection(),
@@ -63,6 +63,46 @@ List<EventModel> fakeTodayEvents() {
     EventModel(
       id: 2,
       uid: 'uid-2',
+      calendarId: 'calendar-local',
+
+      title: 'Gym',
+      description: null,
+      location: 'Fitness Center',
+
+      start: day.add(const Duration(hours: 18)),
+      end: null,
+      duration: const Duration(hours: 1),
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+    EventModel(
+      id: 3,
+      uid: 'uid-3',
+      calendarId: 'calendar-local',
+
+      title: 'Gym',
+      description: null,
+      location: 'Fitness Center',
+
+      start: day.add(const Duration(hours: 18)),
+      end: null,
+      duration: const Duration(hours: 1),
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+    EventModel(
+      id: 4,
+      uid: 'uid-4',
       calendarId: 'calendar-local',
 
       title: 'Gym',

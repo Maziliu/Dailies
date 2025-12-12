@@ -1,0 +1,28 @@
+import 'package:dailies_v2/utils/utils.dart';
+import 'package:flutter/foundation.dart';
+
+class CalendarViewModel {
+  final ValueNotifier<DateTime> selectedDayNotifier;
+
+  CalendarViewModel() : selectedDayNotifier = ValueNotifier(DateTime.now());
+
+  DateTime get selectedDay => selectedDayNotifier.value;
+
+  void procSelectedDayNotifier() {
+    selectedDayNotifier.value = DateTime(
+      selectedDay.year,
+      selectedDay.month,
+      selectedDay.day,
+    );
+  }
+
+  void onDaySelect(DateTime day) {
+    if (!isSameDay(day, selectedDayNotifier.value)) {
+      selectedDayNotifier.value = day;
+    }
+  }
+
+  void dispose() {
+    selectedDayNotifier.dispose();
+  }
+}

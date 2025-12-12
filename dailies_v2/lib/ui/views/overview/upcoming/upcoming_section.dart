@@ -3,9 +3,8 @@ import 'package:dailies_v2/ui/views/overview/carousel/schedule_list_item.dart';
 import 'package:dailies_v2/ui/views/overview/overview_view.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/schedule_list.dart';
 import 'package:dailies_v2/ui/views/widgets/section_card.dart';
+import 'package:dailies_v2/utils/constants.dart';
 import 'package:flutter/material.dart';
-
-const double MAX_SECTION_HEIGHT = 400;
 
 class UpcomingSection extends StatelessWidget {
   const UpcomingSection({super.key});

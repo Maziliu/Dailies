@@ -1,7 +1,7 @@
-import 'package:dailies_v2/state/dashboard_view_model.dart';
-import 'package:dailies_v2/state/init.dart';
+import 'package:dailies_v2/ui/state/dashboard_view_model.dart';
+import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/views/calendar_view.dart';
-import 'package:dailies_v2/ui/views/overview_view.dart';
+import 'package:dailies_v2/ui/views/overview/overview_view.dart';
 import 'package:dailies_v2/ui/views/upload_view.dart';
 import 'package:flutter/material.dart';
 
@@ -90,7 +90,7 @@ class DashboardNavigationBar extends StatelessWidget {
         elevation: 0,
         onTap: onTap,
         currentIndex: currentIndex,
-        selectedItemColor: colorScheme.primary,
+        selectedItemColor: colorScheme.secondary,
         unselectedItemColor: colorScheme.onSurface.withAlpha(120),
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w600,

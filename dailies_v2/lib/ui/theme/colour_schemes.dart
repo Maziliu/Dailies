@@ -9,6 +9,8 @@ const ColorScheme darkColorScheme = ColorScheme(
   secondary: Color(0xFFC089FF),
   onSecondary: Colors.black,
 
+  tertiary: Color.fromARGB(15, 255, 255, 255),
+
   surface: Color(0xFF121212),
   onSurface: Colors.white,
 

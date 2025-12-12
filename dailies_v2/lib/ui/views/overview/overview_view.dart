@@ -1,0 +1,75 @@
+import 'package:dailies_v2/models/event_model.dart';
+import 'package:dailies_v2/ui/theme/standards.dart';
+import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
+import 'package:dailies_v2/ui/views/overview/carousel/today_carousel_page.dart';
+import 'package:flutter/material.dart';
+
+class OverviewView extends StatelessWidget {
+  const OverviewView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: UIFormating.mediumPadding(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            EventCarousel(
+              pages: [TodayCarouselPage(events: fakeTodayEvents())],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+List<EventModel> fakeTodayEvents() {
+  final now = DateTime.now();
+  final day = DateTime(now.year, now.month, now.day);
+
+  return [
+    EventModel(
+      id: 1,
+      uid: 'uid-1',
+      calendarId: 'calendar-local',
+
+      title: 'Daily Standup',
+      description: 'Team sync',
+      location: 'Office',
+
+      start: day.add(const Duration(hours: 9)),
+      end: day.add(const Duration(hours: 9, minutes: 30)),
+      duration: null,
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+
+    EventModel(
+      id: 2,
+      uid: 'uid-2',
+      calendarId: 'calendar-local',
+
+      title: 'Gym',
+      description: null,
+      location: 'Fitness Center',
+
+      start: day.add(const Duration(hours: 18)),
+      end: null,
+      duration: const Duration(hours: 1),
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+  ];
+}

@@ -1,7 +1,7 @@
 import 'package:dailies_v2/models/event_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
-import 'package:dailies_v2/ui/views/overview/carousel/today_carousel_page.dart';
+import 'package:dailies_v2/ui/views/overview/carousel/carousel_page.dart';
 import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';
 import 'package:dailies_v2/ui/views/overview/upcoming/upcoming_section.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,11 @@ class OverviewView extends StatelessWidget {
           children: [
             GachaSection(),
             EventCarousel(
-              pages: [TodayCarouselPage(events: fakeTodayEvents())],
+              pages: [
+                CarouselPage(events: fakeTodayEvents()),
+                CarouselPage(events: fakeTodayEvents()),
+                CarouselPage(events: fakeTodayEvents()),
+              ],
             ),
             UpcomingSection(),
           ],

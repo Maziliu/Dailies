@@ -3,10 +3,10 @@ import 'package:dailies_v2/ui/views/overview/carousel/schedule_list_item.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/schedule_list.dart';
 import 'package:flutter/material.dart';
 
-class TodayCarouselPage extends StatelessWidget {
+class CarouselPage extends StatelessWidget {
   final List<EventModel> events;
 
-  const TodayCarouselPage({super.key, required this.events});
+  const CarouselPage({super.key, required this.events});
 
   @override
   Widget build(BuildContext context) {

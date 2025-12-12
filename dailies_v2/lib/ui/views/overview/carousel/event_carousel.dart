@@ -1,4 +1,3 @@
-import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/widgets/section_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +30,7 @@ class _EventCarouselState extends State<EventCarousel> {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
       child: Column(
         spacing: 8,
         children: [

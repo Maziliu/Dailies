@@ -70,8 +70,6 @@ class _EventCarouselState extends State<EventCarousel> {
             ),
           ),
 
-          const SizedBox(height: 16),
-
           SmoothPageIndicator(
             controller: _pageController,
             count: widget.pages.length,

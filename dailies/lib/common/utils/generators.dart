@@ -3,14 +3,24 @@ import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:dailies/service/parsing/parsers/ics/rrule%20parser/recurrance_pattern.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-List<TimeSlot> generateTimeSlots(TimeSlotPattern pattern, {int limitInDays = 365}) =>
-    (pattern.hasRecurranceRule) ? _generateFromRecurranceRule(pattern, limitInDays) : _generateFromParameters(pattern, limitInDays);
+List<TimeSlot> generateTimeSlots(
+  TimeSlotPattern pattern, {
+  int limitInDays = 365,
+}) =>
+    (pattern.hasRecurranceRule)
+        ? _generateFromRecurranceRule(pattern, limitInDays)
+        : _generateFromParameters(pattern, limitInDays);
 
-List<TimeSlot> _generateFromParameters(TimeSlotPattern pattern, int limitInDays) {
+List<TimeSlot> _generateFromParameters(
+  TimeSlotPattern pattern,
+  int limitInDays,
+) {
   final List<TimeSlot> timeSlots = [...pattern.anchorPointsList];
 
   if (pattern.isReacurring) {
-    final DateTime limit = normalizeDate(DateTime.now()).add(Duration(days: limitInDays + 1));
+    final DateTime limit = normalizeDate(
+      DateTime.now(),
+    ).add(Duration(days: limitInDays + 1));
     final Duration patternFrequency = pattern.frequency!;
     final Duration totalOffset = patternFrequency;
 
@@ -22,11 +32,18 @@ List<TimeSlot> _generateFromParameters(TimeSlotPattern pattern, int limitInDays)
         final Duration currentOffset = totalOffset * offsetCount;
         final DateTime nextDate = currentDate.toUtc().add(currentOffset);
 
-        if (nextDate.isAfter(limit) || (pattern.isFinite && nextDate.isAfter(pattern.endPatternDate!))) {
+        if (nextDate.isAfter(limit) ||
+            (pattern.isFinite && nextDate.isAfter(pattern.endPatternDate!))) {
           break;
         }
 
-        timeSlots.add(TimeSlot.UnSaved(dateOfTimeSlot: normalizeDate(nextDate), startTime: timeSlot.startTime, endTime: timeSlot.endTime));
+        timeSlots.add(
+          TimeSlot.UnSaved(
+            dateOfTimeSlot: normalizeDate(nextDate),
+            startTime: timeSlot.startTime,
+            endTime: timeSlot.endTime,
+          ),
+        );
 
         offsetCount++;
       }
@@ -37,10 +54,23 @@ List<TimeSlot> _generateFromParameters(TimeSlotPattern pattern, int limitInDays)
 }
 
 List<TimeSlot> _generateFromRecurranceRule(TimeSlotPattern pattern, int limit) {
-  final RecurrencePattern rrulePattern = RecurrencePattern.fromRRule(pattern.recurranceRule!);
+  final RecurrencePattern rrulePattern = RecurrencePattern.fromRRule(
+    pattern.recurranceRule!,
+  );
   final TimeSlot reference = pattern.anchorPointsList.first;
 
-  final List<DateTime> timeSlotDates = rrulePattern.generateOccurrences(reference.dateOfTimeSlot, maxCount: limit);
+  final List<DateTime> timeSlotDates = rrulePattern.generateOccurrences(
+    reference.dateOfTimeSlot,
+    maxCount: limit,
+  );
 
-  return timeSlotDates.map((DateTime date) => TimeSlot.UnSaved(dateOfTimeSlot: date, startTime: reference.startTime, endTime: reference.endTime)).toList();
+  return timeSlotDates
+      .map(
+        (DateTime date) => TimeSlot.UnSaved(
+          dateOfTimeSlot: date,
+          startTime: reference.startTime,
+          endTime: reference.endTime,
+        ),
+      )
+      .toList();
 }

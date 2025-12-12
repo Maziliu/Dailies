@@ -12,7 +12,9 @@ abstract class AppModel {
   bool get isNotSaved => _id == null;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other.runtimeType == runtimeType && other is AppModel && other.id == id;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other.runtimeType == runtimeType && other is AppModel && other.id == id;
 
   @override
   int get hashCode => Object.hash(runtimeType, id);

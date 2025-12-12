@@ -14,7 +14,8 @@ class ByDayRule {
         throw ArgumentError('Invalid BYDAY spec: $spec');
       }
 
-      final position = match.group(1) != null ? int.parse(match.group(1)!) : null;
+      final position =
+          match.group(1) != null ? int.parse(match.group(1)!) : null;
       final weekday = DaysOfTheWeek.fromIcalCode(match.group(2)!);
 
       return ByDayRule(weekday, position);

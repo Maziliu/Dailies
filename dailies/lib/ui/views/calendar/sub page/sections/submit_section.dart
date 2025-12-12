@@ -26,7 +26,10 @@ class SubmitSection extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ElevatedButton(
         onPressed: () {
-          final Event? event = _viewModelFacade.createEvent(detailsFormKey: _detailsFormKey, patternFormKey: _patternFormKey);
+          final Event? event = _viewModelFacade.createEvent(
+            detailsFormKey: _detailsFormKey,
+            patternFormKey: _patternFormKey,
+          );
 
           if (event != null) {
             Navigator.pop(context, event);
@@ -35,7 +38,9 @@ class SubmitSection extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,
           foregroundColor: colorScheme.onPrimary,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         child: const Text('Create'),
       ),

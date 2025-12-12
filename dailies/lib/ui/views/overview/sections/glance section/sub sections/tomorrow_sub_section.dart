@@ -11,20 +11,31 @@ import 'package:flutter/material.dart';
 class TomorrowSubSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;
 
-  const TomorrowSubSection({super.key, required EventsViewModel eventsViewModel}) : _eventsViewModel = eventsViewModel;
+  const TomorrowSubSection({
+    super.key,
+    required EventsViewModel eventsViewModel,
+  }) : _eventsViewModel = eventsViewModel;
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>>(
+    return ValueListenableBuilder<
+      SplayTreeMap<DateTime, HeapPriorityQueue<TimeSlot>>
+    >(
       valueListenable: _eventsViewModel.dateToTimeSlotsMap,
       builder: (context, map, _) {
-        final DateTime tomorrow = DateTime.now().add(const Duration(days: 1)), normalized = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
+        final DateTime tomorrow = DateTime.now().add(const Duration(days: 1)),
+            normalized = DateTime(tomorrow.year, tomorrow.month, tomorrow.day);
 
         return ScheduleListViewWidget(
           pairs:
               map[normalized]
                   ?.toList()
-                  .map((TimeSlot timeslot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeslot.eventId)!, second: timeslot))
+                  .map(
+                    (TimeSlot timeslot) => EventTimeSlotPair(
+                      first: _eventsViewModel.eventLookup(timeslot.eventId)!,
+                      second: timeslot,
+                    ),
+                  )
                   .toList() ??
               [],
           builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair),

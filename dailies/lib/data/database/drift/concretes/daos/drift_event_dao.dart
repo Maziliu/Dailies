@@ -6,21 +6,30 @@ import 'package:drift/drift.dart';
 part 'drift_event_dao.g.dart';
 
 @DriftAccessor(tables: [DriftEvents])
-class DriftEventDao extends DatabaseAccessor<AppDatabase> with _$DriftEventDaoMixin implements EventDao<DriftEvent, DriftEventsCompanion> {
+class DriftEventDao extends DatabaseAccessor<AppDatabase>
+    with _$DriftEventDaoMixin
+    implements EventDao<DriftEvent, DriftEventsCompanion> {
   DriftEventDao(super.attachedDatabase);
 
   @override
-  Future<int> deleteEntryById(int id) => (delete(driftEvents)..where((driftEvent) => driftEvent.id.equals(id))).go();
+  Future<int> deleteEntryById(int id) =>
+      (delete(driftEvents)
+        ..where((driftEvent) => driftEvent.id.equals(id))).go();
 
   @override
-  Future<DriftEvent?> getEntryById(int id) => (select(driftEvents)..where((driftEvent) => driftEvent.id.equals(id))).getSingleOrNull();
+  Future<DriftEvent?> getEntryById(int id) =>
+      (select(driftEvents)
+        ..where((driftEvent) => driftEvent.id.equals(id))).getSingleOrNull();
 
   @override
-  Future<int> insertEntry(DriftEventsCompanion object) => into(driftEvents).insert(object);
+  Future<int> insertEntry(DriftEventsCompanion object) =>
+      into(driftEvents).insert(object);
 
   @override
-  Future<bool> updateEntry(DriftEventsCompanion updatedObject) => update(driftEvents).replace(updatedObject);
+  Future<bool> updateEntry(DriftEventsCompanion updatedObject) =>
+      update(driftEvents).replace(updatedObject);
 
   @override
-  Future<List<DriftEvent>> getAllEventsWithIds(List<int> ids) => (select(driftEvents)..where((event) => event.id.isIn(ids))).get();
+  Future<List<DriftEvent>> getAllEventsWithIds(List<int> ids) =>
+      (select(driftEvents)..where((event) => event.id.isIn(ids))).get();
 }

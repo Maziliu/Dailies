@@ -12,7 +12,10 @@ import 'package:flutter/material.dart';
 class ParsedEventsSection extends StatelessWidget {
   final ParsedEventsViewModel _parsedEventsViewModel;
 
-  const ParsedEventsSection({super.key, required ParsedEventsViewModel parsedEventsViewModel}) : _parsedEventsViewModel = parsedEventsViewModel;
+  const ParsedEventsSection({
+    super.key,
+    required ParsedEventsViewModel parsedEventsViewModel,
+  }) : _parsedEventsViewModel = parsedEventsViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +28,41 @@ class ParsedEventsSection extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text('    Found (${events.expand((event) => event.timeSlots).length})'), if (clearButton != null) clearButton],
+                  children: [
+                    Text(
+                      '    Found (${events.expand((event) => event.timeSlots).length})',
+                    ),
+                    if (clearButton != null) clearButton,
+                  ],
                 ),
                 SizedBox(
                   height: MAX_SECTION_HEIGHT,
                   child: ScheduleListViewWidget(
                     pairs: events
-                        .expand((Event event) => event.timeSlots.map((TimeSlot timeSlot) => EventTimeSlotPair(first: event, second: timeSlot)))
+                        .expand(
+                          (Event event) => event.timeSlots.map(
+                            (TimeSlot timeSlot) => EventTimeSlotPair(
+                              first: event,
+                              second: timeSlot,
+                            ),
+                          ),
+                        )
                         .sorted((a, b) => a.second.compareTo(b.second)),
-                    builder: (pair) => ScheduleItemWidget(eventTimeSlotPair: pair, showDate: true),
+                    builder:
+                        (pair) => ScheduleItemWidget(
+                          eventTimeSlotPair: pair,
+                          showDate: true,
+                        ),
                   ),
                 ),
                 if (events.isNotEmpty) _buildActionButtons(),
               ],
             );
           },
-          child: TextButton(onPressed: _parsedEventsViewModel.clearFoundEvents, child: const Text('Clear')),
+          child: TextButton(
+            onPressed: _parsedEventsViewModel.clearFoundEvents,
+            child: const Text('Clear'),
+          ),
         ),
       ],
     );
@@ -56,9 +78,20 @@ class ParsedEventsSection extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(child: ElevatedButton(onPressed: () {}, child: const Text('Edit'))),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Edit'),
+                  ),
+                ),
                 UIFormating.smallHorizontalSpacing(),
-                Expanded(child: ElevatedButton(onPressed: () async => _parsedEventsViewModel.saveAllEvents(), child: const Text('Add Events'))),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed:
+                        () async => _parsedEventsViewModel.saveAllEvents(),
+                    child: const Text('Add Events'),
+                  ),
+                ),
               ],
             ),
           ],

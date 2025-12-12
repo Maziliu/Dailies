@@ -12,9 +12,17 @@ class PatternDetailsSectionViewModel extends ChangeNotifier {
   ValueNotifier<bool> finitePatternToggle = ValueNotifier<bool>(false);
   ValueNotifier<bool> repeatablePatternToggle = ValueNotifier<bool>(false);
 
-  PatternDetailsSectionViewModel({required DateTime selectedDay}) : calendarViewModel = MultiSelectCalendarViewModel(initialSelectedDay: selectedDay);
+  PatternDetailsSectionViewModel({required DateTime selectedDay})
+    : calendarViewModel = MultiSelectCalendarViewModel(
+        initialSelectedDay: selectedDay,
+      );
 
-  TimeSlotPattern constructTimeSlotPattern(int? frequencyValue, FrequencyType? frequencyType, DateTime? patternEndDate, TimeSlot referenceTimeSlot) {
+  TimeSlotPattern constructTimeSlotPattern(
+    int? frequencyValue,
+    FrequencyType? frequencyType,
+    DateTime? patternEndDate,
+    TimeSlot referenceTimeSlot,
+  ) {
     final bool isDaylightSaving = daylightSavingToggle.value;
     final bool isRepeatable = repeatablePatternToggle.value;
 
@@ -28,7 +36,9 @@ class PatternDetailsSectionViewModel extends ChangeNotifier {
       endPatternDate: patternEndDate,
       timeZoneId: isDaylightSaving ? DateTime.now().timeZoneName : null,
       frequencyInSeconds: frequency?.inSeconds,
-      anchorPointsList: calendarViewModel.generateAnchorPoints(referenceTimeSlot),
+      anchorPointsList: calendarViewModel.generateAnchorPoints(
+        referenceTimeSlot,
+      ),
     );
   }
 

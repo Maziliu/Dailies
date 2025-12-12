@@ -5,22 +5,32 @@ import 'package:dailies/data/mapper/stamina_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/repositories/mixin/crud_operations_mixin.dart';
 
-class StaminaRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseModel> {
+class StaminaRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel>
+    with
+        RepositoryCRUDOperationsMixin<
+          TIncomingDatabaseModel,
+          TOutgoingDatabaseModel
+        > {
   final StaminaDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> _dao;
   final StaminaMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> _mapper;
 
   StaminaRepository({
     required StaminaDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> dao,
-    required StaminaMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> mapper,
+    required StaminaMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel>
+    mapper,
   }) : _dao = dao,
        _mapper = mapper;
 
   Future<Result<List<AppModel>>> getAllStamina() async {
-    final Result<List<TIncomingDatabaseModel>> results = await guardedAsyncExcecute(_dao.getAllStaminaEntries);
+    final Result<List<TIncomingDatabaseModel>> results =
+        await guardedAsyncExcecute(_dao.getAllStaminaEntries);
 
     return performOperationOnResultIfNotError(
       results,
-      (resultList) => resultList.map(_mapper.convertIncomingDatabaseModelToAppModel).toList(),
+      (resultList) =>
+          resultList
+              .map(_mapper.convertIncomingDatabaseModelToAppModel)
+              .toList(),
     );
   }
 
@@ -28,5 +38,6 @@ class StaminaRepository<TIncomingDatabaseModel, TOutgoingDatabaseModel> with Rep
   StaminaDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> get dao => _dao;
 
   @override
-  StaminaMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> get mapper => _mapper;
+  StaminaMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> get mapper =>
+      _mapper;
 }

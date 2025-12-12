@@ -5,7 +5,10 @@ import 'package:table_calendar/table_calendar.dart';
 class MultiSelectCalendar extends StatelessWidget {
   final MultiSelectCalendarViewModel _viewModel;
 
-  const MultiSelectCalendar({super.key, required MultiSelectCalendarViewModel viewModel}) : _viewModel = viewModel;
+  const MultiSelectCalendar({
+    super.key,
+    required MultiSelectCalendarViewModel viewModel,
+  }) : _viewModel = viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +20,14 @@ class MultiSelectCalendar extends StatelessWidget {
           lastDay: DateTime.utc(2030, 12, 31),
           focusedDay: _viewModel.getFocusedDay(),
           selectedDayPredicate: (day) {
-            return selectedDays.any((selectedDay) => isSameDay(selectedDay, day));
+            return selectedDays.any(
+              (selectedDay) => isSameDay(selectedDay, day),
+            );
           },
           onDaySelected: (selectedDay, focusedDay) {
-            final alreadySelected = selectedDays.any((day) => isSameDay(day, selectedDay));
+            final alreadySelected = selectedDays.any(
+              (day) => isSameDay(day, selectedDay),
+            );
 
             if (alreadySelected) {
               _viewModel.removeSelectedDay(selectedDay);
@@ -28,7 +35,10 @@ class MultiSelectCalendar extends StatelessWidget {
               _viewModel.addSelectedDay(selectedDay);
             }
           },
-          headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+          headerStyle: const HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+          ),
           sixWeekMonthsEnforced: true,
         );
       },
@@ -40,7 +50,10 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
   final ValueNotifier<List<DateTime>> selectedDays;
   DateTime _lastInteractedDay = DateTime.now();
 
-  MultiSelectCalendarViewModel({Set<DateTime>? initialSelectedDays, DateTime? initialSelectedDay}) : selectedDays = ValueNotifier<List<DateTime>>([]) {
+  MultiSelectCalendarViewModel({
+    Set<DateTime>? initialSelectedDays,
+    DateTime? initialSelectedDay,
+  }) : selectedDays = ValueNotifier<List<DateTime>>([]) {
     final initialList = <DateTime>[];
     if (initialSelectedDays != null) {
       for (final day in initialSelectedDays) {
@@ -48,7 +61,11 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
       }
     }
     if (initialSelectedDay != null) {
-      final normalized = DateTime(initialSelectedDay.year, initialSelectedDay.month, initialSelectedDay.day);
+      final normalized = DateTime(
+        initialSelectedDay.year,
+        initialSelectedDay.month,
+        initialSelectedDay.day,
+      );
       if (!initialList.any((day) => isSameDay(day, normalized))) {
         initialList.add(normalized);
       }
@@ -82,7 +99,9 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
 
     final currentList = List<DateTime>.from(selectedDays.value);
 
-    currentList.removeWhere((existingDay) => isSameDay(existingDay, normalized));
+    currentList.removeWhere(
+      (existingDay) => isSameDay(existingDay, normalized),
+    );
 
     currentList.add(normalized);
 
@@ -90,7 +109,11 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
   }
 
   void removeSelectedDay(DateTime selectedDay) {
-    final normalized = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+    final normalized = DateTime(
+      selectedDay.year,
+      selectedDay.month,
+      selectedDay.day,
+    );
     _lastInteractedDay = normalized;
 
     final currentList = List<DateTime>.from(selectedDays.value);
@@ -100,6 +123,12 @@ class MultiSelectCalendarViewModel extends ChangeNotifier {
 
   List<TimeSlot> generateAnchorPoints(TimeSlot referenceTimeSlot) =>
       selectedDays.value
-          .map((day) => TimeSlot.UnSaved(dateOfTimeSlot: day, startTime: referenceTimeSlot.startTime, endTime: referenceTimeSlot.endTime))
+          .map(
+            (day) => TimeSlot.UnSaved(
+              dateOfTimeSlot: day,
+              startTime: referenceTimeSlot.startTime,
+              endTime: referenceTimeSlot.endTime,
+            ),
+          )
           .toList();
 }

@@ -15,7 +15,8 @@ class CalendarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CalendarPageViewModel pageViewModel = context.watch<CalendarPageViewModel>();
+    final CalendarPageViewModel pageViewModel =
+        context.watch<CalendarPageViewModel>();
     return Scaffold(
       // appBar: AppBar(title: Text('Calendar', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
@@ -23,9 +24,17 @@ class CalendarView extends StatelessWidget {
           padding: UIFormating.mediumPadding(),
           child: Column(
             children: [
-              SectionCard(child: CalendarSection(calendarViewModel: pageViewModel.calendarViewModel)),
+              SectionCard(
+                child: CalendarSection(
+                  calendarViewModel: pageViewModel.calendarViewModel,
+                ),
+              ),
               UIFormating.mediumVerticalSpacing(),
-              SectionCard(child: EventsSection(eventsViewModel: pageViewModel.eventsViewModel)),
+              SectionCard(
+                child: EventsSection(
+                  eventsViewModel: pageViewModel.eventsViewModel,
+                ),
+              ),
             ],
           ),
         ),

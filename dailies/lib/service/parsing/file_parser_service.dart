@@ -24,15 +24,31 @@ class FileParserService {
       _determineFileParser(file);
 
       if (_fileParser == null) {
-        onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.ERROR, errorMessage: 'Unsupported file type: ${file.extension}'));
-        results.add(Result.error(UnableToParseException(specificFile: file.toString())));
+        onProgress?.call(
+          file.name,
+          ParseProgress(
+            currentStage: ParseStage.ERROR,
+            errorMessage: 'Unsupported file type: ${file.extension}',
+          ),
+        );
+        results.add(
+          Result.error(UnableToParseException(specificFile: file.toString())),
+        );
         continue;
       }
 
-      onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.PENDING, statusMessage: 'Starting parse...'));
+      onProgress?.call(
+        file.name,
+        ParseProgress(
+          currentStage: ParseStage.PENDING,
+          statusMessage: 'Starting parse...',
+        ),
+      );
 
       final result = await _fileParser!.parseFile(
-        configurations.containsKey(file.name) ? configurations[file.name] : null,
+        configurations.containsKey(file.name)
+            ? configurations[file.name]
+            : null,
         file.path,
         onProgress: (stage, progress, message) {
           onProgress?.call(
@@ -40,7 +56,11 @@ class FileParserService {
             ParseProgress(
               currentStage: stage,
               stageProgress: progress,
-              overallProgress: _calculateOverallProgress(file.extension, stage, progress),
+              overallProgress: _calculateOverallProgress(
+                file.extension,
+                stage,
+                progress,
+              ),
               statusMessage: message,
             ),
           );
@@ -49,9 +69,23 @@ class FileParserService {
 
       switch (result) {
         case Ok<List<Event>>():
-          onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.COMPLETED, stageProgress: 1.0, overallProgress: 1.0, statusMessage: 'Completed!'));
+          onProgress?.call(
+            file.name,
+            ParseProgress(
+              currentStage: ParseStage.COMPLETED,
+              stageProgress: 1.0,
+              overallProgress: 1.0,
+              statusMessage: 'Completed!',
+            ),
+          );
         case Error<List<Event>>(error: final error):
-          onProgress?.call(file.name, ParseProgress(currentStage: ParseStage.ERROR, errorMessage: error.toString()));
+          onProgress?.call(
+            file.name,
+            ParseProgress(
+              currentStage: ParseStage.ERROR,
+              errorMessage: error.toString(),
+            ),
+          );
       }
 
       results.add(result);
@@ -60,14 +94,22 @@ class FileParserService {
     return results;
   }
 
-  double _calculateOverallProgress(String? extension, ParseStage currentStage, double stageProgress) {
+  double _calculateOverallProgress(
+    String? extension,
+    ParseStage currentStage,
+    double stageProgress,
+  ) {
     List<ParseStage> stages;
 
     switch (extension) {
       case 'ics':
         stages = [ParseStage.ICS_PARSING];
       case 'pdf':
-        stages = [ParseStage.STRIPPING, ParseStage.LLM_PROCESSING, ParseStage.ICS_PARSING];
+        stages = [
+          ParseStage.STRIPPING,
+          ParseStage.LLM_PROCESSING,
+          ParseStage.ICS_PARSING,
+        ];
       default:
         return 0.0;
     }

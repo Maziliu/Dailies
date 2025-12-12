@@ -9,17 +9,26 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class AddEventSubPage extends StatelessWidget {
   final DateTime _selectedDay;
-  final GlobalKey<FormBuilderState> patternFormKey = GlobalKey<FormBuilderState>();
-  final GlobalKey<FormBuilderState> detailsFormKey = GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> patternFormKey =
+      GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> detailsFormKey =
+      GlobalKey<FormBuilderState>();
 
-  AddEventSubPage({super.key, required DateTime selectedDay}) : _selectedDay = selectedDay;
+  AddEventSubPage({super.key, required DateTime selectedDay})
+    : _selectedDay = selectedDay;
 
   @override
   Widget build(BuildContext context) {
-    final AddEventFacade viewModelFacade = AddEventFacade(selectedDay: _selectedDay);
+    final AddEventFacade viewModelFacade = AddEventFacade(
+      selectedDay: _selectedDay,
+    );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Create New Event'), centerTitle: true, elevation: 1),
+      appBar: AppBar(
+        title: const Text('Create New Event'),
+        centerTitle: true,
+        elevation: 1,
+      ),
       body: Padding(
         padding: UIFormating.largePadding(),
         child: SingleChildScrollView(
@@ -28,11 +37,21 @@ class AddEventSubPage extends StatelessWidget {
             children: [
               EventDetailsSection(formKey: detailsFormKey),
               UIFormating.smallVerticalSpacing(),
-              EventTypeSection(viewModel: viewModelFacade.eventTypeSectionViewModel),
+              EventTypeSection(
+                viewModel: viewModelFacade.eventTypeSectionViewModel,
+              ),
               UIFormating.smallVerticalSpacing(),
-              PatternDetailsSection(formKey: patternFormKey, patternDetailsSectionViewModel: viewModelFacade.patternDetailsSectionViewModel),
+              PatternDetailsSection(
+                formKey: patternFormKey,
+                patternDetailsSectionViewModel:
+                    viewModelFacade.patternDetailsSectionViewModel,
+              ),
               UIFormating.extraLargeVerticalSpacing(),
-              SubmitSection(detailsFormKey: detailsFormKey, patternFormKey: patternFormKey, viewModelFacade: viewModelFacade),
+              SubmitSection(
+                detailsFormKey: detailsFormKey,
+                patternFormKey: patternFormKey,
+                viewModelFacade: viewModelFacade,
+              ),
             ],
           ),
         ),

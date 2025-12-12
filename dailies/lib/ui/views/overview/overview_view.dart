@@ -15,7 +15,8 @@ class OverviewView extends StatelessWidget {
   Widget build(BuildContext context) {
     final pageViewModel = context.watch<OverviewPageViewModel>();
     final PageController glancePageController = PageController();
-    final GlanceSectionViewModel glanceSectionViewModel = GlanceSectionViewModel();
+    final GlanceSectionViewModel glanceSectionViewModel =
+        GlanceSectionViewModel();
 
     return Scaffold(
       // appBar: AppBar(title: Text('Overview', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
@@ -24,7 +25,9 @@ class OverviewView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionCard(child: GachaSection(viewModel: pageViewModel.staminaViewModel)),
+            SectionCard(
+              child: GachaSection(viewModel: pageViewModel.staminaViewModel),
+            ),
             UIFormating.mediumVerticalSpacing(),
             SectionCard(
               child: GlanceSection(
@@ -34,7 +37,11 @@ class OverviewView extends StatelessWidget {
               ),
             ),
             UIFormating.mediumVerticalSpacing(),
-            SectionCard(child: UpcomingSection(eventsViewModel: pageViewModel.eventsViewModel)),
+            SectionCard(
+              child: UpcomingSection(
+                eventsViewModel: pageViewModel.eventsViewModel,
+              ),
+            ),
           ],
         ),
       ),

@@ -14,7 +14,8 @@ import 'package:intl/intl.dart';
 class EventsSection extends StatelessWidget {
   final EventsViewModel _eventsViewModel;
 
-  const EventsSection({super.key, required EventsViewModel eventsViewModel}) : _eventsViewModel = eventsViewModel;
+  const EventsSection({super.key, required EventsViewModel eventsViewModel})
+    : _eventsViewModel = eventsViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +29,20 @@ class EventsSection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(DateFormat.MMMMEEEEd().format(selectedDay), style: context.textTheme.headlineLarge),
+                  Text(
+                    DateFormat.MMMMEEEEd().format(selectedDay),
+                    style: context.textTheme.headlineLarge,
+                  ),
                   IconButton(
                     onPressed: () async {
-                      final Event? newEvent = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddEventSubPage(selectedDay: selectedDay)));
+                      final Event? newEvent = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) =>
+                                  AddEventSubPage(selectedDay: selectedDay),
+                        ),
+                      );
 
                       if (newEvent != null) {
                         _eventsViewModel.addEvent(newEvent);
@@ -48,7 +59,13 @@ class EventsSection extends StatelessWidget {
                 pairs:
                     _eventsViewModel
                         .timeSlotsLookup(selectedDay)
-                        .map((TimeSlot timeSlot) => EventTimeSlotPair(first: _eventsViewModel.eventLookup(timeSlot.eventId)!, second: timeSlot))
+                        .map(
+                          (TimeSlot timeSlot) => EventTimeSlotPair(
+                            first:
+                                _eventsViewModel.eventLookup(timeSlot.eventId)!,
+                            second: timeSlot,
+                          ),
+                        )
                         .toList(),
                 builder:
                     (pair) => InkWell(

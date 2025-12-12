@@ -8,18 +8,28 @@ part 'drift_time_slot_pattern_dao.g.dart';
 @DriftAccessor(tables: [DriftTimeSlotPatterns])
 class DriftTimeSlotPatternDao extends DatabaseAccessor<AppDatabase>
     with _$DriftTimeSlotPatternDaoMixin
-    implements TimeSlotPatternDao<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion> {
+    implements
+        TimeSlotPatternDao<
+          DriftTimeSlotPattern,
+          DriftTimeSlotPatternsCompanion
+        > {
   DriftTimeSlotPatternDao(super.attachedDatabase);
 
   @override
-  Future<int> deleteEntryById(int id) => (delete(driftTimeSlotPatterns)..where((pattern) => pattern.id.equals(id))).go();
+  Future<int> deleteEntryById(int id) =>
+      (delete(driftTimeSlotPatterns)
+        ..where((pattern) => pattern.id.equals(id))).go();
 
   @override
-  Future<DriftTimeSlotPattern?> getEntryById(int id) => (select(driftTimeSlotPatterns)..where((pattern) => pattern.id.equals(id))).getSingleOrNull();
+  Future<DriftTimeSlotPattern?> getEntryById(int id) =>
+      (select(driftTimeSlotPatterns)
+        ..where((pattern) => pattern.id.equals(id))).getSingleOrNull();
 
   @override
-  Future<int> insertEntry(DriftTimeSlotPatternsCompanion object) => into(driftTimeSlotPatterns).insert(object);
+  Future<int> insertEntry(DriftTimeSlotPatternsCompanion object) =>
+      into(driftTimeSlotPatterns).insert(object);
 
   @override
-  Future<bool> updateEntry(DriftTimeSlotPatternsCompanion updatedObject) => update(driftTimeSlotPatterns).replace(updatedObject);
+  Future<bool> updateEntry(DriftTimeSlotPatternsCompanion updatedObject) =>
+      update(driftTimeSlotPatterns).replace(updatedObject);
 }

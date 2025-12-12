@@ -1,4 +1,3 @@
-
 import 'package:dailies/common/app_constants.dart';
 import 'package:dailies/common/utils/build_context_extensions.dart';
 import 'package:dailies/ui/components/ui_formating.dart';
@@ -39,19 +38,41 @@ class GlanceSection extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [Expanded(child: Text('Today', style: context.textTheme.headlineLarge)), Text(DateFormat.yMMMMd().format(DateTime.now()))],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: Text('Tomorrow', style: context.textTheme.headlineLarge)),
-                      Text(DateFormat.yMMMMd().format(DateTime.now().add(const Duration(days: 1)))),
+                      Expanded(
+                        child: Text(
+                          'Today',
+                          style: context.textTheme.headlineLarge,
+                        ),
+                      ),
+                      Text(DateFormat.yMMMMd().format(DateTime.now())),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: Text('Week', style: context.textTheme.headlineLarge)),
+                      Expanded(
+                        child: Text(
+                          'Tomorrow',
+                          style: context.textTheme.headlineLarge,
+                        ),
+                      ),
+                      Text(
+                        DateFormat.yMMMMd().format(
+                          DateTime.now().add(const Duration(days: 1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Week',
+                          style: context.textTheme.headlineLarge,
+                        ),
+                      ),
                       Text(
                         '${DateFormat.MMMM().format(DateTime.now())} ${DateFormat.d().format(DateTime.now())} - ${DateFormat.d().format(DateTime.now().add(const Duration(days: 7)))}, ${DateFormat.y().format(DateTime.now())}',
                       ),
@@ -64,7 +85,9 @@ class GlanceSection extends StatelessWidget {
               height: MAX_SECTION_HEIGHT,
               child: PageView(
                 controller: _pageController,
-                onPageChanged: (index) => _glanceSectionViewModel.selectedTabIndex.value = index,
+                onPageChanged:
+                    (index) =>
+                        _glanceSectionViewModel.selectedTabIndex.value = index,
                 children: [
                   TodaySubSection(eventsViewModel: _eventsViewModel),
                   TomorrowSubSection(eventsViewModel: _eventsViewModel),
@@ -82,7 +105,11 @@ class GlanceSection extends StatelessWidget {
         child: SmoothPageIndicator(
           controller: _pageController,
           count: 3,
-          effect: WormEffect(dotHeight: 6, dotWidth: 6, activeDotColor: context.colorScheme.primary),
+          effect: WormEffect(
+            dotHeight: 6,
+            dotWidth: 6,
+            activeDotColor: context.colorScheme.primary,
+          ),
         ),
       ),
     );

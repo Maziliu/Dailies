@@ -13,12 +13,17 @@ class FileWidget extends StatelessWidget {
   final ParseProgress? _progress;
   final FileUploadViewModel _fileUploadViewModel;
 
-  const FileWidget({super.key, required PlatformFile file, required FileUploadViewModel fileUploadViewModel, ParseProgress? progress})
-    : _file = file,
-      _fileUploadViewModel = fileUploadViewModel,
-      _progress = progress;
+  const FileWidget({
+    super.key,
+    required PlatformFile file,
+    required FileUploadViewModel fileUploadViewModel,
+    ParseProgress? progress,
+  }) : _file = file,
+       _fileUploadViewModel = fileUploadViewModel,
+       _progress = progress;
 
-  bool _showRemoveFileButton(ParseProgress? progress) => progress == null || progress.currentStage == ParseStage.ERROR;
+  bool _showRemoveFileButton(ParseProgress? progress) =>
+      progress == null || progress.currentStage == ParseStage.ERROR;
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +40,38 @@ class FileWidget extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Padding(padding: const EdgeInsets.only(right: 12), child: _buildFileTypeIcon(_file)),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: _buildFileTypeIcon(_file),
+                      ),
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_file.name, overflow: TextOverflow.ellipsis, maxLines: 1, style: context.textTheme.headlineMedium),
-                            Text('Size: ${formatFileSize(_file.size)}', style: context.textTheme.bodyMedium),
+                            Text(
+                              _file.name,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: context.textTheme.headlineMedium,
+                            ),
+                            Text(
+                              'Size: ${formatFileSize(_file.size)}',
+                              style: context.textTheme.bodyMedium,
+                            ),
 
-                            if (_progress?.statusMessage != null) Text(_progress!.statusMessage!, style: context.textTheme.bodyMedium),
+                            if (_progress?.statusMessage != null)
+                              Text(
+                                _progress!.statusMessage!,
+                                style: context.textTheme.bodyMedium,
+                              ),
 
                             if (_progress?.errorMessage != null)
-                              Text(_progress!.errorMessage!, style: context.textTheme.bodyMedium?.copyWith(color: Colors.red)),
+                              Text(
+                                _progress!.errorMessage!,
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  color: Colors.red,
+                                ),
+                              ),
                           ],
                         ),
                       ),
@@ -57,10 +82,22 @@ class FileWidget extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (_progress != null) Padding(padding: const EdgeInsetsGeometry.only(left: 8), child: _buildStatusIcon(_progress.currentStage, _progress)),
+                    if (_progress != null)
+                      Padding(
+                        padding: const EdgeInsetsGeometry.only(left: 8),
+                        child: _buildStatusIcon(
+                          _progress.currentStage,
+                          _progress,
+                        ),
+                      ),
                     UIFormating.smallHorizontalSpacing(),
                     if (_showRemoveFileButton(_progress))
-                      IconButton(onPressed: () => _fileUploadViewModel.removeUploadedFile(_file), icon: const Icon(Icons.close)),
+                      IconButton(
+                        onPressed:
+                            () =>
+                                _fileUploadViewModel.removeUploadedFile(_file),
+                        icon: const Icon(Icons.close),
+                      ),
                   ],
                 ),
               ],

@@ -5,7 +5,10 @@ import 'package:dailies/data/repositories/time_slot_pattern_repository.dart';
 class TimeSlotPatternRepositoryService {
   final TimeSlotPatternRepository _patternRepository;
 
-  TimeSlotPatternRepositoryService({required TimeSlotPatternRepository patternRepository}) : _patternRepository = patternRepository;
+  TimeSlotPatternRepositoryService({
+    required TimeSlotPatternRepository patternRepository,
+  }) : _patternRepository = patternRepository;
 
-  Future<Result<int>> savePattern(TimeSlotPattern pattern) async => _patternRepository.insert(pattern);
+  Future<Result<int>> savePattern(TimeSlotPattern pattern) async =>
+      _patternRepository.insert(pattern);
 }

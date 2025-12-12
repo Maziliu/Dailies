@@ -7,5 +7,11 @@ class ParseProgress {
   final String? statusMessage;
   final String? errorMessage;
 
-  ParseProgress({required this.currentStage, this.stageProgress = 0.0, this.overallProgress = 0.0, this.statusMessage, this.errorMessage});
+  ParseProgress({
+    required this.currentStage,
+    this.stageProgress = 0.0,
+    this.overallProgress = 0.0,
+    this.statusMessage,
+    this.errorMessage,
+  });
 }

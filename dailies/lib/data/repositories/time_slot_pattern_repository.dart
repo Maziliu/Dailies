@@ -6,7 +6,11 @@ class TimeSlotPatternRepository with RepositoryCRUDOperationsMixin {
   final TimeSlotPatternDao _dao;
   final TimeSlotPatternMapper _mapper;
 
-  TimeSlotPatternRepository({required TimeSlotPatternDao dao, required TimeSlotPatternMapper mapper}) : _dao = dao, _mapper = mapper;
+  TimeSlotPatternRepository({
+    required TimeSlotPatternDao dao,
+    required TimeSlotPatternMapper mapper,
+  }) : _dao = dao,
+       _mapper = mapper;
 
   @override
   TimeSlotPatternDao get dao => _dao;

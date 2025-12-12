@@ -8,13 +8,17 @@ class CircularProgressBar extends StatefulWidget {
   State<CircularProgressBar> createState() => _CircularProgressBarState();
 }
 
-class _CircularProgressBarState extends State<CircularProgressBar> with SingleTickerProviderStateMixin {
+class _CircularProgressBarState extends State<CircularProgressBar>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: const Duration(seconds: 2), vsync: this);
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
     _animationController.repeat();
   }
 
@@ -29,7 +33,10 @@ class _CircularProgressBarState extends State<CircularProgressBar> with SingleTi
     return AnimatedBuilder(
       animation: _animationController,
       builder: (context, child) {
-        return Transform.rotate(angle: _animationController.value * 2 * 3.14159, child: widget.progressIndicator);
+        return Transform.rotate(
+          angle: _animationController.value * 2 * 3.14159,
+          child: widget.progressIndicator,
+        );
       },
     );
   }

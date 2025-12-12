@@ -11,9 +11,12 @@ class ScheduleItemWidget extends StatelessWidget {
   final EventTimeSlotPair _eventTimeSlotPair;
   final bool _showDate;
 
-  const ScheduleItemWidget({super.key, required EventTimeSlotPair eventTimeSlotPair, bool showDate = false})
-    : _eventTimeSlotPair = eventTimeSlotPair,
-      _showDate = showDate;
+  const ScheduleItemWidget({
+    super.key,
+    required EventTimeSlotPair eventTimeSlotPair,
+    bool showDate = false,
+  }) : _eventTimeSlotPair = eventTimeSlotPair,
+       _showDate = showDate;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,10 @@ class ScheduleItemWidget extends StatelessWidget {
     final TimeSlot timeSlot = _eventTimeSlotPair.second;
     final String? timeText = _formatTimeText(context, timeSlot);
 
-    final Color eventColour = _getEventColour(timeSlot.timeSlotType, context.colorScheme);
+    final Color eventColour = _getEventColour(
+      timeSlot.timeSlotType,
+      context.colorScheme,
+    );
 
     return Card(
       elevation: 0,
@@ -34,17 +40,35 @@ class ScheduleItemWidget extends StatelessWidget {
               margin: const EdgeInsets.only(right: 16),
               width: 45,
               height: 45,
-              decoration: BoxDecoration(color: eventColour.withAlpha(40), borderRadius: UIFormating.smallCircularBorderRadius()),
-              child: Icon(_getIconForTimeSlotType(timeSlot.timeSlotType), color: eventColour, size: 30),
+              decoration: BoxDecoration(
+                color: eventColour.withAlpha(40),
+                borderRadius: UIFormating.smallCircularBorderRadius(),
+              ),
+              child: Icon(
+                _getIconForTimeSlotType(timeSlot.timeSlotType),
+                color: eventColour,
+                size: 30,
+              ),
             ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(event.eventName, style: context.textTheme.headlineMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  if (event.location?.isNotEmpty == true) Text(event.location!, style: context.textTheme.bodyMedium, overflow: TextOverflow.ellipsis),
-                  if (timeText != null) Text(timeText, style: context.textTheme.bodyMedium),
+                  Text(
+                    event.eventName,
+                    style: context.textTheme.headlineMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (event.location?.isNotEmpty == true)
+                    Text(
+                      event.location!,
+                      style: context.textTheme.bodyMedium,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  if (timeText != null)
+                    Text(timeText, style: context.textTheme.bodyMedium),
                 ],
               ),
             ),
@@ -52,8 +76,14 @@ class ScheduleItemWidget extends StatelessWidget {
             if (_showDate)
               Column(
                 children: [
-                  Text(DateFormat.MMM().format(timeSlot.dateOfTimeSlot), style: context.textTheme.bodyMedium),
-                  Text(DateFormat.d().format(timeSlot.dateOfTimeSlot), style: context.textTheme.bodyMedium),
+                  Text(
+                    DateFormat.MMM().format(timeSlot.dateOfTimeSlot),
+                    style: context.textTheme.bodyMedium,
+                  ),
+                  Text(
+                    DateFormat.d().format(timeSlot.dateOfTimeSlot),
+                    style: context.textTheme.bodyMedium,
+                  ),
                 ],
               ),
           ],

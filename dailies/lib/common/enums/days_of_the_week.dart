@@ -13,11 +13,16 @@ enum DaysOfTheWeek {
   final String icalCode;
 
   static DaysOfTheWeek fromDateTime(DateTime dateTime) {
-    return DaysOfTheWeek.values.firstWhere((day) => day.value == dateTime.weekday);
+    return DaysOfTheWeek.values.firstWhere(
+      (day) => day.value == dateTime.weekday,
+    );
   }
 
   static DaysOfTheWeek fromIcalCode(String code) {
-    return DaysOfTheWeek.values.firstWhere((day) => day.icalCode == code.toUpperCase(), orElse: () => throw ArgumentError('Invalid iCal day code: $code'));
+    return DaysOfTheWeek.values.firstWhere(
+      (day) => day.icalCode == code.toUpperCase(),
+      orElse: () => throw ArgumentError('Invalid iCal day code: $code'),
+    );
   }
 
   static List<DaysOfTheWeek> fromIcalCodes(String codes) {

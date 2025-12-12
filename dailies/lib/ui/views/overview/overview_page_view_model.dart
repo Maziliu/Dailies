@@ -6,9 +6,11 @@ class OverviewPageViewModel extends ChangeNotifier {
   final EventsViewModel _eventsViewModel;
   final GachaViewModel _staminaViewModel;
 
-  OverviewPageViewModel({required EventsViewModel eventsViewModel, required GachaViewModel staminaViewModel})
-    : _eventsViewModel = eventsViewModel,
-      _staminaViewModel = staminaViewModel;
+  OverviewPageViewModel({
+    required EventsViewModel eventsViewModel,
+    required GachaViewModel staminaViewModel,
+  }) : _eventsViewModel = eventsViewModel,
+       _staminaViewModel = staminaViewModel;
 
   EventsViewModel get eventsViewModel => _eventsViewModel;
   GachaViewModel get staminaViewModel => _staminaViewModel;

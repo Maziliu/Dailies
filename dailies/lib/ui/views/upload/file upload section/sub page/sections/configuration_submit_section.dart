@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 class ConfigurationSubmitSection extends StatelessWidget {
   final ConfigurationSectionViewModel _configurationSectionViewModel;
 
-  const ConfigurationSubmitSection({super.key, required ConfigurationSectionViewModel configurationSectionViewModel})
-    : _configurationSectionViewModel = configurationSectionViewModel;
+  const ConfigurationSubmitSection({
+    super.key,
+    required ConfigurationSectionViewModel configurationSectionViewModel,
+  }) : _configurationSectionViewModel = configurationSectionViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,13 @@ class ConfigurationSubmitSection extends StatelessWidget {
       elevation: 0,
       child: Padding(
         padding: UIFormating.smallPadding(),
-        child: ElevatedButton(onPressed: () => Navigator.of(context).pop(_configurationSectionViewModel.configurations), child: const Text('Done')),
+        child: ElevatedButton(
+          onPressed:
+              () => Navigator.of(
+                context,
+              ).pop(_configurationSectionViewModel.configurations),
+          child: const Text('Done'),
+        ),
       ),
     );
   }

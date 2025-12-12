@@ -28,7 +28,9 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void initState() {
     super.initState();
-    _errorSubscription = injector<GlobalErrorService>().errorStream.listen(_onError);
+    _errorSubscription = injector<GlobalErrorService>().errorStream.listen(
+      _onError,
+    );
     _pageController = PageController();
   }
 
@@ -39,7 +41,8 @@ class _DashboardViewState extends State<DashboardView> {
     super.dispose();
   }
 
-  void _onError(Exception exception) => showErrorSnackbar(message: exception.toString());
+  void _onError(Exception exception) =>
+      showErrorSnackbar(message: exception.toString());
 
   void _onPageChanged(int index, DashboardViewModel viewModel) {
     if (viewModel.selectedTabIndex != index) {
@@ -59,9 +62,18 @@ class _DashboardViewState extends State<DashboardView> {
               controller: _pageController,
               onPageChanged: (index) => _onPageChanged(index, viewModel),
               children: [
-                ChangeNotifierProvider.value(value: injector<OverviewPageViewModel>(), child: const OverviewView()),
-                ChangeNotifierProvider.value(value: injector<CalendarPageViewModel>(), child: const CalendarView()),
-                ChangeNotifierProvider.value(value: injector<UploadViewModel>(), child: const UploadView()),
+                ChangeNotifierProvider.value(
+                  value: injector<OverviewPageViewModel>(),
+                  child: const OverviewView(),
+                ),
+                ChangeNotifierProvider.value(
+                  value: injector<CalendarPageViewModel>(),
+                  child: const CalendarView(),
+                ),
+                ChangeNotifierProvider.value(
+                  value: injector<UploadViewModel>(),
+                  child: const UploadView(),
+                ),
               ],
             );
           },
@@ -73,7 +85,11 @@ class _DashboardViewState extends State<DashboardView> {
             currentIndex: viewModel.selectedTabIndex,
             onTap: (index) {
               viewModel.updateSelectedTab(index);
-              _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.ease);
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              );
             },
             colorScheme: context.colorScheme,
           );

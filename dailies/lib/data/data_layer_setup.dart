@@ -27,7 +27,9 @@ Future<void> setUpDataLayer(GetIt injector) async {
   injector.registerSingleton<AppDatabase>(AppDatabase());
 
   //DAOs
-  injector.registerLazySingleton<TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion>>(
+  injector.registerLazySingleton<
+    TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion>
+  >(
     () => DriftTimeSlotDao(injector<AppDatabase>()),
     instanceName: DatabaseType.Local.name,
   );
@@ -37,51 +39,79 @@ Future<void> setUpDataLayer(GetIt injector) async {
     instanceName: DatabaseType.Local.name,
   );
 
-  injector.registerLazySingleton<StaminaDao<DriftStamina, DriftStaminasCompanion>>(
-    () => DriftStaminaDao(injector<AppDatabase>()),
-    instanceName: DatabaseType.Local.name,
-  );
+  injector
+      .registerLazySingleton<StaminaDao<DriftStamina, DriftStaminasCompanion>>(
+        () => DriftStaminaDao(injector<AppDatabase>()),
+        instanceName: DatabaseType.Local.name,
+      );
 
-  injector.registerLazySingleton<TimeSlotPatternDao<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>>(
+  injector.registerLazySingleton<
+    TimeSlotPatternDao<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>
+  >(
     () => DriftTimeSlotPatternDao(injector<AppDatabase>()),
     instanceName: DatabaseType.Local.name,
   );
 
   //Mappers
-  injector.registerLazySingleton<TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion>>(DriftTimeSlotMapper.new, instanceName: DatabaseType.Local.name);
-  injector.registerLazySingleton<EventMapper<DriftEvent, DriftEventsCompanion>>(DriftEventMapper.new, instanceName: DatabaseType.Local.name);
-  injector.registerLazySingleton<StaminaMapper<DriftStamina, DriftStaminasCompanion>>(DriftStaminaMapper.new, instanceName: DatabaseType.Local.name);
-  injector.registerLazySingleton<TimeSlotPatternMapper<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>>(
-    DriftTimeSlotPatternMapper.new,
+  injector.registerLazySingleton<
+    TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion>
+  >(DriftTimeSlotMapper.new, instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<EventMapper<DriftEvent, DriftEventsCompanion>>(
+    DriftEventMapper.new,
     instanceName: DatabaseType.Local.name,
   );
+  injector.registerLazySingleton<
+    StaminaMapper<DriftStamina, DriftStaminasCompanion>
+  >(DriftStaminaMapper.new, instanceName: DatabaseType.Local.name);
+  injector.registerLazySingleton<
+    TimeSlotPatternMapper<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>
+  >(DriftTimeSlotPatternMapper.new, instanceName: DatabaseType.Local.name);
 
   //Repositories
   injector.registerLazySingleton(
     () => TimeSlotRepository(
-      dao: injector<TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion>>(instanceName: DatabaseType.Local.name),
-      mapper: injector<TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion>>(instanceName: DatabaseType.Local.name),
+      dao: injector<TimeSlotDao<DriftTimeSlot, DriftTimeSlotsCompanion>>(
+        instanceName: DatabaseType.Local.name,
+      ),
+      mapper: injector<TimeSlotMapper<DriftTimeSlot, DriftTimeSlotsCompanion>>(
+        instanceName: DatabaseType.Local.name,
+      ),
     ),
   );
 
   injector.registerLazySingleton(
     () => EventRepository(
-      dao: injector<EventDao<DriftEvent, DriftEventsCompanion>>(instanceName: DatabaseType.Local.name),
-      mapper: injector<EventMapper<DriftEvent, DriftEventsCompanion>>(instanceName: DatabaseType.Local.name),
+      dao: injector<EventDao<DriftEvent, DriftEventsCompanion>>(
+        instanceName: DatabaseType.Local.name,
+      ),
+      mapper: injector<EventMapper<DriftEvent, DriftEventsCompanion>>(
+        instanceName: DatabaseType.Local.name,
+      ),
     ),
   );
 
   injector.registerLazySingleton(
     () => StaminaRepository(
-      dao: injector<StaminaDao<DriftStamina, DriftStaminasCompanion>>(instanceName: DatabaseType.Local.name),
-      mapper: injector<StaminaMapper<DriftStamina, DriftStaminasCompanion>>(instanceName: DatabaseType.Local.name),
+      dao: injector<StaminaDao<DriftStamina, DriftStaminasCompanion>>(
+        instanceName: DatabaseType.Local.name,
+      ),
+      mapper: injector<StaminaMapper<DriftStamina, DriftStaminasCompanion>>(
+        instanceName: DatabaseType.Local.name,
+      ),
     ),
   );
 
   injector.registerLazySingleton(
     () => TimeSlotPatternRepository(
-      dao: injector<TimeSlotPatternDao<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>>(instanceName: DatabaseType.Local.name),
-      mapper: injector<TimeSlotPatternMapper<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>>(instanceName: DatabaseType.Local.name),
+      dao: injector<
+        TimeSlotPatternDao<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion>
+      >(instanceName: DatabaseType.Local.name),
+      mapper: injector<
+        TimeSlotPatternMapper<
+          DriftTimeSlotPattern,
+          DriftTimeSlotPatternsCompanion
+        >
+      >(instanceName: DatabaseType.Local.name),
     ),
   );
 }

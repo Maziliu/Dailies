@@ -7,10 +7,14 @@ class ListenableRowToggle extends StatelessWidget {
   final Widget? _toggledWidget;
   final String _labelText;
 
-  const ListenableRowToggle({super.key, required ValueNotifier<bool> toggleListenable, Widget? toggledWidget, required String labelText})
-    : _toggleListenable = toggleListenable,
-      _toggledWidget = toggledWidget,
-      _labelText = labelText;
+  const ListenableRowToggle({
+    super.key,
+    required ValueNotifier<bool> toggleListenable,
+    Widget? toggledWidget,
+    required String labelText,
+  }) : _toggleListenable = toggleListenable,
+       _toggledWidget = toggledWidget,
+       _labelText = labelText;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +26,31 @@ class ListenableRowToggle extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(_labelText, style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
-                Switch(value: toggleState, onChanged: (bool newState) => _toggleSwitch(newState, _toggleListenable)),
+                Text(
+                  _labelText,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Switch(
+                  value: toggleState,
+                  onChanged:
+                      (bool newState) =>
+                          _toggleSwitch(newState, _toggleListenable),
+                ),
               ],
             ),
 
-            if (_toggledWidget != null) Visibility(visible: toggleState, child: Column(children: [UIFormating.smallVerticalSpacing(), _toggledWidget])),
+            if (_toggledWidget != null)
+              Visibility(
+                visible: toggleState,
+                child: Column(
+                  children: [
+                    UIFormating.smallVerticalSpacing(),
+                    _toggledWidget,
+                  ],
+                ),
+              ),
           ],
         );
       },

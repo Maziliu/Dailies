@@ -14,9 +14,12 @@ class ConfigurationSection extends StatelessWidget {
   final PlatformFile _file;
   final void Function(PlatformFile, Map<String, dynamic>) _onChanged;
 
-  ConfigurationSection({super.key, required PlatformFile file, required void Function(PlatformFile, Map<String, dynamic>) onChanged})
-    : _file = file,
-      _onChanged = onChanged;
+  ConfigurationSection({
+    super.key,
+    required PlatformFile file,
+    required void Function(PlatformFile, Map<String, dynamic>) onChanged,
+  }) : _file = file,
+       _onChanged = onChanged;
 
   void _handleChange() {
     final formState = _formKey.currentState;
@@ -46,7 +49,9 @@ class ConfigurationSection extends StatelessWidget {
                       Flexible(
                         child: Text(
                           _file.name.split('.')[0],
-                          style: context.textTheme.headlineMedium?.copyWith(color: Colors.grey),
+                          style: context.textTheme.headlineMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -59,7 +64,9 @@ class ConfigurationSection extends StatelessWidget {
                       Flexible(
                         child: Text(
                           formatFileSize(_file.size),
-                          style: context.textTheme.headlineMedium?.copyWith(color: Colors.grey),
+                          style: context.textTheme.headlineMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -68,20 +75,34 @@ class ConfigurationSection extends StatelessWidget {
                   UIFormating.smallVerticalSpacing(),
                   Row(
                     children: [
-                      Text('Extension: ', style: context.textTheme.headlineMedium),
+                      Text(
+                        'Extension: ',
+                        style: context.textTheme.headlineMedium,
+                      ),
                       Flexible(
                         child: Text(
                           _file.extension ?? 'Unknown',
-                          style: context.textTheme.headlineMedium?.copyWith(color: Colors.grey),
+                          style: context.textTheme.headlineMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
                   UIFormating.smallVerticalSpacing(),
-                  Text('Additional Instructions', style: context.textTheme.headlineMedium),
+                  Text(
+                    'Additional Instructions',
+                    style: context.textTheme.headlineMedium,
+                  ),
                   UIFormating.smallVerticalSpacing(),
-                  FormBuilderTextField(name: INSTRUCTIONS_FIELD_TAG, maxLines: 5, decoration: const InputDecoration(hintText: 'eg: Course: PHYS 369')),
+                  FormBuilderTextField(
+                    name: INSTRUCTIONS_FIELD_TAG,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      hintText: 'eg: Course: PHYS 369',
+                    ),
+                  ),
                   UIFormating.smallVerticalSpacing(),
                   FormBuilderCheckbox(
                     name: CONDENSE_FIELD_TAG,
@@ -89,11 +110,18 @@ class ConfigurationSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Condense', style: context.textTheme.headlineMedium),
+                        Text(
+                          'Condense',
+                          style: context.textTheme.headlineMedium,
+                        ),
                         const Tooltip(
                           message:
                               'Checking this off will enable text chunking. This will extract only the relavent text but results in less accuracy. Large text files may take a long time without this enabled',
-                          child: Icon(Icons.help_outline, size: 25, color: Colors.grey),
+                          child: Icon(
+                            Icons.help_outline,
+                            size: 25,
+                            color: Colors.grey,
+                          ),
                         ),
                       ],
                     ),

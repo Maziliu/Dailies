@@ -8,11 +8,18 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
   final StaminaRepositoryService _staminaRepositoryService;
   final ValueNotifier<List<Stamina>> staminas = ValueNotifier([]);
 
-  GachaViewModel({required StaminaRepositoryService staminaRepositoryService}) : _staminaRepositoryService = staminaRepositoryService {
+  GachaViewModel({required StaminaRepositoryService staminaRepositoryService})
+    : _staminaRepositoryService = staminaRepositoryService {
     _initialize();
   }
 
-  void onAddStaminaButtonPress(String gachaName, int maxStamina, Duration rechargeTime, int staminaOfLastestReset, String? imageName) async {
+  void onAddStaminaButtonPress(
+    String gachaName,
+    int maxStamina,
+    Duration rechargeTime,
+    int staminaOfLastestReset,
+    String? imageName,
+  ) async {
     final Stamina stamina = Stamina(
       rechargeTime: rechargeTime,
       maxStamina: maxStamina,
@@ -38,7 +45,8 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 
   Future<void> loadAllStaminas() async {
-    final Result<List<Stamina>> results = await _staminaRepositoryService.fetchAllStaminas();
+    final Result<List<Stamina>> results =
+        await _staminaRepositoryService.fetchAllStaminas();
 
     switch (results) {
       case Ok<List<Stamina>>(value: final staminaList):
@@ -49,11 +57,16 @@ class GachaViewModel extends ChangeNotifier with ErrorStreamMixin {
   }
 
   void deleteStamina(Stamina stamina) async {
-    final Result<int> result = await _staminaRepositoryService.deleteStamina(stamina);
+    final Result<int> result = await _staminaRepositoryService.deleteStamina(
+      stamina,
+    );
 
     switch (result) {
       case Ok<int>():
-        staminas.value = staminas.value.where((currrentStamina) => currrentStamina != stamina).toList();
+        staminas.value =
+            staminas.value
+                .where((currrentStamina) => currrentStamina != stamina)
+                .toList();
       case Error<int>(error: final Exception exception):
         emitError(exception);
     }

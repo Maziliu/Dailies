@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 class HeroDialogRoute<T> extends PageRoute<T> {
   final WidgetBuilder _builder;
 
-  HeroDialogRoute({super.settings, required WidgetBuilder builder, bool barrierDismissible = true})
-    : _builder = builder,
-      _barrierDismissible = barrierDismissible;
+  HeroDialogRoute({
+    super.settings,
+    required WidgetBuilder builder,
+    bool barrierDismissible = true,
+  }) : _builder = builder,
+       _barrierDismissible = barrierDismissible;
 
   final bool _barrierDismissible;
 
@@ -19,13 +22,25 @@ class HeroDialogRoute<T> extends PageRoute<T> {
   String get barrierLabel => 'Dialog';
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return _builder(context);
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-    return FadeTransition(opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut), child: child);
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return FadeTransition(
+      opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+      child: child,
+    );
   }
 
   @override

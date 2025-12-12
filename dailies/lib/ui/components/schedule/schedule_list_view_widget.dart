@@ -7,7 +7,12 @@ class ScheduleListViewWidget extends StatelessWidget {
   final List<EventTimeSlotPair> _pairs;
   final ScheduleListBuilder _builder;
 
-  const ScheduleListViewWidget({super.key, required List<EventTimeSlotPair> pairs, required ScheduleListBuilder builder}) : _pairs = pairs, _builder = builder;
+  const ScheduleListViewWidget({
+    super.key,
+    required List<EventTimeSlotPair> pairs,
+    required ScheduleListBuilder builder,
+  }) : _pairs = pairs,
+       _builder = builder;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +44,22 @@ class ScheduleListViewWidget extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.calendar_today_outlined, size: 48, color: context.colorScheme.onSurface.withValues(alpha: 0.4)),
+                    Icon(
+                      Icons.calendar_today_outlined,
+                      size: 48,
+                      color: context.colorScheme.onSurface.withValues(
+                        alpha: 0.4,
+                      ),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       'Nothing here',
-                      style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface.withValues(alpha: 0.6), fontWeight: FontWeight.w500),
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: context.colorScheme.onSurface.withValues(
+                          alpha: 0.6,
+                        ),
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),

@@ -4,7 +4,8 @@ import 'package:dailies/data/models/time_slot.dart';
 
 class TimeSlotPattern extends AppModel {
   final DateTime? _endPatternDate;
-  final HeapPriorityQueue<TimeSlot> _anchorPoints = HeapPriorityQueue<TimeSlot>();
+  final HeapPriorityQueue<TimeSlot> _anchorPoints =
+      HeapPriorityQueue<TimeSlot>();
   final List<DateTime> _exclusionDates = [];
   final String? _timeZoneId;
   final Duration? _frequency;
@@ -23,11 +24,16 @@ class TimeSlotPattern extends AppModel {
     List<DateTime>? exclusionDates,
   }) : _endPatternDate = endPatternDate,
        _timeZoneId = timeZoneId,
-       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds),
+       _frequency =
+           (frequencyInSeconds == null)
+               ? null
+               : Duration(seconds: frequencyInSeconds),
        _recurranceRule = recurranceRule {
     anchorPoints = anchorPointsString;
     _exclusionDates.addAll(exclusionDates ?? []);
-    _exclusionDates.addAll(exclusionDateString?.split(';').map(DateTime.parse).toList() ?? []);
+    _exclusionDates.addAll(
+      exclusionDateString?.split(';').map(DateTime.parse).toList() ?? [],
+    );
   }
 
   TimeSlotPattern.UnSaved({
@@ -41,7 +47,10 @@ class TimeSlotPattern extends AppModel {
     List<DateTime>? exclusionDates,
   }) : _endPatternDate = endPatternDate,
        _timeZoneId = timeZoneId,
-       _frequency = (frequencyInSeconds == null) ? null : Duration(seconds: frequencyInSeconds),
+       _frequency =
+           (frequencyInSeconds == null)
+               ? null
+               : Duration(seconds: frequencyInSeconds),
        _recurranceRule = recurranceRule {
     anchorPoints = anchorPointsString;
     addAnchorPoints(anchorPointsList ?? []);
@@ -62,18 +71,22 @@ class TimeSlotPattern extends AppModel {
 
   String? get anchorPointsAsString {
     if (_anchorPoints.isEmpty) return null;
-    final HeapPriorityQueue<TimeSlot> copy = HeapPriorityQueue()..addAll(_anchorPoints.toList());
+    final HeapPriorityQueue<TimeSlot> copy =
+        HeapPriorityQueue()..addAll(_anchorPoints.toList());
 
     final List<String> stringTriples = [];
 
     while (copy.isNotEmpty) {
       final timeSlot = copy.removeFirst();
-      stringTriples.add('${timeSlot.startTime ?? ''};${timeSlot.endTime ?? ''};${timeSlot.dateOfTimeSlot}');
+      stringTriples.add(
+        '${timeSlot.startTime ?? ''};${timeSlot.endTime ?? ''};${timeSlot.dateOfTimeSlot}',
+      );
     }
     return stringTriples.join(',');
   }
 
-  String? get exclusionDatesAsString => (_exclusionDates.isNotEmpty) ? _exclusionDates.join(';') : null;
+  String? get exclusionDatesAsString =>
+      (_exclusionDates.isNotEmpty) ? _exclusionDates.join(';') : null;
 
   set anchorPoints(String? encodedString) {
     if (encodedString == null) return;

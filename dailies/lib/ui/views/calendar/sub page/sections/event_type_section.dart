@@ -8,10 +8,18 @@ import 'package:flutter/material.dart';
 class EventTypeSection extends StatelessWidget {
   final EventTypeSectionViewModel _viewModel;
 
-  const EventTypeSection({super.key, required EventTypeSectionViewModel viewModel}) : _viewModel = viewModel;
+  const EventTypeSection({
+    super.key,
+    required EventTypeSectionViewModel viewModel,
+  }) : _viewModel = viewModel;
 
   String _formatTimeSlotLabel(TimeSlotType type) {
-    return type.name.replaceAll('_', ' ').replaceFirstMapped(RegExp(r'^.'), (match) => match.group(0)!.toUpperCase());
+    return type.name
+        .replaceAll('_', ' ')
+        .replaceFirstMapped(
+          RegExp(r'^.'),
+          (match) => match.group(0)!.toUpperCase(),
+        );
   }
 
   @override
@@ -24,7 +32,12 @@ class EventTypeSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Type', style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+            Text(
+              'Type',
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             UIFormating.smallVerticalSpacing(),
             ValueListenableBuilder(
               valueListenable: _viewModel.selectedTimeSlotIndex,
@@ -35,13 +48,21 @@ class EventTypeSection extends StatelessWidget {
                       isSelected: _viewModel.timeSlotSelection,
                       onPressed: _viewModel.onTogglePress,
                       borderRadius: UIFormating.smallCircularBorderRadius(),
-                      constraints: const BoxConstraints(minWidth: 100, minHeight: 40),
+                      constraints: const BoxConstraints(
+                        minWidth: 100,
+                        minHeight: 40,
+                      ),
                       children:
                           TimeSlotType.values
                               .map(
                                 (type) => Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                                  child: Text(_formatTimeSlotLabel(type), textAlign: TextAlign.center),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  ),
+                                  child: Text(
+                                    _formatTimeSlotLabel(type),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -50,16 +71,25 @@ class EventTypeSection extends StatelessWidget {
                     UIFormating.smallVerticalSpacing(),
 
                     Visibility(
-                      visible: _viewModel.selectedTimeSlotIndex.value == TimeSlotType.values.indexOf(TimeSlotType.Interval),
+                      visible:
+                          _viewModel.selectedTimeSlotIndex.value ==
+                          TimeSlotType.values.indexOf(TimeSlotType.Interval),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: FittedBox(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ListenableTimePickerButton(listenable: _viewModel.pickedStartTime),
-                              const Padding(padding: EdgeInsets.symmetric(horizontal: 8.0), child: Text('to')),
-                              ListenableTimePickerButton(listenable: _viewModel.pickedEndTime),
+                              ListenableTimePickerButton(
+                                listenable: _viewModel.pickedStartTime,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text('to'),
+                              ),
+                              ListenableTimePickerButton(
+                                listenable: _viewModel.pickedEndTime,
+                              ),
                             ],
                           ),
                         ),
@@ -67,8 +97,15 @@ class EventTypeSection extends StatelessWidget {
                     ),
 
                     Visibility(
-                      visible: _viewModel.selectedTimeSlotIndex.value == TimeSlotType.values.indexOf(TimeSlotType.Deadline),
-                      child: Padding(padding: const EdgeInsets.only(top: 8.0), child: ListenableTimePickerButton(listenable: _viewModel.pickedDeadline)),
+                      visible:
+                          _viewModel.selectedTimeSlotIndex.value ==
+                          TimeSlotType.values.indexOf(TimeSlotType.Deadline),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: ListenableTimePickerButton(
+                          listenable: _viewModel.pickedDeadline,
+                        ),
+                      ),
                     ),
                   ],
                 );

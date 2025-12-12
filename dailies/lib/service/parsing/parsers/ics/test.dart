@@ -22,7 +22,10 @@ void main() {
   );
 
   final start = DateTime(2025, 9, 3); // Sept 3, 2025 (Wednesday)
-  final classOccurrences = classPattern.generateOccurrences(start, maxCount: 15);
+  final classOccurrences = classPattern.generateOccurrences(
+    start,
+    maxCount: 15,
+  );
 
   print('Class schedule (first 15 occurrences):');
   for (final date in classOccurrences) {
@@ -30,17 +33,24 @@ void main() {
     print('  ${date.toIso8601String().split('T')[0]} ($dayName)');
   }
 
-  final Map<DaysOfTheWeek, DateTime> anchorPointMap = {for (final DateTime date in classOccurrences.reversed) DaysOfTheWeek.fromDateTime(date): date};
+  final Map<DaysOfTheWeek, DateTime> anchorPointMap = {
+    for (final DateTime date in classOccurrences.reversed)
+      DaysOfTheWeek.fromDateTime(date): date,
+  };
   print(anchorPointMap);
 
   // Example 2: Every weekday for 10 days
   print('\n2. Every weekday for 10 days:');
-  final weekdayPattern = RecurrencePattern.fromRRule('FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=10');
+  final weekdayPattern = RecurrencePattern.fromRRule(
+    'FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=10',
+  );
 
   final start2 = DateTime(2025, 8, 4); // Monday, Aug 4, 2025
   final weekdayOccurrences = weekdayPattern.generateOccurrences(start2);
   for (final date in weekdayOccurrences) {
-    print('  ${date.toIso8601String().split('T')[0]} (${DaysOfTheWeek.fromDateTime(date).name})');
+    print(
+      '  ${date.toIso8601String().split('T')[0]} (${DaysOfTheWeek.fromDateTime(date).name})',
+    );
   }
 
   // Example 3: With exclusions
@@ -55,12 +65,18 @@ void main() {
 
   final excludedOccurrences = dailyWithExclusions.generateOccurrences(start2);
   for (final date in excludedOccurrences) {
-    print('  ${date.toIso8601String().split('T')[0]} (${DaysOfTheWeek.fromDateTime(date).name})');
+    print(
+      '  ${date.toIso8601String().split('T')[0]} (${DaysOfTheWeek.fromDateTime(date).name})',
+    );
   }
 
   // Example 4: Parsing EXDATE from ICS-style lines
   print('\n4. Parsing EXDATE from ICS format:');
-  final exDateLines = ['EXDATE;TZID=MST:20250930T090000', 'EXDATE;TZID=MST:20251013T090000', 'EXDATE;TZID=MST:20251111T090000'];
+  final exDateLines = [
+    'EXDATE;TZID=MST:20250930T090000',
+    'EXDATE;TZID=MST:20251013T090000',
+    'EXDATE;TZID=MST:20251111T090000',
+  ];
 
   final parsedExDates = parseExclusionDates(exDateLines);
   print('Parsed exclude dates:');

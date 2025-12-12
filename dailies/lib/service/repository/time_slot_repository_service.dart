@@ -9,21 +9,36 @@ import 'package:dailies/data/repositories/time_slot_repository.dart';
 class TimeSlotRepositoryService {
   final TimeSlotRepository _timeSlotRepository;
 
-  TimeSlotRepositoryService({required TimeSlotRepository<dynamic, dynamic> timeSlotRepository}) : _timeSlotRepository = timeSlotRepository;
+  TimeSlotRepositoryService({
+    required TimeSlotRepository<dynamic, dynamic> timeSlotRepository,
+  }) : _timeSlotRepository = timeSlotRepository;
 
-  Future<Result<int>> saveTimeSlot(TimeSlot timeSlot) async => await _timeSlotRepository.insert(timeSlot);
+  Future<Result<int>> saveTimeSlot(TimeSlot timeSlot) async =>
+      await _timeSlotRepository.insert(timeSlot);
 
-  Future<void> deleteTimeSlot(int timeSlotId) => _timeSlotRepository.deleteById(timeSlotId);
+  Future<void> deleteTimeSlot(int timeSlotId) =>
+      _timeSlotRepository.deleteById(timeSlotId);
 
-  Future<Result<List<TimeSlot>>> fetchTimeSlotsBetweenDates(DateTime lowerBound, DateTime upperBound) async {
-    final Result<List<AppModel>> results = await _timeSlotRepository.getTimeSlotsBetween(lowerBound, upperBound);
+  Future<Result<List<TimeSlot>>> fetchTimeSlotsBetweenDates(
+    DateTime lowerBound,
+    DateTime upperBound,
+  ) async {
+    final Result<List<AppModel>> results = await _timeSlotRepository
+        .getTimeSlotsBetween(lowerBound, upperBound);
 
-    return performOperationOnResultIfNotError(results, (results) => results.map((result) => result as TimeSlot).toList());
+    return performOperationOnResultIfNotError(
+      results,
+      (results) => results.map((result) => result as TimeSlot).toList(),
+    );
   }
 
-  Future<Result<void>> saveAllTimeSlots(List<TimeSlot> timeSlots) async => await _timeSlotRepository.insertAllTimeSlots(timeSlots);
+  Future<Result<void>> saveAllTimeSlots(List<TimeSlot> timeSlots) async =>
+      await _timeSlotRepository.insertAllTimeSlots(timeSlots);
 
-  Future<Result<void>> generateTimeSlotsForNextYear(int eventId, TimeSlotPattern pattern) async {
+  Future<Result<void>> generateTimeSlotsForNextYear(
+    int eventId,
+    TimeSlotPattern pattern,
+  ) async {
     final List<TimeSlot> timeSlots = generateTimeSlots(pattern);
 
     for (final TimeSlot timeSlot in timeSlots) {

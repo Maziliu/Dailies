@@ -8,7 +8,10 @@ const String ADD_STAMINA_HERO_TAG = 'addStaminaHeroTag';
 class AddStaminaTransparentButton extends StatelessWidget {
   final GachaViewModel _viewModel;
 
-  const AddStaminaTransparentButton({super.key, required GachaViewModel viewModel}) : _viewModel = viewModel;
+  const AddStaminaTransparentButton({
+    super.key,
+    required GachaViewModel viewModel,
+  }) : _viewModel = viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,10 @@ class AddStaminaTransparentButton extends StatelessWidget {
           Navigator.of(context).push(
             HeroDialogRoute(
               builder: (_) {
-                return PopupCard.AddStamina(onSubmit: _viewModel.onAddStaminaButtonPress, heroTag: ADD_STAMINA_HERO_TAG);
+                return PopupCard.AddStamina(
+                  onSubmit: _viewModel.onAddStaminaButtonPress,
+                  heroTag: ADD_STAMINA_HERO_TAG,
+                );
               },
             ),
           );

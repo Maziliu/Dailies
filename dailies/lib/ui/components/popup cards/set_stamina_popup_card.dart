@@ -8,7 +8,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 class SetStaminaPopupCard extends StatefulWidget implements AnimatableWidget {
   final String _heroTag;
 
-  const SetStaminaPopupCard({super.key, required String heroTag}) : _heroTag = heroTag;
+  const SetStaminaPopupCard({super.key, required String heroTag})
+    : _heroTag = heroTag;
 
   @override
   State<SetStaminaPopupCard> createState() => _SetStaminaPopupCardState();
@@ -35,13 +36,18 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
               Center(
                 child: Text(
                   'Set Remaining Stamina',
-                  style: context.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: context.colorScheme.onSurface),
+                  style: context.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.onSurface,
+                  ),
                 ),
               ),
               UIFormating.largeVerticalSpacing(),
               FormBuilderTextField(
                 name: _setStaminaToTag,
-                decoration: const InputDecoration(labelText: 'Remaining Stamina'),
+                decoration: const InputDecoration(
+                  labelText: 'Remaining Stamina',
+                ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) => (value == null) ? 'Required' : null,
               ),
@@ -49,14 +55,20 @@ class _SetStaminaPopupCardState extends State<SetStaminaPopupCard> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    final Map<String, dynamic>? fields = _formKey.currentState?.fields;
+                    final Map<String, dynamic>? fields =
+                        _formKey.currentState?.fields;
 
-                    final int remainingStamina = int.parse(fields?[_setStaminaToTag].value ?? '0');
+                    final int remainingStamina = int.parse(
+                      fields?[_setStaminaToTag].value ?? '0',
+                    );
 
                     Navigator.pop(context, remainingStamina);
                   }
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: context.colorScheme.primary, foregroundColor: context.colorScheme.onPrimary),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                  foregroundColor: context.colorScheme.onPrimary,
+                ),
                 child: const Text('Set'),
               ),
             ],

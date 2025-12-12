@@ -42,4 +42,5 @@ DateTime parseDateString(String icsDateString) {
   throw ArgumentError('Invalid UNTIL date format: $icsDateString');
 }
 
-DateTime normalizeDateTime(DateTime date) => DateTime(date.year, date.month, date.day);
+DateTime normalizeDateTime(DateTime date) =>
+    DateTime(date.year, date.month, date.day);

@@ -3,7 +3,8 @@ import 'package:drift/drift.dart';
 
 class DriftTimeSlotPatterns extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get eventId => integer().references(DriftEvents, #id, onDelete: KeyAction.cascade)();
+  IntColumn get eventId =>
+      integer().references(DriftEvents, #id, onDelete: KeyAction.cascade)();
   TextColumn get anchorPoints => text().nullable()();
   TextColumn get exclusionDates => text().nullable()();
   IntColumn get frequencyInSeconds => integer().nullable()();

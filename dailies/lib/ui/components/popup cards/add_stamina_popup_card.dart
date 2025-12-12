@@ -11,9 +11,12 @@ class AddStaminaPopupCard extends StatefulWidget implements AnimatableWidget {
   final void Function(String, int, Duration, int, String?) _onSubmit;
   final String _heroTag;
 
-  const AddStaminaPopupCard({super.key, required void Function(String, int, Duration, int, String?) onSubmit, required String heroTag})
-    : _onSubmit = onSubmit,
-      _heroTag = heroTag;
+  const AddStaminaPopupCard({
+    super.key,
+    required void Function(String, int, Duration, int, String?) onSubmit,
+    required String heroTag,
+  }) : _onSubmit = onSubmit,
+       _heroTag = heroTag;
 
   @override
   State<AddStaminaPopupCard> createState() => _AddStaminaPopupCardState();
@@ -42,7 +45,10 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
               Center(
                 child: Text(
                   'Create New Gacha Widget',
-                  style: context.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: context.colorScheme.onSurface),
+                  style: context.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: context.colorScheme.onSurface,
+                  ),
                 ),
               ),
               UIFormating.largeVerticalSpacing(),
@@ -62,7 +68,9 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
               UIFormating.smallVerticalSpacing(),
               FormBuilderTextField(
                 name: _rechargeTimeFieldTag,
-                decoration: const InputDecoration(labelText: 'Recharge Time In Seconds'),
+                decoration: const InputDecoration(
+                  labelText: 'Recharge Time In Seconds',
+                ),
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator:
                     (value) =>
@@ -88,9 +96,15 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
                             value: asset,
                             child: Row(
                               children: [
-                                SizedBox(width: 40, height: 40, child: asset.image(fit: BoxFit.contain)),
+                                SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: asset.image(fit: BoxFit.contain),
+                                ),
                                 const SizedBox(width: 10),
-                                Text(formatAssetName(asset.path.split('/').last)),
+                                Text(
+                                  formatAssetName(asset.path.split('/').last),
+                                ),
                               ],
                             ),
                           ),
@@ -103,21 +117,40 @@ class _AddStaminaPopupCardState extends State<AddStaminaPopupCard> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    final Map<String, dynamic>? fields = _formKey.currentState?.fields;
+                    final Map<String, dynamic>? fields =
+                        _formKey.currentState?.fields;
 
                     final String gachaName = fields?[_gachaNameFieldTag].value;
-                    final int rechargeTimeInSeconds = int.parse(fields?[_rechargeTimeFieldTag].value),
-                        maxStamina = int.parse(fields?[_maxStaminaFieldTag].value);
-                    final int currentStamina = int.parse(fields?[_currentStamina].value ?? '0');
+                    final int rechargeTimeInSeconds = int.parse(
+                          fields?[_rechargeTimeFieldTag].value,
+                        ),
+                        maxStamina = int.parse(
+                          fields?[_maxStaminaFieldTag].value,
+                        );
+                    final int currentStamina = int.parse(
+                      fields?[_currentStamina].value ?? '0',
+                    );
 
-                    final String? imageName = (fields?[_energyType].value as AssetGenImage?)?.path.split('/').last;
+                    final String? imageName =
+                        (fields?[_energyType].value as AssetGenImage?)?.path
+                            .split('/')
+                            .last;
 
-                    widget._onSubmit(gachaName, maxStamina, Duration(seconds: rechargeTimeInSeconds), currentStamina, imageName);
+                    widget._onSubmit(
+                      gachaName,
+                      maxStamina,
+                      Duration(seconds: rechargeTimeInSeconds),
+                      currentStamina,
+                      imageName,
+                    );
 
                     Navigator.of(context).pop();
                   }
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: context.colorScheme.primary, foregroundColor: context.colorScheme.onPrimary),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.colorScheme.primary,
+                  foregroundColor: context.colorScheme.onPrimary,
+                ),
                 child: const Text('Create Widget'),
               ),
             ],

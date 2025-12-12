@@ -4,25 +4,41 @@ import 'package:dailies/data/models/app_model.dart';
 import 'package:dailies/data/models/time_slot_pattern.dart';
 import 'package:drift/drift.dart';
 
-class DriftTimeSlotPatternMapper implements TimeSlotPatternMapper<DriftTimeSlotPattern, DriftTimeSlotPatternsCompanion> {
+class DriftTimeSlotPatternMapper
+    implements
+        TimeSlotPatternMapper<
+          DriftTimeSlotPattern,
+          DriftTimeSlotPatternsCompanion
+        > {
   @override
-  DriftTimeSlotPatternsCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
+  DriftTimeSlotPatternsCompanion convertAppModelToOutgoingDatabaseModel(
+    AppModel appModel,
+  ) {
     final TimeSlotPattern timeSlotPattern = appModel as TimeSlotPattern;
 
     return DriftTimeSlotPatternsCompanion(
-      id: (timeSlotPattern.isNotSaved) ? const Value.absent() : Value(timeSlotPattern.id),
+      id:
+          (timeSlotPattern.isNotSaved)
+              ? const Value.absent()
+              : Value(timeSlotPattern.id),
       eventId: Value.absentIfNull(timeSlotPattern.eventId),
       anchorPoints: Value.absentIfNull(timeSlotPattern.anchorPointsAsString),
-      frequencyInSeconds: Value.absentIfNull(timeSlotPattern.frequency?.inSeconds),
+      frequencyInSeconds: Value.absentIfNull(
+        timeSlotPattern.frequency?.inSeconds,
+      ),
       endDate: Value.absentIfNull(timeSlotPattern.endPatternDate),
       timeZoneId: Value.absentIfNull(timeSlotPattern.timeZoneId),
       rrule: Value.absentIfNull(timeSlotPattern.recurranceRule),
-      exclusionDates: Value.absentIfNull(timeSlotPattern.exclusionDatesAsString),
+      exclusionDates: Value.absentIfNull(
+        timeSlotPattern.exclusionDatesAsString,
+      ),
     );
   }
 
   @override
-  TimeSlotPattern convertIncomingDatabaseModelToAppModel(DriftTimeSlotPattern incomingDatabaseModel) => TimeSlotPattern(
+  TimeSlotPattern convertIncomingDatabaseModelToAppModel(
+    DriftTimeSlotPattern incomingDatabaseModel,
+  ) => TimeSlotPattern(
     id: incomingDatabaseModel.id,
     eventId: incomingDatabaseModel.eventId,
     anchorPointsString: incomingDatabaseModel.anchorPoints,

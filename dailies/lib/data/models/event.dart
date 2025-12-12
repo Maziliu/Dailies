@@ -8,7 +8,9 @@ class Event extends AppModel {
   late final TimeSlotPattern pattern;
   List<TimeSlot> timeSlots = []; //For the ui
 
-  Event({super.id, required String eventName, required String? location}) : _eventName = eventName, _location = location;
+  Event({super.id, required String eventName, required String? location})
+    : _eventName = eventName,
+      _location = location;
 
   String get eventName => _eventName;
   String? get location => _location;

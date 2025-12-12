@@ -16,9 +16,12 @@ class PatternDetailsSection extends StatelessWidget {
   final GlobalKey<FormBuilderState> _formKey;
   final PatternDetailsSectionViewModel _patternDetailsSectionViewModel;
 
-  const PatternDetailsSection({super.key, required GlobalKey<FormBuilderState> formKey, required PatternDetailsSectionViewModel patternDetailsSectionViewModel})
-    : _formKey = formKey,
-      _patternDetailsSectionViewModel = patternDetailsSectionViewModel;
+  const PatternDetailsSection({
+    super.key,
+    required GlobalKey<FormBuilderState> formKey,
+    required PatternDetailsSectionViewModel patternDetailsSectionViewModel,
+  }) : _formKey = formKey,
+       _patternDetailsSectionViewModel = patternDetailsSectionViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -34,31 +37,47 @@ class PatternDetailsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ListenableRowToggle(
-                  toggleListenable: _patternDetailsSectionViewModel.patternSectionToggle,
+                  toggleListenable:
+                      _patternDetailsSectionViewModel.patternSectionToggle,
                   labelText: 'Pattern',
                   toggledWidget: FormBuilder(
                     key: _formKey,
                     child: Column(
                       children: [
-                        ListenableRowToggle(toggleListenable: _patternDetailsSectionViewModel.daylightSavingToggle, labelText: 'Daylight Savings'),
+                        ListenableRowToggle(
+                          toggleListenable:
+                              _patternDetailsSectionViewModel
+                                  .daylightSavingToggle,
+                          labelText: 'Daylight Savings',
+                        ),
                         UIFormating.smallVerticalSpacing(),
                         ListenableRowToggle(
-                          toggleListenable: _patternDetailsSectionViewModel.repeatablePatternToggle,
+                          toggleListenable:
+                              _patternDetailsSectionViewModel
+                                  .repeatablePatternToggle,
                           labelText: 'Repeatable',
                           toggledWidget: Column(
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Expanded(
                                     flex: 5,
                                     child: FormBuilderTextField(
                                       name: FREQUENCY_FIELD_TAG,
-                                      decoration: const InputDecoration(labelText: 'Time Until Next Repeat', border: OutlineInputBorder()),
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      decoration: const InputDecoration(
+                                        labelText: 'Time Until Next Repeat',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
                                       validator: (value) {
-                                        if (value == null || value.isEmpty) return 'Required';
-                                        if (int.tryParse(value)! <= 0) return 'Must be greater than 0';
+                                        if (value == null || value.isEmpty)
+                                          return 'Required';
+                                        if (int.tryParse(value)! <= 0)
+                                          return 'Must be greater than 0';
 
                                         return null;
                                       },
@@ -69,16 +88,31 @@ class PatternDetailsSection extends StatelessWidget {
                                     flex: 3,
                                     child: FormBuilderDropdown<FrequencyType>(
                                       name: FREQUENCY_TYPE_FIELD_TAG,
-                                      decoration: const InputDecoration(labelText: 'Units', border: OutlineInputBorder()),
-                                      items: FrequencyType.values.map((type) => DropdownMenuItem(value: type, child: Text(type.name))).toList(),
-                                      validator: FormBuilderValidators.required(errorText: 'Required'),
+                                      decoration: const InputDecoration(
+                                        labelText: 'Units',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      items:
+                                          FrequencyType.values
+                                              .map(
+                                                (type) => DropdownMenuItem(
+                                                  value: type,
+                                                  child: Text(type.name),
+                                                ),
+                                              )
+                                              .toList(),
+                                      validator: FormBuilderValidators.required(
+                                        errorText: 'Required',
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                               UIFormating.smallVerticalSpacing(),
                               ListenableRowToggle(
-                                toggleListenable: _patternDetailsSectionViewModel.finitePatternToggle,
+                                toggleListenable:
+                                    _patternDetailsSectionViewModel
+                                        .finitePatternToggle,
                                 labelText: 'Finite',
                                 toggledWidget: FormBuilderDateTimePicker(
                                   name: END_DATE_FIELD_TAG,
@@ -86,7 +120,9 @@ class PatternDetailsSection extends StatelessWidget {
                                   decoration: const InputDecoration(
                                     labelText: 'Pattern End Date',
                                     border: OutlineInputBorder(),
-                                    prefixIcon: Icon(Icons.calendar_today_rounded),
+                                    prefixIcon: Icon(
+                                      Icons.calendar_today_rounded,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -95,7 +131,10 @@ class PatternDetailsSection extends StatelessWidget {
                         ),
 
                         UIFormating.mediumVerticalSpacing(),
-                        MultiSelectCalendar(viewModel: _patternDetailsSectionViewModel.calendarViewModel),
+                        MultiSelectCalendar(
+                          viewModel:
+                              _patternDetailsSectionViewModel.calendarViewModel,
+                        ),
                       ],
                     ),
                   ),

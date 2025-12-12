@@ -8,6 +8,9 @@ enum RRuleFrequency {
   final String value;
 
   static RRuleFrequency fromString(String freq) {
-    return RRuleFrequency.values.firstWhere((f) => f.value == freq.toUpperCase(), orElse: () => throw ArgumentError('Invalid FREQ value: $freq'));
+    return RRuleFrequency.values.firstWhere(
+      (f) => f.value == freq.toUpperCase(),
+      orElse: () => throw ArgumentError('Invalid FREQ value: $freq'),
+    );
   }
 }

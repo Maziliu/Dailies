@@ -16,24 +16,42 @@ Future<void> setUpPresentationLayer(GetIt injector) async {
   //Service View Models
   injector.registerLazySingleton<CalendarViewModel>(CalendarViewModel.new);
   injector.registerLazySingleton<EventsViewModel>(
-    () => EventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), calendarViewModel: injector<CalendarViewModel>()),
+    () => EventsViewModel(
+      eventRepositoryService: injector<EventRepositoryService>(),
+      calendarViewModel: injector<CalendarViewModel>(),
+    ),
   );
-  injector.registerLazySingleton<GachaViewModel>(() => GachaViewModel(staminaRepositoryService: injector<StaminaRepositoryService>()));
+  injector.registerLazySingleton<GachaViewModel>(
+    () => GachaViewModel(
+      staminaRepositoryService: injector<StaminaRepositoryService>(),
+    ),
+  );
   injector.registerLazySingleton<FileUploadViewModel>(FileUploadViewModel.new);
   injector.registerLazySingleton<ParsedEventsViewModel>(
-    () => ParsedEventsViewModel(eventRepositoryService: injector<EventRepositoryService>(), eventsViewModel: injector<EventsViewModel>()),
+    () => ParsedEventsViewModel(
+      eventRepositoryService: injector<EventRepositoryService>(),
+      eventsViewModel: injector<EventsViewModel>(),
+    ),
   );
 
   //Sub Page View Models
-  injector.registerLazySingleton<ConfigurationSectionViewModel>(ConfigurationSectionViewModel.new);
+  injector.registerLazySingleton<ConfigurationSectionViewModel>(
+    ConfigurationSectionViewModel.new,
+  );
 
   //Page View Models
   injector.registerLazySingleton<DashboardViewModel>(DashboardViewModel.new);
   injector.registerLazySingleton<OverviewPageViewModel>(
-    () => OverviewPageViewModel(staminaViewModel: injector<GachaViewModel>(), eventsViewModel: injector<EventsViewModel>()),
+    () => OverviewPageViewModel(
+      staminaViewModel: injector<GachaViewModel>(),
+      eventsViewModel: injector<EventsViewModel>(),
+    ),
   );
   injector.registerLazySingleton<CalendarPageViewModel>(
-    () => CalendarPageViewModel(calendarViewModel: injector<CalendarViewModel>(), eventsViewModel: injector<EventsViewModel>()),
+    () => CalendarPageViewModel(
+      calendarViewModel: injector<CalendarViewModel>(),
+      eventsViewModel: injector<EventsViewModel>(),
+    ),
   );
   injector.registerLazySingleton<UploadViewModel>(
     () => UploadViewModel(

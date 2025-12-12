@@ -6,7 +6,9 @@ import 'package:drift/drift.dart';
 
 class DriftEventMapper extends EventMapper<DriftEvent, DriftEventsCompanion> {
   @override
-  DriftEventsCompanion convertAppModelToOutgoingDatabaseModel(AppModel appModel) {
+  DriftEventsCompanion convertAppModelToOutgoingDatabaseModel(
+    AppModel appModel,
+  ) {
     final Event event = appModel as Event;
 
     return DriftEventsCompanion(
@@ -17,6 +19,11 @@ class DriftEventMapper extends EventMapper<DriftEvent, DriftEventsCompanion> {
   }
 
   @override
-  Event convertIncomingDatabaseModelToAppModel(DriftEvent incomingDatabaseModel) =>
-      Event(id: incomingDatabaseModel.id, eventName: incomingDatabaseModel.eventName, location: incomingDatabaseModel.location);
+  Event convertIncomingDatabaseModelToAppModel(
+    DriftEvent incomingDatabaseModel,
+  ) => Event(
+    id: incomingDatabaseModel.id,
+    eventName: incomingDatabaseModel.eventName,
+    location: incomingDatabaseModel.location,
+  );
 }

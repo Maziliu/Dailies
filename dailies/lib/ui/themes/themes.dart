@@ -12,20 +12,44 @@ const double BOTTOM_NAV_UNSELECTED_ICON_SIZE = 24.0;
 
 final ThemeData defaultTheme = ThemeData(
   fontFamily: GoogleFonts.outfit().fontFamily,
-  colorScheme: ColorScheme.fromSeed(seedColor: APP_FOREGROUND_COLOUR, brightness: Brightness.dark),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: APP_FOREGROUND_COLOUR,
+    brightness: Brightness.dark,
+  ),
   useMaterial3: true,
   textTheme: const TextTheme(
-    headlineLarge: TextStyle(color: Color(0xFFFFFFFF), fontSize: 20, fontWeight: FontWeight.w700, height: 1.1),
-    headlineMedium: TextStyle(color: Color(0xFFFFFFFF), fontSize: 16, fontWeight: FontWeight.w600, height: 1.2),
-    bodySmall: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12, fontWeight: FontWeight.w500, height: 1.3),
+    headlineLarge: TextStyle(
+      color: Color(0xFFFFFFFF),
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+      height: 1.1,
+    ),
+    headlineMedium: TextStyle(
+      color: Color(0xFFFFFFFF),
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+      height: 1.2,
+    ),
+    bodySmall: TextStyle(
+      color: Color(0xFF9CA3AF),
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 1.3,
+    ),
   ),
-  appBarTheme: const AppBarTheme(elevation: 0, scrolledUnderElevation: 0, backgroundColor: Color.fromARGB(120, 37, 37, 53)),
+  appBarTheme: const AppBarTheme(
+    elevation: 0,
+    scrolledUnderElevation: 0,
+    backgroundColor: Color.fromARGB(120, 37, 37, 53),
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: UI_ELEMENTS_BACKGROUND_COLOUR,
       foregroundColor: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(BORDER_RADIUS)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(BORDER_RADIUS),
+      ),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -33,9 +57,15 @@ final ThemeData defaultTheme = ThemeData(
     fillColor: const Color(0xFF2A2A3C),
     labelStyle: const TextStyle(color: Color(0xFFB8B8C2)),
     hintStyle: const TextStyle(color: Color(0xFF8888AA)),
-    enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Color(0xFF444459)), borderRadius: BorderRadius.circular(BORDER_RADIUS)),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(color: Color(0xFF444459)),
+      borderRadius: BorderRadius.circular(BORDER_RADIUS),
+    ),
     focusedBorder: OutlineInputBorder(
-      borderSide: const BorderSide(color: UI_ELEMENTS_BACKGROUND_COLOUR, width: 2),
+      borderSide: const BorderSide(
+        color: UI_ELEMENTS_BACKGROUND_COLOUR,
+        width: 2,
+      ),
       borderRadius: BorderRadius.circular(BORDER_RADIUS),
     ),
   ),
@@ -49,5 +79,8 @@ final ThemeData defaultTheme = ThemeData(
     unselectedIconTheme: IconThemeData(size: BOTTOM_NAV_UNSELECTED_ICON_SIZE),
     showUnselectedLabels: true,
   ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: UI_ELEMENTS_BACKGROUND_COLOUR, foregroundColor: Colors.white),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: UI_ELEMENTS_BACKGROUND_COLOUR,
+    foregroundColor: Colors.white,
+  ),
 );

@@ -6,15 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY =
+    GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
   // debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent, systemNavigationBarColor: Colors.black));
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
+    ),
+  );
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.top]);
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+    overlays: [SystemUiOverlay.top],
+  );
 
   await setUpDependencies();
   runApp(const MainApp());
@@ -29,7 +38,10 @@ class MainApp extends StatelessWidget {
       scaffoldMessengerKey: GLOBAL_SCAFFOLD_MESSENGER_KEY,
       debugShowCheckedModeBanner: false,
       theme: defaultTheme,
-      home: ChangeNotifierProvider(create: (_) => injector<DashboardViewModel>(), child: const DashboardView()),
+      home: ChangeNotifierProvider(
+        create: (_) => injector<DashboardViewModel>(),
+        child: const DashboardView(),
+      ),
     );
   }
 }

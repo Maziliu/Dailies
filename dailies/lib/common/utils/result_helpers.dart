@@ -1,7 +1,10 @@
 import 'package:dailies/common/exceptions/util_exceptions.dart';
 import 'package:dailies/common/utils/result.dart';
 
-Future<Result<T>> guardedAsyncExcecute<T>(Future<T> Function() operation, [Exception? exceptionToThrow]) async {
+Future<Result<T>> guardedAsyncExcecute<T>(
+  Future<T> Function() operation, [
+  Exception? exceptionToThrow,
+]) async {
   try {
     return Result.ok(await operation());
   } on Exception catch (caughtException) {
@@ -9,7 +12,10 @@ Future<Result<T>> guardedAsyncExcecute<T>(Future<T> Function() operation, [Excep
   }
 }
 
-Result<T> gaurdedExectute<T>(Function() operation, [Exception? exceptionToThrow]) {
+Result<T> gaurdedExectute<T>(
+  Function() operation, [
+  Exception? exceptionToThrow,
+]) {
   try {
     return Result.ok(operation());
   } on Exception catch (caughtException) {
@@ -17,7 +23,10 @@ Result<T> gaurdedExectute<T>(Function() operation, [Exception? exceptionToThrow]
   }
 }
 
-Result<T> performOperationOnResultIfNotError<T, K>(Result<K> result, T Function(K subject) operation) {
+Result<T> performOperationOnResultIfNotError<T, K>(
+  Result<K> result,
+  T Function(K subject) operation,
+) {
   try {
     switch (result) {
       case Ok<K>(value: final K value):

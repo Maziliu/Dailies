@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 class GachaSection extends StatelessWidget {
   final GachaViewModel _viewModel;
 
-  const GachaSection({super.key, required GachaViewModel viewModel}) : _viewModel = viewModel;
+  const GachaSection({super.key, required GachaViewModel viewModel})
+    : _viewModel = viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,10 @@ class GachaSection extends StatelessWidget {
                   Navigator.of(context).push(
                     HeroDialogRoute(
                       builder: (_) {
-                        return PopupCard.AddStamina(onSubmit: _viewModel.onAddStaminaButtonPress, heroTag: ADD_STAMINA_HERO_TAG);
+                        return PopupCard.AddStamina(
+                          onSubmit: _viewModel.onAddStaminaButtonPress,
+                          heroTag: ADD_STAMINA_HERO_TAG,
+                        );
                       },
                     ),
                   );
@@ -45,7 +49,12 @@ class GachaSection extends StatelessWidget {
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               itemCount: staminas.length,
-              itemBuilder: (_, index) => StaminaWidget(key: ValueKey(staminas[index].id), stamina: staminas[index], onDelete: _viewModel.deleteStamina),
+              itemBuilder:
+                  (_, index) => StaminaWidget(
+                    key: ValueKey(staminas[index].id),
+                    stamina: staminas[index],
+                    onDelete: _viewModel.deleteStamina,
+                  ),
             );
           },
         ),

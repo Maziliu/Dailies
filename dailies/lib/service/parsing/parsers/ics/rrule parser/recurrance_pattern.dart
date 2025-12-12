@@ -38,7 +38,10 @@ class RecurrencePattern {
     this.excludeDates = const [],
   });
 
-  factory RecurrencePattern.fromRRule(String rrule, {List<DateTime>? excludeDates}) {
+  factory RecurrencePattern.fromRRule(
+    String rrule, {
+    List<DateTime>? excludeDates,
+  }) {
     final parsedRules = _parseRRule(rrule);
 
     if (!parsedRules.containsKey('FREQ')) {
@@ -51,8 +54,14 @@ class RecurrencePattern {
 
     final frequency = RRuleFrequency.fromString(parsedRules['FREQ']!);
     final interval = int.tryParse(parsedRules['INTERVAL'] ?? '1') ?? 1;
-    final count = parsedRules.containsKey('COUNT') ? int.tryParse(parsedRules['COUNT']!) : null;
-    final until = parsedRules.containsKey('UNTIL') ? parseDateString(parsedRules['UNTIL']!) : null;
+    final count =
+        parsedRules.containsKey('COUNT')
+            ? int.tryParse(parsedRules['COUNT']!)
+            : null;
+    final until =
+        parsedRules.containsKey('UNTIL')
+            ? parseDateString(parsedRules['UNTIL']!)
+            : null;
 
     List<ByDayRule>? byDay;
     if (parsedRules.containsKey('BYDAY')) {
@@ -61,27 +70,47 @@ class RecurrencePattern {
 
     List<int>? byMonthDay;
     if (parsedRules.containsKey('BYMONTHDAY')) {
-      byMonthDay = parsedRules['BYMONTHDAY']!.split(',').map((String day) => int.parse(day.trim())).toList();
+      byMonthDay =
+          parsedRules['BYMONTHDAY']!
+              .split(',')
+              .map((String day) => int.parse(day.trim()))
+              .toList();
     }
 
     List<int>? byMonth;
     if (parsedRules.containsKey('BYMONTH')) {
-      byMonth = parsedRules['BYMONTH']!.split(',').map((String month) => int.parse(month.trim())).toList();
+      byMonth =
+          parsedRules['BYMONTH']!
+              .split(',')
+              .map((String month) => int.parse(month.trim()))
+              .toList();
     }
 
     List<int>? byHour;
     if (parsedRules.containsKey('BYHOUR')) {
-      byHour = parsedRules['BYHOUR']!.split(',').map((String hour) => int.parse(hour.trim())).toList();
+      byHour =
+          parsedRules['BYHOUR']!
+              .split(',')
+              .map((String hour) => int.parse(hour.trim()))
+              .toList();
     }
 
     List<int>? byMinute;
     if (parsedRules.containsKey('BYMINUTE')) {
-      byMinute = parsedRules['BYMINUTE']!.split(',').map((String minute) => int.parse(minute.trim())).toList();
+      byMinute =
+          parsedRules['BYMINUTE']!
+              .split(',')
+              .map((String minute) => int.parse(minute.trim()))
+              .toList();
     }
 
     List<int>? bySecond;
     if (parsedRules.containsKey('BYSECOND')) {
-      bySecond = parsedRules['BYSECOND']!.split(',').map((String second) => int.parse(second.trim())).toList();
+      bySecond =
+          parsedRules['BYSECOND']!
+              .split(',')
+              .map((String second) => int.parse(second.trim()))
+              .toList();
     }
 
     DaysOfTheWeek weekStart = DaysOfTheWeek.Monday;
@@ -121,7 +150,9 @@ class RecurrencePattern {
   }
 
   bool _isSameNormalizedDay(DateTime first, DateTime second) {
-    return first.year == second.year && first.month == second.month && first.day == second.day;
+    return first.year == second.year &&
+        first.month == second.month &&
+        first.day == second.day;
   }
 
   List<DateTime> generateOccurrences(DateTime start, {int? maxCount}) {
@@ -157,7 +188,8 @@ class RecurrencePattern {
     return occurrences;
   }
 
-  bool _isExcluded(DateTime date) => excludeDates.any((exDate) => _isSameNormalizedDay(date, exDate));
+  bool _isExcluded(DateTime date) =>
+      excludeDates.any((exDate) => _isSameNormalizedDay(date, exDate));
 
   bool _matchesRule(DateTime date, DateTime start) {
     //BYMONTH
@@ -245,7 +277,11 @@ class RecurrencePattern {
         }
       }
 
-      final nthOccurrence = DateTime(date.year, date.month, firstOfMonth.day + (position - 1) * 7);
+      final nthOccurrence = DateTime(
+        date.year,
+        date.month,
+        firstOfMonth.day + (position - 1) * 7,
+      );
       return nthOccurrence.month == date.month && nthOccurrence.day == date.day;
     } else {
       DateTime lastOfMonth = DateTime(date.year, date.month + 1, 0);
@@ -256,8 +292,14 @@ class RecurrencePattern {
         }
       }
 
-      final nthFromLastOccurrence = DateTime(date.year, date.month, lastOfMonth.day + (position + 1) * 7);
-      return nthFromLastOccurrence.month == date.month && nthFromLastOccurrence.day >= 1 && nthFromLastOccurrence.day == date.day;
+      final nthFromLastOccurrence = DateTime(
+        date.year,
+        date.month,
+        lastOfMonth.day + (position + 1) * 7,
+      );
+      return nthFromLastOccurrence.month == date.month &&
+          nthFromLastOccurrence.day >= 1 &&
+          nthFromLastOccurrence.day == date.day;
     }
   }
 
@@ -278,11 +320,14 @@ class RecurrencePattern {
         if (byDay != null) {
           return weeksDiff >= 0 && weeksDiff % interval == 0;
         } else {
-          return weeksDiff >= 0 && weeksDiff % interval == 0 && date.weekday == start.weekday;
+          return weeksDiff >= 0 &&
+              weeksDiff % interval == 0 &&
+              date.weekday == start.weekday;
         }
 
       case RRuleFrequency.Monthly:
-        final monthsDiff = (date.year - start.year) * 12 + (date.month - start.month);
+        final monthsDiff =
+            (date.year - start.year) * 12 + (date.month - start.month);
         return monthsDiff >= 0 && monthsDiff % interval == 0;
 
       case RRuleFrequency.Yearly:

@@ -5,17 +5,22 @@ import 'package:dailies/data/dao/generic_dao.dart';
 import 'package:dailies/data/mapper/model_mapper.dart';
 import 'package:dailies/data/models/app_model.dart';
 
-mixin RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseModel> {
+mixin RepositoryCRUDOperationsMixin<
+  TIncomingDatabaseModel,
+  TOutgoingDatabaseModel
+> {
   GenericDao<TIncomingDatabaseModel, TOutgoingDatabaseModel> get dao;
   ModelMapper<TIncomingDatabaseModel, TOutgoingDatabaseModel> get mapper;
 
   Future<Result<int>> insert(AppModel object) async {
-    final TOutgoingDatabaseModel insertObject = mapper.convertAppModelToOutgoingDatabaseModel(object);
+    final TOutgoingDatabaseModel insertObject = mapper
+        .convertAppModelToOutgoingDatabaseModel(object);
     return await guardedAsyncExcecute(() => dao.insertEntry(insertObject));
   }
 
   Future<Result<bool>> update(AppModel updatedObject) async {
-    final TOutgoingDatabaseModel insertObject = mapper.convertAppModelToOutgoingDatabaseModel(updatedObject);
+    final TOutgoingDatabaseModel insertObject = mapper
+        .convertAppModelToOutgoingDatabaseModel(updatedObject);
     return await guardedAsyncExcecute(() => dao.updateEntry(insertObject));
   }
 
@@ -24,11 +29,13 @@ mixin RepositoryCRUDOperationsMixin<TIncomingDatabaseModel, TOutgoingDatabaseMod
   }
 
   Future<Result<AppModel>> getEntryById(int id) async {
-    final Result<TIncomingDatabaseModel?> databaseResult = await guardedAsyncExcecute(() => dao.getEntryById(id));
+    final Result<TIncomingDatabaseModel?> databaseResult =
+        await guardedAsyncExcecute(() => dao.getEntryById(id));
 
     switch (databaseResult) {
       case Ok(value: final TIncomingDatabaseModel result):
-        final AppModel convertedResult = mapper.convertIncomingDatabaseModelToAppModel(result);
+        final AppModel convertedResult = mapper
+            .convertIncomingDatabaseModelToAppModel(result);
         return Result.ok(convertedResult);
 
       default:

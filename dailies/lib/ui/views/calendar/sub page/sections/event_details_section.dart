@@ -9,7 +9,10 @@ const String LOCATION_NAME_FIELD_TAG = 'locationNameField';
 class EventDetailsSection extends StatelessWidget {
   final GlobalKey<FormBuilderState> _formKey;
 
-  const EventDetailsSection({super.key, required GlobalKey<FormBuilderState> formKey}) : _formKey = formKey;
+  const EventDetailsSection({
+    super.key,
+    required GlobalKey<FormBuilderState> formKey,
+  }) : _formKey = formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +26,29 @@ class EventDetailsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Event Details', style: context.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
+              Text(
+                'Event Details',
+                style: context.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               UIFormating.smallVerticalSpacing(),
               FormBuilderTextField(
                 name: EVENT_NAME_FIELD_TAG,
-                decoration: const InputDecoration(labelText: 'Event Name', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                  labelText: 'Event Name',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => (value == null) ? 'Required' : null,
               ),
               UIFormating.mediumVerticalSpacing(),
-              FormBuilderTextField(name: LOCATION_NAME_FIELD_TAG, decoration: const InputDecoration(labelText: 'Location', border: OutlineInputBorder())),
+              FormBuilderTextField(
+                name: LOCATION_NAME_FIELD_TAG,
+                decoration: const InputDecoration(
+                  labelText: 'Location',
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ],
           ),
         ),

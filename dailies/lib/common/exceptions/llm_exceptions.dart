@@ -6,12 +6,17 @@ class NoAPIKeyException extends AppException {
 
 class InsufficientCreditsException extends AppException {
   //402
-  InsufficientCreditsException() : super(customErrorMessage: 'API Key insufficient credits');
+  InsufficientCreditsException()
+    : super(customErrorMessage: 'API Key insufficient credits');
 }
 
 class ModeratedContentException extends AppException {
   //403
-  ModeratedContentException(String contentModerated) : super(customErrorMessage: 'Input was flagged and moderated: $contentModerated');
+  ModeratedContentException(String contentModerated)
+    : super(
+        customErrorMessage:
+            'Input was flagged and moderated: $contentModerated',
+      );
 }
 
 class RateLimitedException extends AppException {

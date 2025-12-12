@@ -5,7 +5,12 @@ class DashboardNavigationBar extends StatelessWidget {
   final ValueChanged<int> onTap;
   final ColorScheme colorScheme;
 
-  const DashboardNavigationBar({super.key, required this.currentIndex, required this.onTap, required this.colorScheme});
+  const DashboardNavigationBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+    required this.colorScheme,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +25,27 @@ class DashboardNavigationBar extends StatelessWidget {
         currentIndex: currentIndex,
         selectedItemColor: colorScheme.primary,
         unselectedItemColor: colorScheme.onSurface.withAlpha(120),
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 11),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 11,
+        ),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded, size: 24), label: 'Overview'),
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_rounded, size: 24), label: 'Calendar'),
-          BottomNavigationBarItem(icon: Icon(Icons.file_upload_outlined, size: 24), label: 'Upload'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard_rounded, size: 24),
+            label: 'Overview',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_rounded, size: 24),
+            label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.file_upload_outlined, size: 24),
+            label: 'Upload',
+          ),
         ],
       ),
     );

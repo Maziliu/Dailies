@@ -10,9 +10,11 @@ class ParsedEventsViewModel extends ChangeNotifier with ErrorStreamMixin {
   final EventsViewModel _eventsViewModel;
   final ValueNotifier<List<Event>> foundEvents = ValueNotifier([]);
 
-  ParsedEventsViewModel({required EventRepositoryService eventRepositoryService, required EventsViewModel eventsViewModel})
-    : _eventRepositoryService = eventRepositoryService,
-      _eventsViewModel = eventsViewModel;
+  ParsedEventsViewModel({
+    required EventRepositoryService eventRepositoryService,
+    required EventsViewModel eventsViewModel,
+  }) : _eventRepositoryService = eventRepositoryService,
+       _eventsViewModel = eventsViewModel;
 
   Future<void> saveAllEvents() async {
     if (foundEvents.value.isEmpty) return;

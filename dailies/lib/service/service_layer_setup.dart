@@ -15,17 +15,34 @@ Future<void> setUpServiceLayer(GetIt injector) async {
   injector.registerLazySingleton(GlobalErrorService.new);
 
   //Repo Services
-  injector.registerLazySingleton(() => TimeSlotRepositoryService(timeSlotRepository: injector<TimeSlotRepository<DriftTimeSlot, DriftTimeSlotsCompanion>>()));
+  injector.registerLazySingleton(
+    () => TimeSlotRepositoryService(
+      timeSlotRepository:
+          injector<
+            TimeSlotRepository<DriftTimeSlot, DriftTimeSlotsCompanion>
+          >(),
+    ),
+  );
 
   injector.registerLazySingleton(
     () => EventRepositoryService(
       timeSlotService: injector<TimeSlotRepositoryService>(),
-      eventRepository: injector<EventRepository<DriftEvent, DriftEventsCompanion>>(),
+      eventRepository:
+          injector<EventRepository<DriftEvent, DriftEventsCompanion>>(),
       patternService: injector<TimeSlotPatternRepositoryService>(),
     ),
   );
 
-  injector.registerLazySingleton(() => StaminaRepositoryService(repository: injector<StaminaRepository<DriftStamina, DriftStaminasCompanion>>()));
+  injector.registerLazySingleton(
+    () => StaminaRepositoryService(
+      repository:
+          injector<StaminaRepository<DriftStamina, DriftStaminasCompanion>>(),
+    ),
+  );
 
-  injector.registerLazySingleton(() => TimeSlotPatternRepositoryService(patternRepository: injector<TimeSlotPatternRepository>()));
+  injector.registerLazySingleton(
+    () => TimeSlotPatternRepositoryService(
+      patternRepository: injector<TimeSlotPatternRepository>(),
+    ),
+  );
 }

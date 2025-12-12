@@ -6,7 +6,10 @@ class CalendarPageViewModel extends ChangeNotifier {
   final CalendarViewModel calendarViewModel;
   final EventsViewModel eventsViewModel;
 
-  CalendarPageViewModel({required this.calendarViewModel, required this.eventsViewModel}) {
+  CalendarPageViewModel({
+    required this.calendarViewModel,
+    required this.eventsViewModel,
+  }) {
     Future.microtask(_initialize);
   }
 

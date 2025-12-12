@@ -16,7 +16,12 @@ class StaminaWidget extends StatefulWidget {
   final Stamina _stamina;
   final void Function(Stamina) _onDelete;
 
-  const StaminaWidget({super.key, required Stamina stamina, required void Function(Stamina) onDelete}) : _stamina = stamina, _onDelete = onDelete;
+  const StaminaWidget({
+    super.key,
+    required Stamina stamina,
+    required void Function(Stamina) onDelete,
+  }) : _stamina = stamina,
+       _onDelete = onDelete;
 
   @override
   State<StaminaWidget> createState() => _StaminaWidgetState();
@@ -29,7 +34,10 @@ class _StaminaWidgetState extends State<StaminaWidget> {
   @override
   void initState() {
     super.initState();
-    viewModel = _StaminaWidgetViewModel(stamina: widget._stamina, staminaRepositoryService: injector<StaminaRepositoryService>());
+    viewModel = _StaminaWidgetViewModel(
+      stamina: widget._stamina,
+      staminaRepositoryService: injector<StaminaRepositoryService>(),
+    );
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       Future.microtask(() => viewModel.decrementTimer());
     });
@@ -43,7 +51,10 @@ class _StaminaWidgetState extends State<StaminaWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final String imageName = (viewModel._stamina.imageName ?? '').isEmpty ? 'waveplate.png' : viewModel._stamina.imageName!;
+    final String imageName =
+        (viewModel._stamina.imageName ?? '').isEmpty
+            ? 'waveplate.png'
+            : viewModel._stamina.imageName!;
     final String heroTag = '$SET_STAMINA_HERO_TAG/${widget._stamina.id}';
 
     final Stamina stamina = widget._stamina;
@@ -93,15 +104,26 @@ class _StaminaWidgetState extends State<StaminaWidget> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(width: 40, height: 40, child: Image.asset('assets/$imageName')),
+                  SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Image.asset('assets/$imageName'),
+                  ),
                   UIFormating.smallHorizontalSpacing(),
-                  Text(stamina.gachaTitle, style: context.textTheme.headlineLarge, overflow: TextOverflow.ellipsis),
+                  Text(
+                    stamina.gachaTitle,
+                    style: context.textTheme.headlineLarge,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
               ValueListenableBuilder<int>(
                 valueListenable: viewModel.currentStamina,
                 builder: (context, currentStamnina, _) {
-                  return Text('$currentStamnina / ${viewModel.maxStamina}', style: context.textTheme.headlineLarge);
+                  return Text(
+                    '$currentStamnina / ${viewModel.maxStamina}',
+                    style: context.textTheme.headlineLarge,
+                  );
                 },
               ),
             ],
@@ -118,11 +140,20 @@ class _StaminaWidgetViewModel extends ChangeNotifier {
   final Stamina _stamina;
   final StaminaRepositoryService _staminaRepositoryService;
 
-  _StaminaWidgetViewModel({required Stamina stamina, required StaminaRepositoryService staminaRepositoryService})
-    : _stamina = stamina,
-      _staminaRepositoryService = staminaRepositoryService {
-    currentStamina.value = _computeCurrentStamina(_stamina.rechargeTime, _stamina.timeOfLastReset, _stamina.staminaOfLastestReset);
-    _timeUntilNextStaminaInSeconds = _computeTimeUntilNextRefreshInSeconds(_stamina.rechargeTime, _stamina.timeOfLastReset);
+  _StaminaWidgetViewModel({
+    required Stamina stamina,
+    required StaminaRepositoryService staminaRepositoryService,
+  }) : _stamina = stamina,
+       _staminaRepositoryService = staminaRepositoryService {
+    currentStamina.value = _computeCurrentStamina(
+      _stamina.rechargeTime,
+      _stamina.timeOfLastReset,
+      _stamina.staminaOfLastestReset,
+    );
+    _timeUntilNextStaminaInSeconds = _computeTimeUntilNextRefreshInSeconds(
+      _stamina.rechargeTime,
+      _stamina.timeOfLastReset,
+    );
   }
 
   int get maxStamina => _stamina.maxStamina;
@@ -149,15 +180,28 @@ class _StaminaWidgetViewModel extends ChangeNotifier {
     currentStamina.value = stamina ?? 0;
   }
 
-  int _computeTimeUntilNextRefreshInSeconds(Duration rechargeTime, DateTime timeOfLastRecharge) {
-    final Duration timeSinceLastRecharge = DateTime.now().difference(timeOfLastRecharge);
-    final int secondsIntoCurrentCycle = timeSinceLastRecharge.inSeconds % rechargeTime.inSeconds;
+  int _computeTimeUntilNextRefreshInSeconds(
+    Duration rechargeTime,
+    DateTime timeOfLastRecharge,
+  ) {
+    final Duration timeSinceLastRecharge = DateTime.now().difference(
+      timeOfLastRecharge,
+    );
+    final int secondsIntoCurrentCycle =
+        timeSinceLastRecharge.inSeconds % rechargeTime.inSeconds;
 
     return rechargeTime.inSeconds - secondsIntoCurrentCycle;
   }
 
-  int _computeCurrentStamina(Duration rechargeTime, DateTime timeOfLastRecharge, int staminaOfLastReset) {
-    final Duration timeSinceLastRecharge = DateTime.now().difference(timeOfLastRecharge);
-    return (timeSinceLastRecharge.inSeconds / rechargeTime.inSeconds).floor() + staminaOfLastReset;
+  int _computeCurrentStamina(
+    Duration rechargeTime,
+    DateTime timeOfLastRecharge,
+    int staminaOfLastReset,
+  ) {
+    final Duration timeSinceLastRecharge = DateTime.now().difference(
+      timeOfLastRecharge,
+    );
+    return (timeSinceLastRecharge.inSeconds / rechargeTime.inSeconds).floor() +
+        staminaOfLastReset;
   }
 }

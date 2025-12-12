@@ -90,7 +90,7 @@ class DashboardNavigationBar extends StatelessWidget {
         elevation: 0,
         onTap: onTap,
         currentIndex: currentIndex,
-        selectedItemColor: colorScheme.secondary,
+        selectedItemColor: colorScheme.primary,
         unselectedItemColor: colorScheme.onSurface.withAlpha(120),
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w600,

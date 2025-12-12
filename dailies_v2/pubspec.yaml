@@ -32,6 +32,7 @@ dependencies:
   uuid: ^4.4.0
   drift: ^2.18.0
   sqlite3_flutter_libs: ^0.5.20
+  google_fonts: ^6.2.1
   flutter:
     sdk: flutter
 

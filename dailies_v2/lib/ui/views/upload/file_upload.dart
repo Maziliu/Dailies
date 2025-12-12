@@ -32,15 +32,19 @@ class FileUploadSection extends StatelessWidget {
           ValueListenableBuilder<List<PlatformFile>>(
             valueListenable: viewModel.uploadedFiles,
             builder: (context, files, _) {
-              return ItemList<PlatformFile>(
-                showEmptyState: false,
-                items: files,
-                itemBuilder: (file) {
-                  return FileListItem(
-                    file: file,
-                    onRemove: () => viewModel.removeUploadedFile(file),
-                  );
-                },
+              if (files.isEmpty) return SizedBox.shrink();
+
+              return Expanded(
+                child: ItemList<PlatformFile>(
+                  showEmptyState: false,
+                  items: files,
+                  itemBuilder: (file) {
+                    return FileListItem(
+                      file: file,
+                      onRemove: () => viewModel.removeUploadedFile(file),
+                    );
+                  },
+                ),
               );
             },
           ),

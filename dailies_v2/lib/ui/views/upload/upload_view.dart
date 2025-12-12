@@ -1,5 +1,6 @@
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/upload/file_upload.dart';
+import 'package:dailies_v2/ui/views/upload/parsed_section.dart';
 import 'package:flutter/material.dart';
 
 class UploadView extends StatelessWidget {
@@ -8,9 +9,15 @@ class UploadView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Padding(
         padding: UIFormating.mediumPadding(),
-        child: Column(spacing: 4, children: [FileUploadSection()]),
+        child: Column(
+          spacing: 4,
+          children: [
+            Flexible(flex: 2, child: FileUploadSection()),
+            Flexible(flex: 4, child: ParsedSection()),
+          ],
+        ),
       ),
     );
   }

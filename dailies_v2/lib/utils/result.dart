@@ -28,6 +28,10 @@ class DatabaseFailure extends Failure {
   DatabaseFailure(super.message);
 }
 
+class ConversionFailure extends Failure {
+  ConversionFailure(super.message);
+}
+
 class GenericFailure extends Failure {
   GenericFailure(super.message);
 }

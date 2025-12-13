@@ -15,12 +15,20 @@ class StaminaDao extends DatabaseAccessor<Database> with _$StaminaDaoMixin {
     return (delete(staminas)..where((s) => s.id.equals(id))).go();
   }
 
-  Future<void> spendOrZeroStamina(int staminaId, int? amount) {
-    return (update(staminas)..where((t) => t.id.equals(staminaId))).write(
-      StaminasCompanion(
-        staminaOfLastReset: Value(amount ?? 0),
-        timeOfLastReset: Value(DateTime.now().toUtc()),
-      ),
-    );
+  Future<Stamina> spendOrZeroStamina(int staminaId, int? amount) {
+    return transaction(() async {
+      final now = DateTime.now().toUtc();
+
+      await (update(staminas)..where((t) => t.id.equals(staminaId))).write(
+        StaminasCompanion(
+          staminaOfLastReset: Value(amount ?? 0),
+          timeOfLastReset: Value(now),
+        ),
+      );
+
+      return (select(
+        staminas,
+      )..where((t) => t.id.equals(staminaId))).getSingle();
+    });
   }
 }

@@ -42,4 +42,25 @@ class GachaViewModel extends ChangeNotifier {
         print(error.message);
     }
   }
+
+  void spendStamina(StaminaModel stamina, {int? amount}) async {
+    final Result<StaminaModel> result = await _staminaService.spendStamina(
+      stamina.id,
+      amount,
+    );
+
+    switch (result) {
+      case Ok<StaminaModel>(value: final updatedStamina):
+        final list = List<StaminaModel>.from(staminas.value);
+
+        final index = list.indexWhere((s) => s.id == stamina.id);
+        if (index == -1) return;
+
+        list[index] = updatedStamina;
+        staminas.value = list;
+
+      case Error<StaminaModel>(failure: final error):
+        print(error.message);
+    }
+  }
 }

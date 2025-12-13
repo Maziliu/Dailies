@@ -2,6 +2,7 @@ import 'package:dailies_v2/models/stamina.dart';
 import 'package:dailies_v2/ui/modals/add_gacha.dart';
 import 'package:dailies_v2/ui/state/gacha_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
+import 'package:dailies_v2/ui/views/widgets/item_list.dart';
 import 'package:dailies_v2/ui/views/widgets/section_card.dart';
 import 'package:dailies_v2/ui/views/widgets/stamina_list_item.dart';
 import 'package:flutter/material.dart';
@@ -67,19 +68,19 @@ class GachaSection extends StatelessWidget {
               ],
             ),
           ),
+
           ValueListenableBuilder<List<StaminaModel>>(
             valueListenable: viewModel.staminas,
             builder: (context, staminas, _) {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: staminas.length,
-                itemBuilder: (_, index) {
-                  final stamina = staminas[index];
-
+              return ItemList(
+                items: staminas,
+                itemBuilder: (stamina) {
                   return StaminaListItem(
-                    stamina,
-                    () => viewModel.deleteStamina(stamina),
+                    stamina: stamina,
+                    onDelete: () => viewModel.deleteStamina(stamina),
+                    onReset: () => viewModel.spendStamina(stamina),
+                    onSpend: (int amount) =>
+                        viewModel.spendStamina(stamina, amount: amount),
                   );
                 },
               );

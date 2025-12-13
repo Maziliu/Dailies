@@ -6,8 +6,16 @@ import 'package:flutter/material.dart';
 class StaminaListItem extends StatefulWidget {
   final StaminaModel stamina;
   final VoidCallback onDelete;
+  final VoidCallback onReset;
+  final void Function(int value) onSpend;
 
-  const StaminaListItem(this.stamina, this.onDelete, {super.key});
+  const StaminaListItem({
+    super.key,
+    required this.stamina,
+    required this.onDelete,
+    required this.onReset,
+    required this.onSpend,
+  });
 
   @override
   State<StaminaListItem> createState() => _StaminaListItemState();
@@ -23,6 +31,15 @@ class _StaminaListItemState extends State<StaminaListItem> {
   }
 
   @override
+  void didUpdateWidget(covariant StaminaListItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.stamina != widget.stamina) {
+      viewModel.updateModel(widget.stamina);
+    }
+  }
+
+  @override
   void dispose() {
     viewModel.dispose();
     super.dispose();
@@ -34,19 +51,18 @@ class _StaminaListItemState extends State<StaminaListItem> {
 
     return AnimatedBuilder(
       animation: viewModel,
-      builder: (_, child) {
+      builder: (_, _) {
         return InkWell(
           key: ValueKey(widget.stamina.id),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onDoubleTap: viewModel.resetStamina,
+          onDoubleTap: widget.onReset,
           onLongPress: () async {
-            final bool? result = await showDialog<bool>(
+            final result = await showDialog<bool>(
               context: context,
               builder: (_) => ConfirmationModal(
                 title: 'Delete ${widget.stamina.gachaTitle}?',
-                message:
-                    'Are you sure you want to delete ${widget.stamina.gachaTitle}? Deletion cannot be reversed.',
+                message: 'This action cannot be undone.',
                 confirmText: 'Delete',
                 destructive: true,
               ),
@@ -60,11 +76,25 @@ class _StaminaListItemState extends State<StaminaListItem> {
             elevation: 0,
             color: Colors.black26,
             child: Padding(
-              padding: EdgeInsetsGeometry.fromLTRB(8, 8, 16, 8),
+              padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  child ?? SizedBox.shrink(),
+                  Row(
+                    spacing: 8,
+                    children: [
+                      SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: Image.asset('assets/${viewModel.imageName}'),
+                      ),
+                      Text(
+                        widget.stamina.gachaTitle,
+                        style: theme.textTheme.headlineLarge,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                   Text(
                     '${viewModel.currentStamina} / ${viewModel.maxStamina}',
                     style: theme.textTheme.headlineLarge,
@@ -75,34 +105,19 @@ class _StaminaListItemState extends State<StaminaListItem> {
           ),
         );
       },
-      child: Row(
-        spacing: 8,
-        children: [
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: Image.asset('assets/${viewModel.imageName}'),
-          ),
-          Text(
-            widget.stamina.gachaTitle,
-            style: theme.textTheme.headlineLarge,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
     );
   }
 }
 
 class StaminaListItemViewModel extends ChangeNotifier {
-  final StaminaModel _stamina;
+  StaminaModel _stamina;
   Timer? _timer;
 
   int _currentStamina = 0;
   int _timeUntilNextStamina = 0;
 
   StaminaListItemViewModel(this._stamina) {
-    _recomputeFromModel();
+    _recompute();
   }
 
   int get currentStamina => _currentStamina;
@@ -116,27 +131,13 @@ class StaminaListItemViewModel extends ChangeNotifier {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
   }
 
-  void resetStamina({int value = 0}) {
-    _stamina
-      ..staminaOfLastestReset = value
-      ..timeOfLastReset = DateTime.now();
-
-    _recomputeFromModel();
-    notifyListeners();
-  }
-
-  void spendStamina(int? value) {
-    _stamina
-      ..staminaOfLastestReset = value ?? 0
-      ..timeOfLastReset = DateTime.now();
-
-    _recomputeFromModel();
+  void updateModel(StaminaModel stamina) {
+    _stamina = stamina;
+    _recompute();
     notifyListeners();
   }
 
   void _tick() {
-    if (_currentStamina >= maxStamina) return;
-
     if (_timeUntilNextStamina > 0) {
       _timeUntilNextStamina--;
     } else {
@@ -146,7 +147,7 @@ class StaminaListItemViewModel extends ChangeNotifier {
     }
   }
 
-  void _recomputeFromModel() {
+  void _recompute() {
     final now = DateTime.now();
     final elapsed = now.difference(_stamina.timeOfLastReset).inSeconds;
     final rechargeSeconds = _stamina.rechargeTime.inSeconds;

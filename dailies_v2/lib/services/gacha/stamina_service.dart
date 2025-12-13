@@ -13,10 +13,16 @@ class StaminaService {
     );
   }
 
-  Future<Result<void>> spendStamina(int staminaId, int? amount) async {
+  Future<Result<StaminaModel>> spendStamina(int? staminaId, int? amount) async {
     if (amount != null && amount <= 0) {
       return Result.error(
         ValidationFailure("Stamina amount must be greater than 0 or null"),
+      );
+    }
+
+    if (staminaId == null) {
+      return Result.error(
+        ValidationFailure("Stamina id in null. Must be positive or zero"),
       );
     }
 
@@ -28,10 +34,27 @@ class StaminaService {
       );
     }
 
-    return guardedAsyncExecute(
-      () => _dao.spendOrZeroStamina(staminaId, amount),
-      DatabaseFailure("Failed to spend $amount stamina of id: $staminaId"),
-    );
+    Stamina result;
+
+    try {
+      result = await _dao.spendOrZeroStamina(staminaId, amount);
+    } catch (e) {
+      return Result.error(
+        DatabaseFailure(
+          "Failed to spend stamina id: $staminaId ${e.toString()}",
+        ),
+      );
+    }
+
+    try {
+      return Result.ok(result.toModel());
+    } catch (e) {
+      return Result.error(
+        ConversionFailure(
+          "Failed to convert stamina id: $staminaId to model ${e.toString()}",
+        ),
+      );
+    }
   }
 
   Future<Result<void>> deleteStamina(int? staminaId) async {

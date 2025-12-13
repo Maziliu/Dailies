@@ -39,7 +39,7 @@ class GachaSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     return SectionCard(
-      padding: EdgeInsetsGeometry.fromLTRB(16, 12, 16, 16),
+      padding: EdgeInsetsGeometry.fromLTRB(16, 12, 16, 12),
       child: Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,

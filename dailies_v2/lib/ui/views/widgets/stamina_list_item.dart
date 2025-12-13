@@ -154,10 +154,7 @@ class StaminaListItemViewModel extends ChangeNotifier {
 
     final gained = elapsed ~/ rechargeSeconds;
 
-    _currentStamina = (_stamina.staminaOfLastestReset + gained).clamp(
-      0,
-      maxStamina,
-    );
+    _currentStamina = _stamina.staminaOfLastestReset + gained;
 
     _timeUntilNextStamina = rechargeSeconds - (elapsed % rechargeSeconds);
   }

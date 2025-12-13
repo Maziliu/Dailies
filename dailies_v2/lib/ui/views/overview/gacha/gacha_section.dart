@@ -41,52 +41,53 @@ class GachaSection extends StatelessWidget {
 
     return SectionCard(
       padding: EdgeInsetsGeometry.fromLTRB(16, 12, 16, 12),
-      child: Column(
-        spacing: 8,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsetsGeometry.only(left: 4, right: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Gachas', style: theme.textTheme.headlineLarge),
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: IconButton(
-                    onPressed: () => showAddStaminaDialog(context),
-                    icon: Icon(
-                      Icons.add,
-                      size: 24,
-                      color: theme.colorScheme.primary,
+      child: ValueListenableBuilder<List<StaminaModel>>(
+        valueListenable: viewModel.staminas,
+        builder: (context, staminas, _) {
+          return Column(
+            spacing: 8,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsetsGeometry.only(left: 4, right: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Gachas', style: theme.textTheme.headlineLarge),
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: IconButton(
+                        onPressed: () => showAddStaminaDialog(context),
+                        icon: Icon(
+                          Icons.add,
+                          size: 24,
+                          color: theme.colorScheme.primary,
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
                     ),
-                    padding: EdgeInsets.zero,
-                    constraints: const BoxConstraints(),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          ValueListenableBuilder<List<StaminaModel>>(
-            valueListenable: viewModel.staminas,
-            builder: (context, staminas, _) {
-              return ItemList(
-                items: staminas,
-                itemBuilder: (stamina) {
-                  return StaminaListItem(
-                    stamina: stamina,
-                    onDelete: () => viewModel.deleteStamina(stamina),
-                    onReset: () => viewModel.spendStamina(stamina),
-                    onSpend: (int amount) =>
-                        viewModel.spendStamina(stamina, amount: amount),
-                  );
-                },
-              );
-            },
-          ),
-        ],
+              if (staminas.isNotEmpty)
+                ItemList(
+                  items: staminas,
+                  itemBuilder: (stamina) {
+                    return StaminaListItem(
+                      stamina: stamina,
+                      onDelete: () => viewModel.deleteStamina(stamina),
+                      onReset: () => viewModel.spendStamina(stamina),
+                      onSpend: (int amount) =>
+                          viewModel.spendStamina(stamina, amount: amount),
+                    );
+                  },
+                ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -29,6 +29,8 @@ class GachaSection extends StatelessWidget {
     );
 
     if (result == null) return;
+
+    viewModel.insertStamina(result);
   }
 
   @override

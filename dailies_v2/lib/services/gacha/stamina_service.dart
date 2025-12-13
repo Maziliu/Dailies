@@ -14,6 +14,20 @@ class StaminaService {
   }
 
   Future<Result<void>> spendStamina(int staminaId, int? amount) async {
+    if (amount != null && amount <= 0) {
+      return Result.error(
+        ValidationFailure("Stamina amount must be greater than 0 or null"),
+      );
+    }
+
+    if (staminaId < 0) {
+      return Result.error(
+        ValidationFailure(
+          "Stamina id: $staminaId is invalid. Must be positive or zero",
+        ),
+      );
+    }
+
     return guardedAsyncExecute(
       () => _dao.spendOrZeroStamina(staminaId, amount),
       DatabaseFailure("Failed to spend $amount stamina of id: $staminaId"),
@@ -21,6 +35,14 @@ class StaminaService {
   }
 
   Future<Result<void>> deleteStamina(int staminaId) async {
+    if (staminaId < 0) {
+      return Result.error(
+        ValidationFailure(
+          "Stamina id: $staminaId is invalid. Must be positive or zero",
+        ),
+      );
+    }
+
     return guardedAsyncExecute(
       () => _dao.deleteStamina(staminaId),
       DatabaseFailure("Failed to delete stamina id: $staminaId"),

@@ -6,7 +6,9 @@ import 'package:dailies_v2/ui/views/widgets/section_card.dart';
 import 'package:flutter/material.dart';
 
 class GachaSection extends StatelessWidget {
-  const GachaSection({super.key});
+  final GachaViewModel viewModel = GACHA_VIEW_MODEL;
+
+  GachaSection({super.key});
 
   Future<void> showAddStaminaDialog(BuildContext context) async {
     final result = await showDialog<StaminaModel>(
@@ -32,7 +34,7 @@ class GachaSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final GachaViewModel viewModel = GACHA_VIEW_MODEL;
+
     return SectionCard(
       padding: EdgeInsetsGeometry.fromLTRB(12, 0, 4, 0),
       child: Column(

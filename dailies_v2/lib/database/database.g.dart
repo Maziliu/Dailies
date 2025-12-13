@@ -1096,16 +1096,491 @@ class CalendarsCompanion extends UpdateCompanion<Calendar> {
   }
 }
 
+class $StaminasTable extends Staminas with TableInfo<$StaminasTable, Stamina> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $StaminasTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _imageNameMeta = const VerificationMeta(
+    'imageName',
+  );
+  @override
+  late final GeneratedColumn<String> imageName = GeneratedColumn<String>(
+    'image_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _rechargeTimeMeta = const VerificationMeta(
+    'rechargeTime',
+  );
+  @override
+  late final GeneratedColumn<int> rechargeTime = GeneratedColumn<int>(
+    'recharge_time',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _maxStaminaMeta = const VerificationMeta(
+    'maxStamina',
+  );
+  @override
+  late final GeneratedColumn<int> maxStamina = GeneratedColumn<int>(
+    'max_stamina',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _staminaOfLastResetMeta =
+      const VerificationMeta('staminaOfLastReset');
+  @override
+  late final GeneratedColumn<int> staminaOfLastReset = GeneratedColumn<int>(
+    'stamina_of_last_reset',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _timeOfLastResetMeta = const VerificationMeta(
+    'timeOfLastReset',
+  );
+  @override
+  late final GeneratedColumn<DateTime> timeOfLastReset =
+      GeneratedColumn<DateTime>(
+        'time_of_last_reset',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    imageName,
+    rechargeTime,
+    maxStamina,
+    staminaOfLastReset,
+    timeOfLastReset,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'staminas';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Stamina> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('image_name')) {
+      context.handle(
+        _imageNameMeta,
+        imageName.isAcceptableOrUnknown(data['image_name']!, _imageNameMeta),
+      );
+    }
+    if (data.containsKey('recharge_time')) {
+      context.handle(
+        _rechargeTimeMeta,
+        rechargeTime.isAcceptableOrUnknown(
+          data['recharge_time']!,
+          _rechargeTimeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_rechargeTimeMeta);
+    }
+    if (data.containsKey('max_stamina')) {
+      context.handle(
+        _maxStaminaMeta,
+        maxStamina.isAcceptableOrUnknown(data['max_stamina']!, _maxStaminaMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_maxStaminaMeta);
+    }
+    if (data.containsKey('stamina_of_last_reset')) {
+      context.handle(
+        _staminaOfLastResetMeta,
+        staminaOfLastReset.isAcceptableOrUnknown(
+          data['stamina_of_last_reset']!,
+          _staminaOfLastResetMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_staminaOfLastResetMeta);
+    }
+    if (data.containsKey('time_of_last_reset')) {
+      context.handle(
+        _timeOfLastResetMeta,
+        timeOfLastReset.isAcceptableOrUnknown(
+          data['time_of_last_reset']!,
+          _timeOfLastResetMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_timeOfLastResetMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Stamina map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Stamina(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      imageName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image_name'],
+      ),
+      rechargeTime: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}recharge_time'],
+      )!,
+      maxStamina: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}max_stamina'],
+      )!,
+      staminaOfLastReset: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}stamina_of_last_reset'],
+      )!,
+      timeOfLastReset: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}time_of_last_reset'],
+      )!,
+    );
+  }
+
+  @override
+  $StaminasTable createAlias(String alias) {
+    return $StaminasTable(attachedDatabase, alias);
+  }
+}
+
+class Stamina extends DataClass implements Insertable<Stamina> {
+  final int id;
+  final String title;
+  final String? imageName;
+  final int rechargeTime;
+  final int maxStamina;
+  final int staminaOfLastReset;
+  final DateTime timeOfLastReset;
+  const Stamina({
+    required this.id,
+    required this.title,
+    this.imageName,
+    required this.rechargeTime,
+    required this.maxStamina,
+    required this.staminaOfLastReset,
+    required this.timeOfLastReset,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
+    if (!nullToAbsent || imageName != null) {
+      map['image_name'] = Variable<String>(imageName);
+    }
+    map['recharge_time'] = Variable<int>(rechargeTime);
+    map['max_stamina'] = Variable<int>(maxStamina);
+    map['stamina_of_last_reset'] = Variable<int>(staminaOfLastReset);
+    map['time_of_last_reset'] = Variable<DateTime>(timeOfLastReset);
+    return map;
+  }
+
+  StaminasCompanion toCompanion(bool nullToAbsent) {
+    return StaminasCompanion(
+      id: Value(id),
+      title: Value(title),
+      imageName: imageName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageName),
+      rechargeTime: Value(rechargeTime),
+      maxStamina: Value(maxStamina),
+      staminaOfLastReset: Value(staminaOfLastReset),
+      timeOfLastReset: Value(timeOfLastReset),
+    );
+  }
+
+  factory Stamina.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Stamina(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      imageName: serializer.fromJson<String?>(json['imageName']),
+      rechargeTime: serializer.fromJson<int>(json['rechargeTime']),
+      maxStamina: serializer.fromJson<int>(json['maxStamina']),
+      staminaOfLastReset: serializer.fromJson<int>(json['staminaOfLastReset']),
+      timeOfLastReset: serializer.fromJson<DateTime>(json['timeOfLastReset']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'imageName': serializer.toJson<String?>(imageName),
+      'rechargeTime': serializer.toJson<int>(rechargeTime),
+      'maxStamina': serializer.toJson<int>(maxStamina),
+      'staminaOfLastReset': serializer.toJson<int>(staminaOfLastReset),
+      'timeOfLastReset': serializer.toJson<DateTime>(timeOfLastReset),
+    };
+  }
+
+  Stamina copyWith({
+    int? id,
+    String? title,
+    Value<String?> imageName = const Value.absent(),
+    int? rechargeTime,
+    int? maxStamina,
+    int? staminaOfLastReset,
+    DateTime? timeOfLastReset,
+  }) => Stamina(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    imageName: imageName.present ? imageName.value : this.imageName,
+    rechargeTime: rechargeTime ?? this.rechargeTime,
+    maxStamina: maxStamina ?? this.maxStamina,
+    staminaOfLastReset: staminaOfLastReset ?? this.staminaOfLastReset,
+    timeOfLastReset: timeOfLastReset ?? this.timeOfLastReset,
+  );
+  Stamina copyWithCompanion(StaminasCompanion data) {
+    return Stamina(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      imageName: data.imageName.present ? data.imageName.value : this.imageName,
+      rechargeTime: data.rechargeTime.present
+          ? data.rechargeTime.value
+          : this.rechargeTime,
+      maxStamina: data.maxStamina.present
+          ? data.maxStamina.value
+          : this.maxStamina,
+      staminaOfLastReset: data.staminaOfLastReset.present
+          ? data.staminaOfLastReset.value
+          : this.staminaOfLastReset,
+      timeOfLastReset: data.timeOfLastReset.present
+          ? data.timeOfLastReset.value
+          : this.timeOfLastReset,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Stamina(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('imageName: $imageName, ')
+          ..write('rechargeTime: $rechargeTime, ')
+          ..write('maxStamina: $maxStamina, ')
+          ..write('staminaOfLastReset: $staminaOfLastReset, ')
+          ..write('timeOfLastReset: $timeOfLastReset')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    title,
+    imageName,
+    rechargeTime,
+    maxStamina,
+    staminaOfLastReset,
+    timeOfLastReset,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Stamina &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.imageName == this.imageName &&
+          other.rechargeTime == this.rechargeTime &&
+          other.maxStamina == this.maxStamina &&
+          other.staminaOfLastReset == this.staminaOfLastReset &&
+          other.timeOfLastReset == this.timeOfLastReset);
+}
+
+class StaminasCompanion extends UpdateCompanion<Stamina> {
+  final Value<int> id;
+  final Value<String> title;
+  final Value<String?> imageName;
+  final Value<int> rechargeTime;
+  final Value<int> maxStamina;
+  final Value<int> staminaOfLastReset;
+  final Value<DateTime> timeOfLastReset;
+  const StaminasCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.imageName = const Value.absent(),
+    this.rechargeTime = const Value.absent(),
+    this.maxStamina = const Value.absent(),
+    this.staminaOfLastReset = const Value.absent(),
+    this.timeOfLastReset = const Value.absent(),
+  });
+  StaminasCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
+    this.imageName = const Value.absent(),
+    required int rechargeTime,
+    required int maxStamina,
+    required int staminaOfLastReset,
+    required DateTime timeOfLastReset,
+  }) : title = Value(title),
+       rechargeTime = Value(rechargeTime),
+       maxStamina = Value(maxStamina),
+       staminaOfLastReset = Value(staminaOfLastReset),
+       timeOfLastReset = Value(timeOfLastReset);
+  static Insertable<Stamina> custom({
+    Expression<int>? id,
+    Expression<String>? title,
+    Expression<String>? imageName,
+    Expression<int>? rechargeTime,
+    Expression<int>? maxStamina,
+    Expression<int>? staminaOfLastReset,
+    Expression<DateTime>? timeOfLastReset,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (imageName != null) 'image_name': imageName,
+      if (rechargeTime != null) 'recharge_time': rechargeTime,
+      if (maxStamina != null) 'max_stamina': maxStamina,
+      if (staminaOfLastReset != null)
+        'stamina_of_last_reset': staminaOfLastReset,
+      if (timeOfLastReset != null) 'time_of_last_reset': timeOfLastReset,
+    });
+  }
+
+  StaminasCompanion copyWith({
+    Value<int>? id,
+    Value<String>? title,
+    Value<String?>? imageName,
+    Value<int>? rechargeTime,
+    Value<int>? maxStamina,
+    Value<int>? staminaOfLastReset,
+    Value<DateTime>? timeOfLastReset,
+  }) {
+    return StaminasCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      imageName: imageName ?? this.imageName,
+      rechargeTime: rechargeTime ?? this.rechargeTime,
+      maxStamina: maxStamina ?? this.maxStamina,
+      staminaOfLastReset: staminaOfLastReset ?? this.staminaOfLastReset,
+      timeOfLastReset: timeOfLastReset ?? this.timeOfLastReset,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (imageName.present) {
+      map['image_name'] = Variable<String>(imageName.value);
+    }
+    if (rechargeTime.present) {
+      map['recharge_time'] = Variable<int>(rechargeTime.value);
+    }
+    if (maxStamina.present) {
+      map['max_stamina'] = Variable<int>(maxStamina.value);
+    }
+    if (staminaOfLastReset.present) {
+      map['stamina_of_last_reset'] = Variable<int>(staminaOfLastReset.value);
+    }
+    if (timeOfLastReset.present) {
+      map['time_of_last_reset'] = Variable<DateTime>(timeOfLastReset.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StaminasCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('imageName: $imageName, ')
+          ..write('rechargeTime: $rechargeTime, ')
+          ..write('maxStamina: $maxStamina, ')
+          ..write('staminaOfLastReset: $staminaOfLastReset, ')
+          ..write('timeOfLastReset: $timeOfLastReset')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
   late final $EventsTable events = $EventsTable(this);
   late final $CalendarsTable calendars = $CalendarsTable(this);
+  late final $StaminasTable staminas = $StaminasTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [events, calendars];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    events,
+    calendars,
+    staminas,
+  ];
 }
 
 typedef $$EventsTableCreateCompanionBuilder =
@@ -1640,6 +2115,240 @@ typedef $$CalendarsTableProcessedTableManager =
       Calendar,
       PrefetchHooks Function()
     >;
+typedef $$StaminasTableCreateCompanionBuilder =
+    StaminasCompanion Function({
+      Value<int> id,
+      required String title,
+      Value<String?> imageName,
+      required int rechargeTime,
+      required int maxStamina,
+      required int staminaOfLastReset,
+      required DateTime timeOfLastReset,
+    });
+typedef $$StaminasTableUpdateCompanionBuilder =
+    StaminasCompanion Function({
+      Value<int> id,
+      Value<String> title,
+      Value<String?> imageName,
+      Value<int> rechargeTime,
+      Value<int> maxStamina,
+      Value<int> staminaOfLastReset,
+      Value<DateTime> timeOfLastReset,
+    });
+
+class $$StaminasTableFilterComposer
+    extends Composer<_$Database, $StaminasTable> {
+  $$StaminasTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get imageName => $composableBuilder(
+    column: $table.imageName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get rechargeTime => $composableBuilder(
+    column: $table.rechargeTime,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get maxStamina => $composableBuilder(
+    column: $table.maxStamina,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get staminaOfLastReset => $composableBuilder(
+    column: $table.staminaOfLastReset,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get timeOfLastReset => $composableBuilder(
+    column: $table.timeOfLastReset,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$StaminasTableOrderingComposer
+    extends Composer<_$Database, $StaminasTable> {
+  $$StaminasTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get imageName => $composableBuilder(
+    column: $table.imageName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get rechargeTime => $composableBuilder(
+    column: $table.rechargeTime,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get maxStamina => $composableBuilder(
+    column: $table.maxStamina,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get staminaOfLastReset => $composableBuilder(
+    column: $table.staminaOfLastReset,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get timeOfLastReset => $composableBuilder(
+    column: $table.timeOfLastReset,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$StaminasTableAnnotationComposer
+    extends Composer<_$Database, $StaminasTable> {
+  $$StaminasTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get imageName =>
+      $composableBuilder(column: $table.imageName, builder: (column) => column);
+
+  GeneratedColumn<int> get rechargeTime => $composableBuilder(
+    column: $table.rechargeTime,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get maxStamina => $composableBuilder(
+    column: $table.maxStamina,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get staminaOfLastReset => $composableBuilder(
+    column: $table.staminaOfLastReset,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get timeOfLastReset => $composableBuilder(
+    column: $table.timeOfLastReset,
+    builder: (column) => column,
+  );
+}
+
+class $$StaminasTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $StaminasTable,
+          Stamina,
+          $$StaminasTableFilterComposer,
+          $$StaminasTableOrderingComposer,
+          $$StaminasTableAnnotationComposer,
+          $$StaminasTableCreateCompanionBuilder,
+          $$StaminasTableUpdateCompanionBuilder,
+          (Stamina, BaseReferences<_$Database, $StaminasTable, Stamina>),
+          Stamina,
+          PrefetchHooks Function()
+        > {
+  $$StaminasTableTableManager(_$Database db, $StaminasTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$StaminasTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$StaminasTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$StaminasTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String?> imageName = const Value.absent(),
+                Value<int> rechargeTime = const Value.absent(),
+                Value<int> maxStamina = const Value.absent(),
+                Value<int> staminaOfLastReset = const Value.absent(),
+                Value<DateTime> timeOfLastReset = const Value.absent(),
+              }) => StaminasCompanion(
+                id: id,
+                title: title,
+                imageName: imageName,
+                rechargeTime: rechargeTime,
+                maxStamina: maxStamina,
+                staminaOfLastReset: staminaOfLastReset,
+                timeOfLastReset: timeOfLastReset,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String title,
+                Value<String?> imageName = const Value.absent(),
+                required int rechargeTime,
+                required int maxStamina,
+                required int staminaOfLastReset,
+                required DateTime timeOfLastReset,
+              }) => StaminasCompanion.insert(
+                id: id,
+                title: title,
+                imageName: imageName,
+                rechargeTime: rechargeTime,
+                maxStamina: maxStamina,
+                staminaOfLastReset: staminaOfLastReset,
+                timeOfLastReset: timeOfLastReset,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$StaminasTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $StaminasTable,
+      Stamina,
+      $$StaminasTableFilterComposer,
+      $$StaminasTableOrderingComposer,
+      $$StaminasTableAnnotationComposer,
+      $$StaminasTableCreateCompanionBuilder,
+      $$StaminasTableUpdateCompanionBuilder,
+      (Stamina, BaseReferences<_$Database, $StaminasTable, Stamina>),
+      Stamina,
+      PrefetchHooks Function()
+    >;
 
 class $DatabaseManager {
   final _$Database _db;
@@ -1648,4 +2357,6 @@ class $DatabaseManager {
       $$EventsTableTableManager(_db, _db.events);
   $$CalendarsTableTableManager get calendars =>
       $$CalendarsTableTableManager(_db, _db.calendars);
+  $$StaminasTableTableManager get staminas =>
+      $$StaminasTableTableManager(_db, _db.staminas);
 }

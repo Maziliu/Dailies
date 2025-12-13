@@ -12,6 +12,7 @@ class GachaViewModel extends ChangeNotifier {
 
     switch (result) {
       case Ok<int>(value: int id):
+        stamina.id = id;
         staminas.value = [...staminas.value, stamina];
         print("Inserted $id");
 
@@ -27,5 +28,18 @@ class GachaViewModel extends ChangeNotifier {
 
   Future<void> loadAllStaminas() async {}
 
-  void deleteStamina(StaminaModel stamina) async {}
+  void deleteStamina(StaminaModel stamina) async {
+    final Result<void> result = await _staminaService.deleteStamina(stamina.id);
+
+    switch (result) {
+      case Ok<void>():
+        staminas.value = staminas.value
+            .where((s) => s.id != stamina.id)
+            .toList();
+        print("Deleted ${stamina.id} ${stamina.gachaTitle}");
+
+      case Error<void>(failure: Failure error):
+        print(error.message);
+    }
+  }
 }

@@ -77,7 +77,10 @@ class GachaSection extends StatelessWidget {
                 itemBuilder: (_, index) {
                   final stamina = staminas[index];
 
-                  return StaminaListItem(stamina, viewModel.deleteStamina);
+                  return StaminaListItem(
+                    stamina,
+                    () => viewModel.deleteStamina(stamina),
+                  );
                 },
               );
             },

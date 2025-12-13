@@ -2,7 +2,7 @@ import 'package:dailies_v2/database/database.dart';
 import 'package:drift/drift.dart';
 
 class StaminaModel {
-  final int? id;
+  int? id;
   final Duration _rechargeTime;
   final int _maxStamina;
   final String _gachaTitle;

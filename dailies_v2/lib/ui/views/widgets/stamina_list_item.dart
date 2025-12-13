@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:dailies_v2/models/stamina.dart';
-import 'package:dailies_v2/ui/theme/standards.dart';
+import 'package:dailies_v2/ui/modals/confirmation_modal.dart';
 import 'package:flutter/material.dart';
 
 class StaminaListItem extends StatefulWidget {
   final StaminaModel stamina;
-  final void Function(StaminaModel) onDelete;
+  final VoidCallback onDelete;
 
   const StaminaListItem(this.stamina, this.onDelete, {super.key});
 
@@ -40,6 +40,22 @@ class _StaminaListItemState extends State<StaminaListItem> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           onDoubleTap: viewModel.resetStamina,
+          onLongPress: () async {
+            final bool? result = await showDialog<bool>(
+              context: context,
+              builder: (_) => ConfirmationModal(
+                title: 'Delete ${widget.stamina.gachaTitle}?',
+                message:
+                    'Are you sure you want to delete ${widget.stamina.gachaTitle}? Deletion cannot be reversed.',
+                confirmText: 'Delete',
+                destructive: true,
+              ),
+            );
+
+            if (result == null || result == false) return;
+
+            widget.onDelete();
+          },
           child: Card(
             elevation: 0,
             color: Colors.black26,

@@ -34,7 +34,13 @@ class StaminaService {
     );
   }
 
-  Future<Result<void>> deleteStamina(int staminaId) async {
+  Future<Result<void>> deleteStamina(int? staminaId) async {
+    if (staminaId == null) {
+      return Result.error(
+        ValidationFailure("Stamina id is null. Must be positive or zero"),
+      );
+    }
+
     if (staminaId < 0) {
       return Result.error(
         ValidationFailure(

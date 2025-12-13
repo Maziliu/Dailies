@@ -12,6 +12,7 @@ class GachaViewModel extends ChangeNotifier {
 
     switch (result) {
       case Ok<int>(value: int id):
+        staminas.value = [...staminas.value, stamina];
         print("Inserted $id");
 
       case Error<int>():

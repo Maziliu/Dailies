@@ -1,7 +1,7 @@
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/state/upload_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
-import 'package:dailies_v2/ui/views/widgets/file_widget.dart';
+import 'package:dailies_v2/ui/views/widgets/file_list_item.dart';
 import 'package:dailies_v2/ui/views/widgets/item_list.dart';
 import 'package:dailies_v2/ui/views/widgets/section_card.dart';
 import 'package:file_picker/file_picker.dart';

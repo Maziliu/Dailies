@@ -37,7 +37,7 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
               children: [
                 Center(
                   child: Text(
-                    'Create New Gacha Widget',
+                    'Create New Gacha',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurface,
@@ -126,13 +126,16 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
 
                 UIFormating.mediumVerticalSpacing(),
 
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
-                    foregroundColor: theme.colorScheme.onPrimary,
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
+                    ),
+                    onPressed: _submit,
+                    child: const Text('Create'),
                   ),
-                  onPressed: _submit,
-                  child: const Text('Track Gacha'),
                 ),
               ],
             ),

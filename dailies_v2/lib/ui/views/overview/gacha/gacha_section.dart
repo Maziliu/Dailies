@@ -1,5 +1,7 @@
 import 'package:dailies_v2/models/stamina.dart';
-import 'package:dailies_v2/ui/modals/add_gacha.dart';
+import 'package:dailies_v2/ui/modals/add_stamina.dart';
+import 'package:dailies_v2/ui/modals/confirmation.dart';
+import 'package:dailies_v2/ui/modals/spend_stamina.dart';
 import 'package:dailies_v2/ui/state/gacha_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/views/widgets/item_list.dart';
@@ -78,10 +80,44 @@ class GachaSection extends StatelessWidget {
                   itemBuilder: (stamina) {
                     return StaminaListItem(
                       stamina: stamina,
-                      onDelete: () => viewModel.deleteStamina(stamina),
+                      onDelete: () async {
+                        final result = await showDialog<bool>(
+                          context: context,
+                          builder: (_) => ConfirmationModal(
+                            title: 'Delete ${stamina.gachaTitle}?',
+                            message: 'This action cannot be undone.',
+                            confirmText: 'Delete',
+                            destructive: true,
+                          ),
+                        );
+
+                        if (result == null || result == false) return;
+
+                        viewModel.deleteStamina(stamina);
+                      },
                       onReset: () => viewModel.spendStamina(stamina),
-                      onSpend: (int amount) =>
-                          viewModel.spendStamina(stamina, amount: amount),
+                      onSpend: () async {
+                        final int? amount = await showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (context) {
+                            return Dialog(
+                              insetPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 24,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const SpendStaminaModal(),
+                            );
+                          },
+                        );
+
+                        if (amount == null) return;
+
+                        viewModel.spendStamina(stamina, amount: amount);
+                      },
                     );
                   },
                 ),

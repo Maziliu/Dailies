@@ -1,4 +1,4 @@
-import 'package:dailies_v2/models/event_model.dart';
+import 'package:dailies_v2/models/event.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 

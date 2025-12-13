@@ -14,3 +14,22 @@ String formatFileSize(int bytes) {
   }
   return '${(bytes / (1000 * 1000 * 1000)).toStringAsFixed(1)} GB';
 }
+
+String formatAssetName(String filename) {
+  final nameWithoutExtension = filename.split('.').first;
+
+  final noUnderscoresOrNonAlphaNumeric = nameWithoutExtension.replaceAll(
+    RegExp(r'[^a-zA-Z0-9]+'),
+    ' ',
+  );
+
+  final words = noUnderscoresOrNonAlphaNumeric
+      .split(' ')
+      .where((word) => word.isNotEmpty);
+
+  final capitalizedWords = words.map(
+    (word) => word[0].toUpperCase() + word.substring(1).toLowerCase(),
+  );
+
+  return capitalizedWords.join(' ');
+}

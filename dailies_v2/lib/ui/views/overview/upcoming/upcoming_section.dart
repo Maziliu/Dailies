@@ -1,4 +1,4 @@
-import 'package:dailies_v2/models/event_model.dart';
+import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/views/overview/overview_view.dart';
 import 'package:dailies_v2/ui/views/widgets/item_list.dart';
 import 'package:dailies_v2/ui/views/widgets/schedule_list_item.dart';

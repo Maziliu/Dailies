@@ -1,4 +1,4 @@
-class GachaStaminaModel {
+class StaminaModel {
   final int? id;
   final Duration _rechargeTime;
   final int _maxStamina;
@@ -7,8 +7,8 @@ class GachaStaminaModel {
   DateTime timeOfLastReset;
   int staminaOfLastestReset;
 
-  GachaStaminaModel({
-    required this.id,
+  StaminaModel({
+    this.id,
     required Duration rechargeTime,
     required int maxStamina,
     required String gachaTitle,

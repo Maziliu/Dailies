@@ -19,7 +19,6 @@ class OverviewView extends StatelessWidget {
         GlanceSectionViewModel();
 
     return Scaffold(
-      // appBar: AppBar(title: Text('Overview', style: context.textTheme.headlineLarge?.copyWith(fontSize: 24))),
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(

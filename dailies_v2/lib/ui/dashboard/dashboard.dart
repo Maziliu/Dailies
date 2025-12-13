@@ -13,7 +13,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  late PageController _pageController;
+  late final PageController _pageController;
+  final DashboardViewModel viewModel = DASHBOARD_VIEW_MODEL;
 
   @override
   void initState() {
@@ -27,15 +28,13 @@ class _DashboardState extends State<Dashboard> {
     super.dispose();
   }
 
-  void _onPageChanged(int index, DashboardViewModel viewModel) {
-    if (viewModel.selectedTabIndex != index) {
-      viewModel.updateSelectedTab(index);
-    }
+  void _onPageChanged(int index) {
+    viewModel.selectTab(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final DashboardViewModel viewModel = DASHBOARD_VIEW_MODEL;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       body: SafeArea(
@@ -43,25 +42,26 @@ class _DashboardState extends State<Dashboard> {
         right: false,
         child: PageView(
           controller: _pageController,
-          onPageChanged: (index) => _onPageChanged(index, viewModel),
+          onPageChanged: _onPageChanged,
           children: const [OverviewView(), CalendarView(), UploadView()],
         ),
       ),
-      bottomNavigationBar: DashboardNavigationBar(
-        currentIndex: viewModel.selectedTabIndex,
-        onTap: (index) {
-          viewModel.updateSelectedTab(index);
-
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.ease,
+      bottomNavigationBar: ValueListenableBuilder<int>(
+        valueListenable: viewModel.selectedTabIndex,
+        builder: (_, index, _) {
+          return DashboardNavigationBar(
+            currentIndex: index,
+            colorScheme: colorScheme,
+            onTap: (index) {
+              viewModel.selectTab(index);
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              );
+            },
           );
-
-          // Explicit rebuild
-          setState(() {});
         },
-        colorScheme: Theme.of(context).colorScheme,
       ),
     );
   }

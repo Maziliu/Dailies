@@ -39,3 +39,5 @@ LazyDatabase _openConnection() {
     );
   });
 }
+
+final Database APP_DATABASE = Database();

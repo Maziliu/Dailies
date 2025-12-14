@@ -14,7 +14,7 @@ class CalendarView extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: UIFormating.mediumPadding(),
-        child: Column(
+        child: const Column(
           spacing: 4,
           children: [
             CalendarWidget(),

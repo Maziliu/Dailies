@@ -22,7 +22,6 @@ class _GachaSectionState extends State<GachaSection> {
   Future<void> showAddStaminaDialog(BuildContext context) async {
     final result = await showDialog<StaminaModel>(
       context: context,
-      barrierDismissible: true,
       builder: (context) {
         return Dialog(
           insetPadding: const EdgeInsets.symmetric(
@@ -53,7 +52,7 @@ class _GachaSectionState extends State<GachaSection> {
     final theme = Theme.of(context);
 
     return SectionCard(
-      padding: EdgeInsetsGeometry.fromLTRB(16, 12, 16, 12),
+      padding: const EdgeInsetsGeometry.fromLTRB(16, 12, 16, 12),
       child: ValueListenableBuilder<List<StaminaModel>>(
         valueListenable: viewModel.staminas,
         builder: (context, staminas, _) {
@@ -110,7 +109,6 @@ class _GachaSectionState extends State<GachaSection> {
                       onSpend: () async {
                         final int? amount = await showDialog(
                           context: context,
-                          barrierDismissible: true,
                           builder: (context) {
                             return Dialog(
                               insetPadding: const EdgeInsets.symmetric(

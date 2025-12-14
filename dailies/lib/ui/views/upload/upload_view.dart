@@ -11,7 +11,7 @@ class UploadView extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: UIFormating.mediumPadding(),
-        child: Column(
+        child: const Column(
           spacing: 4,
           children: [
             Flexible(flex: 2, child: FileUploadSection()),

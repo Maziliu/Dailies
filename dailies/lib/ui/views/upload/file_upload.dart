@@ -25,14 +25,14 @@ class FileUploadSection extends StatelessWidget {
           _FilesHeader(
             count: viewModel.uploadedFiles.value.length,
             onClear: viewModel.uploadedFiles.value.isNotEmpty
-                ? () => viewModel.clearUploadedFiles()
+                ? viewModel.clearUploadedFiles
                 : () => {},
           ),
 
           ValueListenableBuilder<List<PlatformFile>>(
             valueListenable: viewModel.uploadedFiles,
             builder: (context, files, _) {
-              if (files.isEmpty) return SizedBox.shrink();
+              if (files.isEmpty) return const SizedBox.shrink();
 
               return Expanded(
                 child: ItemList<PlatformFile>(
@@ -53,7 +53,7 @@ class FileUploadSection extends StatelessWidget {
             _ActionButtons(
               showConfigure: viewModel.uploadedFiles.value.isNotEmpty,
               onConfigure: () => {},
-              onParse: () => viewModel.parseAllUploadedFiles(),
+              onParse: viewModel.parseAllUploadedFiles,
             ),
         ],
       ),

@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
       scaffoldMessengerKey: GLOBAL_SCAFFOLD_MESSENGER_KEY,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.dark(),
-      home: Dashboard(),
+      home: const Dashboard(),
     );
   }
 }

@@ -43,7 +43,7 @@ Future<Result<T>> guardedAsyncExecute<T>(
   try {
     return Result.ok(await action());
   } catch (e) {
-    error.message = "${error.message} $e";
+    error.message = '${error.message} $e';
     return Result.error(error);
   }
 }

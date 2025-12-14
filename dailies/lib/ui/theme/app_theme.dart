@@ -1,8 +1,7 @@
+import 'package:dailies_v2/ui/theme/colour_schemes.dart';
+import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'colour_schemes.dart';
-import 'standards.dart';
 
 class AppTheme {
   static ThemeData dark() {

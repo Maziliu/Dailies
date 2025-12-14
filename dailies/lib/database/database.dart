@@ -1,12 +1,11 @@
 import 'dart:io';
 
+import 'package:dailies_v2/database/tables/calendars.dart';
+import 'package:dailies_v2/database/tables/events.dart';
 import 'package:dailies_v2/database/tables/staminas.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'package:dailies_v2/database/tables/calendars.dart';
-import 'package:dailies_v2/database/tables/events.dart';
 
 part 'database.g.dart';
 

@@ -18,7 +18,7 @@ class OverviewView extends StatelessWidget {
           spacing: 4,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GachaSection(),
+            const GachaSection(),
             EventCarousel(
               pages: [
                 EventsList(events: fakeTodayEvents()),
@@ -26,7 +26,7 @@ class OverviewView extends StatelessWidget {
                 EventsList(events: fakeTodayEvents()),
               ],
             ),
-            UpcomingSection(),
+            const UpcomingSection(),
           ],
         ),
       ),
@@ -50,10 +50,8 @@ List<EventModel> fakeTodayEvents() {
 
       start: day.add(const Duration(hours: 9)),
       end: day.add(const Duration(hours: 9, minutes: 30)),
-      duration: null,
 
       timezone: 'local',
-      rrule: null,
       status: 'CONFIRMED',
 
       createdAt: now,
@@ -66,15 +64,12 @@ List<EventModel> fakeTodayEvents() {
       calendarId: 'calendar-local',
 
       title: 'Gym',
-      description: null,
       location: 'Fitness Center',
 
       start: day.add(const Duration(hours: 18)),
-      end: null,
       duration: const Duration(hours: 1),
 
       timezone: 'local',
-      rrule: null,
       status: 'CONFIRMED',
 
       createdAt: now,
@@ -86,15 +81,12 @@ List<EventModel> fakeTodayEvents() {
       calendarId: 'calendar-local',
 
       title: 'Gym',
-      description: null,
       location: 'Fitness Center',
 
       start: day.add(const Duration(hours: 18)),
-      end: null,
       duration: const Duration(hours: 1),
 
       timezone: 'local',
-      rrule: null,
       status: 'CONFIRMED',
 
       createdAt: now,
@@ -106,15 +98,12 @@ List<EventModel> fakeTodayEvents() {
       calendarId: 'calendar-local',
 
       title: 'Gym',
-      description: null,
       location: 'Fitness Center',
 
       start: day.add(const Duration(hours: 18)),
-      end: null,
       duration: const Duration(hours: 1),
 
       timezone: 'local',
-      rrule: null,
       status: 'CONFIRMED',
 
       createdAt: now,

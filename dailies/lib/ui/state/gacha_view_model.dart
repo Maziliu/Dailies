@@ -11,10 +11,10 @@ class GachaViewModel extends ChangeNotifier {
     final Result<int> result = await _staminaService.insertStamina(stamina);
 
     switch (result) {
-      case Ok<int>(value: int id):
+      case Ok<int>(value: final int id):
         stamina.id = id;
         staminas.value = [...staminas.value, stamina];
-        print("Inserted $id ${stamina.staminaOfLastestReset}");
+        print('Inserted $id ${stamina.staminaOfLastestReset}');
 
       case Error<int>():
         // TODO: Handle this case.
@@ -23,10 +23,10 @@ class GachaViewModel extends ChangeNotifier {
   }
 
   Future<void> loadAllStaminas() async {
-    Result<List<StaminaModel>> result = await _staminaService.getAllStaminas();
+    final Result<List<StaminaModel>> result = await _staminaService.getAllStaminas();
 
     switch (result) {
-      case Ok<List<StaminaModel>>(value: List<StaminaModel> stams):
+      case Ok<List<StaminaModel>>(value: final List<StaminaModel> stams):
         staminas.value = [...stams];
       case Error<List<StaminaModel>>():
         // TODO: Handle this case.
@@ -42,9 +42,9 @@ class GachaViewModel extends ChangeNotifier {
         staminas.value = staminas.value
             .where((s) => s.id != stamina.id)
             .toList();
-        print("Deleted ${stamina.id} ${stamina.gachaTitle}");
+        print('Deleted ${stamina.id} ${stamina.gachaTitle}');
 
-      case Error<void>(failure: Failure error):
+      case Error<void>(failure: final Failure error):
         print(error.message);
     }
   }

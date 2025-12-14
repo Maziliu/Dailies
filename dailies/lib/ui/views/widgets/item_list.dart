@@ -16,7 +16,7 @@ class ItemList<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      if (!(showEmptyState ?? true)) return SizedBox.shrink();
+      if (!(showEmptyState ?? true)) return const SizedBox.shrink();
 
       return _EmptyState();
     }

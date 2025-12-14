@@ -1,5 +1,6 @@
 import 'package:dailies_v2/database/database.dart';
 import 'package:dailies_v2/enums/event_type.dart';
+import 'package:drift/drift.dart';
 
 class EventModel implements Comparable<EventModel> {
   final int? id;
@@ -89,6 +90,33 @@ extension EventRowMapper on Event {
 
       createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
       lastModified: DateTime.fromMillisecondsSinceEpoch(lastModified),
+    );
+  }
+}
+
+extension EventModelToCompanion on EventModel {
+  EventsCompanion toCompanion() {
+    return EventsCompanion(
+      id: Value.absentIfNull(id),
+      uid: Value(uid),
+      calendarId: Value(calendarId),
+
+      title: Value(title),
+      description: Value.absentIfNull(description),
+      location: Value.absentIfNull(location),
+
+      dtStart: Value(start.toUtc().millisecondsSinceEpoch),
+      dtEnd: Value.absentIfNull(end?.toUtc().millisecondsSinceEpoch),
+      duration: Value.absentIfNull(duration?.inSeconds),
+
+      timezone: Value.absentIfNull(timezone),
+      rrule: Value.absentIfNull(rrule),
+
+      status: Value(status),
+      eventType: Value(type),
+
+      createdAt: Value(createdAt.toUtc().millisecondsSinceEpoch),
+      lastModified: Value(lastModified.toUtc().millisecondsSinceEpoch),
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:dailies_v2/utils/result.dart';
 class EventService {
   final EventDao _dao;
 
-  EventService(EventDao? dao) : _dao = dao ?? EVENT_DAO;
+  EventService({EventDao? dao}) : _dao = dao ?? EVENT_DAO;
 
   Future<Result<List<EventModel>>> getAllEvents() async {
     final Result<List<Event>> result = await guardedAsyncExecute(
@@ -42,7 +42,20 @@ class EventService {
 
     return await guardedAsyncExecute(
       () => _dao.deleteEvent(eventId),
-      DatabaseFailure("Failed to delete event $eventId"),
+      DatabaseFailure('Failed to delete event $eventId'),
+    );
+  }
+
+  Future<Result<int>> insertEvent(EventModel event) async {
+    if (event.id != null) {
+      return Result.error(
+        ValidationFailure('Inserting event should not have an id'),
+      );
+    }
+
+    return await guardedAsyncExecute(
+      () => _dao.insert(event.toCompanion()),
+      DatabaseFailure('Failed to insert event'),
     );
   }
 }

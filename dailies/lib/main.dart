@@ -1,10 +1,7 @@
-import 'package:dailies/dependency_setup.dart';
-import 'package:dailies/ui/themes/themes.dart';
-import 'package:dailies/ui/views/dashboard/dashboard_view.dart';
-import 'package:dailies/ui/views/dashboard/dashboard_view_model.dart';
+import 'package:dailies_v2/ui/dashboard/dashboard.dart';
+import 'package:dailies_v2/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY =
     GlobalKey<ScaffoldMessengerState>();
@@ -13,19 +10,11 @@ void main() async {
   // debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.black,
-    ),
-  );
-
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
     overlays: [SystemUiOverlay.top],
   );
 
-  await setUpDependencies();
   runApp(const MainApp());
 }
 
@@ -37,11 +26,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       scaffoldMessengerKey: GLOBAL_SCAFFOLD_MESSENGER_KEY,
       debugShowCheckedModeBanner: false,
-      theme: defaultTheme,
-      home: ChangeNotifierProvider(
-        create: (_) => injector<DashboardViewModel>(),
-        child: const DashboardView(),
-      ),
+      theme: AppTheme.dark(),
+      home: Dashboard(),
     );
   }
 }

@@ -1,1 +1,0 @@
-class DatabaseEntryNotFoundException implements Exception {}

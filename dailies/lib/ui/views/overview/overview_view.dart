@@ -1,49 +1,124 @@
-import 'package:dailies/ui/components/section_card.dart';
-import 'package:dailies/ui/components/ui_formating.dart';
-import 'package:dailies/ui/views/overview/overview_page_view_model.dart';
-import 'package:dailies/ui/views/overview/sections/gacha%20section/gacha_section.dart';
-import 'package:dailies/ui/views/overview/sections/glance%20section/glance_section.dart';
-import 'package:dailies/ui/views/overview/sections/glance%20section/glance_section_view_model.dart';
-import 'package:dailies/ui/views/overview/sections/upcoming%20section/upcoming_section.dart';
+import 'package:dailies_v2/models/event.dart';
+import 'package:dailies_v2/ui/theme/standards.dart';
+import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
+import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';
+import 'package:dailies_v2/ui/views/overview/upcoming/upcoming_section.dart';
+import 'package:dailies_v2/ui/views/widgets/events_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class OverviewView extends StatelessWidget {
   const OverviewView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pageViewModel = context.watch<OverviewPageViewModel>();
-    final PageController glancePageController = PageController();
-    final GlanceSectionViewModel glanceSectionViewModel =
-        GlanceSectionViewModel();
-
     return Scaffold(
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
         child: Column(
+          spacing: 4,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionCard(
-              child: GachaSection(viewModel: pageViewModel.staminaViewModel),
+            GachaSection(),
+            EventCarousel(
+              pages: [
+                EventsList(events: fakeTodayEvents()),
+                EventsList(events: fakeTodayEvents()),
+                EventsList(events: fakeTodayEvents()),
+              ],
             ),
-            UIFormating.mediumVerticalSpacing(),
-            SectionCard(
-              child: GlanceSection(
-                eventsViewModel: pageViewModel.eventsViewModel,
-                glanceSectionViewModel: glanceSectionViewModel,
-                pageController: glancePageController,
-              ),
-            ),
-            UIFormating.mediumVerticalSpacing(),
-            SectionCard(
-              child: UpcomingSection(
-                eventsViewModel: pageViewModel.eventsViewModel,
-              ),
-            ),
+            UpcomingSection(),
           ],
         ),
       ),
     );
   }
+}
+
+List<EventModel> fakeTodayEvents() {
+  final now = DateTime.now();
+  final day = DateTime(now.year, now.month, now.day);
+
+  return [
+    EventModel(
+      id: 1,
+      uid: 'uid-1',
+      calendarId: 'calendar-local',
+
+      title: 'Daily Standup',
+      description: 'Team sync',
+      location: 'Office',
+
+      start: day.add(const Duration(hours: 9)),
+      end: day.add(const Duration(hours: 9, minutes: 30)),
+      duration: null,
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+
+    EventModel(
+      id: 2,
+      uid: 'uid-2',
+      calendarId: 'calendar-local',
+
+      title: 'Gym',
+      description: null,
+      location: 'Fitness Center',
+
+      start: day.add(const Duration(hours: 18)),
+      end: null,
+      duration: const Duration(hours: 1),
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+    EventModel(
+      id: 3,
+      uid: 'uid-3',
+      calendarId: 'calendar-local',
+
+      title: 'Gym',
+      description: null,
+      location: 'Fitness Center',
+
+      start: day.add(const Duration(hours: 18)),
+      end: null,
+      duration: const Duration(hours: 1),
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+    EventModel(
+      id: 4,
+      uid: 'uid-4',
+      calendarId: 'calendar-local',
+
+      title: 'Gym',
+      description: null,
+      location: 'Fitness Center',
+
+      start: day.add(const Duration(hours: 18)),
+      end: null,
+      duration: const Duration(hours: 1),
+
+      timezone: 'local',
+      rrule: null,
+      status: 'CONFIRMED',
+
+      createdAt: now,
+      lastModified: now,
+    ),
+  ];
 }

@@ -18,6 +18,10 @@ class Assets {
     'assets/battery_charge.png',
   );
   static const AssetGenImage e7Energy = AssetGenImage('assets/e7_energy.png');
+  static const AssetGenImage icon = AssetGenImage('assets/icon.png');
+  static const AssetGenImage iconForeground = AssetGenImage(
+    'assets/icon_foreground.png',
+  );
   static const AssetGenImage resin = AssetGenImage('assets/resin.png');
   static const AssetGenImage sanity = AssetGenImage('assets/sanity.png');
   static const AssetGenImage trailblazePower = AssetGenImage(
@@ -29,6 +33,8 @@ class Assets {
   static List<AssetGenImage> get values => [
     batteryCharge,
     e7Energy,
+    icon,
+    iconForeground,
     resin,
     sanity,
     trailblazePower,

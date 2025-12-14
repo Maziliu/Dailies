@@ -1,8 +1,0 @@
-enum ParseStage {
-  PENDING,
-  STRIPPING,
-  LLM_PROCESSING,
-  ICS_PARSING,
-  COMPLETED,
-  ERROR,
-}

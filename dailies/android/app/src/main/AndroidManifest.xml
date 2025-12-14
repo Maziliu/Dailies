@@ -1,11 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Dailies"
+        android:label="dailies_v2"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <receiver
-        android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
-        android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,6 +1,6 @@
 {
-    "name": "dailies",
-    "short_name": "dailies",
+    "name": "dailies_v2",
+    "short_name": "dailies_v2",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

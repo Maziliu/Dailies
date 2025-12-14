@@ -1,3 +1,4 @@
+import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
@@ -56,6 +57,8 @@ List<EventModel> fakeTodayEvents() {
 
       createdAt: now,
       lastModified: now,
+
+      type: EventType.INTERVAL,
     ),
 
     EventModel(
@@ -74,6 +77,8 @@ List<EventModel> fakeTodayEvents() {
 
       createdAt: now,
       lastModified: now,
+
+      type: EventType.INTERVAL,
     ),
     EventModel(
       id: 3,
@@ -91,6 +96,8 @@ List<EventModel> fakeTodayEvents() {
 
       createdAt: now,
       lastModified: now,
+
+      type: EventType.INTERVAL,
     ),
     EventModel(
       id: 4,
@@ -108,6 +115,8 @@ List<EventModel> fakeTodayEvents() {
 
       createdAt: now,
       lastModified: now,
+
+      type: EventType.INTERVAL,
     ),
   ];
 }

@@ -29,7 +29,6 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _calendarIdMeta = const VerificationMeta(
     'calendarId',
@@ -134,6 +133,15 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     requiredDuringInsert: false,
     defaultValue: const Constant('CONFIRMED'),
   );
+  @override
+  late final GeneratedColumnWithTypeConverter<EventType, String> eventType =
+      GeneratedColumn<String>(
+        'event_type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<EventType>($EventsTable.$convertereventType);
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -170,6 +178,7 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     timezone,
     rrule,
     status,
+    eventType,
     createdAt,
     lastModified,
   ];
@@ -341,6 +350,12 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       )!,
+      eventType: $EventsTable.$convertereventType.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}event_type'],
+        )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}created_at'],
@@ -356,6 +371,9 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   $EventsTable createAlias(String alias) {
     return $EventsTable(attachedDatabase, alias);
   }
+
+  static TypeConverter<EventType, String> $convertereventType =
+      const EventTypeConverter();
 }
 
 class Event extends DataClass implements Insertable<Event> {
@@ -371,6 +389,7 @@ class Event extends DataClass implements Insertable<Event> {
   final String? timezone;
   final String? rrule;
   final String status;
+  final EventType eventType;
   final int createdAt;
   final int lastModified;
   const Event({
@@ -386,6 +405,7 @@ class Event extends DataClass implements Insertable<Event> {
     this.timezone,
     this.rrule,
     required this.status,
+    required this.eventType,
     required this.createdAt,
     required this.lastModified,
   });
@@ -416,6 +436,11 @@ class Event extends DataClass implements Insertable<Event> {
       map['rrule'] = Variable<String>(rrule);
     }
     map['status'] = Variable<String>(status);
+    {
+      map['event_type'] = Variable<String>(
+        $EventsTable.$convertereventType.toSql(eventType),
+      );
+    }
     map['created_at'] = Variable<int>(createdAt);
     map['last_modified'] = Variable<int>(lastModified);
     return map;
@@ -447,6 +472,7 @@ class Event extends DataClass implements Insertable<Event> {
           ? const Value.absent()
           : Value(rrule),
       status: Value(status),
+      eventType: Value(eventType),
       createdAt: Value(createdAt),
       lastModified: Value(lastModified),
     );
@@ -470,6 +496,7 @@ class Event extends DataClass implements Insertable<Event> {
       timezone: serializer.fromJson<String?>(json['timezone']),
       rrule: serializer.fromJson<String?>(json['rrule']),
       status: serializer.fromJson<String>(json['status']),
+      eventType: serializer.fromJson<EventType>(json['eventType']),
       createdAt: serializer.fromJson<int>(json['createdAt']),
       lastModified: serializer.fromJson<int>(json['lastModified']),
     );
@@ -490,6 +517,7 @@ class Event extends DataClass implements Insertable<Event> {
       'timezone': serializer.toJson<String?>(timezone),
       'rrule': serializer.toJson<String?>(rrule),
       'status': serializer.toJson<String>(status),
+      'eventType': serializer.toJson<EventType>(eventType),
       'createdAt': serializer.toJson<int>(createdAt),
       'lastModified': serializer.toJson<int>(lastModified),
     };
@@ -508,6 +536,7 @@ class Event extends DataClass implements Insertable<Event> {
     Value<String?> timezone = const Value.absent(),
     Value<String?> rrule = const Value.absent(),
     String? status,
+    EventType? eventType,
     int? createdAt,
     int? lastModified,
   }) => Event(
@@ -523,6 +552,7 @@ class Event extends DataClass implements Insertable<Event> {
     timezone: timezone.present ? timezone.value : this.timezone,
     rrule: rrule.present ? rrule.value : this.rrule,
     status: status ?? this.status,
+    eventType: eventType ?? this.eventType,
     createdAt: createdAt ?? this.createdAt,
     lastModified: lastModified ?? this.lastModified,
   );
@@ -544,6 +574,7 @@ class Event extends DataClass implements Insertable<Event> {
       timezone: data.timezone.present ? data.timezone.value : this.timezone,
       rrule: data.rrule.present ? data.rrule.value : this.rrule,
       status: data.status.present ? data.status.value : this.status,
+      eventType: data.eventType.present ? data.eventType.value : this.eventType,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       lastModified: data.lastModified.present
           ? data.lastModified.value
@@ -566,6 +597,7 @@ class Event extends DataClass implements Insertable<Event> {
           ..write('timezone: $timezone, ')
           ..write('rrule: $rrule, ')
           ..write('status: $status, ')
+          ..write('eventType: $eventType, ')
           ..write('createdAt: $createdAt, ')
           ..write('lastModified: $lastModified')
           ..write(')'))
@@ -586,6 +618,7 @@ class Event extends DataClass implements Insertable<Event> {
     timezone,
     rrule,
     status,
+    eventType,
     createdAt,
     lastModified,
   );
@@ -605,6 +638,7 @@ class Event extends DataClass implements Insertable<Event> {
           other.timezone == this.timezone &&
           other.rrule == this.rrule &&
           other.status == this.status &&
+          other.eventType == this.eventType &&
           other.createdAt == this.createdAt &&
           other.lastModified == this.lastModified);
 }
@@ -622,6 +656,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
   final Value<String?> timezone;
   final Value<String?> rrule;
   final Value<String> status;
+  final Value<EventType> eventType;
   final Value<int> createdAt;
   final Value<int> lastModified;
   const EventsCompanion({
@@ -637,6 +672,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
     this.timezone = const Value.absent(),
     this.rrule = const Value.absent(),
     this.status = const Value.absent(),
+    this.eventType = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.lastModified = const Value.absent(),
   });
@@ -653,12 +689,14 @@ class EventsCompanion extends UpdateCompanion<Event> {
     this.timezone = const Value.absent(),
     this.rrule = const Value.absent(),
     this.status = const Value.absent(),
+    required EventType eventType,
     required int createdAt,
     required int lastModified,
   }) : uid = Value(uid),
        calendarId = Value(calendarId),
        title = Value(title),
        dtStart = Value(dtStart),
+       eventType = Value(eventType),
        createdAt = Value(createdAt),
        lastModified = Value(lastModified);
   static Insertable<Event> custom({
@@ -674,6 +712,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
     Expression<String>? timezone,
     Expression<String>? rrule,
     Expression<String>? status,
+    Expression<String>? eventType,
     Expression<int>? createdAt,
     Expression<int>? lastModified,
   }) {
@@ -690,6 +729,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
       if (timezone != null) 'timezone': timezone,
       if (rrule != null) 'rrule': rrule,
       if (status != null) 'status': status,
+      if (eventType != null) 'event_type': eventType,
       if (createdAt != null) 'created_at': createdAt,
       if (lastModified != null) 'last_modified': lastModified,
     });
@@ -708,6 +748,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
     Value<String?>? timezone,
     Value<String?>? rrule,
     Value<String>? status,
+    Value<EventType>? eventType,
     Value<int>? createdAt,
     Value<int>? lastModified,
   }) {
@@ -724,6 +765,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
       timezone: timezone ?? this.timezone,
       rrule: rrule ?? this.rrule,
       status: status ?? this.status,
+      eventType: eventType ?? this.eventType,
       createdAt: createdAt ?? this.createdAt,
       lastModified: lastModified ?? this.lastModified,
     );
@@ -768,6 +810,11 @@ class EventsCompanion extends UpdateCompanion<Event> {
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
+    if (eventType.present) {
+      map['event_type'] = Variable<String>(
+        $EventsTable.$convertereventType.toSql(eventType.value),
+      );
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<int>(createdAt.value);
     }
@@ -792,6 +839,7 @@ class EventsCompanion extends UpdateCompanion<Event> {
           ..write('timezone: $timezone, ')
           ..write('rrule: $rrule, ')
           ..write('status: $status, ')
+          ..write('eventType: $eventType, ')
           ..write('createdAt: $createdAt, ')
           ..write('lastModified: $lastModified')
           ..write(')'))
@@ -1597,6 +1645,7 @@ typedef $$EventsTableCreateCompanionBuilder =
       Value<String?> timezone,
       Value<String?> rrule,
       Value<String> status,
+      required EventType eventType,
       required int createdAt,
       required int lastModified,
     });
@@ -1614,6 +1663,7 @@ typedef $$EventsTableUpdateCompanionBuilder =
       Value<String?> timezone,
       Value<String?> rrule,
       Value<String> status,
+      Value<EventType> eventType,
       Value<int> createdAt,
       Value<int> lastModified,
     });
@@ -1685,6 +1735,12 @@ class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
     column: $table.status,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnWithTypeConverterFilters<EventType, EventType, String> get eventType =>
+      $composableBuilder(
+        column: $table.eventType,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
 
   ColumnFilters<int> get createdAt => $composableBuilder(
     column: $table.createdAt,
@@ -1765,6 +1821,11 @@ class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get eventType => $composableBuilder(
+    column: $table.eventType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -1825,6 +1886,9 @@ class $$EventsTableAnnotationComposer
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
+  GeneratedColumnWithTypeConverter<EventType, String> get eventType =>
+      $composableBuilder(column: $table.eventType, builder: (column) => column);
+
   GeneratedColumn<int> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -1874,6 +1938,7 @@ class $$EventsTableTableManager
                 Value<String?> timezone = const Value.absent(),
                 Value<String?> rrule = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                Value<EventType> eventType = const Value.absent(),
                 Value<int> createdAt = const Value.absent(),
                 Value<int> lastModified = const Value.absent(),
               }) => EventsCompanion(
@@ -1889,6 +1954,7 @@ class $$EventsTableTableManager
                 timezone: timezone,
                 rrule: rrule,
                 status: status,
+                eventType: eventType,
                 createdAt: createdAt,
                 lastModified: lastModified,
               ),
@@ -1906,6 +1972,7 @@ class $$EventsTableTableManager
                 Value<String?> timezone = const Value.absent(),
                 Value<String?> rrule = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                required EventType eventType,
                 required int createdAt,
                 required int lastModified,
               }) => EventsCompanion.insert(
@@ -1921,6 +1988,7 @@ class $$EventsTableTableManager
                 timezone: timezone,
                 rrule: rrule,
                 status: status,
+                eventType: eventType,
                 createdAt: createdAt,
                 lastModified: lastModified,
               ),

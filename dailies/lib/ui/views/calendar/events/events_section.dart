@@ -11,13 +11,13 @@ class EventsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CalendarViewModel viewModel = CALENDAR_VIEW_MODEL;
+    final CalendarViewModel calendarViewModel = CALENDAR_VIEW_MODEL;
     final ThemeData theme = Theme.of(context);
 
     return SectionCard(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
       child: ValueListenableBuilder<DateTime>(
-        valueListenable: viewModel.selectedDayNotifier,
+        valueListenable: calendarViewModel.selectedDayNotifier,
         builder: (context, selectedDay, _) {
           return Column(
             children: [

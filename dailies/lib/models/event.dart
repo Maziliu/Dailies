@@ -1,6 +1,7 @@
 import 'package:dailies_v2/database/database.dart';
+import 'package:dailies_v2/enums/event_type.dart';
 
-class EventModel {
+class EventModel implements Comparable<EventModel> {
   final int? id;
   final String uid;
   final String calendarId;
@@ -10,7 +11,6 @@ class EventModel {
   final String? location;
 
   final DateTime start;
-
   final DateTime? end;
   final Duration? duration;
 
@@ -18,6 +18,7 @@ class EventModel {
   final String? rrule;
 
   final String status;
+  final EventType type;
 
   final DateTime createdAt;
   final DateTime lastModified;
@@ -39,6 +40,7 @@ class EventModel {
     this.rrule,
 
     required this.status,
+    required this.type,
 
     required this.createdAt,
     required this.lastModified,
@@ -54,6 +56,13 @@ class EventModel {
     if (duration != null) return duration;
     if (end != null) return end!.difference(start);
     return null;
+  }
+
+  @override
+  int compareTo(EventModel other) {
+    final byStart = other.start.compareTo(start);
+    if (byStart != 0) return byStart;
+    return uid.compareTo(other.uid);
   }
 }
 
@@ -76,6 +85,7 @@ extension EventRowMapper on Event {
       rrule: rrule,
 
       status: status,
+      type: eventType,
 
       createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
       lastModified: DateTime.fromMillisecondsSinceEpoch(lastModified),

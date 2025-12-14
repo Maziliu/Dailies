@@ -9,10 +9,15 @@ import 'package:dailies_v2/ui/views/widgets/section_card.dart';
 import 'package:dailies_v2/ui/views/widgets/stamina_list_item.dart';
 import 'package:flutter/material.dart';
 
-class GachaSection extends StatelessWidget {
-  final GachaViewModel viewModel = GACHA_VIEW_MODEL;
+class GachaSection extends StatefulWidget {
+  const GachaSection({super.key});
 
-  GachaSection({super.key});
+  @override
+  State<GachaSection> createState() => _GachaSectionState();
+}
+
+class _GachaSectionState extends State<GachaSection> {
+  final GachaViewModel viewModel = GACHA_VIEW_MODEL;
 
   Future<void> showAddStaminaDialog(BuildContext context) async {
     final result = await showDialog<StaminaModel>(
@@ -35,6 +40,12 @@ class GachaSection extends StatelessWidget {
     if (result == null) return;
 
     viewModel.insertStamina(result);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loadAllStaminas();
   }
 
   @override

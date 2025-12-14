@@ -34,26 +34,22 @@ class StaminaService {
       );
     }
 
-    Stamina result;
+    Result<Stamina> result = await guardedAsyncExecute(
+      () => _dao.spendOrZeroStamina(staminaId, amount),
+      DatabaseFailure("Failed to spend stamina id: $staminaId"),
+    );
 
-    try {
-      result = await _dao.spendOrZeroStamina(staminaId, amount);
-    } catch (e) {
-      return Result.error(
-        DatabaseFailure(
-          "Failed to spend stamina id: $staminaId ${e.toString()}",
-        ),
-      );
-    }
+    switch (result) {
+      case Ok<Stamina>(value: Stamina stamina):
+        return guardedAsyncExecute(
+          () async => stamina.toModel(),
+          ConversionFailure(
+            "Failed to convert stamina id: $staminaId to model",
+          ),
+        );
 
-    try {
-      return Result.ok(result.toModel());
-    } catch (e) {
-      return Result.error(
-        ConversionFailure(
-          "Failed to convert stamina id: $staminaId to model ${e.toString()}",
-        ),
-      );
+      case Error<Stamina>(failure: Failure error):
+        return Result.error(error);
     }
   }
 
@@ -76,5 +72,23 @@ class StaminaService {
       () => _dao.deleteStamina(staminaId),
       DatabaseFailure("Failed to delete stamina id: $staminaId"),
     );
+  }
+
+  Future<Result<List<StaminaModel>>> getAllStaminas() async {
+    Result<List<Stamina>> result = await guardedAsyncExecute(
+      () => _dao.getAll(),
+      DatabaseFailure("Failed to retreive all staminas"),
+    );
+
+    switch (result) {
+      case Ok<List<Stamina>>(value: List<Stamina> staminas):
+        return await guardedAsyncExecute(
+          () async => staminas.map((s) => s.toModel()).toList(),
+          ConversionFailure("Failed to convert stamina list"),
+        );
+
+      case Error<List<Stamina>>(failure: Failure error):
+        return Result.error(error);
+    }
   }
 }

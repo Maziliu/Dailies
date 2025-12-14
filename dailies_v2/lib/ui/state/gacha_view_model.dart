@@ -22,11 +22,17 @@ class GachaViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _initialize() async {
-    await loadAllStaminas();
-  }
+  Future<void> loadAllStaminas() async {
+    Result<List<StaminaModel>> result = await _staminaService.getAllStaminas();
 
-  Future<void> loadAllStaminas() async {}
+    switch (result) {
+      case Ok<List<StaminaModel>>(value: List<StaminaModel> stams):
+        staminas.value = [...stams];
+      case Error<List<StaminaModel>>():
+        // TODO: Handle this case.
+        throw UnimplementedError();
+    }
+  }
 
   void deleteStamina(StaminaModel stamina) async {
     final Result<void> result = await _staminaService.deleteStamina(stamina.id);

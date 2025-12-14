@@ -4,7 +4,9 @@ import 'package:dailies_v2/models/stamina.dart';
 import 'package:dailies_v2/utils/result.dart';
 
 class StaminaService {
-  final StaminaDao _dao = StaminaDao(APP_DATABASE);
+  final StaminaDao _dao;
+
+  StaminaService({StaminaDao? dao}) : _dao = dao ?? STAMINA_DAO;
 
   Future<Result<int>> insertStamina(StaminaModel stamina) async {
     return guardedAsyncExecute<int>(
@@ -13,7 +15,7 @@ class StaminaService {
     );
   }
 
-  Future<Result<StaminaModel>> spendStamina(int? staminaId, int? amount) async {
+  Future<Result<StaminaModel>> setStamina(int? staminaId, int? amount) async {
     if (amount != null && amount <= 0) {
       return Result.error(
         ValidationFailure('Stamina amount must be greater than 0 or null'),
@@ -35,7 +37,7 @@ class StaminaService {
     }
 
     final Result<Stamina> result = await guardedAsyncExecute(
-      () => _dao.spendOrZeroStamina(staminaId, amount),
+      () => _dao.setOrZeroStamina(staminaId, amount),
       DatabaseFailure('Failed to spend stamina id: $staminaId'),
     );
 

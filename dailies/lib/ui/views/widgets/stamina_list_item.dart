@@ -6,14 +6,14 @@ class StaminaListItem extends StatefulWidget {
   final StaminaModel stamina;
   final VoidCallback onDelete;
   final VoidCallback onReset;
-  final VoidCallback onSpend;
+  final VoidCallback onSetStamina;
 
   const StaminaListItem({
     super.key,
     required this.stamina,
     required this.onDelete,
     required this.onReset,
-    required this.onSpend,
+    required this.onSetStamina,
   });
 
   @override
@@ -55,7 +55,7 @@ class _StaminaListItemState extends State<StaminaListItem> {
           key: ValueKey(widget.stamina.id),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onTap: widget.onSpend,
+          onTap: widget.onSetStamina,
           onDoubleTap: widget.onReset,
           onLongPress: widget.onDelete,
           child: Card(

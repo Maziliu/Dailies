@@ -15,7 +15,7 @@ class StaminaDao extends DatabaseAccessor<Database> with _$StaminaDaoMixin {
     return (delete(staminas)..where((s) => s.id.equals(id))).go();
   }
 
-  Future<Stamina> spendOrZeroStamina(int staminaId, int? amount) {
+  Future<Stamina> setOrZeroStamina(int staminaId, int? amount) {
     return transaction(() async {
       final now = DateTime.now().toUtc();
 
@@ -32,3 +32,5 @@ class StaminaDao extends DatabaseAccessor<Database> with _$StaminaDaoMixin {
     });
   }
 }
+
+final StaminaDao STAMINA_DAO = StaminaDao(APP_DATABASE);

@@ -3,7 +3,7 @@ import 'package:dailies_v2/enums/event_type.dart';
 import 'package:drift/drift.dart';
 
 class EventModel implements Comparable<EventModel> {
-  final int? id;
+  int? id;
   final String uid;
   final String calendarId;
 
@@ -24,8 +24,8 @@ class EventModel implements Comparable<EventModel> {
   final DateTime createdAt;
   final DateTime lastModified;
 
-  const EventModel({
-    required this.id,
+  EventModel({
+    this.id,
     required this.uid,
     required this.calendarId,
 

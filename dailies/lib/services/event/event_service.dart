@@ -1,10 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:dailies_v2/database/daos/event_dao.dart';
 import 'package:dailies_v2/database/database.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/utils/result.dart';
+import 'package:flutter/foundation.dart';
 
-class EventService {
+typedef EventMapHeap = Map<DateTime, HeapPriorityQueue<EventModel>>;
+
+class EventService extends ChangeNotifier {
   final EventDao _dao;
+
+  final eventDateMap = EventMapHeap();
 
   EventService({EventDao? dao}) : _dao = dao ?? EVENT_DAO;
 

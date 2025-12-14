@@ -1,3 +1,5 @@
+import 'package:dailies_v2/models/event.dart';
+import 'package:dailies_v2/ui/modals/add_event.dart';
 import 'package:dailies_v2/ui/state/events_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/views/widgets/events_list.dart';
@@ -32,7 +34,28 @@ class EventsSection extends StatelessWidget {
                         DateFormat.MMMMEEEEd().format(selectedDay),
                         style: theme.textTheme.headlineLarge,
                       ),
-                      IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                      IconButton(
+                        onPressed: () async {
+                          final result = await showDialog<EventModel>(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                insetPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 24,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: const AddEventModal(),
+                              );
+                            },
+                          );
+
+                          if (result == null) return;
+                        },
+                        icon: const Icon(Icons.add),
+                      ),
                     ],
                   ),
                 ),

@@ -25,6 +25,7 @@ class CalendarWidget extends StatelessWidget {
             firstDay: FIRST_CALENDAR_DAY,
             lastDay: LAST_CALENDAR_DAY,
             focusedDay: selectedDay,
+            rowHeight: 38,
             sixWeekMonthsEnforced: true,
             selectedDayPredicate: (day) => isSameDay(day, selectedDay),
             onDaySelected: (day, _) => viewModel.onDaySelect(day),

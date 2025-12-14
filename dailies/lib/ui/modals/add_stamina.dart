@@ -16,11 +16,11 @@ class AddStaminaModal extends StatefulWidget {
 class _AddStaminaModalState extends State<AddStaminaModal> {
   final _formKey = GlobalKey<FormBuilderState>();
 
-  static const _gachaNameFieldTag = 'gachaName';
-  static const _maxStaminaFieldTag = 'maxStamina';
-  static const _rechargeTimeFieldTag = 'rechargeTime';
-  static const _currentStaminaFieldTag = 'currentStamina';
-  static const _energyTypeFieldTag = 'energyType';
+  static const _GACHA_NAME_FIELD_TAG = 'gachaName';
+  static const _MAX_STAMINA_FIELD_TAG = 'maxStamina';
+  static const _RECHARGE_TIME_FIELD_TAG = 'rechargeTime';
+  static const _CURRENT_STAMINA_FIELD_TAG = 'currentStamina';
+  static const _ENERGY_TYPE_FIELD_TAG = 'energyType';
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
                 UIFormating.largeVerticalSpacing(),
 
                 FormBuilderTextField(
-                  name: _gachaNameFieldTag,
+                  name: _GACHA_NAME_FIELD_TAG,
                   decoration: const InputDecoration(labelText: 'Gacha Name'),
                   autofocus: true,
                   validator: (value) => (value == null || value.trim().isEmpty)
@@ -58,7 +58,7 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
                 UIFormating.smallVerticalSpacing(),
 
                 FormBuilderTextField(
-                  name: _maxStaminaFieldTag,
+                  name: _MAX_STAMINA_FIELD_TAG,
                   decoration: const InputDecoration(labelText: 'Max Stamina'),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   validator: (value) {
@@ -72,7 +72,7 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
                 UIFormating.smallVerticalSpacing(),
 
                 FormBuilderTextField(
-                  name: _rechargeTimeFieldTag,
+                  name: _RECHARGE_TIME_FIELD_TAG,
                   decoration: const InputDecoration(
                     labelText: 'Recharge Time (seconds)',
                   ),
@@ -88,7 +88,7 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
                 UIFormating.smallVerticalSpacing(),
 
                 FormBuilderTextField(
-                  name: _currentStaminaFieldTag,
+                  name: _CURRENT_STAMINA_FIELD_TAG,
                   decoration: const InputDecoration(
                     labelText: 'Current Stamina',
                   ),
@@ -98,7 +98,7 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
                 UIFormating.smallVerticalSpacing(),
 
                 FormBuilderDropdown<AssetGenImage>(
-                  name: _energyTypeFieldTag,
+                  name: _ENERGY_TYPE_FIELD_TAG,
                   decoration: const InputDecoration(labelText: 'Energy Type'),
                   validator: (value) => value == null ? 'Required' : null,
                   items: Assets.values
@@ -151,17 +151,17 @@ class _AddStaminaModalState extends State<AddStaminaModal> {
 
     final fields = state.fields;
 
-    final String gachaName = fields[_gachaNameFieldTag]!.value as String;
+    final String gachaName = fields[_GACHA_NAME_FIELD_TAG]!.value as String;
     final int maxStamina = int.parse(
-      fields[_maxStaminaFieldTag]!.value as String,
+      fields[_MAX_STAMINA_FIELD_TAG]!.value as String,
     );
     final int rechargeSeconds = int.parse(
-      fields[_rechargeTimeFieldTag]!.value as String,
+      fields[_RECHARGE_TIME_FIELD_TAG]!.value as String,
     );
     final currentStamina =
-        int.tryParse(fields[_currentStaminaFieldTag]?.value ?? '') ?? 0;
+        int.tryParse(fields[_CURRENT_STAMINA_FIELD_TAG]?.value ?? '') ?? 0;
 
-    final imageName = (fields[_energyTypeFieldTag]?.value as AssetGenImage?)
+    final imageName = (fields[_ENERGY_TYPE_FIELD_TAG]?.value as AssetGenImage?)
         ?.path
         .split('/')
         .last;

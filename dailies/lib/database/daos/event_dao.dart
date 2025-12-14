@@ -15,3 +15,5 @@ class EventDao extends DatabaseAccessor<Database> with _$EventDaoMixin {
 
   Future<int> insert(EventsCompanion data) => into(events).insert(data);
 }
+
+final EventDao EVENT_DAO = EventDao(APP_DATABASE);

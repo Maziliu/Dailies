@@ -1,12 +1,23 @@
 import 'package:dailies_v2/models/stamina.dart';
-import 'package:dailies_v2/ui/modals/add_gacha.dart';
+import 'package:dailies_v2/ui/modals/add_stamina.dart';
+import 'package:dailies_v2/ui/modals/confirmation.dart';
+import 'package:dailies_v2/ui/modals/spend_stamina.dart';
 import 'package:dailies_v2/ui/state/gacha_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
+import 'package:dailies_v2/ui/views/widgets/item_list.dart';
 import 'package:dailies_v2/ui/views/widgets/section_card.dart';
+import 'package:dailies_v2/ui/views/widgets/stamina_list_item.dart';
 import 'package:flutter/material.dart';
 
-class GachaSection extends StatelessWidget {
+class GachaSection extends StatefulWidget {
   const GachaSection({super.key});
+
+  @override
+  State<GachaSection> createState() => _GachaSectionState();
+}
+
+class _GachaSectionState extends State<GachaSection> {
+  final GachaViewModel viewModel = GACHA_VIEW_MODEL;
 
   Future<void> showAddStaminaDialog(BuildContext context) async {
     final result = await showDialog<StaminaModel>(
@@ -27,42 +38,103 @@ class GachaSection extends StatelessWidget {
     );
 
     if (result == null) return;
+
+    viewModel.insertStamina(result);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loadAllStaminas();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final GachaViewModel viewModel = GACHA_VIEW_MODEL;
+
     return SectionCard(
-      padding: EdgeInsetsGeometry.fromLTRB(12, 0, 4, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsetsGeometry.only(left: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Gachas', style: theme.textTheme.headlineLarge),
-                IconButton(
-                  onPressed: () => showAddStaminaDialog(context),
-                  icon: const Icon(Icons.add),
+      padding: EdgeInsetsGeometry.fromLTRB(16, 12, 16, 12),
+      child: ValueListenableBuilder<List<StaminaModel>>(
+        valueListenable: viewModel.staminas,
+        builder: (context, staminas, _) {
+          return Column(
+            spacing: 8,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsetsGeometry.only(left: 4, right: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Gachas', style: theme.textTheme.headlineLarge),
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: IconButton(
+                        onPressed: () => showAddStaminaDialog(context),
+                        icon: Icon(
+                          Icons.add,
+                          size: 24,
+                          color: theme.colorScheme.primary,
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          ValueListenableBuilder<List<StaminaModel>>(
-            valueListenable: viewModel.staminas,
-            builder: (context, staminas, child) {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: staminas.length,
-                itemBuilder: (_, index) => Placeholder(),
-              );
-            },
-          ),
-        ],
+              ),
+
+              if (staminas.isNotEmpty)
+                ItemList(
+                  items: staminas,
+                  itemBuilder: (stamina) {
+                    return StaminaListItem(
+                      stamina: stamina,
+                      onDelete: () async {
+                        final result = await showDialog<bool>(
+                          context: context,
+                          builder: (_) => ConfirmationModal(
+                            title: 'Delete ${stamina.gachaTitle}?',
+                            message: 'This action cannot be undone.',
+                            confirmText: 'Delete',
+                            destructive: true,
+                          ),
+                        );
+
+                        if (result == null || result == false) return;
+
+                        viewModel.deleteStamina(stamina);
+                      },
+                      onReset: () => viewModel.spendStamina(stamina),
+                      onSpend: () async {
+                        final int? amount = await showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (context) {
+                            return Dialog(
+                              insetPadding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 24,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const SpendStaminaModal(),
+                            );
+                          },
+                        );
+
+                        if (amount == null) return;
+
+                        viewModel.spendStamina(stamina, amount: amount);
+                      },
+                    );
+                  },
+                ),
+            ],
+          );
+        },
       ),
     );
   }

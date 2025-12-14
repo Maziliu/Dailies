@@ -30,12 +30,12 @@ class _EventCarouselState extends State<EventCarousel> {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: Column(
         spacing: 8,
         children: [
           Padding(
-            padding: const EdgeInsetsGeometry.fromLTRB(4, 8, 4, 0),
+            padding: const EdgeInsetsGeometry.fromLTRB(4, 0, 4, 0),
             child: IndexedStack(
               index: _index,
               children: [

@@ -1,5 +1,8 @@
+import 'package:dailies_v2/database/database.dart';
+import 'package:drift/drift.dart';
+
 class StaminaModel {
-  final int? id;
+  int? id;
   final Duration _rechargeTime;
   final int _maxStamina;
   final String _gachaTitle;
@@ -24,4 +27,32 @@ class StaminaModel {
   Duration get rechargeTime => _rechargeTime;
   String get gachaTitle => _gachaTitle;
   String? get imageName => _imageName;
+}
+
+extension StaminaRowMapper on Stamina {
+  StaminaModel toModel() {
+    return StaminaModel(
+      id: id,
+      gachaTitle: title,
+      rechargeTime: Duration(seconds: rechargeTime),
+      maxStamina: maxStamina,
+      staminaOfLastestReset: staminaOfLastReset,
+      timeOfLastReset: timeOfLastReset,
+      imageName: imageName,
+    );
+  }
+}
+
+extension StaminaModelToCompanion on StaminaModel {
+  StaminasCompanion toCompanion() {
+    return StaminasCompanion(
+      id: id == null ? const Value.absent() : Value(id!),
+      title: Value(gachaTitle),
+      rechargeTime: Value(rechargeTime.inSeconds),
+      maxStamina: Value(maxStamina),
+      staminaOfLastReset: Value(staminaOfLastestReset),
+      timeOfLastReset: Value(timeOfLastReset.toUtc()),
+      imageName: Value(imageName),
+    );
+  }
 }

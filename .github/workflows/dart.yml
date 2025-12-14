@@ -9,12 +9,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     defaults:
       run:
         working-directory: dailies
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - uses: subosito/flutter-action@v2
         with:
@@ -26,6 +31,27 @@ jobs:
 
       - name: Analyze project source
         run: flutter analyze
+
+      - name: Apply dart fix
+        run: dart fix --apply
+
+      # -----------------------------
+      # Commit & push if changes exist
+      # -----------------------------
+      - name: Commit fixes
+        run: |
+          if ! git diff --quiet; then
+            echo "Dart fixes applied, committing changes..."
+
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+
+            git add .
+            git commit -m "chore: apply dart fix"
+            git push
+          else
+            echo "No dart fixes needed."
+          fi
 
       - name: Run tests
         run: flutter test

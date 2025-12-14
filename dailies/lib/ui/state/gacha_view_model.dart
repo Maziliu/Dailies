@@ -23,7 +23,8 @@ class GachaViewModel extends ChangeNotifier {
   }
 
   Future<void> loadAllStaminas() async {
-    final Result<List<StaminaModel>> result = await _staminaService.getAllStaminas();
+    final Result<List<StaminaModel>> result = await _staminaService
+        .getAllStaminas();
 
     switch (result) {
       case Ok<List<StaminaModel>>(value: final List<StaminaModel> stams):
@@ -49,8 +50,8 @@ class GachaViewModel extends ChangeNotifier {
     }
   }
 
-  void spendStamina(StaminaModel stamina, {int? amount}) async {
-    final Result<StaminaModel> result = await _staminaService.spendStamina(
+  void setStamina(StaminaModel stamina, {int? amount}) async {
+    final Result<StaminaModel> result = await _staminaService.setStamina(
       stamina.id,
       amount,
     );

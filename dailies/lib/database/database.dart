@@ -13,6 +13,8 @@ part 'database.g.dart';
 class Database extends _$Database {
   Database() : super(_openConnection());
 
+  Database.forTesting(super.db);
+
   @override
   int get schemaVersion => 2;
 

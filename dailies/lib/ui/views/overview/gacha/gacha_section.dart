@@ -105,8 +105,8 @@ class _GachaSectionState extends State<GachaSection> {
 
                         viewModel.deleteStamina(stamina);
                       },
-                      onReset: () => viewModel.spendStamina(stamina),
-                      onSpend: () async {
+                      onReset: () => viewModel.setStamina(stamina),
+                      onSetStamina: () async {
                         final int? amount = await showDialog(
                           context: context,
                           builder: (context) {
@@ -125,7 +125,7 @@ class _GachaSectionState extends State<GachaSection> {
 
                         if (amount == null) return;
 
-                        viewModel.spendStamina(stamina, amount: amount);
+                        viewModel.setStamina(stamina, amount: amount);
                       },
                     );
                   },

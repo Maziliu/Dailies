@@ -4,6 +4,5 @@ enum EventType {
   INDEFINITE,
   UNDEFINED,
   INTERVAL,
-  HEAD,
-  TAIL,
+  MULTI_DAY,
 }

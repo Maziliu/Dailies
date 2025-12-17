@@ -1,8 +1,8 @@
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/views/overview/overview_view.dart';
-import 'package:dailies_v2/ui/views/widgets/item_list.dart';
-import 'package:dailies_v2/ui/views/widgets/schedule_list_item.dart';
-import 'package:dailies_v2/ui/views/widgets/section_card.dart';
+import 'package:dailies_v2/ui/widgets/item_list.dart';
+import 'package:dailies_v2/ui/widgets/schedule_list_item.dart';
+import 'package:dailies_v2/ui/widgets/section_card.dart';
 import 'package:dailies_v2/utils/constants.dart';
 import 'package:flutter/material.dart';
 

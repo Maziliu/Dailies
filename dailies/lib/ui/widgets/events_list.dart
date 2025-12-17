@@ -1,6 +1,6 @@
 import 'package:dailies_v2/models/event.dart';
-import 'package:dailies_v2/ui/views/widgets/item_list.dart';
-import 'package:dailies_v2/ui/views/widgets/schedule_list_item.dart';
+import 'package:dailies_v2/ui/widgets/item_list.dart';
+import 'package:dailies_v2/ui/widgets/schedule_list_item.dart';
 import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {

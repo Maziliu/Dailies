@@ -1,6 +1,6 @@
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/calendar/events/events_section.dart';
-import 'package:dailies_v2/ui/views/widgets/calendar.dart';
+import 'package:dailies_v2/ui/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 
 final DateTime FIRST_CALENDAR_DAY = DateTime.utc(2003, 05, 14);

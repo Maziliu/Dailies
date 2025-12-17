@@ -4,7 +4,7 @@ import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
 import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';
 import 'package:dailies_v2/ui/views/overview/upcoming/upcoming_section.dart';
-import 'package:dailies_v2/ui/views/widgets/events_list.dart';
+import 'package:dailies_v2/ui/widgets/events_list.dart';
 import 'package:flutter/material.dart';
 
 class OverviewView extends StatelessWidget {

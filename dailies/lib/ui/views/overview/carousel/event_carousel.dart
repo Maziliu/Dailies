@@ -1,4 +1,4 @@
-import 'package:dailies_v2/ui/views/widgets/section_card.dart';
+import 'package:dailies_v2/ui/widgets/section_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

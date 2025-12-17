@@ -1,5 +1,4 @@
 import 'package:dailies_v2/enums/event_type.dart';
-import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -23,6 +22,17 @@ extension EventTypeLabels on EventType {
   }
 }
 
+const _TITLE_TAG = 'TITLE_TAG';
+const _DESCRIPTION_TAG = 'DESCRIPTION_TAG';
+const _LOCATION_TAG = 'LOCATION_TAG';
+const _DATE_TAG = 'DATE_TAG';
+const _INTERVAL_START_TAG = 'INTERVAL_START_TAG';
+const _INTERVAL_END_TAG = 'INTERVAL_END_TAG';
+const _DEADLINE_TAG = 'DEADLINE_TAG';
+const _MULTI_DAY_START_TIME_TAG = 'MULTI_DAY_START_TIME_TAG';
+const _MULTI_DAY_END_DATE_TAG = 'MULTI_DAY_END_DATE_TAG';
+const _RECURRING_TAG = 'RECURRING_TAG';
+
 class AddEventModal extends StatefulWidget {
   const AddEventModal({super.key});
 
@@ -32,11 +42,6 @@ class AddEventModal extends StatefulWidget {
 
 class _AddEventModalState extends State<AddEventModal> {
   final _formKey = GlobalKey<FormBuilderState>();
-
-  static const _TITLE_TAG = 'TITLE_TAG';
-  static const _DESCRIPTION_TAG = 'DESCRIPTION_TAG';
-  static const _LOCATION_TAG = 'LOCATION_TAG';
-  static const _DATE_TAG = 'DATE_TAG';
 
   EventType _selectedType = EventType.INTERVAL;
 
@@ -82,7 +87,7 @@ class _AddEventModalState extends State<AddEventModal> {
               FormBuilderDateTimePicker(
                 name: _DATE_TAG,
                 inputType: InputType.date,
-                decoration: InputDecoration(labelText: 'Date'),
+                decoration: const InputDecoration(labelText: 'Date'),
               ),
 
               UIFormating.smallVerticalSpacing(),
@@ -104,10 +109,7 @@ class _AddEventModalState extends State<AddEventModal> {
     final state = _formKey.currentState;
     if (state == null || !state.saveAndValidate()) return;
 
-    final values = state.value;
-    final List<EventModel> events = [];
-
-    Navigator.of(context).pop(events);
+    Navigator.of(context, rootNavigator: true).pop();
   }
 }
 
@@ -141,11 +143,12 @@ class _EventTypeSectionState extends State<EventTypeSection> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
+        spacing: 12,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
@@ -155,11 +158,10 @@ class _EventTypeSectionState extends State<EventTypeSection> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             children: EventType.values.map((type) {
-              if (type == EventType.UNDEFINED) return SizedBox.shrink();
+              if (type == EventType.UNDEFINED) return const SizedBox.shrink();
               return ChoiceChip(
                 label: Text(type.label),
                 selected: _selected == type,
@@ -167,7 +169,6 @@ class _EventTypeSectionState extends State<EventTypeSection> {
               );
             }).toList(),
           ),
-          const SizedBox(height: 16),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             child: _buildFields(),
@@ -199,15 +200,15 @@ class _IntervalFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 8,
       children: [
         FormBuilderDateTimePicker(
-          name: 'interval_start',
-          decoration: InputDecoration(labelText: 'Start Time'),
+          name: _INTERVAL_START_TAG,
+          decoration: const InputDecoration(labelText: 'Start Time'),
         ),
-        SizedBox(height: 8),
         FormBuilderDateTimePicker(
-          name: 'interval_end',
-          decoration: InputDecoration(labelText: 'End Time'),
+          name: _INTERVAL_END_TAG,
+          decoration: const InputDecoration(labelText: 'End Time'),
         ),
       ],
     );
@@ -221,8 +222,8 @@ class _DeadlineFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormBuilderDateTimePicker(
       inputType: InputType.time,
-      name: 'deadline',
-      decoration: InputDecoration(labelText: 'Deadline'),
+      name: _DEADLINE_TAG,
+      decoration: const InputDecoration(labelText: 'Deadline'),
     );
   }
 }
@@ -236,14 +237,14 @@ class _MultiDayFields extends StatelessWidget {
       spacing: 8,
       children: [
         FormBuilderDateTimePicker(
-          name: 'multi_start',
+          name: _MULTI_DAY_START_TIME_TAG,
           inputType: InputType.time,
-          decoration: InputDecoration(labelText: 'Start Time'),
+          decoration: const InputDecoration(labelText: 'Start Time'),
         ),
         FormBuilderDateTimePicker(
-          name: 'multi_end',
+          name: _MULTI_DAY_END_DATE_TAG,
           inputType: InputType.date,
-          decoration: InputDecoration(labelText: 'End Date'),
+          decoration: const InputDecoration(labelText: 'End Date'),
         ),
       ],
     );
@@ -256,9 +257,9 @@ class _RecurringFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormBuilderDropdown<String>(
-      name: 'recurring_rule',
-      decoration: InputDecoration(labelText: 'Repeat'),
-      items: [
+      name: _RECURRING_TAG,
+      decoration: const InputDecoration(labelText: 'Repeat'),
+      items: const [
         DropdownMenuItem(value: 'daily', child: Text('Daily')),
         DropdownMenuItem(value: 'weekly', child: Text('Weekly')),
         DropdownMenuItem(value: 'monthly', child: Text('Monthly')),

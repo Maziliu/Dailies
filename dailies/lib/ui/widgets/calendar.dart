@@ -1,7 +1,7 @@
 import 'package:dailies_v2/ui/state/calendar_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
-import 'package:dailies_v2/ui/views/widgets/section_card.dart';
+import 'package:dailies_v2/ui/widgets/section_card.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -25,6 +25,7 @@ class CalendarWidget extends StatelessWidget {
             firstDay: FIRST_CALENDAR_DAY,
             lastDay: LAST_CALENDAR_DAY,
             focusedDay: selectedDay,
+            rowHeight: 38,
             sixWeekMonthsEnforced: true,
             selectedDayPredicate: (day) => isSameDay(day, selectedDay),
             onDaySelected: (day, _) => viewModel.onDaySelect(day),

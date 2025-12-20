@@ -24,6 +24,10 @@ class ValidationFailure extends Failure {
   ValidationFailure(super.message);
 }
 
+class GenerationFailure extends Failure {
+  GenerationFailure(super.message);
+}
+
 class DatabaseFailure extends Failure {
   DatabaseFailure(super.message);
 }

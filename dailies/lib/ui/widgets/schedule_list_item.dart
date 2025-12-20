@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class ScheduleItem extends StatelessWidget {
   final String title;
-  final DateTime start;
+  final DateTime date;
+  final DateTime? start;
   final DateTime? end;
   final String? location;
   final bool showDate;
@@ -12,7 +13,8 @@ class ScheduleItem extends StatelessWidget {
   const ScheduleItem({
     super.key,
     required this.title,
-    required this.start,
+    required this.date,
+    this.start,
     this.end,
     this.location,
     this.showDate = false,
@@ -55,7 +57,7 @@ class ScheduleItem extends StatelessWidget {
                 ],
               ),
             ),
-            if (showDate) _DateBadge(start: start),
+            if (showDate) _DateBadge(start: start ?? date),
           ],
         ),
       ),
@@ -63,7 +65,9 @@ class ScheduleItem extends StatelessWidget {
   }
 
   String? _formatTime(BuildContext context) {
-    final startText = TimeOfDay.fromDateTime(start).format(context);
+    if (start == null) return null;
+
+    final startText = TimeOfDay.fromDateTime(start!).format(context);
 
     if (end == null) return startText;
 

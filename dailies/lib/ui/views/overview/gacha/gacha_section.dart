@@ -4,9 +4,10 @@ import 'package:dailies_v2/ui/modals/confirmation.dart';
 import 'package:dailies_v2/ui/modals/spend_stamina.dart';
 import 'package:dailies_v2/ui/state/gacha_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
-import 'package:dailies_v2/ui/views/widgets/item_list.dart';
-import 'package:dailies_v2/ui/views/widgets/section_card.dart';
-import 'package:dailies_v2/ui/views/widgets/stamina_list_item.dart';
+import 'package:dailies_v2/ui/widgets/item_list.dart' show ItemList;
+import 'package:dailies_v2/ui/widgets/section_card.dart';
+import 'package:dailies_v2/ui/widgets/stamina_list_item.dart'
+    show StaminaListItem;
 import 'package:flutter/material.dart';
 
 class GachaSection extends StatefulWidget {

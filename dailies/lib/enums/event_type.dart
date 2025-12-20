@@ -1,0 +1,8 @@
+enum EventType {
+  REACCURING,
+  DEADLINE,
+  INDEFINITE,
+  UNDEFINED,
+  INTERVAL,
+  MULTI_DAY,
+}

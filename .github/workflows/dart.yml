@@ -28,7 +28,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.ref_name }}
 
       - name: Setup Java
         uses: actions/setup-java@v3
@@ -46,18 +45,18 @@ jobs:
         run: flutter pub get
 
       - name: Apply dart fix
-        if: github.actor != 'github-actions[bot]'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/v2'
         run: dart fix --apply
 
       - name: Commit dart fixes
-        if: github.actor != 'github-actions[bot]'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/v2'
         run: |
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add .
-            git commit -m "chore: apply dart fix"
-            git push origin HEAD:${{ github.ref_name }}
+            git commit -m "chore: apply dart fix [skip ci]"
+            git push origin v2
           else
             echo "No dart fixes needed."
           fi
@@ -73,6 +72,7 @@ jobs:
           mkdir -p artifacts
           cp build/app/outputs/flutter-apk/*.apk artifacts/
 
+      # ─────────────── RELEASE (ONLY ON TAGS) ───────────────
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: ncipollo/release-action@v1.16.0

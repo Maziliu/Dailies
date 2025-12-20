@@ -62,6 +62,37 @@ class EventsViewModel extends ChangeNotifier {
         [];
   }
 
+  List<EventUIModel> getInstancesByDateRangeInclusive(
+    DateTime lower,
+    DateTime upper,
+  ) {
+    final lowerKey = DateTime(lower.year, lower.month, lower.day);
+    final upperKey = DateTime(upper.year, upper.month, upper.day);
+
+    final List<EventCacheInstanceModel> out = [];
+
+    for (final entry in eventMapHeap.entries) {
+      final d = entry.key;
+
+      if (d.compareTo(lowerKey) < 0) continue;
+      if (d.compareTo(upperKey) > 0) continue;
+
+      for (final instance in entry.value.toList()) {
+        out.add(instance);
+      }
+    }
+
+    out.sort((a, b) => a.compareTo(b));
+    return out
+        .map(
+          (e) => EventUIModel.fromInfoAndInstance(
+            instance: e,
+            info: _eventInfosById[e.eventInfoId],
+          ),
+        )
+        .toList();
+  }
+
   EventInfoModel? getEventInfo(int eventInfoId) {
     return _eventInfosById[eventInfoId];
   }

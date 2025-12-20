@@ -1,5 +1,5 @@
 import 'package:dailies_v2/models/event.dart';
-import 'package:dailies_v2/ui/views/overview/overview_view.dart';
+import 'package:dailies_v2/ui/state/events_view_model.dart';
 import 'package:dailies_v2/ui/widgets/item_list.dart';
 import 'package:dailies_v2/ui/widgets/schedule_list_item.dart';
 import 'package:dailies_v2/ui/widgets/section_card.dart';
@@ -25,7 +25,10 @@ class UpcomingSection extends StatelessWidget {
           SizedBox(
             height: MAX_SECTION_HEIGHT,
             child: ItemList<EventUIModel>(
-              items: fakeEvents(),
+              items: EVENTS_VIEW_MODEL.getInstancesByDateRangeInclusive(
+                DateTime.now(),
+                DateTime.now().add(Duration(days: 14)),
+              ),
               itemBuilder: (event) {
                 return ScheduleItem(
                   date: event.date,

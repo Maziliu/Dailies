@@ -1,80 +1,108 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/services/event/event_service.dart';
 import 'package:dailies_v2/utils/result.dart';
 import 'package:flutter/foundation.dart';
 
-typedef EventMapHeap = Map<DateTime, HeapPriorityQueue<EventModel>>;
+typedef EventMapHeap =
+    Map<DateTime, HeapPriorityQueue<EventCacheInstanceModel>>;
 
 class EventsViewModel extends ChangeNotifier {
   final EventService _eventService = EventService();
 
-  final EventMapHeap eventMapHeap = EventMapHeap();
+  final Map<int, EventInfoModel> _eventInfosById = {};
 
-  Future<void> getAllEvents() async {
-    final Result<List<EventModel>> result = await _eventService.getAllEvents();
+  final EventMapHeap eventMapHeap = {};
 
-    switch (result) {
-      case Ok<List<EventModel>>(value: final events):
-        for (final event in events) {
-          _pushEventToHeap(event);
-        }
+  StreamSubscription? _infoSub;
+  StreamSubscription? _instanceSub;
 
-        notifyListeners();
-
-        print('received $events');
-        print(eventMapHeap);
-
-      case Error<List<EventModel>>(failure: final error):
-        print('error: $error');
-    }
+  EventsViewModel() {
+    _bindStreams();
   }
 
-  Future<void> deleteEvent(int? id) async {
-    final Result<void> result = await _eventService.deleteEvent(id);
+  void _bindStreams() {
+    _infoSub = _eventService.watchEventInfos().listen(_onInfos);
+    _instanceSub = _eventService.watchEventCacheInstances().listen(
+      _onInstances,
+    );
+  }
+
+  void _onInfos(List<EventInfoModel> infos) {
+    _eventInfosById
+      ..clear()
+      ..addEntries(infos.map((e) => MapEntry(e.id!, e)));
+
+    notifyListeners();
+  }
+
+  void _onInstances(List<EventCacheInstanceModel> instances) {
+    eventMapHeap.clear();
+
+    for (final instance in instances) {
+      _pushInstanceToHeap(instance);
+    }
+
+    notifyListeners();
+  }
+
+  List<EventUIModel> getInstancesByDate(DateTime date) {
+    final key = DateTime(date.year, date.month, date.day);
+    return eventMapHeap[key]
+            ?.toList()
+            .map(
+              (e) => EventUIModel.fromInfoAndInstance(
+                info: _eventInfosById[e.eventInfoId],
+                instance: e,
+              ),
+            )
+            .toList() ??
+        [];
+  }
+
+  EventInfoModel? getEventInfo(int eventInfoId) {
+    return _eventInfosById[eventInfoId];
+  }
+
+  Future<void> deleteEvent(int eventInfoId) async {
+    final result = await _eventService.deleteEvent(eventInfoId);
 
     switch (result) {
       case Ok<void>():
-        // TODO: Handle this case.
-        throw UnimplementedError();
-      case Error<void>():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        print('OK');
+      case Error<void>(failure: final Failure error):
+        print(error.message);
     }
   }
 
-  Future<void> insertEvent(EventModel event) async {
-    final Result<int> result = await _eventService.insertEvent(event);
+  Future<void> createEvent(EventInfoModel eventInfo) async {
+    final result = await _eventService.createEvent(eventInfo);
 
     switch (result) {
       case Ok<int>(value: final int id):
-        event.id = id;
-        _pushEventToHeap(event);
-        notifyListeners();
-
-      case Error<int>():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        print('INSERTED $id');
+      case Error<void>(failure: final Failure error):
+        print(error.message);
     }
   }
 
-  List<EventModel> getEventsByDate(DateTime date) =>
-      eventMapHeap[date]?.toList() ?? [];
-
-  void _pushEventToHeap(EventModel event) {
-    final DateTime date = DateTime(
-      event.start.year,
-      event.start.month,
-      event.start.day,
+  void _pushInstanceToHeap(EventCacheInstanceModel instance) {
+    final date = DateTime(
+      instance.date.year,
+      instance.date.month,
+      instance.date.day,
     );
 
-    final bool isNewKey = eventMapHeap[date] == null;
+    eventMapHeap.putIfAbsent(date, HeapPriorityQueue.new).add(instance);
+  }
 
-    if (isNewKey) {
-      eventMapHeap[date] = HeapPriorityQueue();
-    }
-
-    eventMapHeap[date]?.add(event);
+  @override
+  void dispose() {
+    _infoSub?.cancel();
+    _instanceSub?.cancel();
+    super.dispose();
   }
 }
 

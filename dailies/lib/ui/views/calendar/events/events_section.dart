@@ -14,10 +14,33 @@ class EventsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calendarViewModel = CALENDAR_VIEW_MODEL;
+    final eventViewModel = EVENTS_VIEW_MODEL;
     final theme = Theme.of(context);
 
-    return ChangeNotifierProvider(
-      create: (_) => EventsViewModel(),
+    Future<void> onShowAddEventDialog() async {
+      final result = await showDialog<EventInfoModel>(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 24,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const AddEventModal(),
+          );
+        },
+      );
+
+      if (result == null) return;
+
+      eventViewModel.createEvent(result);
+    }
+
+    return ChangeNotifierProvider.value(
+      value: EVENTS_VIEW_MODEL,
       child: SectionCard(
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
         child: ValueListenableBuilder<DateTime>(
@@ -35,25 +58,7 @@ class EventsSection extends StatelessWidget {
                         style: theme.textTheme.headlineLarge,
                       ),
                       IconButton(
-                        onPressed: () async {
-                          final result = await showDialog<EventModel>(
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                insetPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 24,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: const AddEventModal(),
-                              );
-                            },
-                          );
-
-                          if (result == null) return;
-                        },
+                        onPressed: onShowAddEventDialog,
                         icon: const Icon(Icons.add),
                       ),
                     ],
@@ -62,9 +67,9 @@ class EventsSection extends StatelessWidget {
 
                 Expanded(
                   child: Consumer<EventsViewModel>(
-                    builder: (context, eventsVM, _) {
+                    builder: (context, viewModel, _) {
                       return EventsList(
-                        events: eventsVM.getEventsByDate(selectedDay),
+                        events: viewModel.getInstancesByDate(selectedDay),
                       );
                     },
                   ),

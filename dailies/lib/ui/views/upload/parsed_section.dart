@@ -30,9 +30,10 @@ class ParsedSection extends StatelessWidget {
                   items: events,
                   itemBuilder: (event) {
                     return ScheduleItem(
+                      date: event.date,
                       title: event.title,
                       start: event.start,
-                      end: event.resolvedEnd,
+                      end: event.end,
                       location: event.location,
                     );
                   },

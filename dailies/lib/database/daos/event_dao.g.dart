@@ -4,5 +4,7 @@ part of 'event_dao.dart';
 
 // ignore_for_file: type=lint
 mixin _$EventDaoMixin on DatabaseAccessor<Database> {
-  $EventsTable get events => attachedDatabase.events;
+  $EventInfosTable get eventInfos => attachedDatabase.eventInfos;
+  $EventCacheInstancesTable get eventCacheInstances =>
+      attachedDatabase.eventCacheInstances;
 }

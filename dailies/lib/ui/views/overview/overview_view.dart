@@ -1,4 +1,3 @@
-import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
@@ -22,9 +21,9 @@ class OverviewView extends StatelessWidget {
             const GachaSection(),
             EventCarousel(
               pages: [
-                EventsList(events: fakeTodayEvents()),
-                EventsList(events: fakeTodayEvents()),
-                EventsList(events: fakeTodayEvents()),
+                EventsList(events: fakeEvents()),
+                EventsList(events: fakeEvents()),
+                EventsList(events: fakeEvents()),
               ],
             ),
             const UpcomingSection(),
@@ -35,88 +34,34 @@ class OverviewView extends StatelessWidget {
   }
 }
 
-List<EventModel> fakeTodayEvents() {
+List<EventUIModel> fakeEvents() {
   final now = DateTime.now();
-  final day = DateTime(now.year, now.month, now.day);
+  final startDay = DateTime(now.year, now.month, now.day);
 
-  return [
-    EventModel(
-      id: 1,
-      uid: 'uid-1',
-      calendarId: 'calendar-local',
+  int bucket(DateTime d) => d.year * 10000 + d.month * 100 + d.day;
 
-      title: 'Daily Standup',
-      description: 'Team sync',
-      location: 'Office',
+  final List<EventUIModel> events = [];
 
-      start: day.add(const Duration(hours: 9)),
-      end: day.add(const Duration(hours: 9, minutes: 30)),
+  for (int i = 0; i < 7; i++) {
+    final day = startDay.add(Duration(days: i));
 
-      timezone: 'local',
-      status: 'CONFIRMED',
+    events.addAll([
+      EventUIModel(
+        date: DateTime.now(),
+        start: day.add(const Duration(hours: 9)),
+        end: day.add(const Duration(hours: 10)),
+        title: 'Daily Standup',
+        location: 'Office',
+      ),
+      EventUIModel(
+        date: DateTime.now(),
+        start: day.add(const Duration(hours: 18)),
+        end: day.add(const Duration(hours: 19)),
+        title: 'Gym',
+        location: 'Fitness Center',
+      ),
+    ]);
+  }
 
-      createdAt: now,
-      lastModified: now,
-
-      type: EventType.INTERVAL,
-    ),
-
-    EventModel(
-      id: 2,
-      uid: 'uid-2',
-      calendarId: 'calendar-local',
-
-      title: 'Gym',
-      location: 'Fitness Center',
-
-      start: day.add(const Duration(hours: 18)),
-      duration: const Duration(hours: 1),
-
-      timezone: 'local',
-      status: 'CONFIRMED',
-
-      createdAt: now,
-      lastModified: now,
-
-      type: EventType.INTERVAL,
-    ),
-    EventModel(
-      id: 3,
-      uid: 'uid-3',
-      calendarId: 'calendar-local',
-
-      title: 'Gym',
-      location: 'Fitness Center',
-
-      start: day.add(const Duration(hours: 18)),
-      duration: const Duration(hours: 1),
-
-      timezone: 'local',
-      status: 'CONFIRMED',
-
-      createdAt: now,
-      lastModified: now,
-
-      type: EventType.INTERVAL,
-    ),
-    EventModel(
-      id: 4,
-      uid: 'uid-4',
-      calendarId: 'calendar-local',
-
-      title: 'Gym',
-      location: 'Fitness Center',
-
-      start: day.add(const Duration(hours: 18)),
-      duration: const Duration(hours: 1),
-
-      timezone: 'local',
-      status: 'CONFIRMED',
-
-      createdAt: now,
-      lastModified: now,
-
-      type: EventType.INTERVAL,
-    ),
-  ];
+  return events;
 }

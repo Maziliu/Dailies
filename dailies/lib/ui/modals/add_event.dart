@@ -143,8 +143,8 @@ class _AddEventModalState extends State<AddEventModal> {
     final String description = state.fields[_DESCRIPTION_TAG]?.value as String;
     final DateTime date = state.fields[_DATE_TAG]?.value as DateTime;
 
-    final DateTime? startTime, endTime;
-    final String? rrule;
+    DateTime? startTime, endTime;
+    String? rrule;
 
     switch (_selectedType) {
       case EventType.REACCURING:
@@ -171,9 +171,22 @@ class _AddEventModalState extends State<AddEventModal> {
       default:
     }
 
-    final EventModel event = EventModel();
+    final EventInfoModel eventInfo = EventInfoModel(
+      calendarId: 'Main',
+      uid: 'sdsadsada',
+      title: title,
+      location: location,
+      description: description,
+      date: date,
+      start: startTime,
+      end: endTime,
+      rrule: rrule,
+      type: _selectedType,
+      createdAt: DateTime.now(),
+      lastModified: DateTime.now(),
+    );
 
-    Navigator.of(context, rootNavigator: true).pop<EventModel>();
+    Navigator.of(context, rootNavigator: true).pop<EventInfoModel>(eventInfo);
   }
 }
 

@@ -3,11 +3,12 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
+class $EventInfosTable extends EventInfos
+    with TableInfo<$EventInfosTable, EventInfo> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $EventsTable(this.attachedDatabase, [this._alias]);
+  $EventInfosTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -20,15 +21,6 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'PRIMARY KEY AUTOINCREMENT',
     ),
-  );
-  static const VerificationMeta _uidMeta = const VerificationMeta('uid');
-  @override
-  late final GeneratedColumn<String> uid = GeneratedColumn<String>(
-    'uid',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
   );
   static const VerificationMeta _calendarIdMeta = const VerificationMeta(
     'calendarId',
@@ -72,6 +64,24 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  @override
+  late final GeneratedColumnWithTypeConverter<EventType, String> type =
+      GeneratedColumn<String>(
+        'type',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<EventType>($EventInfosTable.$convertertype);
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<int> date = GeneratedColumn<int>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _dtStartMeta = const VerificationMeta(
     'dtStart',
   );
@@ -79,25 +89,14 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   late final GeneratedColumn<int> dtStart = GeneratedColumn<int>(
     'dt_start',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.int,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _dtEndMeta = const VerificationMeta('dtEnd');
   @override
   late final GeneratedColumn<int> dtEnd = GeneratedColumn<int>(
     'dt_end',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _durationMeta = const VerificationMeta(
-    'duration',
-  );
-  @override
-  late final GeneratedColumn<int> duration = GeneratedColumn<int>(
-    'duration',
     aliasedName,
     true,
     type: DriftSqlType.int,
@@ -123,25 +122,15 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  static const VerificationMeta _untilMeta = const VerificationMeta('until');
   @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-    'status',
+  late final GeneratedColumn<int> until = GeneratedColumn<int>(
+    'until',
     aliasedName,
-    false,
-    type: DriftSqlType.string,
+    true,
+    type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultValue: const Constant('CONFIRMED'),
   );
-  @override
-  late final GeneratedColumnWithTypeConverter<EventType, String> eventType =
-      GeneratedColumn<String>(
-        'event_type',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: true,
-      ).withConverter<EventType>($EventsTable.$convertereventType);
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -167,18 +156,17 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    uid,
     calendarId,
     title,
     description,
     location,
+    type,
+    date,
     dtStart,
     dtEnd,
-    duration,
     timezone,
     rrule,
-    status,
-    eventType,
+    until,
     createdAt,
     lastModified,
   ];
@@ -186,24 +174,16 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'events';
+  static const String $name = 'event_infos';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Event> instance, {
+    Insertable<EventInfo> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('uid')) {
-      context.handle(
-        _uidMeta,
-        uid.isAcceptableOrUnknown(data['uid']!, _uidMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_uidMeta);
     }
     if (data.containsKey('calendar_id')) {
       context.handle(
@@ -236,24 +216,24 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
         location.isAcceptableOrUnknown(data['location']!, _locationMeta),
       );
     }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
     if (data.containsKey('dt_start')) {
       context.handle(
         _dtStartMeta,
         dtStart.isAcceptableOrUnknown(data['dt_start']!, _dtStartMeta),
       );
-    } else if (isInserting) {
-      context.missing(_dtStartMeta);
     }
     if (data.containsKey('dt_end')) {
       context.handle(
         _dtEndMeta,
         dtEnd.isAcceptableOrUnknown(data['dt_end']!, _dtEndMeta),
-      );
-    }
-    if (data.containsKey('duration')) {
-      context.handle(
-        _durationMeta,
-        duration.isAcceptableOrUnknown(data['duration']!, _durationMeta),
       );
     }
     if (data.containsKey('timezone')) {
@@ -268,10 +248,10 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
         rrule.isAcceptableOrUnknown(data['rrule']!, _rruleMeta),
       );
     }
-    if (data.containsKey('status')) {
+    if (data.containsKey('until')) {
       context.handle(
-        _statusMeta,
-        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+        _untilMeta,
+        until.isAcceptableOrUnknown(data['until']!, _untilMeta),
       );
     }
     if (data.containsKey('created_at')) {
@@ -299,16 +279,12 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Event map(Map<String, dynamic> data, {String? tablePrefix}) {
+  EventInfo map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Event(
+    return EventInfo(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
-      )!,
-      uid: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}uid'],
       )!,
       calendarId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -326,17 +302,23 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
         DriftSqlType.string,
         data['${effectivePrefix}location'],
       ),
+      type: $EventInfosTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}date'],
+      )!,
       dtStart: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}dt_start'],
-      )!,
+      ),
       dtEnd: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}dt_end'],
-      ),
-      duration: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}duration'],
       ),
       timezone: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -346,15 +328,9 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
         DriftSqlType.string,
         data['${effectivePrefix}rrule'],
       ),
-      status: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}status'],
-      )!,
-      eventType: $EventsTable.$convertereventType.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.string,
-          data['${effectivePrefix}event_type'],
-        )!,
+      until: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}until'],
       ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -368,44 +344,42 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
   }
 
   @override
-  $EventsTable createAlias(String alias) {
-    return $EventsTable(attachedDatabase, alias);
+  $EventInfosTable createAlias(String alias) {
+    return $EventInfosTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<EventType, String> $convertereventType =
+  static TypeConverter<EventType, String> $convertertype =
       const EventTypeConverter();
 }
 
-class Event extends DataClass implements Insertable<Event> {
+class EventInfo extends DataClass implements Insertable<EventInfo> {
   final int id;
-  final String uid;
   final String calendarId;
   final String title;
   final String? description;
   final String? location;
-  final int dtStart;
+  final EventType type;
+  final int date;
+  final int? dtStart;
   final int? dtEnd;
-  final int? duration;
   final String? timezone;
   final String? rrule;
-  final String status;
-  final EventType eventType;
+  final int? until;
   final int createdAt;
   final int lastModified;
-  const Event({
+  const EventInfo({
     required this.id,
-    required this.uid,
     required this.calendarId,
     required this.title,
     this.description,
     this.location,
-    required this.dtStart,
+    required this.type,
+    required this.date,
+    this.dtStart,
     this.dtEnd,
-    this.duration,
     this.timezone,
     this.rrule,
-    required this.status,
-    required this.eventType,
+    this.until,
     required this.createdAt,
     required this.lastModified,
   });
@@ -413,7 +387,6 @@ class Event extends DataClass implements Insertable<Event> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['uid'] = Variable<String>(uid);
     map['calendar_id'] = Variable<String>(calendarId);
     map['title'] = Variable<String>(title);
     if (!nullToAbsent || description != null) {
@@ -422,12 +395,17 @@ class Event extends DataClass implements Insertable<Event> {
     if (!nullToAbsent || location != null) {
       map['location'] = Variable<String>(location);
     }
-    map['dt_start'] = Variable<int>(dtStart);
+    {
+      map['type'] = Variable<String>(
+        $EventInfosTable.$convertertype.toSql(type),
+      );
+    }
+    map['date'] = Variable<int>(date);
+    if (!nullToAbsent || dtStart != null) {
+      map['dt_start'] = Variable<int>(dtStart);
+    }
     if (!nullToAbsent || dtEnd != null) {
       map['dt_end'] = Variable<int>(dtEnd);
-    }
-    if (!nullToAbsent || duration != null) {
-      map['duration'] = Variable<int>(duration);
     }
     if (!nullToAbsent || timezone != null) {
       map['timezone'] = Variable<String>(timezone);
@@ -435,21 +413,17 @@ class Event extends DataClass implements Insertable<Event> {
     if (!nullToAbsent || rrule != null) {
       map['rrule'] = Variable<String>(rrule);
     }
-    map['status'] = Variable<String>(status);
-    {
-      map['event_type'] = Variable<String>(
-        $EventsTable.$convertereventType.toSql(eventType),
-      );
+    if (!nullToAbsent || until != null) {
+      map['until'] = Variable<int>(until);
     }
     map['created_at'] = Variable<int>(createdAt);
     map['last_modified'] = Variable<int>(lastModified);
     return map;
   }
 
-  EventsCompanion toCompanion(bool nullToAbsent) {
-    return EventsCompanion(
+  EventInfosCompanion toCompanion(bool nullToAbsent) {
+    return EventInfosCompanion(
       id: Value(id),
-      uid: Value(uid),
       calendarId: Value(calendarId),
       title: Value(title),
       description: description == null && nullToAbsent
@@ -458,45 +432,46 @@ class Event extends DataClass implements Insertable<Event> {
       location: location == null && nullToAbsent
           ? const Value.absent()
           : Value(location),
-      dtStart: Value(dtStart),
+      type: Value(type),
+      date: Value(date),
+      dtStart: dtStart == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dtStart),
       dtEnd: dtEnd == null && nullToAbsent
           ? const Value.absent()
           : Value(dtEnd),
-      duration: duration == null && nullToAbsent
-          ? const Value.absent()
-          : Value(duration),
       timezone: timezone == null && nullToAbsent
           ? const Value.absent()
           : Value(timezone),
       rrule: rrule == null && nullToAbsent
           ? const Value.absent()
           : Value(rrule),
-      status: Value(status),
-      eventType: Value(eventType),
+      until: until == null && nullToAbsent
+          ? const Value.absent()
+          : Value(until),
       createdAt: Value(createdAt),
       lastModified: Value(lastModified),
     );
   }
 
-  factory Event.fromJson(
+  factory EventInfo.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Event(
+    return EventInfo(
       id: serializer.fromJson<int>(json['id']),
-      uid: serializer.fromJson<String>(json['uid']),
       calendarId: serializer.fromJson<String>(json['calendarId']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String?>(json['description']),
       location: serializer.fromJson<String?>(json['location']),
-      dtStart: serializer.fromJson<int>(json['dtStart']),
+      type: serializer.fromJson<EventType>(json['type']),
+      date: serializer.fromJson<int>(json['date']),
+      dtStart: serializer.fromJson<int?>(json['dtStart']),
       dtEnd: serializer.fromJson<int?>(json['dtEnd']),
-      duration: serializer.fromJson<int?>(json['duration']),
       timezone: serializer.fromJson<String?>(json['timezone']),
       rrule: serializer.fromJson<String?>(json['rrule']),
-      status: serializer.fromJson<String>(json['status']),
-      eventType: serializer.fromJson<EventType>(json['eventType']),
+      until: serializer.fromJson<int?>(json['until']),
       createdAt: serializer.fromJson<int>(json['createdAt']),
       lastModified: serializer.fromJson<int>(json['lastModified']),
     );
@@ -506,60 +481,56 @@ class Event extends DataClass implements Insertable<Event> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'uid': serializer.toJson<String>(uid),
       'calendarId': serializer.toJson<String>(calendarId),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String?>(description),
       'location': serializer.toJson<String?>(location),
-      'dtStart': serializer.toJson<int>(dtStart),
+      'type': serializer.toJson<EventType>(type),
+      'date': serializer.toJson<int>(date),
+      'dtStart': serializer.toJson<int?>(dtStart),
       'dtEnd': serializer.toJson<int?>(dtEnd),
-      'duration': serializer.toJson<int?>(duration),
       'timezone': serializer.toJson<String?>(timezone),
       'rrule': serializer.toJson<String?>(rrule),
-      'status': serializer.toJson<String>(status),
-      'eventType': serializer.toJson<EventType>(eventType),
+      'until': serializer.toJson<int?>(until),
       'createdAt': serializer.toJson<int>(createdAt),
       'lastModified': serializer.toJson<int>(lastModified),
     };
   }
 
-  Event copyWith({
+  EventInfo copyWith({
     int? id,
-    String? uid,
     String? calendarId,
     String? title,
     Value<String?> description = const Value.absent(),
     Value<String?> location = const Value.absent(),
-    int? dtStart,
+    EventType? type,
+    int? date,
+    Value<int?> dtStart = const Value.absent(),
     Value<int?> dtEnd = const Value.absent(),
-    Value<int?> duration = const Value.absent(),
     Value<String?> timezone = const Value.absent(),
     Value<String?> rrule = const Value.absent(),
-    String? status,
-    EventType? eventType,
+    Value<int?> until = const Value.absent(),
     int? createdAt,
     int? lastModified,
-  }) => Event(
+  }) => EventInfo(
     id: id ?? this.id,
-    uid: uid ?? this.uid,
     calendarId: calendarId ?? this.calendarId,
     title: title ?? this.title,
     description: description.present ? description.value : this.description,
     location: location.present ? location.value : this.location,
-    dtStart: dtStart ?? this.dtStart,
+    type: type ?? this.type,
+    date: date ?? this.date,
+    dtStart: dtStart.present ? dtStart.value : this.dtStart,
     dtEnd: dtEnd.present ? dtEnd.value : this.dtEnd,
-    duration: duration.present ? duration.value : this.duration,
     timezone: timezone.present ? timezone.value : this.timezone,
     rrule: rrule.present ? rrule.value : this.rrule,
-    status: status ?? this.status,
-    eventType: eventType ?? this.eventType,
+    until: until.present ? until.value : this.until,
     createdAt: createdAt ?? this.createdAt,
     lastModified: lastModified ?? this.lastModified,
   );
-  Event copyWithCompanion(EventsCompanion data) {
-    return Event(
+  EventInfo copyWithCompanion(EventInfosCompanion data) {
+    return EventInfo(
       id: data.id.present ? data.id.value : this.id,
-      uid: data.uid.present ? data.uid.value : this.uid,
       calendarId: data.calendarId.present
           ? data.calendarId.value
           : this.calendarId,
@@ -568,13 +539,13 @@ class Event extends DataClass implements Insertable<Event> {
           ? data.description.value
           : this.description,
       location: data.location.present ? data.location.value : this.location,
+      type: data.type.present ? data.type.value : this.type,
+      date: data.date.present ? data.date.value : this.date,
       dtStart: data.dtStart.present ? data.dtStart.value : this.dtStart,
       dtEnd: data.dtEnd.present ? data.dtEnd.value : this.dtEnd,
-      duration: data.duration.present ? data.duration.value : this.duration,
       timezone: data.timezone.present ? data.timezone.value : this.timezone,
       rrule: data.rrule.present ? data.rrule.value : this.rrule,
-      status: data.status.present ? data.status.value : this.status,
-      eventType: data.eventType.present ? data.eventType.value : this.eventType,
+      until: data.until.present ? data.until.value : this.until,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       lastModified: data.lastModified.present
           ? data.lastModified.value
@@ -584,20 +555,19 @@ class Event extends DataClass implements Insertable<Event> {
 
   @override
   String toString() {
-    return (StringBuffer('Event(')
+    return (StringBuffer('EventInfo(')
           ..write('id: $id, ')
-          ..write('uid: $uid, ')
           ..write('calendarId: $calendarId, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('location: $location, ')
+          ..write('type: $type, ')
+          ..write('date: $date, ')
           ..write('dtStart: $dtStart, ')
           ..write('dtEnd: $dtEnd, ')
-          ..write('duration: $duration, ')
           ..write('timezone: $timezone, ')
           ..write('rrule: $rrule, ')
-          ..write('status: $status, ')
-          ..write('eventType: $eventType, ')
+          ..write('until: $until, ')
           ..write('createdAt: $createdAt, ')
           ..write('lastModified: $lastModified')
           ..write(')'))
@@ -607,165 +577,155 @@ class Event extends DataClass implements Insertable<Event> {
   @override
   int get hashCode => Object.hash(
     id,
-    uid,
     calendarId,
     title,
     description,
     location,
+    type,
+    date,
     dtStart,
     dtEnd,
-    duration,
     timezone,
     rrule,
-    status,
-    eventType,
+    until,
     createdAt,
     lastModified,
   );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Event &&
+      (other is EventInfo &&
           other.id == this.id &&
-          other.uid == this.uid &&
           other.calendarId == this.calendarId &&
           other.title == this.title &&
           other.description == this.description &&
           other.location == this.location &&
+          other.type == this.type &&
+          other.date == this.date &&
           other.dtStart == this.dtStart &&
           other.dtEnd == this.dtEnd &&
-          other.duration == this.duration &&
           other.timezone == this.timezone &&
           other.rrule == this.rrule &&
-          other.status == this.status &&
-          other.eventType == this.eventType &&
+          other.until == this.until &&
           other.createdAt == this.createdAt &&
           other.lastModified == this.lastModified);
 }
 
-class EventsCompanion extends UpdateCompanion<Event> {
+class EventInfosCompanion extends UpdateCompanion<EventInfo> {
   final Value<int> id;
-  final Value<String> uid;
   final Value<String> calendarId;
   final Value<String> title;
   final Value<String?> description;
   final Value<String?> location;
-  final Value<int> dtStart;
+  final Value<EventType> type;
+  final Value<int> date;
+  final Value<int?> dtStart;
   final Value<int?> dtEnd;
-  final Value<int?> duration;
   final Value<String?> timezone;
   final Value<String?> rrule;
-  final Value<String> status;
-  final Value<EventType> eventType;
+  final Value<int?> until;
   final Value<int> createdAt;
   final Value<int> lastModified;
-  const EventsCompanion({
+  const EventInfosCompanion({
     this.id = const Value.absent(),
-    this.uid = const Value.absent(),
     this.calendarId = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
     this.location = const Value.absent(),
+    this.type = const Value.absent(),
+    this.date = const Value.absent(),
     this.dtStart = const Value.absent(),
     this.dtEnd = const Value.absent(),
-    this.duration = const Value.absent(),
     this.timezone = const Value.absent(),
     this.rrule = const Value.absent(),
-    this.status = const Value.absent(),
-    this.eventType = const Value.absent(),
+    this.until = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.lastModified = const Value.absent(),
   });
-  EventsCompanion.insert({
+  EventInfosCompanion.insert({
     this.id = const Value.absent(),
-    required String uid,
     required String calendarId,
     required String title,
     this.description = const Value.absent(),
     this.location = const Value.absent(),
-    required int dtStart,
+    required EventType type,
+    required int date,
+    this.dtStart = const Value.absent(),
     this.dtEnd = const Value.absent(),
-    this.duration = const Value.absent(),
     this.timezone = const Value.absent(),
     this.rrule = const Value.absent(),
-    this.status = const Value.absent(),
-    required EventType eventType,
+    this.until = const Value.absent(),
     required int createdAt,
     required int lastModified,
-  }) : uid = Value(uid),
-       calendarId = Value(calendarId),
+  }) : calendarId = Value(calendarId),
        title = Value(title),
-       dtStart = Value(dtStart),
-       eventType = Value(eventType),
+       type = Value(type),
+       date = Value(date),
        createdAt = Value(createdAt),
        lastModified = Value(lastModified);
-  static Insertable<Event> custom({
+  static Insertable<EventInfo> custom({
     Expression<int>? id,
-    Expression<String>? uid,
     Expression<String>? calendarId,
     Expression<String>? title,
     Expression<String>? description,
     Expression<String>? location,
+    Expression<String>? type,
+    Expression<int>? date,
     Expression<int>? dtStart,
     Expression<int>? dtEnd,
-    Expression<int>? duration,
     Expression<String>? timezone,
     Expression<String>? rrule,
-    Expression<String>? status,
-    Expression<String>? eventType,
+    Expression<int>? until,
     Expression<int>? createdAt,
     Expression<int>? lastModified,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (uid != null) 'uid': uid,
       if (calendarId != null) 'calendar_id': calendarId,
       if (title != null) 'title': title,
       if (description != null) 'description': description,
       if (location != null) 'location': location,
+      if (type != null) 'type': type,
+      if (date != null) 'date': date,
       if (dtStart != null) 'dt_start': dtStart,
       if (dtEnd != null) 'dt_end': dtEnd,
-      if (duration != null) 'duration': duration,
       if (timezone != null) 'timezone': timezone,
       if (rrule != null) 'rrule': rrule,
-      if (status != null) 'status': status,
-      if (eventType != null) 'event_type': eventType,
+      if (until != null) 'until': until,
       if (createdAt != null) 'created_at': createdAt,
       if (lastModified != null) 'last_modified': lastModified,
     });
   }
 
-  EventsCompanion copyWith({
+  EventInfosCompanion copyWith({
     Value<int>? id,
-    Value<String>? uid,
     Value<String>? calendarId,
     Value<String>? title,
     Value<String?>? description,
     Value<String?>? location,
-    Value<int>? dtStart,
+    Value<EventType>? type,
+    Value<int>? date,
+    Value<int?>? dtStart,
     Value<int?>? dtEnd,
-    Value<int?>? duration,
     Value<String?>? timezone,
     Value<String?>? rrule,
-    Value<String>? status,
-    Value<EventType>? eventType,
+    Value<int?>? until,
     Value<int>? createdAt,
     Value<int>? lastModified,
   }) {
-    return EventsCompanion(
+    return EventInfosCompanion(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       calendarId: calendarId ?? this.calendarId,
       title: title ?? this.title,
       description: description ?? this.description,
       location: location ?? this.location,
+      type: type ?? this.type,
+      date: date ?? this.date,
       dtStart: dtStart ?? this.dtStart,
       dtEnd: dtEnd ?? this.dtEnd,
-      duration: duration ?? this.duration,
       timezone: timezone ?? this.timezone,
       rrule: rrule ?? this.rrule,
-      status: status ?? this.status,
-      eventType: eventType ?? this.eventType,
+      until: until ?? this.until,
       createdAt: createdAt ?? this.createdAt,
       lastModified: lastModified ?? this.lastModified,
     );
@@ -776,9 +736,6 @@ class EventsCompanion extends UpdateCompanion<Event> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
-    }
-    if (uid.present) {
-      map['uid'] = Variable<String>(uid.value);
     }
     if (calendarId.present) {
       map['calendar_id'] = Variable<String>(calendarId.value);
@@ -792,14 +749,19 @@ class EventsCompanion extends UpdateCompanion<Event> {
     if (location.present) {
       map['location'] = Variable<String>(location.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(
+        $EventInfosTable.$convertertype.toSql(type.value),
+      );
+    }
+    if (date.present) {
+      map['date'] = Variable<int>(date.value);
+    }
     if (dtStart.present) {
       map['dt_start'] = Variable<int>(dtStart.value);
     }
     if (dtEnd.present) {
       map['dt_end'] = Variable<int>(dtEnd.value);
-    }
-    if (duration.present) {
-      map['duration'] = Variable<int>(duration.value);
     }
     if (timezone.present) {
       map['timezone'] = Variable<String>(timezone.value);
@@ -807,13 +769,8 @@ class EventsCompanion extends UpdateCompanion<Event> {
     if (rrule.present) {
       map['rrule'] = Variable<String>(rrule.value);
     }
-    if (status.present) {
-      map['status'] = Variable<String>(status.value);
-    }
-    if (eventType.present) {
-      map['event_type'] = Variable<String>(
-        $EventsTable.$convertereventType.toSql(eventType.value),
-      );
+    if (until.present) {
+      map['until'] = Variable<int>(until.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<int>(createdAt.value);
@@ -826,22 +783,395 @@ class EventsCompanion extends UpdateCompanion<Event> {
 
   @override
   String toString() {
-    return (StringBuffer('EventsCompanion(')
+    return (StringBuffer('EventInfosCompanion(')
           ..write('id: $id, ')
-          ..write('uid: $uid, ')
           ..write('calendarId: $calendarId, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('location: $location, ')
+          ..write('type: $type, ')
+          ..write('date: $date, ')
           ..write('dtStart: $dtStart, ')
           ..write('dtEnd: $dtEnd, ')
-          ..write('duration: $duration, ')
           ..write('timezone: $timezone, ')
           ..write('rrule: $rrule, ')
-          ..write('status: $status, ')
-          ..write('eventType: $eventType, ')
+          ..write('until: $until, ')
           ..write('createdAt: $createdAt, ')
           ..write('lastModified: $lastModified')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $EventCacheInstancesTable extends EventCacheInstances
+    with TableInfo<$EventCacheInstancesTable, EventCacheInstance> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $EventCacheInstancesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _eventInfoIdMeta = const VerificationMeta(
+    'eventInfoId',
+  );
+  @override
+  late final GeneratedColumn<int> eventInfoId = GeneratedColumn<int>(
+    'event_info_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES event_infos (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<int> date = GeneratedColumn<int>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _instanceStartMeta = const VerificationMeta(
+    'instanceStart',
+  );
+  @override
+  late final GeneratedColumn<int> instanceStart = GeneratedColumn<int>(
+    'instance_start',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _instanceEndMeta = const VerificationMeta(
+    'instanceEnd',
+  );
+  @override
+  late final GeneratedColumn<int> instanceEnd = GeneratedColumn<int>(
+    'instance_end',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    eventInfoId,
+    date,
+    instanceStart,
+    instanceEnd,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'event_cache_instances';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<EventCacheInstance> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('event_info_id')) {
+      context.handle(
+        _eventInfoIdMeta,
+        eventInfoId.isAcceptableOrUnknown(
+          data['event_info_id']!,
+          _eventInfoIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_eventInfoIdMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('instance_start')) {
+      context.handle(
+        _instanceStartMeta,
+        instanceStart.isAcceptableOrUnknown(
+          data['instance_start']!,
+          _instanceStartMeta,
+        ),
+      );
+    }
+    if (data.containsKey('instance_end')) {
+      context.handle(
+        _instanceEndMeta,
+        instanceEnd.isAcceptableOrUnknown(
+          data['instance_end']!,
+          _instanceEndMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  EventCacheInstance map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return EventCacheInstance(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      eventInfoId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}event_info_id'],
+      )!,
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}date'],
+      )!,
+      instanceStart: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}instance_start'],
+      ),
+      instanceEnd: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}instance_end'],
+      ),
+    );
+  }
+
+  @override
+  $EventCacheInstancesTable createAlias(String alias) {
+    return $EventCacheInstancesTable(attachedDatabase, alias);
+  }
+}
+
+class EventCacheInstance extends DataClass
+    implements Insertable<EventCacheInstance> {
+  final int id;
+  final int eventInfoId;
+  final int date;
+  final int? instanceStart;
+  final int? instanceEnd;
+  const EventCacheInstance({
+    required this.id,
+    required this.eventInfoId,
+    required this.date,
+    this.instanceStart,
+    this.instanceEnd,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['event_info_id'] = Variable<int>(eventInfoId);
+    map['date'] = Variable<int>(date);
+    if (!nullToAbsent || instanceStart != null) {
+      map['instance_start'] = Variable<int>(instanceStart);
+    }
+    if (!nullToAbsent || instanceEnd != null) {
+      map['instance_end'] = Variable<int>(instanceEnd);
+    }
+    return map;
+  }
+
+  EventCacheInstancesCompanion toCompanion(bool nullToAbsent) {
+    return EventCacheInstancesCompanion(
+      id: Value(id),
+      eventInfoId: Value(eventInfoId),
+      date: Value(date),
+      instanceStart: instanceStart == null && nullToAbsent
+          ? const Value.absent()
+          : Value(instanceStart),
+      instanceEnd: instanceEnd == null && nullToAbsent
+          ? const Value.absent()
+          : Value(instanceEnd),
+    );
+  }
+
+  factory EventCacheInstance.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return EventCacheInstance(
+      id: serializer.fromJson<int>(json['id']),
+      eventInfoId: serializer.fromJson<int>(json['eventInfoId']),
+      date: serializer.fromJson<int>(json['date']),
+      instanceStart: serializer.fromJson<int?>(json['instanceStart']),
+      instanceEnd: serializer.fromJson<int?>(json['instanceEnd']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'eventInfoId': serializer.toJson<int>(eventInfoId),
+      'date': serializer.toJson<int>(date),
+      'instanceStart': serializer.toJson<int?>(instanceStart),
+      'instanceEnd': serializer.toJson<int?>(instanceEnd),
+    };
+  }
+
+  EventCacheInstance copyWith({
+    int? id,
+    int? eventInfoId,
+    int? date,
+    Value<int?> instanceStart = const Value.absent(),
+    Value<int?> instanceEnd = const Value.absent(),
+  }) => EventCacheInstance(
+    id: id ?? this.id,
+    eventInfoId: eventInfoId ?? this.eventInfoId,
+    date: date ?? this.date,
+    instanceStart: instanceStart.present
+        ? instanceStart.value
+        : this.instanceStart,
+    instanceEnd: instanceEnd.present ? instanceEnd.value : this.instanceEnd,
+  );
+  EventCacheInstance copyWithCompanion(EventCacheInstancesCompanion data) {
+    return EventCacheInstance(
+      id: data.id.present ? data.id.value : this.id,
+      eventInfoId: data.eventInfoId.present
+          ? data.eventInfoId.value
+          : this.eventInfoId,
+      date: data.date.present ? data.date.value : this.date,
+      instanceStart: data.instanceStart.present
+          ? data.instanceStart.value
+          : this.instanceStart,
+      instanceEnd: data.instanceEnd.present
+          ? data.instanceEnd.value
+          : this.instanceEnd,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EventCacheInstance(')
+          ..write('id: $id, ')
+          ..write('eventInfoId: $eventInfoId, ')
+          ..write('date: $date, ')
+          ..write('instanceStart: $instanceStart, ')
+          ..write('instanceEnd: $instanceEnd')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, eventInfoId, date, instanceStart, instanceEnd);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is EventCacheInstance &&
+          other.id == this.id &&
+          other.eventInfoId == this.eventInfoId &&
+          other.date == this.date &&
+          other.instanceStart == this.instanceStart &&
+          other.instanceEnd == this.instanceEnd);
+}
+
+class EventCacheInstancesCompanion extends UpdateCompanion<EventCacheInstance> {
+  final Value<int> id;
+  final Value<int> eventInfoId;
+  final Value<int> date;
+  final Value<int?> instanceStart;
+  final Value<int?> instanceEnd;
+  const EventCacheInstancesCompanion({
+    this.id = const Value.absent(),
+    this.eventInfoId = const Value.absent(),
+    this.date = const Value.absent(),
+    this.instanceStart = const Value.absent(),
+    this.instanceEnd = const Value.absent(),
+  });
+  EventCacheInstancesCompanion.insert({
+    this.id = const Value.absent(),
+    required int eventInfoId,
+    required int date,
+    this.instanceStart = const Value.absent(),
+    this.instanceEnd = const Value.absent(),
+  }) : eventInfoId = Value(eventInfoId),
+       date = Value(date);
+  static Insertable<EventCacheInstance> custom({
+    Expression<int>? id,
+    Expression<int>? eventInfoId,
+    Expression<int>? date,
+    Expression<int>? instanceStart,
+    Expression<int>? instanceEnd,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (eventInfoId != null) 'event_info_id': eventInfoId,
+      if (date != null) 'date': date,
+      if (instanceStart != null) 'instance_start': instanceStart,
+      if (instanceEnd != null) 'instance_end': instanceEnd,
+    });
+  }
+
+  EventCacheInstancesCompanion copyWith({
+    Value<int>? id,
+    Value<int>? eventInfoId,
+    Value<int>? date,
+    Value<int?>? instanceStart,
+    Value<int?>? instanceEnd,
+  }) {
+    return EventCacheInstancesCompanion(
+      id: id ?? this.id,
+      eventInfoId: eventInfoId ?? this.eventInfoId,
+      date: date ?? this.date,
+      instanceStart: instanceStart ?? this.instanceStart,
+      instanceEnd: instanceEnd ?? this.instanceEnd,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (eventInfoId.present) {
+      map['event_info_id'] = Variable<int>(eventInfoId.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<int>(date.value);
+    }
+    if (instanceStart.present) {
+      map['instance_start'] = Variable<int>(instanceStart.value);
+    }
+    if (instanceEnd.present) {
+      map['instance_end'] = Variable<int>(instanceEnd.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('EventCacheInstancesCompanion(')
+          ..write('id: $id, ')
+          ..write('eventInfoId: $eventInfoId, ')
+          ..write('date: $date, ')
+          ..write('instanceStart: $instanceStart, ')
+          ..write('instanceEnd: $instanceEnd')
           ..write(')'))
         .toString();
   }
@@ -1617,7 +1947,9 @@ class StaminasCompanion extends UpdateCompanion<Stamina> {
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
-  late final $EventsTable events = $EventsTable(this);
+  late final $EventInfosTable eventInfos = $EventInfosTable(this);
+  late final $EventCacheInstancesTable eventCacheInstances =
+      $EventCacheInstancesTable(this);
   late final $CalendarsTable calendars = $CalendarsTable(this);
   late final $StaminasTable staminas = $StaminasTable(this);
   @override
@@ -1625,51 +1957,92 @@ abstract class _$Database extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-    events,
+    eventInfos,
+    eventCacheInstances,
     calendars,
     staminas,
   ];
+  @override
+  StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'event_infos',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('event_cache_instances', kind: UpdateKind.delete)],
+    ),
+  ]);
 }
 
-typedef $$EventsTableCreateCompanionBuilder =
-    EventsCompanion Function({
+typedef $$EventInfosTableCreateCompanionBuilder =
+    EventInfosCompanion Function({
       Value<int> id,
-      required String uid,
       required String calendarId,
       required String title,
       Value<String?> description,
       Value<String?> location,
-      required int dtStart,
+      required EventType type,
+      required int date,
+      Value<int?> dtStart,
       Value<int?> dtEnd,
-      Value<int?> duration,
       Value<String?> timezone,
       Value<String?> rrule,
-      Value<String> status,
-      required EventType eventType,
+      Value<int?> until,
       required int createdAt,
       required int lastModified,
     });
-typedef $$EventsTableUpdateCompanionBuilder =
-    EventsCompanion Function({
+typedef $$EventInfosTableUpdateCompanionBuilder =
+    EventInfosCompanion Function({
       Value<int> id,
-      Value<String> uid,
       Value<String> calendarId,
       Value<String> title,
       Value<String?> description,
       Value<String?> location,
-      Value<int> dtStart,
+      Value<EventType> type,
+      Value<int> date,
+      Value<int?> dtStart,
       Value<int?> dtEnd,
-      Value<int?> duration,
       Value<String?> timezone,
       Value<String?> rrule,
-      Value<String> status,
-      Value<EventType> eventType,
+      Value<int?> until,
       Value<int> createdAt,
       Value<int> lastModified,
     });
 
-class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
-  $$EventsTableFilterComposer({
+final class $$EventInfosTableReferences
+    extends BaseReferences<_$Database, $EventInfosTable, EventInfo> {
+  $$EventInfosTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<
+    $EventCacheInstancesTable,
+    List<EventCacheInstance>
+  >
+  _eventCacheInstancesRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+    db.eventCacheInstances,
+    aliasName: $_aliasNameGenerator(
+      db.eventInfos.id,
+      db.eventCacheInstances.eventInfoId,
+    ),
+  );
+
+  $$EventCacheInstancesTableProcessedTableManager get eventCacheInstancesRefs {
+    final manager = $$EventCacheInstancesTableTableManager(
+      $_db,
+      $_db.eventCacheInstances,
+    ).filter((f) => f.eventInfoId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _eventCacheInstancesRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$EventInfosTableFilterComposer
+    extends Composer<_$Database, $EventInfosTable> {
+  $$EventInfosTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1678,11 +2051,6 @@ class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
   });
   ColumnFilters<int> get id => $composableBuilder(
     column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get uid => $composableBuilder(
-    column: $table.uid,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1706,6 +2074,17 @@ class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnWithTypeConverterFilters<EventType, EventType, String> get type =>
+      $composableBuilder(
+        column: $table.type,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<int> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get dtStart => $composableBuilder(
     column: $table.dtStart,
     builder: (column) => ColumnFilters(column),
@@ -1713,11 +2092,6 @@ class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
 
   ColumnFilters<int> get dtEnd => $composableBuilder(
     column: $table.dtEnd,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get duration => $composableBuilder(
-    column: $table.duration,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1731,16 +2105,10 @@ class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get status => $composableBuilder(
-    column: $table.status,
+  ColumnFilters<int> get until => $composableBuilder(
+    column: $table.until,
     builder: (column) => ColumnFilters(column),
   );
-
-  ColumnWithTypeConverterFilters<EventType, EventType, String> get eventType =>
-      $composableBuilder(
-        column: $table.eventType,
-        builder: (column) => ColumnWithTypeConverterFilters(column),
-      );
 
   ColumnFilters<int> get createdAt => $composableBuilder(
     column: $table.createdAt,
@@ -1751,10 +2119,36 @@ class $$EventsTableFilterComposer extends Composer<_$Database, $EventsTable> {
     column: $table.lastModified,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> eventCacheInstancesRefs(
+    Expression<bool> Function($$EventCacheInstancesTableFilterComposer f) f,
+  ) {
+    final $$EventCacheInstancesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.eventCacheInstances,
+      getReferencedColumn: (t) => t.eventInfoId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventCacheInstancesTableFilterComposer(
+            $db: $db,
+            $table: $db.eventCacheInstances,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
-class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
-  $$EventsTableOrderingComposer({
+class $$EventInfosTableOrderingComposer
+    extends Composer<_$Database, $EventInfosTable> {
+  $$EventInfosTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1763,11 +2157,6 @@ class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
   });
   ColumnOrderings<int> get id => $composableBuilder(
     column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get uid => $composableBuilder(
-    column: $table.uid,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1791,6 +2180,16 @@ class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get dtStart => $composableBuilder(
     column: $table.dtStart,
     builder: (column) => ColumnOrderings(column),
@@ -1798,11 +2197,6 @@ class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
 
   ColumnOrderings<int> get dtEnd => $composableBuilder(
     column: $table.dtEnd,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get duration => $composableBuilder(
-    column: $table.duration,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1816,13 +2210,8 @@ class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get status => $composableBuilder(
-    column: $table.status,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get eventType => $composableBuilder(
-    column: $table.eventType,
+  ColumnOrderings<int> get until => $composableBuilder(
+    column: $table.until,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1837,9 +2226,9 @@ class $$EventsTableOrderingComposer extends Composer<_$Database, $EventsTable> {
   );
 }
 
-class $$EventsTableAnnotationComposer
-    extends Composer<_$Database, $EventsTable> {
-  $$EventsTableAnnotationComposer({
+class $$EventInfosTableAnnotationComposer
+    extends Composer<_$Database, $EventInfosTable> {
+  $$EventInfosTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -1848,9 +2237,6 @@ class $$EventsTableAnnotationComposer
   });
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get uid =>
-      $composableBuilder(column: $table.uid, builder: (column) => column);
 
   GeneratedColumn<String> get calendarId => $composableBuilder(
     column: $table.calendarId,
@@ -1868,14 +2254,17 @@ class $$EventsTableAnnotationComposer
   GeneratedColumn<String> get location =>
       $composableBuilder(column: $table.location, builder: (column) => column);
 
+  GeneratedColumnWithTypeConverter<EventType, String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<int> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+
   GeneratedColumn<int> get dtStart =>
       $composableBuilder(column: $table.dtStart, builder: (column) => column);
 
   GeneratedColumn<int> get dtEnd =>
       $composableBuilder(column: $table.dtEnd, builder: (column) => column);
-
-  GeneratedColumn<int> get duration =>
-      $composableBuilder(column: $table.duration, builder: (column) => column);
 
   GeneratedColumn<String> get timezone =>
       $composableBuilder(column: $table.timezone, builder: (column) => column);
@@ -1883,11 +2272,8 @@ class $$EventsTableAnnotationComposer
   GeneratedColumn<String> get rrule =>
       $composableBuilder(column: $table.rrule, builder: (column) => column);
 
-  GeneratedColumn<String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => column);
-
-  GeneratedColumnWithTypeConverter<EventType, String> get eventType =>
-      $composableBuilder(column: $table.eventType, builder: (column) => column);
+  GeneratedColumn<int> get until =>
+      $composableBuilder(column: $table.until, builder: (column) => column);
 
   GeneratedColumn<int> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -1896,123 +2282,522 @@ class $$EventsTableAnnotationComposer
     column: $table.lastModified,
     builder: (column) => column,
   );
+
+  Expression<T> eventCacheInstancesRefs<T extends Object>(
+    Expression<T> Function($$EventCacheInstancesTableAnnotationComposer a) f,
+  ) {
+    final $$EventCacheInstancesTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.eventCacheInstances,
+          getReferencedColumn: (t) => t.eventInfoId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$EventCacheInstancesTableAnnotationComposer(
+                $db: $db,
+                $table: $db.eventCacheInstances,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
-class $$EventsTableTableManager
+class $$EventInfosTableTableManager
     extends
         RootTableManager<
           _$Database,
-          $EventsTable,
-          Event,
-          $$EventsTableFilterComposer,
-          $$EventsTableOrderingComposer,
-          $$EventsTableAnnotationComposer,
-          $$EventsTableCreateCompanionBuilder,
-          $$EventsTableUpdateCompanionBuilder,
-          (Event, BaseReferences<_$Database, $EventsTable, Event>),
-          Event,
-          PrefetchHooks Function()
+          $EventInfosTable,
+          EventInfo,
+          $$EventInfosTableFilterComposer,
+          $$EventInfosTableOrderingComposer,
+          $$EventInfosTableAnnotationComposer,
+          $$EventInfosTableCreateCompanionBuilder,
+          $$EventInfosTableUpdateCompanionBuilder,
+          (EventInfo, $$EventInfosTableReferences),
+          EventInfo,
+          PrefetchHooks Function({bool eventCacheInstancesRefs})
         > {
-  $$EventsTableTableManager(_$Database db, $EventsTable table)
+  $$EventInfosTableTableManager(_$Database db, $EventInfosTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$EventsTableFilterComposer($db: db, $table: table),
+              $$EventInfosTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$EventsTableOrderingComposer($db: db, $table: table),
+              $$EventInfosTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$EventsTableAnnotationComposer($db: db, $table: table),
+              $$EventInfosTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<String> uid = const Value.absent(),
                 Value<String> calendarId = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String?> description = const Value.absent(),
                 Value<String?> location = const Value.absent(),
-                Value<int> dtStart = const Value.absent(),
+                Value<EventType> type = const Value.absent(),
+                Value<int> date = const Value.absent(),
+                Value<int?> dtStart = const Value.absent(),
                 Value<int?> dtEnd = const Value.absent(),
-                Value<int?> duration = const Value.absent(),
                 Value<String?> timezone = const Value.absent(),
                 Value<String?> rrule = const Value.absent(),
-                Value<String> status = const Value.absent(),
-                Value<EventType> eventType = const Value.absent(),
+                Value<int?> until = const Value.absent(),
                 Value<int> createdAt = const Value.absent(),
                 Value<int> lastModified = const Value.absent(),
-              }) => EventsCompanion(
+              }) => EventInfosCompanion(
                 id: id,
-                uid: uid,
                 calendarId: calendarId,
                 title: title,
                 description: description,
                 location: location,
+                type: type,
+                date: date,
                 dtStart: dtStart,
                 dtEnd: dtEnd,
-                duration: duration,
                 timezone: timezone,
                 rrule: rrule,
-                status: status,
-                eventType: eventType,
+                until: until,
                 createdAt: createdAt,
                 lastModified: lastModified,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                required String uid,
                 required String calendarId,
                 required String title,
                 Value<String?> description = const Value.absent(),
                 Value<String?> location = const Value.absent(),
-                required int dtStart,
+                required EventType type,
+                required int date,
+                Value<int?> dtStart = const Value.absent(),
                 Value<int?> dtEnd = const Value.absent(),
-                Value<int?> duration = const Value.absent(),
                 Value<String?> timezone = const Value.absent(),
                 Value<String?> rrule = const Value.absent(),
-                Value<String> status = const Value.absent(),
-                required EventType eventType,
+                Value<int?> until = const Value.absent(),
                 required int createdAt,
                 required int lastModified,
-              }) => EventsCompanion.insert(
+              }) => EventInfosCompanion.insert(
                 id: id,
-                uid: uid,
                 calendarId: calendarId,
                 title: title,
                 description: description,
                 location: location,
+                type: type,
+                date: date,
                 dtStart: dtStart,
                 dtEnd: dtEnd,
-                duration: duration,
                 timezone: timezone,
                 rrule: rrule,
-                status: status,
-                eventType: eventType,
+                until: until,
                 createdAt: createdAt,
                 lastModified: lastModified,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$EventInfosTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({eventCacheInstancesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (eventCacheInstancesRefs) db.eventCacheInstances,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (eventCacheInstancesRefs)
+                    await $_getPrefetchedData<
+                      EventInfo,
+                      $EventInfosTable,
+                      EventCacheInstance
+                    >(
+                      currentTable: table,
+                      referencedTable: $$EventInfosTableReferences
+                          ._eventCacheInstancesRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$EventInfosTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).eventCacheInstancesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.eventInfoId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
 
-typedef $$EventsTableProcessedTableManager =
+typedef $$EventInfosTableProcessedTableManager =
     ProcessedTableManager<
       _$Database,
-      $EventsTable,
-      Event,
-      $$EventsTableFilterComposer,
-      $$EventsTableOrderingComposer,
-      $$EventsTableAnnotationComposer,
-      $$EventsTableCreateCompanionBuilder,
-      $$EventsTableUpdateCompanionBuilder,
-      (Event, BaseReferences<_$Database, $EventsTable, Event>),
-      Event,
-      PrefetchHooks Function()
+      $EventInfosTable,
+      EventInfo,
+      $$EventInfosTableFilterComposer,
+      $$EventInfosTableOrderingComposer,
+      $$EventInfosTableAnnotationComposer,
+      $$EventInfosTableCreateCompanionBuilder,
+      $$EventInfosTableUpdateCompanionBuilder,
+      (EventInfo, $$EventInfosTableReferences),
+      EventInfo,
+      PrefetchHooks Function({bool eventCacheInstancesRefs})
+    >;
+typedef $$EventCacheInstancesTableCreateCompanionBuilder =
+    EventCacheInstancesCompanion Function({
+      Value<int> id,
+      required int eventInfoId,
+      required int date,
+      Value<int?> instanceStart,
+      Value<int?> instanceEnd,
+    });
+typedef $$EventCacheInstancesTableUpdateCompanionBuilder =
+    EventCacheInstancesCompanion Function({
+      Value<int> id,
+      Value<int> eventInfoId,
+      Value<int> date,
+      Value<int?> instanceStart,
+      Value<int?> instanceEnd,
+    });
+
+final class $$EventCacheInstancesTableReferences
+    extends
+        BaseReferences<
+          _$Database,
+          $EventCacheInstancesTable,
+          EventCacheInstance
+        > {
+  $$EventCacheInstancesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $EventInfosTable _eventInfoIdTable(_$Database db) =>
+      db.eventInfos.createAlias(
+        $_aliasNameGenerator(
+          db.eventCacheInstances.eventInfoId,
+          db.eventInfos.id,
+        ),
+      );
+
+  $$EventInfosTableProcessedTableManager get eventInfoId {
+    final $_column = $_itemColumn<int>('event_info_id')!;
+
+    final manager = $$EventInfosTableTableManager(
+      $_db,
+      $_db.eventInfos,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_eventInfoIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$EventCacheInstancesTableFilterComposer
+    extends Composer<_$Database, $EventCacheInstancesTable> {
+  $$EventCacheInstancesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get instanceStart => $composableBuilder(
+    column: $table.instanceStart,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get instanceEnd => $composableBuilder(
+    column: $table.instanceEnd,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$EventInfosTableFilterComposer get eventInfoId {
+    final $$EventInfosTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.eventInfoId,
+      referencedTable: $db.eventInfos,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventInfosTableFilterComposer(
+            $db: $db,
+            $table: $db.eventInfos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EventCacheInstancesTableOrderingComposer
+    extends Composer<_$Database, $EventCacheInstancesTable> {
+  $$EventCacheInstancesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get instanceStart => $composableBuilder(
+    column: $table.instanceStart,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get instanceEnd => $composableBuilder(
+    column: $table.instanceEnd,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$EventInfosTableOrderingComposer get eventInfoId {
+    final $$EventInfosTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.eventInfoId,
+      referencedTable: $db.eventInfos,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventInfosTableOrderingComposer(
+            $db: $db,
+            $table: $db.eventInfos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EventCacheInstancesTableAnnotationComposer
+    extends Composer<_$Database, $EventCacheInstancesTable> {
+  $$EventCacheInstancesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<int> get instanceStart => $composableBuilder(
+    column: $table.instanceStart,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get instanceEnd => $composableBuilder(
+    column: $table.instanceEnd,
+    builder: (column) => column,
+  );
+
+  $$EventInfosTableAnnotationComposer get eventInfoId {
+    final $$EventInfosTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.eventInfoId,
+      referencedTable: $db.eventInfos,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$EventInfosTableAnnotationComposer(
+            $db: $db,
+            $table: $db.eventInfos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$EventCacheInstancesTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $EventCacheInstancesTable,
+          EventCacheInstance,
+          $$EventCacheInstancesTableFilterComposer,
+          $$EventCacheInstancesTableOrderingComposer,
+          $$EventCacheInstancesTableAnnotationComposer,
+          $$EventCacheInstancesTableCreateCompanionBuilder,
+          $$EventCacheInstancesTableUpdateCompanionBuilder,
+          (EventCacheInstance, $$EventCacheInstancesTableReferences),
+          EventCacheInstance,
+          PrefetchHooks Function({bool eventInfoId})
+        > {
+  $$EventCacheInstancesTableTableManager(
+    _$Database db,
+    $EventCacheInstancesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$EventCacheInstancesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$EventCacheInstancesTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$EventCacheInstancesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> eventInfoId = const Value.absent(),
+                Value<int> date = const Value.absent(),
+                Value<int?> instanceStart = const Value.absent(),
+                Value<int?> instanceEnd = const Value.absent(),
+              }) => EventCacheInstancesCompanion(
+                id: id,
+                eventInfoId: eventInfoId,
+                date: date,
+                instanceStart: instanceStart,
+                instanceEnd: instanceEnd,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int eventInfoId,
+                required int date,
+                Value<int?> instanceStart = const Value.absent(),
+                Value<int?> instanceEnd = const Value.absent(),
+              }) => EventCacheInstancesCompanion.insert(
+                id: id,
+                eventInfoId: eventInfoId,
+                date: date,
+                instanceStart: instanceStart,
+                instanceEnd: instanceEnd,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$EventCacheInstancesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({eventInfoId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (eventInfoId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.eventInfoId,
+                                referencedTable:
+                                    $$EventCacheInstancesTableReferences
+                                        ._eventInfoIdTable(db),
+                                referencedColumn:
+                                    $$EventCacheInstancesTableReferences
+                                        ._eventInfoIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$EventCacheInstancesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $EventCacheInstancesTable,
+      EventCacheInstance,
+      $$EventCacheInstancesTableFilterComposer,
+      $$EventCacheInstancesTableOrderingComposer,
+      $$EventCacheInstancesTableAnnotationComposer,
+      $$EventCacheInstancesTableCreateCompanionBuilder,
+      $$EventCacheInstancesTableUpdateCompanionBuilder,
+      (EventCacheInstance, $$EventCacheInstancesTableReferences),
+      EventCacheInstance,
+      PrefetchHooks Function({bool eventInfoId})
     >;
 typedef $$CalendarsTableCreateCompanionBuilder =
     CalendarsCompanion Function({
@@ -2421,8 +3206,10 @@ typedef $$StaminasTableProcessedTableManager =
 class $DatabaseManager {
   final _$Database _db;
   $DatabaseManager(this._db);
-  $$EventsTableTableManager get events =>
-      $$EventsTableTableManager(_db, _db.events);
+  $$EventInfosTableTableManager get eventInfos =>
+      $$EventInfosTableTableManager(_db, _db.eventInfos);
+  $$EventCacheInstancesTableTableManager get eventCacheInstances =>
+      $$EventCacheInstancesTableTableManager(_db, _db.eventCacheInstances);
   $$CalendarsTableTableManager get calendars =>
       $$CalendarsTableTableManager(_db, _db.calendars);
   $$StaminasTableTableManager get staminas =>

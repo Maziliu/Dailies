@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Events, Calendars, Staminas])
+@DriftDatabase(tables: [EventInfos, EventCacheInstances, Calendars, Staminas])
 class Database extends _$Database {
   Database() : super(_openConnection());
 

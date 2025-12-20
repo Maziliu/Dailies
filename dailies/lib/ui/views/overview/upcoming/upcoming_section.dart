@@ -24,13 +24,14 @@ class UpcomingSection extends StatelessWidget {
           ),
           SizedBox(
             height: MAX_SECTION_HEIGHT,
-            child: ItemList<EventModel>(
-              items: fakeTodayEvents(),
+            child: ItemList<EventUIModel>(
+              items: fakeEvents(),
               itemBuilder: (event) {
                 return ScheduleItem(
+                  date: event.date,
                   title: event.title,
                   start: event.start,
-                  end: event.resolvedEnd,
+                  end: event.end,
                   location: event.location,
                 );
               },

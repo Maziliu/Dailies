@@ -12,8 +12,8 @@ class UploadViewModel extends ChangeNotifier {
   final ValueNotifier<List<PlatformFile>> uploadedFiles =
       ValueNotifier<List<PlatformFile>>([]);
 
-  final ValueNotifier<List<EventModel>> parsedEvents =
-      ValueNotifier<List<EventModel>>([]);
+  final ValueNotifier<List<EventInfoModel>> parsedEvents =
+      ValueNotifier<List<EventInfoModel>>([]);
 
   Future<void> parseAllUploadedFiles() async {}
 

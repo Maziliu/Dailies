@@ -31,10 +31,6 @@ void main() {
     await db.close();
   });
 
-  // -------------------------
-  // insertStamina
-  // -------------------------
-
   test('insertStamina inserts stamina and returns id', () async {
     final result = await service.insertStamina(stamina);
 
@@ -44,10 +40,6 @@ void main() {
     expect(all.length, 1);
     expect(all.first.staminaOfLastReset, 10);
   });
-
-  // -------------------------
-  // setStamina
-  // -------------------------
 
   test('spendStamina reduces stamina', () async {
     final id = await dao.insert(stamina.toCompanion());
@@ -69,20 +61,12 @@ void main() {
     expect((result as Ok).value.staminaOfLastestReset, 20);
   });
 
-  // -------------------------
-  // validation
-  // -------------------------
-
   test('spendStamina fails for invalid amount', () async {
     final result = await service.setStamina(1, 0);
 
     expect(result, isA<Error>());
     expect((result as Error).failure, isA<ValidationFailure>());
   });
-
-  // -------------------------
-  // deleteStamina
-  // -------------------------
 
   test('deleteStamina removes stamina', () async {
     final id = await dao.insert(stamina.toCompanion());
@@ -94,10 +78,6 @@ void main() {
     final all = await dao.getAll();
     expect(all, isEmpty);
   });
-
-  // -------------------------
-  // getAllStaminas
-  // -------------------------
 
   test('getAllStaminas returns all rows', () async {
     await dao.insert(stamina.toCompanion());

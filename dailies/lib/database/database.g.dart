@@ -845,36 +845,26 @@ class $EventCacheInstancesTable extends EventCacheInstances
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _instanceStartMeta = const VerificationMeta(
-    'instanceStart',
-  );
+  static const VerificationMeta _startMeta = const VerificationMeta('start');
   @override
-  late final GeneratedColumn<int> instanceStart = GeneratedColumn<int>(
-    'instance_start',
+  late final GeneratedColumn<int> start = GeneratedColumn<int>(
+    'start',
     aliasedName,
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _instanceEndMeta = const VerificationMeta(
-    'instanceEnd',
-  );
+  static const VerificationMeta _endMeta = const VerificationMeta('end');
   @override
-  late final GeneratedColumn<int> instanceEnd = GeneratedColumn<int>(
-    'instance_end',
+  late final GeneratedColumn<int> end = GeneratedColumn<int>(
+    'end',
     aliasedName,
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    eventInfoId,
-    date,
-    instanceStart,
-    instanceEnd,
-  ];
+  List<GeneratedColumn> get $columns => [id, eventInfoId, date, start, end];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -909,22 +899,16 @@ class $EventCacheInstancesTable extends EventCacheInstances
     } else if (isInserting) {
       context.missing(_dateMeta);
     }
-    if (data.containsKey('instance_start')) {
+    if (data.containsKey('start')) {
       context.handle(
-        _instanceStartMeta,
-        instanceStart.isAcceptableOrUnknown(
-          data['instance_start']!,
-          _instanceStartMeta,
-        ),
+        _startMeta,
+        start.isAcceptableOrUnknown(data['start']!, _startMeta),
       );
     }
-    if (data.containsKey('instance_end')) {
+    if (data.containsKey('end')) {
       context.handle(
-        _instanceEndMeta,
-        instanceEnd.isAcceptableOrUnknown(
-          data['instance_end']!,
-          _instanceEndMeta,
-        ),
+        _endMeta,
+        end.isAcceptableOrUnknown(data['end']!, _endMeta),
       );
     }
     return context;
@@ -948,13 +932,13 @@ class $EventCacheInstancesTable extends EventCacheInstances
         DriftSqlType.int,
         data['${effectivePrefix}date'],
       )!,
-      instanceStart: attachedDatabase.typeMapping.read(
+      start: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}instance_start'],
+        data['${effectivePrefix}start'],
       ),
-      instanceEnd: attachedDatabase.typeMapping.read(
+      end: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}instance_end'],
+        data['${effectivePrefix}end'],
       ),
     );
   }
@@ -970,14 +954,14 @@ class EventCacheInstance extends DataClass
   final int id;
   final int eventInfoId;
   final int date;
-  final int? instanceStart;
-  final int? instanceEnd;
+  final int? start;
+  final int? end;
   const EventCacheInstance({
     required this.id,
     required this.eventInfoId,
     required this.date,
-    this.instanceStart,
-    this.instanceEnd,
+    this.start,
+    this.end,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -985,11 +969,11 @@ class EventCacheInstance extends DataClass
     map['id'] = Variable<int>(id);
     map['event_info_id'] = Variable<int>(eventInfoId);
     map['date'] = Variable<int>(date);
-    if (!nullToAbsent || instanceStart != null) {
-      map['instance_start'] = Variable<int>(instanceStart);
+    if (!nullToAbsent || start != null) {
+      map['start'] = Variable<int>(start);
     }
-    if (!nullToAbsent || instanceEnd != null) {
-      map['instance_end'] = Variable<int>(instanceEnd);
+    if (!nullToAbsent || end != null) {
+      map['end'] = Variable<int>(end);
     }
     return map;
   }
@@ -999,12 +983,10 @@ class EventCacheInstance extends DataClass
       id: Value(id),
       eventInfoId: Value(eventInfoId),
       date: Value(date),
-      instanceStart: instanceStart == null && nullToAbsent
+      start: start == null && nullToAbsent
           ? const Value.absent()
-          : Value(instanceStart),
-      instanceEnd: instanceEnd == null && nullToAbsent
-          ? const Value.absent()
-          : Value(instanceEnd),
+          : Value(start),
+      end: end == null && nullToAbsent ? const Value.absent() : Value(end),
     );
   }
 
@@ -1017,8 +999,8 @@ class EventCacheInstance extends DataClass
       id: serializer.fromJson<int>(json['id']),
       eventInfoId: serializer.fromJson<int>(json['eventInfoId']),
       date: serializer.fromJson<int>(json['date']),
-      instanceStart: serializer.fromJson<int?>(json['instanceStart']),
-      instanceEnd: serializer.fromJson<int?>(json['instanceEnd']),
+      start: serializer.fromJson<int?>(json['start']),
+      end: serializer.fromJson<int?>(json['end']),
     );
   }
   @override
@@ -1028,8 +1010,8 @@ class EventCacheInstance extends DataClass
       'id': serializer.toJson<int>(id),
       'eventInfoId': serializer.toJson<int>(eventInfoId),
       'date': serializer.toJson<int>(date),
-      'instanceStart': serializer.toJson<int?>(instanceStart),
-      'instanceEnd': serializer.toJson<int?>(instanceEnd),
+      'start': serializer.toJson<int?>(start),
+      'end': serializer.toJson<int?>(end),
     };
   }
 
@@ -1037,16 +1019,14 @@ class EventCacheInstance extends DataClass
     int? id,
     int? eventInfoId,
     int? date,
-    Value<int?> instanceStart = const Value.absent(),
-    Value<int?> instanceEnd = const Value.absent(),
+    Value<int?> start = const Value.absent(),
+    Value<int?> end = const Value.absent(),
   }) => EventCacheInstance(
     id: id ?? this.id,
     eventInfoId: eventInfoId ?? this.eventInfoId,
     date: date ?? this.date,
-    instanceStart: instanceStart.present
-        ? instanceStart.value
-        : this.instanceStart,
-    instanceEnd: instanceEnd.present ? instanceEnd.value : this.instanceEnd,
+    start: start.present ? start.value : this.start,
+    end: end.present ? end.value : this.end,
   );
   EventCacheInstance copyWithCompanion(EventCacheInstancesCompanion data) {
     return EventCacheInstance(
@@ -1055,12 +1035,8 @@ class EventCacheInstance extends DataClass
           ? data.eventInfoId.value
           : this.eventInfoId,
       date: data.date.present ? data.date.value : this.date,
-      instanceStart: data.instanceStart.present
-          ? data.instanceStart.value
-          : this.instanceStart,
-      instanceEnd: data.instanceEnd.present
-          ? data.instanceEnd.value
-          : this.instanceEnd,
+      start: data.start.present ? data.start.value : this.start,
+      end: data.end.present ? data.end.value : this.end,
     );
   }
 
@@ -1070,15 +1046,14 @@ class EventCacheInstance extends DataClass
           ..write('id: $id, ')
           ..write('eventInfoId: $eventInfoId, ')
           ..write('date: $date, ')
-          ..write('instanceStart: $instanceStart, ')
-          ..write('instanceEnd: $instanceEnd')
+          ..write('start: $start, ')
+          ..write('end: $end')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, eventInfoId, date, instanceStart, instanceEnd);
+  int get hashCode => Object.hash(id, eventInfoId, date, start, end);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1086,44 +1061,44 @@ class EventCacheInstance extends DataClass
           other.id == this.id &&
           other.eventInfoId == this.eventInfoId &&
           other.date == this.date &&
-          other.instanceStart == this.instanceStart &&
-          other.instanceEnd == this.instanceEnd);
+          other.start == this.start &&
+          other.end == this.end);
 }
 
 class EventCacheInstancesCompanion extends UpdateCompanion<EventCacheInstance> {
   final Value<int> id;
   final Value<int> eventInfoId;
   final Value<int> date;
-  final Value<int?> instanceStart;
-  final Value<int?> instanceEnd;
+  final Value<int?> start;
+  final Value<int?> end;
   const EventCacheInstancesCompanion({
     this.id = const Value.absent(),
     this.eventInfoId = const Value.absent(),
     this.date = const Value.absent(),
-    this.instanceStart = const Value.absent(),
-    this.instanceEnd = const Value.absent(),
+    this.start = const Value.absent(),
+    this.end = const Value.absent(),
   });
   EventCacheInstancesCompanion.insert({
     this.id = const Value.absent(),
     required int eventInfoId,
     required int date,
-    this.instanceStart = const Value.absent(),
-    this.instanceEnd = const Value.absent(),
+    this.start = const Value.absent(),
+    this.end = const Value.absent(),
   }) : eventInfoId = Value(eventInfoId),
        date = Value(date);
   static Insertable<EventCacheInstance> custom({
     Expression<int>? id,
     Expression<int>? eventInfoId,
     Expression<int>? date,
-    Expression<int>? instanceStart,
-    Expression<int>? instanceEnd,
+    Expression<int>? start,
+    Expression<int>? end,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (eventInfoId != null) 'event_info_id': eventInfoId,
       if (date != null) 'date': date,
-      if (instanceStart != null) 'instance_start': instanceStart,
-      if (instanceEnd != null) 'instance_end': instanceEnd,
+      if (start != null) 'start': start,
+      if (end != null) 'end': end,
     });
   }
 
@@ -1131,15 +1106,15 @@ class EventCacheInstancesCompanion extends UpdateCompanion<EventCacheInstance> {
     Value<int>? id,
     Value<int>? eventInfoId,
     Value<int>? date,
-    Value<int?>? instanceStart,
-    Value<int?>? instanceEnd,
+    Value<int?>? start,
+    Value<int?>? end,
   }) {
     return EventCacheInstancesCompanion(
       id: id ?? this.id,
       eventInfoId: eventInfoId ?? this.eventInfoId,
       date: date ?? this.date,
-      instanceStart: instanceStart ?? this.instanceStart,
-      instanceEnd: instanceEnd ?? this.instanceEnd,
+      start: start ?? this.start,
+      end: end ?? this.end,
     );
   }
 
@@ -1155,11 +1130,11 @@ class EventCacheInstancesCompanion extends UpdateCompanion<EventCacheInstance> {
     if (date.present) {
       map['date'] = Variable<int>(date.value);
     }
-    if (instanceStart.present) {
-      map['instance_start'] = Variable<int>(instanceStart.value);
+    if (start.present) {
+      map['start'] = Variable<int>(start.value);
     }
-    if (instanceEnd.present) {
-      map['instance_end'] = Variable<int>(instanceEnd.value);
+    if (end.present) {
+      map['end'] = Variable<int>(end.value);
     }
     return map;
   }
@@ -1170,8 +1145,8 @@ class EventCacheInstancesCompanion extends UpdateCompanion<EventCacheInstance> {
           ..write('id: $id, ')
           ..write('eventInfoId: $eventInfoId, ')
           ..write('date: $date, ')
-          ..write('instanceStart: $instanceStart, ')
-          ..write('instanceEnd: $instanceEnd')
+          ..write('start: $start, ')
+          ..write('end: $end')
           ..write(')'))
         .toString();
   }
@@ -2465,16 +2440,16 @@ typedef $$EventCacheInstancesTableCreateCompanionBuilder =
       Value<int> id,
       required int eventInfoId,
       required int date,
-      Value<int?> instanceStart,
-      Value<int?> instanceEnd,
+      Value<int?> start,
+      Value<int?> end,
     });
 typedef $$EventCacheInstancesTableUpdateCompanionBuilder =
     EventCacheInstancesCompanion Function({
       Value<int> id,
       Value<int> eventInfoId,
       Value<int> date,
-      Value<int?> instanceStart,
-      Value<int?> instanceEnd,
+      Value<int?> start,
+      Value<int?> end,
     });
 
 final class $$EventCacheInstancesTableReferences
@@ -2532,13 +2507,13 @@ class $$EventCacheInstancesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get instanceStart => $composableBuilder(
-    column: $table.instanceStart,
+  ColumnFilters<int> get start => $composableBuilder(
+    column: $table.start,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get instanceEnd => $composableBuilder(
-    column: $table.instanceEnd,
+  ColumnFilters<int> get end => $composableBuilder(
+    column: $table.end,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2585,13 +2560,13 @@ class $$EventCacheInstancesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get instanceStart => $composableBuilder(
-    column: $table.instanceStart,
+  ColumnOrderings<int> get start => $composableBuilder(
+    column: $table.start,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get instanceEnd => $composableBuilder(
-    column: $table.instanceEnd,
+  ColumnOrderings<int> get end => $composableBuilder(
+    column: $table.end,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2634,15 +2609,11 @@ class $$EventCacheInstancesTableAnnotationComposer
   GeneratedColumn<int> get date =>
       $composableBuilder(column: $table.date, builder: (column) => column);
 
-  GeneratedColumn<int> get instanceStart => $composableBuilder(
-    column: $table.instanceStart,
-    builder: (column) => column,
-  );
+  GeneratedColumn<int> get start =>
+      $composableBuilder(column: $table.start, builder: (column) => column);
 
-  GeneratedColumn<int> get instanceEnd => $composableBuilder(
-    column: $table.instanceEnd,
-    builder: (column) => column,
-  );
+  GeneratedColumn<int> get end =>
+      $composableBuilder(column: $table.end, builder: (column) => column);
 
   $$EventInfosTableAnnotationComposer get eventInfoId {
     final $$EventInfosTableAnnotationComposer composer = $composerBuilder(
@@ -2707,28 +2678,28 @@ class $$EventCacheInstancesTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> eventInfoId = const Value.absent(),
                 Value<int> date = const Value.absent(),
-                Value<int?> instanceStart = const Value.absent(),
-                Value<int?> instanceEnd = const Value.absent(),
+                Value<int?> start = const Value.absent(),
+                Value<int?> end = const Value.absent(),
               }) => EventCacheInstancesCompanion(
                 id: id,
                 eventInfoId: eventInfoId,
                 date: date,
-                instanceStart: instanceStart,
-                instanceEnd: instanceEnd,
+                start: start,
+                end: end,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int eventInfoId,
                 required int date,
-                Value<int?> instanceStart = const Value.absent(),
-                Value<int?> instanceEnd = const Value.absent(),
+                Value<int?> start = const Value.absent(),
+                Value<int?> end = const Value.absent(),
               }) => EventCacheInstancesCompanion.insert(
                 id: id,
                 eventInfoId: eventInfoId,
                 date: date,
-                instanceStart: instanceStart,
-                instanceEnd: instanceEnd,
+                start: start,
+                end: end,
               ),
           withReferenceMapper: (p0) => p0
               .map(

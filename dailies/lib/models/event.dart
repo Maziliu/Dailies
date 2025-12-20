@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dailies_v2/database/database.dart';
 import 'package:dailies_v2/enums/event_type.dart';
 import 'package:drift/drift.dart';
@@ -151,12 +153,8 @@ extension EventCacheInstanceRowMapper on EventCacheInstance {
       id: id,
       eventInfoId: eventInfoId,
       date: DateTime.fromMillisecondsSinceEpoch(date),
-      start: instanceStart != null
-          ? DateTime.fromMillisecondsSinceEpoch(instanceStart!)
-          : null,
-      end: instanceEnd != null
-          ? DateTime.fromMillisecondsSinceEpoch(instanceEnd!)
-          : null,
+      start: start != null ? DateTime.fromMillisecondsSinceEpoch(start!) : null,
+      end: end != null ? DateTime.fromMillisecondsSinceEpoch(end!) : null,
     );
   }
 }
@@ -192,8 +190,8 @@ extension EventCacheInstanceModelToCompanion on EventCacheInstanceModel {
       id: Value.absentIfNull(id),
       date: Value(date.toUtc().millisecondsSinceEpoch),
       eventInfoId: Value(eventInfoId),
-      instanceStart: Value.absentIfNull(start?.toUtc().millisecondsSinceEpoch),
-      instanceEnd: Value.absentIfNull(end?.toUtc().millisecondsSinceEpoch),
+      start: Value.absentIfNull(start?.toUtc().millisecondsSinceEpoch),
+      end: Value.absentIfNull(end?.toUtc().millisecondsSinceEpoch),
     );
   }
 }

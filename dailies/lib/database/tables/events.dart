@@ -49,6 +49,6 @@ class EventCacheInstances extends Table {
       integer().references(EventInfos, #id, onDelete: KeyAction.cascade)();
 
   IntColumn get date => integer()();
-  IntColumn get instanceStart => integer().nullable()();
-  IntColumn get instanceEnd => integer().nullable()();
+  IntColumn get start => integer().nullable()();
+  IntColumn get end => integer().nullable()();
 }

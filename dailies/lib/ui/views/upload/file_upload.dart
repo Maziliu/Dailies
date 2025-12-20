@@ -7,6 +7,8 @@ import 'package:dailies_v2/ui/widgets/section_card.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+final List<String> ALLOWED_FILES = ['ics', 'pdf', 'txt'];
+
 class FileUploadSection extends StatelessWidget {
   const FileUploadSection({super.key});
 
@@ -17,44 +19,61 @@ class FileUploadSection extends StatelessWidget {
     return SectionCard(
       padding: UIFormating.mediumPadding(),
       child: Column(
-        spacing: 8,
-        mainAxisSize: MainAxisSize.min,
+        spacing: 12,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _UploadDropzone(onTap: () => {}),
-
-          _FilesHeader(
-            count: viewModel.uploadedFiles.value.length,
-            onClear: viewModel.uploadedFiles.value.isNotEmpty
-                ? viewModel.clearUploadedFiles
-                : () => {},
-          ),
-
-          ValueListenableBuilder<List<PlatformFile>>(
-            valueListenable: viewModel.uploadedFiles,
-            builder: (context, files, _) {
-              if (files.isEmpty) return const SizedBox.shrink();
-
-              return Expanded(
-                child: ItemList<PlatformFile>(
-                  showEmptyState: false,
-                  items: files,
-                  itemBuilder: (file) {
-                    return FileListItem(
-                      file: file,
-                      onRemove: () => viewModel.removeUploadedFile(file),
-                    );
-                  },
-                ),
-              );
+          _UploadDropzone(
+            onTap: () async {
+              final FilePickerResult? result = await FilePicker.platform
+                  .pickFiles(
+                    type: FileType.custom,
+                    allowMultiple: true,
+                    allowedExtensions: ALLOWED_FILES,
+                  );
+              if (result == null) {
+                return;
+              }
+              viewModel.uploadedFiles.value = result.files;
             },
           ),
 
-          if (true)
-            _ActionButtons(
-              showConfigure: viewModel.uploadedFiles.value.isNotEmpty,
-              onConfigure: () => {},
-              onParse: viewModel.parseAllUploadedFiles,
+          Expanded(
+            child: ValueListenableBuilder<List<PlatformFile>>(
+              valueListenable: viewModel.uploadedFiles,
+              builder: (context, files, _) {
+                return Column(
+                  spacing: 8,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _FilesHeader(
+                      count: files.length,
+                      onClear: files.isNotEmpty
+                          ? viewModel.clearUploadedFiles
+                          : null,
+                    ),
+
+                    Expanded(
+                      child: ItemList<PlatformFile>(
+                        showEmptyState: false,
+                        items: files,
+                        itemBuilder: (file) => FileListItem(
+                          file: file,
+                          onRemove: () => viewModel.removeUploadedFile(file),
+                        ),
+                      ),
+                    ),
+
+                    if (files.isNotEmpty) ...[
+                      ElevatedButton(
+                        onPressed: viewModel.parseAllUploadedFiles,
+                        child: const Text('Parse'),
+                      ),
+                    ],
+                  ],
+                );
+              },
             ),
+          ),
         ],
       ),
     );
@@ -90,37 +109,6 @@ class _UploadDropzone extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ActionButtons extends StatelessWidget {
-  final bool showConfigure;
-  final VoidCallback onConfigure;
-  final VoidCallback onParse;
-
-  const _ActionButtons({
-    required this.showConfigure,
-    required this.onConfigure,
-    required this.onParse,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        if (showConfigure)
-          Expanded(
-            child: ElevatedButton(
-              onPressed: onConfigure,
-              child: const Text('Configure'),
-            ),
-          ),
-        if (showConfigure) UIFormating.smallHorizontalSpacing(),
-        Expanded(
-          child: ElevatedButton(onPressed: onParse, child: const Text('Parse')),
-        ),
-      ],
     );
   }
 }

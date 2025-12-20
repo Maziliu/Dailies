@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:dailies_v2/database/database.dart';
 import 'package:dailies_v2/enums/event_type.dart';

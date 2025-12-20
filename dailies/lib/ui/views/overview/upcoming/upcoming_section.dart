@@ -27,7 +27,7 @@ class UpcomingSection extends StatelessWidget {
             child: ItemList<EventUIModel>(
               items: EVENTS_VIEW_MODEL.getInstancesByDateRangeInclusive(
                 DateTime.now(),
-                DateTime.now().add(Duration(days: 14)),
+                DateTime.now().add(const Duration(days: 14)),
               ),
               itemBuilder: (event) {
                 return ScheduleItem(

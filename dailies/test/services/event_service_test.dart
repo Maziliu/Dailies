@@ -35,9 +35,7 @@ void main() {
       calendarId: 'local',
       uid: 'uid-1',
       title: 'Test Event',
-      description: null,
-      location: null,
-      date: DateTime(2024, 1, 1),
+      date: DateTime(2024),
       start: start,
       end: end,
       timezone: 'UTC',
@@ -68,7 +66,7 @@ void main() {
   test(
     'createEvent with null start creates instance with null start',
     () async {
-      final event = baseEvent(start: null, end: null);
+      final event = baseEvent();
 
       final result = await service.createEvent(event);
 
@@ -83,7 +81,7 @@ void main() {
   test('multi-day event expands into daily instances', () async {
     final event = baseEvent(
       type: EventType.MULTI_DAY,
-      start: DateTime(2024, 1, 1),
+      start: DateTime(2024),
       end: DateTime(2024, 1, 3),
     );
 
@@ -116,8 +114,6 @@ void main() {
     () async {
       final event = baseEvent(
         type: EventType.REACCURING,
-        start: null,
-        end: null,
         rrule: 'FREQ=DAILY;COUNT=3',
       );
 
@@ -147,8 +143,8 @@ void main() {
     final infos = await dao.watchAllEventInfos().first;
     final instances = await dao.watchAllCacheInstances().first;
 
-    expect(infos, isEmpty, reason: "Infos should be gone");
-    expect(instances, isEmpty, reason: "Instances should be gone");
+    expect(infos, isEmpty, reason: 'Infos should be gone');
+    expect(instances, isEmpty, reason: 'Instances should be gone');
   });
 
   test('deleteEvent fails for null id', () async {

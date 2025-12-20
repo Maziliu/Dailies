@@ -1,4 +1,3 @@
-import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/state/events_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
@@ -32,13 +31,13 @@ class OverviewView extends StatelessWidget {
                   ),
                   EventsList(
                     events: EVENTS_VIEW_MODEL.getInstancesByDate(
-                      DateTime.now().add(Duration(days: 1)),
+                      DateTime.now().add(const Duration(days: 1)),
                     ),
                   ),
                   EventsList(
                     events: EVENTS_VIEW_MODEL.getInstancesByDateRangeInclusive(
                       DateTime.now(),
-                      DateTime.now().add(Duration(days: 7)),
+                      DateTime.now().add(const Duration(days: 7)),
                     ),
                   ),
                 ],

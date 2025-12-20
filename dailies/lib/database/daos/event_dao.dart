@@ -22,8 +22,12 @@ class EventDao extends DatabaseAccessor<Database> with _$EventDaoMixin {
     batch.insertAll(eventCacheInstances, entries);
   });
 
-  Future<void> deleteEvent(int eventInfoId) async =>
+  Future<void> deleteAllEventsInSeries(int eventInfoId) async =>
       await (delete(eventInfos)..where((e) => e.id.equals(eventInfoId))).go();
+
+  Future<void> deleteEventInstance(int eventInstanceId) async => await (delete(
+    eventCacheInstances,
+  )..where((e) => e.id.equals(eventInstanceId))).go();
 
   Future<void> deleteAllEvents() async => await delete(eventInfos).go();
 }

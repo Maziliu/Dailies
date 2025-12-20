@@ -1,6 +1,7 @@
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/state/upload_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
+import 'package:dailies_v2/ui/widgets/events_list.dart';
 import 'package:dailies_v2/ui/widgets/item_list.dart';
 import 'package:dailies_v2/ui/widgets/schedule_list_item.dart';
 import 'package:dailies_v2/ui/widgets/section_card.dart';
@@ -25,20 +26,7 @@ class ParsedSection extends StatelessWidget {
                 onClear: events.isEmpty ? null : viewModel.clearParsedEvents,
               ),
 
-              Expanded(
-                child: ItemList(
-                  items: events,
-                  itemBuilder: (event) {
-                    return ScheduleItem(
-                      date: event.date,
-                      title: event.title,
-                      start: event.start,
-                      end: event.end,
-                      location: event.location,
-                    );
-                  },
-                ),
-              ),
+              Expanded(child: EventsList(events: events)),
 
               if (events.isNotEmpty) _buildActionButtons(),
             ],

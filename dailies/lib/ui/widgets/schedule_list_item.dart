@@ -9,9 +9,11 @@ class ScheduleItem extends StatelessWidget {
   final DateTime? end;
   final String? location;
   final bool showDate;
+  final VoidCallback onHold;
 
   const ScheduleItem({
     super.key,
+    required this.onHold,
     required this.title,
     required this.date,
     this.start,
@@ -24,41 +26,44 @@ class ScheduleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final timeText = _formatTime(context);
 
-    return Card(
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surface,
-      child: Padding(
-        padding: UIFormating.mediumPadding(),
-        child: Row(
-          children: [
-            _LeadingIcon(),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (location?.isNotEmpty == true)
+    return InkWell(
+      onLongPress: onHold,
+      child: Card(
+        elevation: 0,
+        color: Theme.of(context).colorScheme.surface,
+        child: Padding(
+          padding: UIFormating.mediumPadding(),
+          child: Row(
+            children: [
+              _LeadingIcon(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                     Text(
-                      location!,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      title,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  if (timeText != null)
-                    Text(
-                      timeText,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                ],
+                    if (location?.isNotEmpty == true)
+                      Text(
+                        location!,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    if (timeText != null)
+                      Text(
+                        timeText,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                  ],
+                ),
               ),
-            ),
-            if (showDate) _DateBadge(start: start ?? date),
-          ],
+              if (showDate) _DateBadge(start: start ?? date),
+            ],
+          ),
         ),
       ),
     );

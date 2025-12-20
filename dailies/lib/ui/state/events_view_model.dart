@@ -97,8 +97,19 @@ class EventsViewModel extends ChangeNotifier {
     return _eventInfosById[eventInfoId];
   }
 
-  Future<void> deleteEvent(int eventInfoId) async {
-    final result = await _eventService.deleteEvent(eventInfoId);
+  Future<void> deleteAllEventsInSeries(int? eventInfoId) async {
+    final result = await _eventService.deleteAllEventsInSeries(eventInfoId);
+
+    switch (result) {
+      case Ok<void>():
+        print('OK');
+      case Error<void>(failure: final Failure error):
+        print(error.message);
+    }
+  }
+
+  Future<void> deleteEventInstance(int? instanceId) async {
+    final result = await _eventService.deleteEventInstance(instanceId);
 
     switch (result) {
       case Ok<void>():

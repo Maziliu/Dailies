@@ -1,4 +1,3 @@
-
 import 'package:dailies_v2/database/database.dart';
 import 'package:dailies_v2/enums/event_type.dart';
 import 'package:drift/drift.dart';
@@ -93,12 +92,15 @@ class EventCacheInstanceModel implements Comparable<EventCacheInstanceModel> {
 }
 
 class EventUIModel {
+  final int? instanceId, seriesId;
   final DateTime date;
   final DateTime? start, end;
   final String title;
   final String? location;
 
   EventUIModel({
+    this.seriesId,
+    this.instanceId,
     this.start,
     this.end,
     required this.date,
@@ -110,6 +112,8 @@ class EventUIModel {
     required EventCacheInstanceModel instance,
     EventInfoModel? info,
   }) => EventUIModel(
+    seriesId: info?.id,
+    instanceId: instance.id,
     date: instance.date,
     start: instance.start,
     end: instance.end,

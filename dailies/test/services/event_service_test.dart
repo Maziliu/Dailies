@@ -136,7 +136,7 @@ void main() {
     final create = await service.createEvent(event);
     final id = (create as Ok<int>).value;
 
-    final delete = await service.deleteEvent(id);
+    final delete = await service.deleteAllEventsInSeries(id);
 
     expect(delete, isA<Ok<void>>());
 
@@ -148,14 +148,14 @@ void main() {
   });
 
   test('deleteEvent fails for null id', () async {
-    final result = await service.deleteEvent(null);
+    final result = await service.deleteAllEventsInSeries(null);
 
     expect(result, isA<Error<void>>());
     expect((result as Error).failure, isA<ValidationFailure>());
   });
 
   test('deleteEvent fails for negative id', () async {
-    final result = await service.deleteEvent(-1);
+    final result = await service.deleteAllEventsInSeries(-1);
 
     expect(result, isA<Error<void>>());
     expect((result as Error).failure, isA<ValidationFailure>());

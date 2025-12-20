@@ -9,14 +9,27 @@ class EventService extends ChangeNotifier {
 
   EventService({EventDao? dao}) : _dao = dao ?? EVENT_DAO;
 
-  Future<Result<void>> deleteEvent(int? eventInfoId) async {
+  Future<Result<void>> deleteAllEventsInSeries(int? eventInfoId) async {
     if (eventInfoId == null || eventInfoId < 0) {
       return Result.error(ValidationFailure('Invalid event id: $eventInfoId'));
     }
 
     return guardedAsyncExecute(
-      () => _dao.deleteEvent(eventInfoId),
+      () => _dao.deleteAllEventsInSeries(eventInfoId),
       DatabaseFailure('Failed to delete event $eventInfoId'),
+    );
+  }
+
+  Future<Result<void>> deleteEventInstance(int? instanceId) async {
+    if (instanceId == null || instanceId < 0) {
+      return Result.error(
+        ValidationFailure('Invalid event instance id: $instanceId'),
+      );
+    }
+
+    return guardedAsyncExecute(
+      () => _dao.deleteEventInstance(instanceId),
+      DatabaseFailure('Failed to delete event instance id: $instanceId'),
     );
   }
 

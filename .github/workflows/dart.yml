@@ -46,11 +46,11 @@ jobs:
         run: flutter pub get
 
       - name: Apply dart fix
-        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        if: github.actor != 'github-actions[bot]'
         run: dart fix --apply
 
       - name: Commit dart fixes
-        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        if: github.actor != 'github-actions[bot]'
         run: |
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"

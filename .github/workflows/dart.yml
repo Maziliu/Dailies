@@ -1,51 +1,59 @@
-name: Flutter CI
+name: Flutter CI / Build & Release
 
 on:
   push:
     branches: ["v2"]
+    tags: ["v*.*.*"]
   pull_request:
     branches: ["v2"]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     defaults:
       run:
         working-directory: dailies
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
-      - uses: subosito/flutter-action@v2
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
 
-      - name: Install dependencies
+      - name: Get dependencies
         run: flutter pub get
 
-      - name: Analyze project source
-        run: flutter analyze
-
       - name: Apply dart fix
+        if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
         run: dart fix --apply
 
-      # -----------------------------
-      # Commit & push if changes exist
-      # -----------------------------
-      - name: Commit fixes
+      - name: Commit dart fixes
+        if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
         run: |
           if ! git diff --quiet; then
-            echo "Dart fixes applied, committing changes..."
-
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-
             git add .
             git commit -m "chore: apply dart fix"
             git push
@@ -54,4 +62,23 @@ jobs:
           fi
 
       - name: Run tests
-        run: flutter test
+        run: flutter test --coverage
+
+      - name: Build APKs
+        run: flutter build apk --release --split-per-abi
+
+      - name: Prepare artifacts
+        run: |
+          mkdir -p artifacts
+          cp build/app/outputs/flutter-apk/*.apk artifacts/
+
+      # ─────────────── RELEASE (ONLY ON TAGS) ───────────────
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: ncipollo/release-action@v1.16.0
+        with:
+          tag:       ${{ github.ref_name }}
+          name:      Release ${{ github.ref_name }}
+          artifacts: dailies/artifacts/*.apk
+          token:     ${{ secrets.GITHUB_TOKEN }}
+

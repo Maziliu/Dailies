@@ -26,7 +26,10 @@ class FileListItem extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(onPressed: onRemove, icon: const Icon(Icons.close)),
+                InkWell(
+                  onTap: onRemove,
+                  child: const Icon(Icons.close, color: Colors.grey),
+                ),
               ],
             ),
           ],
@@ -53,7 +56,7 @@ class _FileInfo extends StatelessWidget {
         ),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
                 file.name,
@@ -63,7 +66,7 @@ class _FileInfo extends StatelessWidget {
               ),
               Text(
                 'Size: ${formatFileSize(file.size)}',
-                style: textTheme.bodyMedium,
+                style: textTheme.bodySmall,
               ),
             ],
           ),
@@ -82,7 +85,7 @@ class _FileTypeIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (extension) {
       case 'pdf':
-        return const Icon(Icons.picture_as_pdf, size: 30);
+        return const Icon(Icons.picture_as_pdf, size: 30, color: Colors.red);
       case 'ics':
         return const Icon(Icons.calendar_today, size: 30);
       default:

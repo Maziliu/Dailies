@@ -17,13 +17,15 @@ class UploadViewModel extends ChangeNotifier {
 
   Future<void> parseAllUploadedFiles() async {}
 
-  void clearUploadedFiles() {}
-  void clearParsedEvents() {}
+  void clearUploadedFiles() => uploadedFiles.value = [];
+  void clearParsedEvents() => parsedEvents.value = [];
 
   void removeUploadedFile(PlatformFile fileToRemove) {
-    uploadedFiles.value = uploadedFiles.value
+    final newList = uploadedFiles.value
         .where((file) => file != fileToRemove)
         .toList();
+
+    uploadedFiles.value = newList;
   }
 
   bool get requiresLLMParsing => uploadedFiles.value.any(

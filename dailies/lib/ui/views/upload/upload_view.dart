@@ -8,14 +8,16 @@ class UploadView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height / 2;
+
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
-        child: const Column(
-          spacing: 4,
+        child: Column(
           children: [
-            Flexible(flex: 2, child: FileUploadSection()),
-            Flexible(flex: 4, child: ParsedSection()),
+            SizedBox(height: height, child: const FileUploadSection()),
+            const SizedBox(height: 8),
+            SizedBox(height: height, child: const ParsedSection()),
           ],
         ),
       ),

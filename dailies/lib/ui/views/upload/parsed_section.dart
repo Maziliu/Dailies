@@ -2,8 +2,6 @@ import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/state/upload_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/widgets/events_list.dart';
-import 'package:dailies_v2/ui/widgets/item_list.dart';
-import 'package:dailies_v2/ui/widgets/schedule_list_item.dart';
 import 'package:dailies_v2/ui/widgets/section_card.dart';
 import 'package:flutter/material.dart';
 

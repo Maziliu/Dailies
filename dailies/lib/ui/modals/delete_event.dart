@@ -22,19 +22,19 @@ class DeleteEventModal extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(EventDeleteOptions.CANCEL),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () =>
               Navigator.of(context).pop(EventDeleteOptions.DELETE_SERIES),
           style: TextButton.styleFrom(foregroundColor: theme.colorScheme.error),
-          child: Text('Delete Series'),
+          child: const Text('Delete Series'),
         ),
         TextButton(
           onPressed: () =>
               Navigator.of(context).pop(EventDeleteOptions.DELETE_INSTANCE),
           style: TextButton.styleFrom(foregroundColor: theme.colorScheme.error),
-          child: Text('Delete'),
+          child: const Text('Delete'),
         ),
       ],
     );

@@ -69,6 +69,7 @@ jobs:
         run: flutter build apk --release --split-per-abi
 
       - name: Prepare artifacts
+        if: github.event_name == 'push' && github.ref == 'refs/heads/v2'
         run: |
           mkdir -p artifacts
           cp build/app/outputs/flutter-apk/*.apk artifacts/

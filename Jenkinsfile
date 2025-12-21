@@ -2,16 +2,11 @@ pipeline {
   agent any
 
   environment {
-    FLUTTER_HOME = "/usr/local/flutter"
-    PATH = "${FLUTTER_HOME}/bin:${env.PATH}"
-  }
-
-  options {
-    timestamps()
-    disableConcurrentBuilds()
+    PATH = "/usr/local/flutter/bin:${env.PATH}"
   }
 
   stages {
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -53,8 +48,19 @@ pipeline {
   }
 
   post {
-    always {
-      archiveArtifacts artifacts: 'dailies/build/app/outputs/flutter-apk/*.apk', fingerprint: true
+    success {
+      script {
+        if (env.TAG_NAME) {
+          archiveArtifacts(
+            artifacts: 'dailies/build/app/outputs/flutter-apk/*.apk',
+            fingerprint: true
+          )
+        }
+      }
+    }
+
+    failure {
+      echo 'Build failed'
     }
   }
 }

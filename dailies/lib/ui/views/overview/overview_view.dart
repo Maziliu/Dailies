@@ -1,4 +1,5 @@
 import 'package:dailies_v2/ui/state/events_view_model.dart';
+import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
 import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';

@@ -1,5 +1,6 @@
 import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/models/event.dart';
+import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -115,6 +116,7 @@ class _AddEventModalState extends State<AddEventModal> {
               ),
               FormBuilderDateTimePicker(
                 name: _DATE_TAG,
+                initialValue: CALENDAR_VIEW_MODEL.selectedDay,
                 inputType: InputType.date,
                 decoration: const InputDecoration(labelText: 'Date'),
               ),

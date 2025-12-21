@@ -1,8 +1,12 @@
 import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/models/event.dart';
+import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
+import 'package:dailies_v2/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:icalendar_parser/icalendar_parser.dart';
+import 'package:timezone/timezone.dart';
 
 extension EventTypeLabels on EventType {
   String get label {
@@ -62,6 +66,7 @@ const _MULTI_DAY_START_TIME_TAG = 'MULTI_DAY_START_TIME_TAG';
 const _MULTI_DAY_END_DATE_TAG = 'MULTI_DAY_END_DATE_TAG';
 const _MULTI_DAY_WEEKDAYS_TAG = 'MULTI_DAY_WEEKDAYS';
 const _RECURRING_TAG = 'RECURRING_TAG';
+const _RECURRING_UNTIL_TAG = 'RECURRING_UNTIL_TAG';
 final _FORM_KEY = GlobalKey<FormBuilderState>();
 
 class AddEventModal extends StatefulWidget {
@@ -115,6 +120,7 @@ class _AddEventModalState extends State<AddEventModal> {
               ),
               FormBuilderDateTimePicker(
                 name: _DATE_TAG,
+                initialValue: CALENDAR_VIEW_MODEL.selectedDay,
                 inputType: InputType.date,
                 decoration: const InputDecoration(labelText: 'Date'),
               ),
@@ -139,8 +145,9 @@ class _AddEventModalState extends State<AddEventModal> {
     if (state == null || !state.saveAndValidate()) return;
 
     final String title = state.fields[_TITLE_TAG]?.value as String;
-    final String location = state.fields[_LOCATION_TAG]?.value as String;
-    final String description = state.fields[_DESCRIPTION_TAG]?.value as String;
+    final String? location = state.fields[_LOCATION_TAG]?.value as String?;
+    final String? description =
+        state.fields[_DESCRIPTION_TAG]?.value as String?;
     final DateTime date = state.fields[_DATE_TAG]?.value as DateTime;
 
     DateTime? startTime, endTime;
@@ -150,7 +157,11 @@ class _AddEventModalState extends State<AddEventModal> {
       case EventType.REACCURING:
         final Recurrance recurrance =
             state.fields[_RECURRING_TAG]?.value as Recurrance;
-        rrule = recurrance.rrule;
+
+        final DateTime until =
+            state.fields[_RECURRING_UNTIL_TAG]?.value as DateTime;
+
+        rrule = '${recurrance.rrule};UNTIL=${formatDateToICS(until)}';
 
       case EventType.DEADLINE:
         endTime = state.fields[_DEADLINE_TAG]?.value as DateTime;
@@ -238,7 +249,8 @@ class _EventTypeSectionState extends State<EventTypeSection> {
           Wrap(
             spacing: 8,
             children: EventType.values.map((type) {
-              if (type == EventType.UNDEFINED) return const SizedBox.shrink();
+              if (type == EventType.UNDEFINED || type == EventType.MULTI_DAY)
+                return const SizedBox.shrink();
               return ChoiceChip(
                 label: Text(type.label),
                 selected: _selected == type,
@@ -261,8 +273,6 @@ class _EventTypeSectionState extends State<EventTypeSection> {
         return const _IntervalFields(key: ValueKey('interval'));
       case EventType.DEADLINE:
         return const _DeadlineFields(key: ValueKey('deadline'));
-      case EventType.MULTI_DAY:
-        return const _MultiDayFields(key: ValueKey('multi'));
       case EventType.REACCURING:
         return const _RecurringFields(key: ValueKey('recurring'));
       default:
@@ -280,12 +290,16 @@ class _IntervalFields extends StatelessWidget {
       spacing: 8,
       children: [
         FormBuilderDateTimePicker(
+          inputType: InputType.time,
           name: _INTERVAL_START_TAG,
           decoration: const InputDecoration(labelText: 'Start Time'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
         FormBuilderDateTimePicker(
+          inputType: InputType.time,
           name: _INTERVAL_END_TAG,
           decoration: const InputDecoration(labelText: 'End Time'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
       ],
     );
@@ -301,6 +315,7 @@ class _DeadlineFields extends StatelessWidget {
       inputType: InputType.time,
       name: _DEADLINE_TAG,
       decoration: const InputDecoration(labelText: 'Deadline'),
+      validator: (date) => date == null ? 'Required' : null,
     );
   }
 }
@@ -329,7 +344,6 @@ class _WeekdayPicker extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: DaysOfTheWeek.values.map((d) {
-            final day = d.toString();
             final isSelected = selected.contains(d.index);
 
             return InkWell(
@@ -357,7 +371,7 @@ class _WeekdayPicker extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  day,
+                  d.name,
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -383,11 +397,13 @@ class _MultiDayFields extends StatelessWidget {
           name: _MULTI_DAY_START_TIME_TAG,
           inputType: InputType.time,
           decoration: const InputDecoration(labelText: 'Start Time'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
         FormBuilderDateTimePicker(
           name: _MULTI_DAY_END_DATE_TAG,
           inputType: InputType.date,
           decoration: const InputDecoration(labelText: 'End Date'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
 
         const _WeekdayPicker(),
@@ -401,13 +417,25 @@ class _RecurringFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderDropdown<Recurrance>(
-      initialValue: Recurrance.DAILY,
-      name: _RECURRING_TAG,
-      decoration: const InputDecoration(labelText: 'Repeat'),
-      items: Recurrance.values
-          .map((r) => DropdownMenuItem(value: r, child: Text(r.label)))
-          .toList(),
+    return Column(
+      spacing: 8,
+      children: [
+        FormBuilderDropdown<Recurrance>(
+          initialValue: Recurrance.DAILY,
+          name: _RECURRING_TAG,
+          decoration: const InputDecoration(labelText: 'Repeat'),
+          items: Recurrance.values
+              .map((r) => DropdownMenuItem(value: r, child: Text(r.label)))
+              .toList(),
+          validator: (date) => date == null ? 'Required' : null,
+        ),
+        FormBuilderDateTimePicker(
+          name: _RECURRING_UNTIL_TAG,
+          inputType: InputType.date,
+          decoration: const InputDecoration(labelText: 'End Date'),
+          validator: (date) => date == null ? 'Required' : null,
+        ),
+      ],
     );
   }
 }

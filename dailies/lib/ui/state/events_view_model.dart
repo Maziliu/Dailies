@@ -10,6 +10,8 @@ typedef EventMapHeap =
     Map<DateTime, HeapPriorityQueue<EventCacheInstanceModel>>;
 
 class EventsViewModel extends ChangeNotifier {
+  final ValueNotifier<bool> isLoaded = ValueNotifier(false);
+
   final EventService _eventService = EventService();
 
   final Map<int, EventInfoModel> _eventInfosById = {};
@@ -45,6 +47,7 @@ class EventsViewModel extends ChangeNotifier {
       _pushInstanceToHeap(instance);
     }
 
+    isLoaded.value = true;
     notifyListeners();
   }
 
@@ -147,5 +150,3 @@ class EventsViewModel extends ChangeNotifier {
     super.dispose();
   }
 }
-
-final EventsViewModel EVENTS_VIEW_MODEL = EventsViewModel();

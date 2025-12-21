@@ -1,11 +1,10 @@
-import 'package:dailies_v2/ui/state/events_view_model.dart';
+import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/views/overview/carousel/event_carousel.dart';
 import 'package:dailies_v2/ui/views/overview/gacha/gacha_section.dart';
 import 'package:dailies_v2/ui/views/overview/upcoming/upcoming_section.dart';
 import 'package:dailies_v2/ui/widgets/events_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class OverviewView extends StatelessWidget {
   const OverviewView({super.key});
@@ -15,14 +14,14 @@ class OverviewView extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         padding: UIFormating.mediumPadding(),
-        child: ChangeNotifierProvider.value(
-          value: EVENTS_VIEW_MODEL,
-          child: Column(
-            spacing: 4,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const GachaSection(),
-              EventCarousel(
+        child: Column(
+          spacing: 4,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const GachaSection(),
+            ValueListenableBuilder(
+              valueListenable: EVENTS_VIEW_MODEL.isLoaded,
+              builder: (_, _, _) => EventCarousel(
                 pages: [
                   EventsList(
                     events: EVENTS_VIEW_MODEL.getInstancesByDate(
@@ -42,9 +41,9 @@ class OverviewView extends StatelessWidget {
                   ),
                 ],
               ),
-              const UpcomingSection(),
-            ],
-          ),
+            ),
+            const UpcomingSection(),
+          ],
         ),
       ),
     );

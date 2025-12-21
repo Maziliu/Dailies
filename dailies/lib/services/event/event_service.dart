@@ -53,6 +53,7 @@ class EventService extends ChangeNotifier {
     try {
       instances = RRuleEventGenerator.generateInstances(eventInfo);
     } catch (e) {
+      print(eventInfo.type.name);
       return Result.error(
         GenerationFailure(
           'Failed to generate instances for ${eventInfo.title}: $e',

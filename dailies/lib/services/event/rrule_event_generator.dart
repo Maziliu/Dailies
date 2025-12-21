@@ -11,6 +11,7 @@ abstract class RRuleEventGenerator {
       case EventType.DEADLINE:
       case EventType.INTERVAL:
       case EventType.UNDEFINED:
+      case EventType.INDEFINITE:
         return [
           EventCacheInstanceModel(
             eventInfoId: info.id!,
@@ -24,7 +25,6 @@ abstract class RRuleEventGenerator {
         return _expandMultiDay(info, start, end);
 
       case EventType.REACCURING:
-      case EventType.INDEFINITE:
         return expandRecurring(info, start, end);
     }
   }

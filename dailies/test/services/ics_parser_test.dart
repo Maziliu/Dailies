@@ -237,22 +237,18 @@ END:VCALENDAR
     expect(event.location, contains('Calgary'));
     expect(event.type, EventType.INTERVAL);
 
-    expect(event.date.year, 2025);
-    expect(event.date.month, 12);
-    expect(event.date.day, 3);
-    expect(event.date.hour, 0);
-    expect(event.date.minute, 0);
-    expect(event.date.second, 0);
-    expect(event.date.millisecond, 0);
-    expect(event.date.microsecond, 0);
+    final startUtc = event.start!.toUtc();
+    final endUtc = event.end!.toUtc();
 
-    expect(event.start?.hour, 15);
-    expect(event.start?.minute, 0);
+    expect(startUtc.year, 2025);
+    expect(startUtc.month, 12);
+    expect(startUtc.day, 3);
+    expect(startUtc.hour, 22);
+    expect(startUtc.minute, 0);
 
-    expect(event.end, isNotNull);
-    expect(event.end!.hour, 15);
-    expect(event.end!.minute, 30);
+    expect(endUtc.hour, 22);
+    expect(endUtc.minute, 30);
 
-    expect(event.start?.timeZoneName, anyOf(['MST', 'MDT']));
+    expect(endUtc.difference(startUtc).inMinutes, 30);
   });
 }

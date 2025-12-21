@@ -1,3 +1,4 @@
+import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ class ScheduleItem extends StatelessWidget {
   final DateTime? start;
   final DateTime? end;
   final String? location;
+  final EventType type;
   final bool showDate;
   final VoidCallback onHold;
 
@@ -16,6 +18,7 @@ class ScheduleItem extends StatelessWidget {
     required this.onHold,
     required this.title,
     required this.date,
+    required this.type,
     this.start,
     this.end,
     this.location,
@@ -25,17 +28,27 @@ class ScheduleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeText = _formatTime(context);
+    final ThemeData theme = Theme.of(context);
 
     return InkWell(
       onLongPress: onHold,
       child: Card(
         elevation: 0,
-        color: Theme.of(context).colorScheme.surface,
+        color: theme.colorScheme.surface,
         child: Padding(
           padding: UIFormating.mediumPadding(),
           child: Row(
             children: [
-              _LeadingIcon(),
+              Container(
+                margin: const EdgeInsets.only(right: 16),
+                width: 45,
+                height: 45,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                  borderRadius: UIFormating.smallCircularBorderRadius(),
+                ),
+                child: _getLeadingIcon(context),
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,25 +56,24 @@ class ScheduleItem extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: theme.textTheme.headlineMedium,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     if (location?.isNotEmpty == true)
                       Text(
                         location!,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                         overflow: TextOverflow.ellipsis,
                       ),
                     if (timeText != null)
-                      Text(
-                        timeText,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      Text(timeText, style: theme.textTheme.bodyMedium),
                   ],
                 ),
               ),
-              if (showDate) _DateBadge(start: start ?? date),
+
+              UIFormating.smallHorizontalSpacing(),
+              if (showDate) _DateBadge(start: date),
             ],
           ),
         ),
@@ -70,32 +82,43 @@ class ScheduleItem extends StatelessWidget {
   }
 
   String? _formatTime(BuildContext context) {
-    if (start == null) return null;
+    final String? startText = (start != null)
+        ? TimeOfDay.fromDateTime(start!).format(context)
+        : null;
 
-    final startText = TimeOfDay.fromDateTime(start!).format(context);
+    final String? endText = (end != null)
+        ? TimeOfDay.fromDateTime(end!).format(context)
+        : null;
 
-    if (end == null) return startText;
-
-    final endText = TimeOfDay.fromDateTime(end!).format(context);
-    return '$startText – $endText';
+    switch (type) {
+      case EventType.DEADLINE:
+        return 'Due at $endText';
+      case EventType.INTERVAL:
+        return '$startText - $endText';
+      default:
+        return null;
+    }
   }
-}
 
-class _LeadingIcon extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
+  Widget _getLeadingIcon(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    late IconData innerIcon;
+    late Color iconColour;
 
-    return Container(
-      margin: const EdgeInsets.only(right: 16),
-      width: 45,
-      height: 45,
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: UIFormating.smallCircularBorderRadius(),
-      ),
-      child: Icon(Icons.access_time_rounded, color: color, size: 30),
-    );
+    switch (type) {
+      case EventType.DEADLINE:
+        innerIcon = Icons.today_rounded;
+        iconColour = const Color.fromARGB(170, 228, 30, 129);
+      case EventType.INTERVAL:
+        innerIcon = Icons.access_time_rounded;
+        iconColour = const Color(0xFF6366F1);
+
+      default:
+        innerIcon = Icons.question_mark;
+        iconColour = theme.colorScheme.primary;
+    }
+
+    return Icon(innerIcon, color: iconColour, size: 30);
   }
 }
 
@@ -106,16 +129,11 @@ class _DateBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Column(
       children: [
-        Text(
-          DateFormat.MMM().format(start),
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        Text(
-          DateFormat.d().format(start),
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text(DateFormat.MMM().format(start), style: theme.textTheme.bodyMedium),
+        Text(DateFormat.d().format(start), style: theme.textTheme.bodyMedium),
       ],
     );
   }

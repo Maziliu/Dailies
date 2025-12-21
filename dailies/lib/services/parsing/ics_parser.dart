@@ -21,8 +21,18 @@ class ICSParser extends FileParser {
 
   DateTime _icsDateTimeToDateTime(IcsDateTime ics) {
     if (ics.tzid != null) {
-      return TZDateTime.parse(getLocation(ics.tzid!), ics.dt);
+      final location = getLocation(ics.tzid!);
+      return TZDateTime(
+        location,
+        int.parse(ics.dt.substring(0, 4)),
+        int.parse(ics.dt.substring(4, 6)),
+        int.parse(ics.dt.substring(6, 8)),
+        ics.dt.length > 8 ? int.parse(ics.dt.substring(9, 11)) : 0,
+        ics.dt.length > 8 ? int.parse(ics.dt.substring(11, 13)) : 0,
+        ics.dt.length > 8 ? int.parse(ics.dt.substring(13, 15)) : 0,
+      );
     }
+
     return DateTime.parse(ics.dt);
   }
 

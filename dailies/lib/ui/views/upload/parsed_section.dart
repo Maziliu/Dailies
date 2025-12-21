@@ -27,6 +27,7 @@ class ParsedSection extends StatelessWidget {
 
               Expanded(
                 child: EventsList(
+                  showDate: true,
                   events: events
                       .map((e) => EventUIModel.fromEventInfo(info: e))
                       .toList(),

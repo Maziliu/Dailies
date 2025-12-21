@@ -114,14 +114,14 @@ class EventUIModel {
     required EventCacheInstanceModel instance,
     required EventInfoModel info,
   }) => EventUIModel(
-    seriesId: info?.id,
+    seriesId: info.id,
     instanceId: instance.id,
     date: instance.date,
     start: instance.start,
     end: instance.end,
-    title: info?.title ?? 'NULL TITLE',
-    location: info?.location,
-    type: info!.type,
+    title: info.title ?? 'NULL TITLE',
+    location: info.location,
+    type: info.type,
   );
 
   factory EventUIModel.fromEventInfo({required EventInfoModel info}) =>

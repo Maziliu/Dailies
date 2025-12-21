@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {
   final List<EventUIModel> events;
+  final bool showDate;
 
-  const EventsList({super.key, required this.events});
+  const EventsList({super.key, required this.events, this.showDate = false});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +45,7 @@ class EventsList extends StatelessWidget {
           end: event.end,
           location: event.location,
           type: event.type,
+          showDate: showDate,
         );
       },
     );

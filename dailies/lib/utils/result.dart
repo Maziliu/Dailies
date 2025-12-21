@@ -36,6 +36,14 @@ class ConversionFailure extends Failure {
   ConversionFailure(super.message);
 }
 
+class FileExtractionFailure extends Failure {
+  FileExtractionFailure(super.message);
+}
+
+class ICSParseFailure extends Failure {
+  ICSParseFailure(super.message);
+}
+
 class GenericFailure extends Failure {
   GenericFailure(super.message);
 }

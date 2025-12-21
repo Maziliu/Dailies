@@ -32,6 +32,8 @@ dependencies:
   path_provider: ^2.1.5
   table_calendar: ^3.2.0
   file_picker: ^10.3.7
+  icalendar_parser: ^2.1.0
+  timezone: ^0.10.1
   flutter_form_builder: ^10.2.0
   uuid: ^4.4.0
   drift: ^2.18.0

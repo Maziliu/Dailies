@@ -241,7 +241,8 @@ class _EventTypeSectionState extends State<EventTypeSection> {
           Wrap(
             spacing: 8,
             children: EventType.values.map((type) {
-              if (type == EventType.UNDEFINED) return const SizedBox.shrink();
+              if (type == EventType.UNDEFINED || type == EventType.MULTI_DAY)
+                return const SizedBox.shrink();
               return ChoiceChip(
                 label: Text(type.label),
                 selected: _selected == type,
@@ -264,8 +265,6 @@ class _EventTypeSectionState extends State<EventTypeSection> {
         return const _IntervalFields(key: ValueKey('interval'));
       case EventType.DEADLINE:
         return const _DeadlineFields(key: ValueKey('deadline'));
-      case EventType.MULTI_DAY:
-        return const _MultiDayFields(key: ValueKey('multi'));
       case EventType.REACCURING:
         return const _RecurringFields(key: ValueKey('recurring'));
       default:
@@ -283,11 +282,13 @@ class _IntervalFields extends StatelessWidget {
       spacing: 8,
       children: [
         FormBuilderDateTimePicker(
+          inputType: InputType.time,
           name: _INTERVAL_START_TAG,
           decoration: const InputDecoration(labelText: 'Start Time'),
           validator: (date) => date == null ? 'Required' : null,
         ),
         FormBuilderDateTimePicker(
+          inputType: InputType.time,
           name: _INTERVAL_END_TAG,
           decoration: const InputDecoration(labelText: 'End Time'),
           validator: (date) => date == null ? 'Required' : null,
@@ -335,7 +336,6 @@ class _WeekdayPicker extends StatelessWidget {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: DaysOfTheWeek.values.map((d) {
-            final day = d.toString();
             final isSelected = selected.contains(d.index);
 
             return InkWell(
@@ -363,7 +363,7 @@ class _WeekdayPicker extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  day,
+                  d.name,
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),

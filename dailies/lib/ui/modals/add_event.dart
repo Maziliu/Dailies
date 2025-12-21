@@ -141,8 +141,9 @@ class _AddEventModalState extends State<AddEventModal> {
     if (state == null || !state.saveAndValidate()) return;
 
     final String title = state.fields[_TITLE_TAG]?.value as String;
-    final String location = state.fields[_LOCATION_TAG]?.value as String;
-    final String description = state.fields[_DESCRIPTION_TAG]?.value as String;
+    final String? location = state.fields[_LOCATION_TAG]?.value as String?;
+    final String? description =
+        state.fields[_DESCRIPTION_TAG]?.value as String?;
     final DateTime date = state.fields[_DATE_TAG]?.value as DateTime;
 
     DateTime? startTime, endTime;
@@ -284,10 +285,12 @@ class _IntervalFields extends StatelessWidget {
         FormBuilderDateTimePicker(
           name: _INTERVAL_START_TAG,
           decoration: const InputDecoration(labelText: 'Start Time'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
         FormBuilderDateTimePicker(
           name: _INTERVAL_END_TAG,
           decoration: const InputDecoration(labelText: 'End Time'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
       ],
     );
@@ -303,6 +306,7 @@ class _DeadlineFields extends StatelessWidget {
       inputType: InputType.time,
       name: _DEADLINE_TAG,
       decoration: const InputDecoration(labelText: 'Deadline'),
+      validator: (date) => date == null ? 'Required' : null,
     );
   }
 }
@@ -385,11 +389,13 @@ class _MultiDayFields extends StatelessWidget {
           name: _MULTI_DAY_START_TIME_TAG,
           inputType: InputType.time,
           decoration: const InputDecoration(labelText: 'Start Time'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
         FormBuilderDateTimePicker(
           name: _MULTI_DAY_END_DATE_TAG,
           inputType: InputType.date,
           decoration: const InputDecoration(labelText: 'End Date'),
+          validator: (date) => date == null ? 'Required' : null,
         ),
 
         const _WeekdayPicker(),
@@ -410,6 +416,7 @@ class _RecurringFields extends StatelessWidget {
       items: Recurrance.values
           .map((r) => DropdownMenuItem(value: r, child: Text(r.label)))
           .toList(),
+      validator: (date) => date == null ? 'Required' : null,
     );
   }
 }

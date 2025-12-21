@@ -97,12 +97,14 @@ class EventUIModel {
   final DateTime? start, end;
   final String title;
   final String? location;
+  final EventType type;
 
   EventUIModel({
     this.seriesId,
     this.instanceId,
     this.start,
     this.end,
+    required this.type,
     required this.date,
     required this.title,
     required this.location,
@@ -110,7 +112,7 @@ class EventUIModel {
 
   factory EventUIModel.fromInfoAndInstance({
     required EventCacheInstanceModel instance,
-    EventInfoModel? info,
+    required EventInfoModel info,
   }) => EventUIModel(
     seriesId: info?.id,
     instanceId: instance.id,
@@ -119,6 +121,7 @@ class EventUIModel {
     end: instance.end,
     title: info?.title ?? 'NULL TITLE',
     location: info?.location,
+    type: info!.type,
   );
 
   factory EventUIModel.fromEventInfo({required EventInfoModel info}) =>
@@ -128,6 +131,7 @@ class EventUIModel {
         location: info.location,
         start: info.start,
         end: info.end,
+        type: info.type,
       );
 }
 

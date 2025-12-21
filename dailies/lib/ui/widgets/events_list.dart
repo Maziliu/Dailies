@@ -43,6 +43,7 @@ class EventsList extends StatelessWidget {
           start: event.start,
           end: event.end,
           location: event.location,
+          type: event.type,
         );
       },
     );

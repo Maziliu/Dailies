@@ -1,3 +1,4 @@
+import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ class ScheduleItem extends StatelessWidget {
   final DateTime? start;
   final DateTime? end;
   final String? location;
+  final EventType type;
   final bool showDate;
   final VoidCallback onHold;
 
@@ -16,6 +18,7 @@ class ScheduleItem extends StatelessWidget {
     required this.onHold,
     required this.title,
     required this.date,
+    required this.type,
     this.start,
     this.end,
     this.location,
@@ -61,7 +64,7 @@ class ScheduleItem extends StatelessWidget {
                   ],
                 ),
               ),
-              if (showDate) _DateBadge(start: start ?? date),
+              if (showDate) _DateBadge(start: date),
             ],
           ),
         ),
@@ -70,14 +73,22 @@ class ScheduleItem extends StatelessWidget {
   }
 
   String? _formatTime(BuildContext context) {
-    if (start == null) return null;
+    final String? startText = (start != null)
+        ? TimeOfDay.fromDateTime(start!).format(context)
+        : null;
 
-    final startText = TimeOfDay.fromDateTime(start!).format(context);
+    final String? endText = (end != null)
+        ? TimeOfDay.fromDateTime(end!).format(context)
+        : null;
 
-    if (end == null) return startText;
-
-    final endText = TimeOfDay.fromDateTime(end!).format(context);
-    return '$startText – $endText';
+    switch (type) {
+      case EventType.DEADLINE:
+        return 'Due at $endText';
+      case EventType.INTERVAL:
+        return '$startText - $endText';
+      default:
+        return null;
+    }
   }
 }
 

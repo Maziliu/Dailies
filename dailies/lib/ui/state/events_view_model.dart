@@ -57,7 +57,7 @@ class EventsViewModel extends ChangeNotifier {
             ?.toList()
             .map(
               (e) => EventUIModel.fromInfoAndInstance(
-                info: _eventInfosById[e.eventInfoId],
+                info: _eventInfosById[e.eventInfoId]!,
                 instance: e,
               ),
             )
@@ -90,7 +90,7 @@ class EventsViewModel extends ChangeNotifier {
         .map(
           (e) => EventUIModel.fromInfoAndInstance(
             instance: e,
-            info: _eventInfosById[e.eventInfoId],
+            info: _eventInfosById[e.eventInfoId]!,
           ),
         )
         .toList();

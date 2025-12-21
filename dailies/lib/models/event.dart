@@ -120,6 +120,15 @@ class EventUIModel {
     title: info?.title ?? 'NULL TITLE',
     location: info?.location,
   );
+
+  factory EventUIModel.fromEventInfo({required EventInfoModel info}) =>
+      EventUIModel(
+        date: info.date,
+        title: info.title,
+        location: info.location,
+        start: info.start,
+        end: info.end,
+      );
 }
 
 extension EventInfoRowMapper on EventInfo {

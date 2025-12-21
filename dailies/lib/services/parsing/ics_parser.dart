@@ -87,9 +87,7 @@ class ICSParser extends FileParser {
       );
     }
 
-    final IcsDateTime? icsEnd = event['dtend'] is IcsDateTime
-        ? event['dtend']
-        : null;
+    final IcsDateTime? icsEnd = event['dtend'];
 
     final DateTime start = _icsDateTimeToDateTime(icsStart);
     final DateTime? end = icsEnd != null
@@ -123,7 +121,7 @@ class ICSParser extends FileParser {
         calendarId: 'imported',
         title: title,
         description: description,
-        location: location,
+        location: location?.trim(),
         date: date,
         start: start,
         end: end,

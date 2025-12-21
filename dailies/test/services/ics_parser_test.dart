@@ -3,10 +3,12 @@ import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/services/parsing/ics_parser.dart';
 import 'package:dailies_v2/utils/result.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:timezone/data/latest.dart';
 import '../helpers/result_unwrapper.dart';
 
 void main() {
+  setUpAll(initializeTimeZones);
+
   test('parses single one-time event', () async {
     final parser = ICS_PARSER;
 
@@ -171,5 +173,86 @@ END:VCALENDAR
     final result = await parser.rawTextToEventInfos(rawIcs);
 
     expect(result, isA<Error<List<Result<EventInfoModel>>>>());
+  });
+
+  test('parses real-world ICS with VTIMEZONE and TZID', () async {
+    final parser = ICSParser();
+
+    const rawIcs = '''
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:spatie/icalendar-generator
+BEGIN:VTIMEZONE
+TZID:America/Edmonton
+BEGIN:DAYLIGHT
+DTSTART:20250309T010000
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0600
+END:DAYLIGHT
+BEGIN:STANDARD
+DTSTART:20251102T010000
+TZOFFSETFROM:-0600
+TZOFFSETTO:-0700
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20260308T010000
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0600
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VTIMEZONE
+TZID:UTC
+BEGIN:STANDARD
+DTSTART:20250308T180449
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:APT-034005-43138
+DTSTAMP:20251203T180449Z
+SUMMARY:Undergraduate Student Advising
+DESCRIPTION:Undergraduate Student Advising - Engineering Student Centre - Advising
+LOCATION: Calgary Alberta
+DTSTART;TZID=America/Edmonton:20251203T150000
+DTEND;TZID=America/Edmonton:20251203T153000
+BEGIN:VALARM
+ACTION:DISPLAY
+TRIGGER:-PT30M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+''';
+
+    final result = await parser.rawTextToEventInfos(rawIcs);
+    final parsed = expectOk(result);
+
+    expect(parsed.length, 1);
+
+    final eventResult = parsed.first;
+    final event = expectOk(eventResult);
+
+    expect(event.uid, 'APT-034005-43138');
+    expect(event.title, 'Undergraduate Student Advising');
+    expect(event.location, contains('Calgary'));
+    expect(event.type, EventType.INTERVAL);
+
+    expect(event.date.year, 2025);
+    expect(event.date.month, 12);
+    expect(event.date.day, 3);
+    expect(event.date.hour, 0);
+    expect(event.date.minute, 0);
+    expect(event.date.second, 0);
+    expect(event.date.millisecond, 0);
+    expect(event.date.microsecond, 0);
+
+    expect(event.start?.hour, 15);
+    expect(event.start?.minute, 0);
+
+    expect(event.end, isNotNull);
+    expect(event.end!.hour, 15);
+    expect(event.end!.minute, 30);
+
+    expect(event.start?.timeZoneName, anyOf(['MST', 'MDT']));
   });
 }

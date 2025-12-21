@@ -82,5 +82,6 @@ jobs:
         with:
           tag: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          artifacts: artifacts/*.apk
+          artifacts: dailies/artifacts/*.apk
           token: ${{ secrets.GITHUB_TOKEN }}
+

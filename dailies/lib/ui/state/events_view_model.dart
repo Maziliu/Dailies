@@ -120,7 +120,7 @@ class EventsViewModel extends ChangeNotifier {
   }
 
   Future<void> createEvent(EventInfoModel eventInfo) async {
-    final result = await _eventService.createEvent(eventInfo);
+    final result = await _eventService.insertEvent(eventInfo);
 
     switch (result) {
       case Ok<int>(value: final int id):

@@ -100,8 +100,9 @@ class _UploadDropzone extends StatelessWidget {
             const Icon(Icons.file_upload_outlined, color: Colors.grey),
             Text(
               'Upload Files',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: Colors.grey[400],
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],

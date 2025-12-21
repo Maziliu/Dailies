@@ -1,14 +1,13 @@
 import 'package:dailies_v2/ui/theme/colour_schemes.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static ThemeData dark() {
     return ThemeData(
       useMaterial3: true,
       colorScheme: darkColorScheme,
-      fontFamily: GoogleFonts.outfit().fontFamily,
+      fontFamily: 'Outfit',
 
       scaffoldBackgroundColor: darkColorScheme.surface,
 

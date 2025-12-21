@@ -2,7 +2,6 @@ import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/services/event/event_service.dart';
 import 'package:dailies_v2/services/parsing/ics_parser.dart';
 import 'package:dailies_v2/services/parsing/parser.dart';
-import 'package:dailies_v2/utils/result.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 

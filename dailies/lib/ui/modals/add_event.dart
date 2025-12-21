@@ -5,8 +5,6 @@ import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:icalendar_parser/icalendar_parser.dart';
-import 'package:timezone/timezone.dart';
 
 extension EventTypeLabels on EventType {
   String get label {
@@ -249,8 +247,9 @@ class _EventTypeSectionState extends State<EventTypeSection> {
           Wrap(
             spacing: 8,
             children: EventType.values.map((type) {
-              if (type == EventType.UNDEFINED || type == EventType.MULTI_DAY)
+              if (type == EventType.UNDEFINED || type == EventType.MULTI_DAY) {
                 return const SizedBox.shrink();
+              }
               return ChoiceChip(
                 label: Text(type.label),
                 selected: _selected == type,
@@ -386,7 +385,7 @@ class _WeekdayPicker extends StatelessWidget {
 }
 
 class _MultiDayFields extends StatelessWidget {
-  const _MultiDayFields({super.key});
+  const _MultiDayFields();
 
   @override
   Widget build(BuildContext context) {

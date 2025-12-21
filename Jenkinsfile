@@ -26,13 +26,17 @@ pipeline {
 
     stage('Get Dependencies') {
       steps {
-        sh 'flutter pub get'
+        dir('dailies') {
+          sh 'flutter pub get'
+        }
       }
     }
 
     stage('Run Tests') {
       steps {
-        sh 'flutter test'
+        dir('dailies') {
+          sh 'flutter test'
+        }
       }
     }
 
@@ -41,20 +45,16 @@ pipeline {
         tag pattern: "v*.*.*", comparator: "GLOB"
       }
       steps {
-        sh 'flutter build apk --release --split-per-abi'
+        dir('dailies') {
+          sh 'flutter build apk --release --split-per-abi'
+        }
       }
     }
   }
 
   post {
-    success {
-      echo "Build succeeded"
-    }
-    failure {
-      echo "Build failed"
-    }
     always {
-      archiveArtifacts artifacts: 'build/app/outputs/flutter-apk/*.apk', fingerprint: true
+      archiveArtifacts artifacts: 'dailies/build/app/outputs/flutter-apk/*.apk', fingerprint: true
     }
   }
 }

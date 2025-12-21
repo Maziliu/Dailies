@@ -1,6 +1,8 @@
 import 'package:dailies_v2/models/event.dart';
+import 'package:dailies_v2/services/event/event_service.dart';
 import 'package:dailies_v2/services/parsing/ics_parser.dart';
 import 'package:dailies_v2/services/parsing/parser.dart';
+import 'package:dailies_v2/utils/result.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
@@ -11,11 +13,13 @@ final List<String> SUPPORTED_FILE_EXTENSIONS = [
 ];
 
 class UploadViewModel extends ChangeNotifier {
+  final EventService _eventService = EventService();
+
   final ValueNotifier<List<PlatformFile>> uploadedFiles =
       ValueNotifier<List<PlatformFile>>([]);
 
-  final ValueNotifier<List<EventUIModel>> parsedEvents =
-      ValueNotifier<List<EventUIModel>>([]);
+  final ValueNotifier<List<EventInfoModel>> parsedEvents =
+      ValueNotifier<List<EventInfoModel>>([]);
 
   Future<void> parseAllUploadedFiles() async {
     parsedEvents.value = [];
@@ -25,10 +29,7 @@ class UploadViewModel extends ChangeNotifier {
     )) {
       switch (event) {
         case FileParseSuccess(event: final value):
-          parsedEvents.value = [
-            ...parsedEvents.value,
-            EventUIModel.fromEventInfo(info: value),
-          ];
+          parsedEvents.value = [...parsedEvents.value, value];
 
         case FileParseFailure():
         case FileParseProgress():
@@ -47,8 +48,11 @@ class UploadViewModel extends ChangeNotifier {
     uploadedFiles.value = newList;
   }
 
-  bool get requiresLLMParsing => uploadedFiles.value.any(
-    (PlatformFile file) =>
-        LLM_REQUIRED_FILE_EXTENSIONS.contains(file.extension),
-  );
+  void addParsedToCalendar() async {
+    for (final EventInfoModel event in parsedEvents.value) {
+      _eventService.insertEvent(event);
+    }
+
+    clearParsedEvents();
+  }
 }

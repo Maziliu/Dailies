@@ -1,5 +1,5 @@
+import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/ui/state/init.dart';
-import 'package:dailies_v2/ui/state/upload_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/widgets/events_list.dart';
 import 'package:dailies_v2/ui/widgets/section_card.dart';
@@ -10,21 +10,28 @@ class ParsedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UploadViewModel viewModel = UPLOAD_VIEW_MODEL;
-
     return SectionCard(
       padding: UIFormating.mediumPadding(),
       child: ValueListenableBuilder(
-        valueListenable: viewModel.parsedEvents,
+        valueListenable: UPLOAD_VIEW_MODEL.parsedEvents,
         builder: (context, events, _) {
           return Column(
+            spacing: 8,
             children: [
               _Header(
                 count: events.length,
-                onClear: events.isEmpty ? null : viewModel.clearParsedEvents,
+                onClear: events.isEmpty
+                    ? null
+                    : UPLOAD_VIEW_MODEL.clearParsedEvents,
               ),
 
-              Expanded(child: EventsList(events: events)),
+              Expanded(
+                child: EventsList(
+                  events: events
+                      .map((e) => EventUIModel.fromEventInfo(info: e))
+                      .toList(),
+                ),
+              ),
 
               if (events.isNotEmpty) _buildActionButtons(),
             ],
@@ -45,7 +52,7 @@ class ParsedSection extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: ElevatedButton(
-              onPressed: () async {},
+              onPressed: () => UPLOAD_VIEW_MODEL.addParsedToCalendar(),
               child: const Text('Add Events'),
             ),
           ),

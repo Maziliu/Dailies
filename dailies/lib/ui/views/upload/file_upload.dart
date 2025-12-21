@@ -1,5 +1,4 @@
 import 'package:dailies_v2/ui/state/init.dart';
-import 'package:dailies_v2/ui/state/upload_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/widgets/file_list_item.dart';
 import 'package:dailies_v2/ui/widgets/item_list.dart';
@@ -14,8 +13,6 @@ class FileUploadSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UploadViewModel viewModel = UPLOAD_VIEW_MODEL;
-
     return SectionCard(
       padding: UIFormating.mediumPadding(),
       child: Column(
@@ -33,13 +30,13 @@ class FileUploadSection extends StatelessWidget {
               if (result == null) {
                 return;
               }
-              viewModel.uploadedFiles.value = result.files;
+              UPLOAD_VIEW_MODEL.uploadedFiles.value = result.files;
             },
           ),
 
           Expanded(
             child: ValueListenableBuilder<List<PlatformFile>>(
-              valueListenable: viewModel.uploadedFiles,
+              valueListenable: UPLOAD_VIEW_MODEL.uploadedFiles,
               builder: (context, files, _) {
                 return Column(
                   spacing: 8,
@@ -48,7 +45,7 @@ class FileUploadSection extends StatelessWidget {
                     _FilesHeader(
                       count: files.length,
                       onClear: files.isNotEmpty
-                          ? viewModel.clearUploadedFiles
+                          ? UPLOAD_VIEW_MODEL.clearUploadedFiles
                           : null,
                     ),
 
@@ -58,14 +55,15 @@ class FileUploadSection extends StatelessWidget {
                         items: files,
                         itemBuilder: (file) => FileListItem(
                           file: file,
-                          onRemove: () => viewModel.removeUploadedFile(file),
+                          onRemove: () =>
+                              UPLOAD_VIEW_MODEL.removeUploadedFile(file),
                         ),
                       ),
                     ),
 
                     if (files.isNotEmpty) ...[
                       ElevatedButton(
-                        onPressed: viewModel.parseAllUploadedFiles,
+                        onPressed: UPLOAD_VIEW_MODEL.parseAllUploadedFiles,
                         child: const Text('Parse'),
                       ),
                     ],

@@ -33,7 +33,7 @@ class EventService extends ChangeNotifier {
     );
   }
 
-  Future<Result<int>> createEvent(EventInfoModel eventInfo) async {
+  Future<Result<int>> insertEvent(EventInfoModel eventInfo) async {
     final insertInfoResult = await guardedAsyncExecute<int>(
       () => _dao.insertEventInfo(eventInfo.toCompanion()),
       DatabaseFailure('Failed to insert EventInfo ${eventInfo.title}'),

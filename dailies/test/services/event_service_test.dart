@@ -52,7 +52,7 @@ void main() {
       end: DateTime(2024, 1, 1, 11),
     );
 
-    final result = await service.createEvent(event);
+    final result = await service.insertEvent(event);
 
     expect(result, isA<Ok<int>>());
 
@@ -68,7 +68,7 @@ void main() {
     () async {
       final event = baseEvent();
 
-      final result = await service.createEvent(event);
+      final result = await service.insertEvent(event);
 
       expect(result, isA<Ok<int>>());
 
@@ -85,7 +85,7 @@ void main() {
       end: DateTime(2024, 1, 3),
     );
 
-    final result = await service.createEvent(event);
+    final result = await service.insertEvent(event);
 
     expect(result, isA<Ok<int>>());
 
@@ -101,7 +101,7 @@ void main() {
       rrule: 'FREQ=DAILY;COUNT=5',
     );
 
-    final result = await service.createEvent(event);
+    final result = await service.insertEvent(event);
 
     expect(result, isA<Ok<int>>());
 
@@ -117,7 +117,7 @@ void main() {
         rrule: 'FREQ=DAILY;COUNT=3',
       );
 
-      final result = await service.createEvent(event);
+      final result = await service.insertEvent(event);
 
       expect(result, isA<Ok<int>>());
 
@@ -133,7 +133,7 @@ void main() {
       end: DateTime(2024, 1, 1, 11),
     );
 
-    final create = await service.createEvent(event);
+    final create = await service.insertEvent(event);
     final id = (create as Ok<int>).value;
 
     final delete = await service.deleteAllEventsInSeries(id);

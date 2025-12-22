@@ -19,6 +19,21 @@ pipeline {
       }
     }
 
+    stage('Create CI .env') {
+      steps {
+        dir('dailies') {
+          sh '''
+            echo "Creating fake .env for CI"
+            cat <<EOF > .env
+ENV=ci
+BACKEND_URL=https://example.invalid
+SERVER_PASSWORD=fake-password
+EOF
+          '''
+        }
+      }
+    }
+
     stage('Get Dependencies') {
       steps {
         dir('dailies') {

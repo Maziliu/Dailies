@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     PATH = "/usr/local/flutter/bin:${env.PATH}"
+    GH_TOKEN = credentials('github-token')
   }
 
   stages {
@@ -23,7 +24,6 @@ pipeline {
       steps {
         dir('dailies') {
           sh '''
-            echo "Creating fake .env for CI"
             cat <<EOF > .env
 ENV=ci
 BACKEND_URL=https://example.invalid
@@ -60,20 +60,23 @@ EOF
         }
       }
     }
+
+    stage('Create GitHub Release') {
+      when {
+        tag pattern: "v*.*.*", comparator: "GLOB"
+      }
+      steps {
+        sh '''
+          gh release create "$TAG_NAME" \
+            dailies/build/app/outputs/flutter-apk/*.apk \
+            --title "$TAG_NAME" \
+            --notes "Automated release for $TAG_NAME"
+        '''
+      }
+    }
   }
 
   post {
-    success {
-      script {
-        if (env.TAG_NAME) {
-          archiveArtifacts(
-            artifacts: 'dailies/build/app/outputs/flutter-apk/*.apk',
-            fingerprint: true
-          )
-        }
-      }
-    }
-
     failure {
       echo 'Build failed'
     }

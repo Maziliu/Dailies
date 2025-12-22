@@ -52,7 +52,12 @@ EOF
 
     stage('Build Release APKs') {
       when {
-        tag pattern: "v*.*.*", comparator: "GLOB"
+        expression {
+          sh(
+            script: 'git describe --tags --exact-match >/dev/null 2>&1',
+            returnStatus: true
+          ) == 0
+        }
       }
       steps {
         dir('dailies') {
@@ -63,14 +68,20 @@ EOF
 
     stage('Create GitHub Release') {
       when {
-        tag pattern: "v*.*.*", comparator: "GLOB"
+        expression {
+          sh(
+            script: 'git describe --tags --exact-match >/dev/null 2>&1',
+            returnStatus: true
+          ) == 0
+        }
       }
       steps {
         sh '''
-          gh release create "$TAG_NAME" \
+          TAG=$(git describe --tags --exact-match)
+          gh release create "$TAG" \
             dailies/build/app/outputs/flutter-apk/*.apk \
-            --title "$TAG_NAME" \
-            --notes "Automated release for $TAG_NAME"
+            --title "$TAG" \
+            --notes "Automated release for $TAG"
         '''
       }
     }

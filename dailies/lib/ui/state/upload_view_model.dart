@@ -1,7 +1,10 @@
+import 'package:async/async.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/services/event/event_service.dart';
 import 'package:dailies_v2/services/parsing/ics_parser.dart';
 import 'package:dailies_v2/services/parsing/parser.dart';
+import 'package:dailies_v2/services/parsing/pdf_parser.dart';
+import 'package:dailies_v2/utils/result.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,6 +13,8 @@ final List<String> SUPPORTED_FILE_EXTENSIONS = [
   'ics',
   ...LLM_REQUIRED_FILE_EXTENSIONS,
 ];
+
+final List<FileParser> PARSERS = [ICS_PARSER, PDF_PARSER];
 
 class UploadViewModel extends ChangeNotifier {
   final EventService _eventService = EventService();
@@ -23,15 +28,23 @@ class UploadViewModel extends ChangeNotifier {
   Future<void> parseAllUploadedFiles() async {
     parsedEvents.value = [];
 
-    await for (final event in ICS_PARSER.parseFilesStream(
-      uploadedFiles.value,
-    )) {
+    final streams = PARSERS.map(
+      (parser) => parser.parseFilesStream(uploadedFiles.value),
+    );
+
+    await for (final event in StreamGroup.merge(streams)) {
       switch (event) {
         case FileParseSuccess(event: final value):
           parsedEvents.value = [...parsedEvents.value, value];
 
-        case FileParseFailure():
+        case FileParseFailure(
+          failure: final Failure failure,
+          fileName: final String fileName,
+        ):
+          print('Could not parse: ${fileName} ${failure.message}');
+
         case FileParseProgress():
+        // update UI
       }
     }
   }

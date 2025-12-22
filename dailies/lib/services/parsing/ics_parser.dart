@@ -4,7 +4,7 @@ import 'package:dailies_v2/enums/event_type.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/services/parsing/parser.dart';
 import 'package:dailies_v2/utils/result.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:file_picker/src/platform_file.dart';
 import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:timezone/standalone.dart';
 import 'package:uuid/uuid.dart';
@@ -163,39 +163,7 @@ class ICSParser extends FileParser {
   }
 
   @override
-  Stream<FileParseEvent> parseFilesStream(List<PlatformFile> files) async* {
-    int completed = 0;
-    final total = files.length;
-
-    for (final file in files) {
-      final textResult = await extractTextFromFile(file);
-
-      switch (textResult) {
-        case Ok<String>(value: final rawText):
-          final parsed = await rawTextToEventInfos(rawText);
-
-          switch (parsed) {
-            case Ok<List<Result<EventInfoModel>>>(value: final events):
-              for (final event in events) {
-                switch (event) {
-                  case Ok<EventInfoModel>(value: final e):
-                    yield FileParseSuccess(e);
-                  case Error<EventInfoModel>(failure: final f):
-                    yield FileParseFailure(file.name, f);
-                }
-              }
-            case Error<List<Result<EventInfoModel>>>(failure: final f):
-              yield FileParseFailure(file.name, f);
-          }
-
-        case Error<String>(failure: final f):
-          yield FileParseFailure(file.name, f);
-      }
-
-      completed++;
-      yield FileParseProgress(completed, total);
-    }
-  }
+  bool canParse(PlatformFile file) => file.extension?.toLowerCase() == 'ics';
 }
 
 final ICSParser ICS_PARSER = ICSParser();

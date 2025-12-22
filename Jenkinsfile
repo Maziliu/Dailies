@@ -2,21 +2,24 @@ pipeline {
   agent any
 
   environment {
-    PATH = "/usr/local/flutter/bin:${env.PATH}"
-    GH_TOKEN = credentials('github-token')
+    JAVA_HOME = "/usr/lib/jvm/java-17-openjdk"
+    ANDROID_SDK_ROOT = "/opt/android-sdk"
+    ANDROID_HOME = "/opt/android-sdk"
+
+    PATH = "/usr/lib/jvm/java-17-openjdk/bin:/usr/local/flutter/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/cmdline-tools/latest/bin:${env.PATH}"
   }
 
   stages {
 
-    stage('Checkout') {
+    stage('Environment Check') {
       steps {
-        checkout scm
-      }
-    }
-
-    stage('Flutter Info') {
-      steps {
-        sh 'flutter --version'
+        sh '''
+          set -e
+          echo "JAVA_HOME=$JAVA_HOME"
+          java -version
+          flutter --version
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+        '''
       }
     }
 
@@ -34,7 +37,7 @@ EOF
       }
     }
 
-    stage('Get Dependencies') {
+    stage('Flutter Pub Get') {
       steps {
         dir('dailies') {
           sh 'flutter pub get'
@@ -45,51 +48,18 @@ EOF
     stage('Run Tests') {
       steps {
         dir('dailies') {
-          sh 'flutter test'
+          sh 'flutter test --no-pub'
         }
-      }
-    }
-
-    stage('Build Release APKs') {
-      when {
-        expression {
-          sh(
-            script: 'git describe --tags --exact-match >/dev/null 2>&1',
-            returnStatus: true
-          ) == 0
-        }
-      }
-      steps {
-        dir('dailies') {
-          sh 'flutter build apk --release --split-per-abi'
-        }
-      }
-    }
-
-    stage('Create GitHub Release') {
-      when {
-        expression {
-          sh(
-            script: 'git describe --tags --exact-match >/dev/null 2>&1',
-            returnStatus: true
-          ) == 0
-        }
-      }
-      steps {
-        sh '''
-          TAG=$(git describe --tags --exact-match)
-          gh release create "$TAG" \
-            dailies/build/app/outputs/flutter-apk/*.apk \
-            --title "$TAG" \
-            --notes "Automated release for $TAG"
-        '''
       }
     }
   }
 
   post {
+    success {
+      echo 'Passed'
+    }
     failure {
-      echo 'Build failed'
+      echo 'Failed'
     }
   }
 }

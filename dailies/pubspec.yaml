@@ -45,6 +45,7 @@ dependencies:
   syncfusion_flutter_pdf: ^32.1.19
   flutter_dotenv: ^6.0.0
   http: ^1.6.0
+  async: ^2.13.0
   flutter:
     sdk: flutter
 

@@ -42,6 +42,9 @@ class PDFParser extends FileParser {
         return Result.error(error);
     }
   }
+
+  @override
+  bool canParse(PlatformFile file) => file.extension?.toLowerCase() == 'pdf';
 }
 
 final PDFParser PDF_PARSER = PDFParser();

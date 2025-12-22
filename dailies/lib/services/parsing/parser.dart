@@ -25,11 +25,15 @@ abstract class FileParser {
     String rawText,
   );
 
+  bool canParse(PlatformFile file);
+
   Stream<FileParseEvent> parseFilesStream(List<PlatformFile> files) async* {
     int completed = 0;
     final total = files.length;
 
     for (final file in files) {
+      if (!canParse(file)) continue;
+
       final textResult = await extractTextFromFile(file);
 
       switch (textResult) {

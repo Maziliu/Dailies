@@ -54,14 +54,15 @@ class LLMService {
     }
 
     final http.Response response = await http.post(
-      Uri.https(BACKEND_URL),
-      body: {
+      Uri.parse(BACKEND_URL),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
         'password': SERVER_PASSWORD,
         'content': {
           'instructions': LLM_INSTRUCTIONS,
           'context': rawDocumentText,
         },
-      },
+      }),
     );
 
     if (response.statusCode == 200) {

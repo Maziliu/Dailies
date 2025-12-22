@@ -48,6 +48,18 @@ class GenericFailure extends Failure {
   GenericFailure(super.message);
 }
 
+class EnvironmentVariableFailure extends Failure {
+  EnvironmentVariableFailure(super.message);
+}
+
+class UnauthorizedFailure extends Failure {
+  UnauthorizedFailure(super.message);
+}
+
+class NoBackendAPIKeysFailure extends Failure {
+  NoBackendAPIKeysFailure(super.message);
+}
+
 Future<Result<T>> guardedAsyncExecute<T>(
   Future<T> Function() action,
   Failure error,

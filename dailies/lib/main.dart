@@ -2,6 +2,7 @@ import 'package:dailies_v2/ui/dashboard/dashboard.dart';
 import 'package:dailies_v2/ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timezone/data/latest.dart';
 
 final GlobalKey<ScaffoldMessengerState> GLOBAL_SCAFFOLD_MESSENGER_KEY =
@@ -17,6 +18,8 @@ void main() async {
   );
 
   initializeTimeZones();
+
+  await dotenv.load();
 
   runApp(const MainApp());
 }

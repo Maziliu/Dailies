@@ -25,7 +25,39 @@ abstract class FileParser {
     String rawText,
   );
 
-  Stream<FileParseEvent> parseFilesStream(List<PlatformFile> files);
+  Stream<FileParseEvent> parseFilesStream(List<PlatformFile> files) async* {
+    int completed = 0;
+    final total = files.length;
+
+    for (final file in files) {
+      final textResult = await extractTextFromFile(file);
+
+      switch (textResult) {
+        case Ok<String>(value: final rawText):
+          final parsed = await rawTextToEventInfos(rawText);
+
+          switch (parsed) {
+            case Ok<List<Result<EventInfoModel>>>(value: final events):
+              for (final event in events) {
+                switch (event) {
+                  case Ok<EventInfoModel>(value: final e):
+                    yield FileParseSuccess(e);
+                  case Error<EventInfoModel>(failure: final f):
+                    yield FileParseFailure(file.name, f);
+                }
+              }
+            case Error<List<Result<EventInfoModel>>>(failure: final f):
+              yield FileParseFailure(file.name, f);
+          }
+
+        case Error<String>(failure: final f):
+          yield FileParseFailure(file.name, f);
+      }
+
+      completed++;
+      yield FileParseProgress(completed, total);
+    }
+  }
 }
 
 sealed class FileParseEvent {}

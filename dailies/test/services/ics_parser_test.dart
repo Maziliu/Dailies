@@ -58,7 +58,7 @@ END:VCALENDAR
     final events = expectOk(result);
 
     final event = expectOk(events.first);
-    expect(event.type, EventType.DEADLINE);
+    expect(event.type, EventType.INDEFINITE);
     expect(event.end, isNull);
   });
 

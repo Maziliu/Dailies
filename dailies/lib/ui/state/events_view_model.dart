@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:dailies_v2/models/event.dart';
 import 'package:dailies_v2/services/event/event_service.dart';
 import 'package:dailies_v2/utils/result.dart';
+import 'package:dailies_v2/utils/snackbar.dart';
 import 'package:flutter/foundation.dart';
 
 typedef EventMapHeap =
@@ -105,9 +106,12 @@ class EventsViewModel extends ChangeNotifier {
 
     switch (result) {
       case Ok<void>():
-        print('OK');
-      case Error<void>(failure: final Failure error):
-        print(error.message);
+        showSuccessSnackbar('Deleted series');
+      case Error<void>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage: 'Unable to delete series: ${failure.message}',
+        );
     }
   }
 
@@ -116,9 +120,12 @@ class EventsViewModel extends ChangeNotifier {
 
     switch (result) {
       case Ok<void>():
-        print('OK');
-      case Error<void>(failure: final Failure error):
-        print(error.message);
+        showSuccessSnackbar('Successfully deleted event instance');
+      case Error<void>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage: 'Unable to delete event instance: ${failure.message}',
+        );
     }
   }
 
@@ -127,9 +134,15 @@ class EventsViewModel extends ChangeNotifier {
 
     switch (result) {
       case Ok<int>(value: final int id):
-        print('INSERTED $id');
-      case Error<void>(failure: final Failure error):
-        print(error.message);
+        showSuccessSnackbar(
+          'Created event id:${id.toString()} ${eventInfo.title}',
+        );
+      case Error<void>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage:
+              'Unable to create event ${eventInfo.title}: ${failure.message}',
+        );
     }
   }
 

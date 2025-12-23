@@ -112,6 +112,7 @@ class ScheduleItem extends StatelessWidget {
       case EventType.DEADLINE:
         innerIcon = Icons.today_rounded;
         iconColour = const Color.fromARGB(170, 228, 30, 129);
+      case EventType.REACCURING:
       case EventType.INTERVAL:
         innerIcon = Icons.access_time_rounded;
         iconColour = const Color(0xFF6366F1);

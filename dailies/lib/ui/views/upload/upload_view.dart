@@ -12,9 +12,9 @@ class UploadView extends StatelessWidget {
       body: Padding(
         padding: UIFormating.mediumPadding(),
         child: const Column(
+          spacing: 4,
           children: [
             Expanded(child: FileUploadSection()),
-            SizedBox(height: 8),
             Expanded(child: ParsedSection()),
           ],
         ),

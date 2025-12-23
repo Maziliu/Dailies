@@ -35,7 +35,11 @@ class UploadViewModel extends ChangeNotifier {
       ValueNotifier<List<EventInfoModel>>([]);
 
   Future<Set<PlatformFile>> _parseFiles(List<PlatformFile> files) async {
-    final streams = PARSERS.map((parser) => parser.parseFilesStream(files));
+    final streams = PARSERS.map(
+      (parser) => parser.parseFilesStream(
+        files.where((f) => parser.canParse(f)).toList(),
+      ),
+    );
 
     final failedFiles = <PlatformFile>{};
 

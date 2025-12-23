@@ -7,9 +7,14 @@ import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {
   final List<EventUIModel> events;
-  final bool showDate;
+  final bool showDate, disableOnHold;
 
-  const EventsList({super.key, required this.events, this.showDate = false});
+  const EventsList({
+    super.key,
+    required this.events,
+    this.showDate = false,
+    this.disableOnHold = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class EventsList extends StatelessWidget {
           location: event.location,
           type: event.type,
           showDate: showDate,
+          disableOnHold: disableOnHold,
         );
       },
     );

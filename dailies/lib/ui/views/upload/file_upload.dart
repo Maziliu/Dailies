@@ -31,6 +31,7 @@ class FileUploadSection extends StatelessWidget {
               if (result == null) {
                 return;
               }
+
               UPLOAD_VIEW_MODEL.uploadedFiles.value = result.files
                   .map((file) => PlatformFileWithProgress(file: file))
                   .toList();

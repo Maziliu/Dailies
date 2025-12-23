@@ -1,0 +1,61 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: dailies
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Build APKs
+        run: flutter build apk --release --split-per-abi
+
+      - name: Prepare artifacts
+        run: |
+          mkdir -p artifacts
+          cp build/app/outputs/flutter-apk/*.apk artifacts/
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1.16.0
+        with:
+          tag: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          artifacts: dailies/artifacts/*.apk
+          token: ${{ secrets.GITHUB_TOKEN }}

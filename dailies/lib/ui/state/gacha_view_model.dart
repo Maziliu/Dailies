@@ -1,6 +1,7 @@
 import 'package:dailies_v2/models/stamina.dart';
 import 'package:dailies_v2/services/gacha/stamina_service.dart';
 import 'package:dailies_v2/utils/result.dart';
+import 'package:dailies_v2/utils/snackbar.dart';
 import 'package:flutter/foundation.dart';
 
 class GachaViewModel extends ChangeNotifier {
@@ -14,11 +15,13 @@ class GachaViewModel extends ChangeNotifier {
       case Ok<int>(value: final int id):
         stamina.id = id;
         staminas.value = [...staminas.value, stamina];
-        print('Inserted $id ${stamina.staminaOfLastestReset}');
+        showSuccessSnackbar('Added ${id.toString()} ${stamina.gachaTitle}');
 
-      case Error<int>():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case Error<int>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage: 'Unable to add ${stamina} ${failure.message}',
+        );
     }
   }
 
@@ -29,9 +32,11 @@ class GachaViewModel extends ChangeNotifier {
     switch (result) {
       case Ok<List<StaminaModel>>(value: final List<StaminaModel> stams):
         staminas.value = [...stams];
-      case Error<List<StaminaModel>>():
-        // TODO: Handle this case.
-        throw UnimplementedError();
+      case Error<List<StaminaModel>>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage: 'Unable to load staminas ${failure.message}',
+        );
     }
   }
 
@@ -43,10 +48,14 @@ class GachaViewModel extends ChangeNotifier {
         staminas.value = staminas.value
             .where((s) => s.id != stamina.id)
             .toList();
-        print('Deleted ${stamina.id} ${stamina.gachaTitle}');
+        showSuccessSnackbar('Deleted ${stamina.id} ${stamina.gachaTitle}');
 
-      case Error<void>(failure: final Failure error):
-        print(error.message);
+      case Error<void>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage:
+              'Unable to delete ${stamina.id} ${stamina.gachaTitle} ${failure.message}',
+        );
     }
   }
 
@@ -65,9 +74,16 @@ class GachaViewModel extends ChangeNotifier {
 
         list[index] = updatedStamina;
         staminas.value = list;
+        showSuccessSnackbar(
+          'Set ${stamina.gachaTitle} stamina to ${updatedStamina.staminaOfLastestReset}',
+        );
 
-      case Error<StaminaModel>(failure: final error):
-        print(error.message);
+      case Error<StaminaModel>(failure: final Failure failure):
+        showErrorSnackbar(
+          failure: failure,
+          customMessage:
+              'Unable to set stamina of ${stamina.gachaTitle} ${failure.message}',
+        );
     }
   }
 }

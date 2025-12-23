@@ -70,12 +70,12 @@ class LLMService {
     }
 
     if (response.statusCode == 401) {
-      return Result.error(UnauthorizedFailure("SERVER_PASSWORD is incorrect"));
+      return Result.error(UnauthorizedFailure('SERVER_PASSWORD is incorrect'));
     }
 
     if (response.statusCode == 503) {
       return Result.error(
-        NoBackendAPIKeysFailure("The backend has run out of valid api keys"),
+        NoBackendAPIKeysFailure('The backend has run out of valid api keys'),
       );
     }
 

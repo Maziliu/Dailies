@@ -5,6 +5,7 @@ import 'package:dailies_v2/services/parsing/ics_parser.dart';
 import 'package:dailies_v2/services/parsing/parser.dart';
 import 'package:dailies_v2/services/parsing/pdf_parser.dart';
 import 'package:dailies_v2/utils/result.dart';
+import 'package:dailies_v2/utils/snackbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
@@ -36,12 +37,16 @@ class UploadViewModel extends ChangeNotifier {
       switch (event) {
         case FileParseSuccess(event: final value):
           parsedEvents.value = [...parsedEvents.value, value];
+          showSuccessSnackbar('Found Event: ${value.title}');
 
         case FileParseFailure(
           failure: final Failure failure,
           fileName: final String fileName,
         ):
-          print('Could not parse: ${fileName} ${failure.message}');
+          showErrorSnackbar(
+            failure: failure,
+            customMessage: 'Could not parse: ${fileName} ${failure.message}',
+          );
 
         case FileParseProgress():
         // update UI

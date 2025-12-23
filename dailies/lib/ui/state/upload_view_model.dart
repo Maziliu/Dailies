@@ -37,7 +37,6 @@ class UploadViewModel extends ChangeNotifier {
       switch (event) {
         case FileParseSuccess(event: final value):
           parsedEvents.value = [...parsedEvents.value, value];
-          showSuccessSnackbar('Found Event: ${value.title}');
 
         case FileParseFailure(
           failure: final Failure failure,

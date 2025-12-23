@@ -47,19 +47,19 @@ abstract class FileParser {
                   case Ok<EventInfoModel>(value: final e):
                     yield FileParseSuccess(e);
                   case Error<EventInfoModel>(failure: final f):
-                    yield FileParseFailure(file.name, f);
+                    yield FileParseFailure(failure: f);
                 }
               }
             case Error<List<Result<EventInfoModel>>>(failure: final f):
-              yield FileParseFailure(file.name, f);
+              yield FileParseFailure(file: file, failure: f);
           }
 
         case Error<String>(failure: final f):
-          yield FileParseFailure(file.name, f);
+          yield FileParseFailure(file: file, failure: f);
       }
 
       completed++;
-      yield FileParseProgress(completed, total);
+      yield FileParseProgress(completed, total, file);
     }
   }
 }
@@ -72,15 +72,16 @@ class FileParseSuccess extends FileParseEvent {
 }
 
 class FileParseFailure extends FileParseEvent {
-  final String fileName;
+  final PlatformFile? file;
   final Failure failure;
 
-  FileParseFailure(this.fileName, this.failure);
+  FileParseFailure({this.file, required this.failure});
 }
 
 class FileParseProgress extends FileParseEvent {
+  final PlatformFile file;
   final int completed;
   final int total;
 
-  FileParseProgress(this.completed, this.total);
+  FileParseProgress(this.completed, this.total, this.file);
 }

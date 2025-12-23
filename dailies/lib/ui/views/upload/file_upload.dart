@@ -1,4 +1,5 @@
 import 'package:dailies_v2/ui/state/init.dart';
+import 'package:dailies_v2/ui/state/upload_view_model.dart';
 import 'package:dailies_v2/ui/theme/standards.dart';
 import 'package:dailies_v2/ui/widgets/file_list_item.dart';
 import 'package:dailies_v2/ui/widgets/item_list.dart';
@@ -30,12 +31,14 @@ class FileUploadSection extends StatelessWidget {
               if (result == null) {
                 return;
               }
-              UPLOAD_VIEW_MODEL.uploadedFiles.value = result.files;
+              UPLOAD_VIEW_MODEL.uploadedFiles.value = result.files
+                  .map((file) => PlatformFileWithProgress(file: file))
+                  .toList();
             },
           ),
 
           Expanded(
-            child: ValueListenableBuilder<List<PlatformFile>>(
+            child: ValueListenableBuilder<List<PlatformFileWithProgress>>(
               valueListenable: UPLOAD_VIEW_MODEL.uploadedFiles,
               builder: (context, files, _) {
                 return Column(
@@ -50,13 +53,15 @@ class FileUploadSection extends StatelessWidget {
                     ),
 
                     Expanded(
-                      child: ItemList<PlatformFile>(
+                      child: ItemList<PlatformFileWithProgress>(
                         showEmptyState: false,
                         items: files,
                         itemBuilder: (file) => FileListItem(
                           file: file,
                           onRemove: () =>
-                              UPLOAD_VIEW_MODEL.removeUploadedFile(file),
+                              UPLOAD_VIEW_MODEL.removeUploadedFile(file.file),
+                          onRetryParse: () =>
+                              UPLOAD_VIEW_MODEL.retryParseFile(file),
                         ),
                       ),
                     ),

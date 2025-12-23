@@ -24,7 +24,8 @@ ICS requirements:
 - Do NOT include non-standard properties.
 - Do NOT include alarms unless explicitly mentioned.
 - Do NOT include timezone definitions unless explicitly required.
-- Deadline events are events with the same dtstart and dtend
+- Deadline events are events MUST have both dtstart and dtend and they both MUST have the same value.
+- All events MUST have a dtstart.
 
 Output rules:
 - Return ICS content ONLY.

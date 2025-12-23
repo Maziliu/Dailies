@@ -10,7 +10,7 @@ class ScheduleItem extends StatelessWidget {
   final DateTime? end;
   final String? location;
   final EventType type;
-  final bool showDate;
+  final bool showDate, disableOnHold;
   final VoidCallback onHold;
 
   const ScheduleItem({
@@ -23,6 +23,7 @@ class ScheduleItem extends StatelessWidget {
     this.end,
     this.location,
     this.showDate = false,
+    this.disableOnHold = false,
   });
 
   @override
@@ -31,7 +32,7 @@ class ScheduleItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return InkWell(
-      onLongPress: onHold,
+      onLongPress: disableOnHold ? null : onHold,
       child: Card(
         elevation: 0,
         color: theme.colorScheme.surface,
@@ -93,8 +94,10 @@ class ScheduleItem extends StatelessWidget {
     switch (type) {
       case EventType.DEADLINE:
         return 'Due at $endText';
+      case EventType.REACCURING:
       case EventType.INTERVAL:
         return '$startText - $endText';
+
       default:
         return null;
     }

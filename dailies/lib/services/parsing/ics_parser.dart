@@ -73,7 +73,11 @@ class ICSParser extends FileParser {
   }) {
     if (rrule != null) return EventType.REACCURING;
 
-    if (end == null || end.isAtSameMomentAs(start)) {
+    if (end == null) {
+      return EventType.INDEFINITE;
+    }
+
+    if (end.isAtSameMomentAs(start)) {
       return EventType.DEADLINE;
     }
 

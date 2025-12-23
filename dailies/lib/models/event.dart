@@ -119,7 +119,7 @@ class EventUIModel {
     date: instance.date,
     start: instance.start,
     end: instance.end,
-    title: info.title ?? 'NULL TITLE',
+    title: info.title,
     location: info.location,
     type: info.type,
   );

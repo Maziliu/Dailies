@@ -155,6 +155,7 @@ class _AddOrUpdateEventModalState extends State<AddOrUpdateEventModal> {
               EventTypeSection(
                 initialValue: _selectedType,
                 onChanged: (t) => _selectedType = t,
+                eventInfoToUpdate: eventInfoToUpdate,
               ),
 
               ElevatedButton(
@@ -232,13 +233,13 @@ class _AddOrUpdateEventModalState extends State<AddOrUpdateEventModal> {
 class EventTypeSection extends StatefulWidget {
   final EventType initialValue;
   final ValueChanged<EventType> onChanged;
-  final EventInfoModel? eventInfoToUpdate;
+  final EventUIModel? eventInfoToUpdate;
 
   const EventTypeSection({
     super.key,
     required this.initialValue,
     required this.onChanged,
-    this.eventInfoToUpdate,
+    required this.eventInfoToUpdate,
   });
 
   @override
@@ -247,7 +248,7 @@ class EventTypeSection extends StatefulWidget {
 
 class _EventTypeSectionState extends State<EventTypeSection> {
   late EventType? _selected;
-  late EventInfoModel? _eventInfoToUpdate;
+  late EventUIModel? _eventInfoToUpdate;
 
   @override
   void initState() {
@@ -338,7 +339,7 @@ class _IntervalFields extends StatelessWidget {
           initialValue: start,
           initialTime: start != null
               ? TimeOfDay.fromDateTime(start!)
-              : TimeOfDay(hour: 12, minute: 0),
+              : const TimeOfDay(hour: 12, minute: 0),
           inputType: InputType.time,
           name: _INTERVAL_START_TAG,
           decoration: const InputDecoration(labelText: 'Start Time'),
@@ -348,7 +349,7 @@ class _IntervalFields extends StatelessWidget {
           initialValue: end,
           initialTime: end != null
               ? TimeOfDay.fromDateTime(end!)
-              : TimeOfDay(hour: 12, minute: 0),
+              : const TimeOfDay(hour: 12, minute: 0),
           inputType: InputType.time,
           name: _INTERVAL_END_TAG,
           decoration: const InputDecoration(labelText: 'End Time'),
@@ -370,7 +371,7 @@ class _DeadlineFields extends StatelessWidget {
       initialValue: due,
       initialTime: due != null
           ? TimeOfDay.fromDateTime(due!)
-          : TimeOfDay(hour: 12, minute: 0),
+          : const TimeOfDay(hour: 12, minute: 0),
       inputType: InputType.time,
       name: _DEADLINE_TAG,
       decoration: const InputDecoration(labelText: 'Deadline'),

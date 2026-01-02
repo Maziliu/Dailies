@@ -1,4 +1,5 @@
 import 'package:dailies_v2/models/event.dart';
+import 'package:dailies_v2/ui/modals/add_update_event.dart';
 import 'package:dailies_v2/ui/modals/delete_event.dart';
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/widgets/item_list.dart';
@@ -7,14 +8,13 @@ import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {
   final List<EventUIModel> events;
-  final bool showDate, disableOnHold, isAlternateTapMode;
+  final bool showDate, disableOnHold;
 
   const EventsList({
     super.key,
     required this.events,
     this.showDate = false,
     this.disableOnHold = false,
-    this.isAlternateTapMode = false,
   });
 
   void _handleOnHold(EventUIModel event, BuildContext context) async {
@@ -40,9 +40,21 @@ class EventsList extends StatelessWidget {
     }
   }
 
-  void _handleOnTap(EventUIModel event, BuildContext context) async {}
+  void _pushInfoModal(EventUIModel event, BuildContext context) async {}
 
-  void _handleOnTapAlternate(EventUIModel event, BuildContext context) async {}
+  void _pushUpdateModal(EventUIModel event, BuildContext context) async {
+    final EventInfoModel? result = await showDialog(
+      context: context,
+      builder: (_) => AddOrUpdateEventModal(eventInfoToUpdate: event),
+    );
+
+    if (result == null) {
+      return;
+    }
+
+    await EVENTS_VIEW_MODEL.deleteAllEventsInSeries(event.seriesId);
+    EVENTS_VIEW_MODEL.createEvent(result);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +63,11 @@ class EventsList extends StatelessWidget {
       itemBuilder: (event) {
         return ScheduleItem(
           onTap: event.seriesId != null
-              ? () => _handleOnTap(event, context)
+              ? () => _pushInfoModal(event, context)
               : null,
-          onTapAlternate: event.seriesId != null
-              ? () => _handleOnTapAlternate(event, context)
+          onDoubleTap: event.seriesId != null
+              ? () => _pushUpdateModal(event, context)
               : null,
-          isAlternateTapMode: isAlternateTapMode,
           onHold: () => _handleOnHold(event, context),
           title: event.title,
           date: event.date,

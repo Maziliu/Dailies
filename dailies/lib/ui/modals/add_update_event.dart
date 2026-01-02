@@ -84,7 +84,7 @@ const _RECURRING_UNTIL_TAG = 'RECURRING_UNTIL_TAG';
 final _FORM_KEY = GlobalKey<FormBuilderState>();
 
 class AddOrUpdateEventModal extends StatefulWidget {
-  final EventInfoModel? eventInfoToUpdate;
+  final EventUIModel? eventInfoToUpdate;
 
   const AddOrUpdateEventModal({super.key, this.eventInfoToUpdate});
 
@@ -98,7 +98,7 @@ class _AddOrUpdateEventModalState extends State<AddOrUpdateEventModal> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final EventInfoModel? eventInfoToUpdate = widget.eventInfoToUpdate;
+    final EventUIModel? eventInfoToUpdate = widget.eventInfoToUpdate;
     final bool isEditMode = eventInfoToUpdate != null;
 
     if (isEditMode) {
@@ -157,7 +157,10 @@ class _AddOrUpdateEventModalState extends State<AddOrUpdateEventModal> {
                 onChanged: (t) => _selectedType = t,
               ),
 
-              ElevatedButton(onPressed: _submit, child: const Text('Create')),
+              ElevatedButton(
+                onPressed: _submit,
+                child: Text(isEditMode ? 'Update' : 'Create'),
+              ),
             ],
           ),
         ),
@@ -333,6 +336,9 @@ class _IntervalFields extends StatelessWidget {
       children: [
         FormBuilderDateTimePicker(
           initialValue: start,
+          initialTime: start != null
+              ? TimeOfDay.fromDateTime(start!)
+              : TimeOfDay(hour: 12, minute: 0),
           inputType: InputType.time,
           name: _INTERVAL_START_TAG,
           decoration: const InputDecoration(labelText: 'Start Time'),
@@ -340,6 +346,9 @@ class _IntervalFields extends StatelessWidget {
         ),
         FormBuilderDateTimePicker(
           initialValue: end,
+          initialTime: end != null
+              ? TimeOfDay.fromDateTime(end!)
+              : TimeOfDay(hour: 12, minute: 0),
           inputType: InputType.time,
           name: _INTERVAL_END_TAG,
           decoration: const InputDecoration(labelText: 'End Time'),
@@ -359,6 +368,9 @@ class _DeadlineFields extends StatelessWidget {
   Widget build(BuildContext context) {
     return FormBuilderDateTimePicker(
       initialValue: due,
+      initialTime: due != null
+          ? TimeOfDay.fromDateTime(due!)
+          : TimeOfDay(hour: 12, minute: 0),
       inputType: InputType.time,
       name: _DEADLINE_TAG,
       decoration: const InputDecoration(labelText: 'Deadline'),
@@ -369,7 +381,6 @@ class _DeadlineFields extends StatelessWidget {
 
 class _RecurringFields extends StatelessWidget {
   final String? rrule;
-
   const _RecurringFields({super.key, this.rrule});
 
   @override
@@ -380,6 +391,12 @@ class _RecurringFields extends StatelessWidget {
               if (p.contains('=')) p.split('=').first: p.split('=').last,
           }
         : null;
+
+    final DateTime? untilDate = parts != null && parts.containsKey('UNTIL')
+        ? DateTime.tryParse(parts['UNTIL']!)
+        : null;
+
+    print(rrule);
 
     return Column(
       children: [
@@ -400,9 +417,7 @@ class _RecurringFields extends StatelessWidget {
         const SizedBox(height: 8),
         FormBuilderDateTimePicker(
           name: _RECURRING_UNTIL_TAG,
-          initialValue: parts != null && parts.containsKey('UNTIL')
-              ? DateTime.tryParse(parts['UNTIL']!)
-              : null,
+          initialValue: untilDate,
           inputType: InputType.date,
           decoration: const InputDecoration(labelText: 'End Date'),
           validator: (date) => date == null ? 'Required' : null,

@@ -9,7 +9,7 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:timezone/standalone.dart';
 import 'package:uuid/uuid.dart';
 
-const Map<String, String> timezoneAbbreviationMap = {
+const Map<String, String> abbreviationToTimezoneMap = {
   // North America - US
   'EST': 'America/New_York',
   'EDT': 'America/New_York',
@@ -81,6 +81,10 @@ const Map<String, String> timezoneAbbreviationMap = {
   'Z': 'UTC',
 };
 
+const Map<String, String> equivalentRegionsMap = {
+  'America/Edmonton': 'America/Denver',
+};
+
 class ICSParser extends FileParser {
   static const _uuid = Uuid();
 
@@ -93,7 +97,16 @@ class ICSParser extends FileParser {
 
   DateTime _icsDateTimeToDateTime(IcsDateTime ics) {
     if (ics.tzid != null) {
-      final location = getLocation(timezoneAbbreviationMap[ics.tzid]!);
+      late Location location;
+
+      if (abbreviationToTimezoneMap.values.contains(ics.tzid)) {
+        location = getLocation(ics.tzid!);
+      } else if (equivalentRegionsMap.keys.contains(ics.tzid)) {
+        location = getLocation(equivalentRegionsMap[ics.tzid]!);
+      } else {
+        location = getLocation(abbreviationToTimezoneMap[ics.tzid]!);
+      }
+
       return TZDateTime(
         location,
         int.parse(ics.dt.substring(0, 4)),

@@ -60,6 +60,14 @@ class NoBackendAPIKeysFailure extends Failure {
   NoBackendAPIKeysFailure(super.message);
 }
 
+class InvalidNotificationThreshold extends Failure {
+  InvalidNotificationThreshold(super.message);
+}
+
+class NotificationSchedulingFailure extends Failure {
+  NotificationSchedulingFailure(super.message);
+}
+
 Future<Result<T>> guardedAsyncExecute<T>(
   Future<T> Function() action,
   Failure error,

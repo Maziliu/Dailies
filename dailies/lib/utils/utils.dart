@@ -62,15 +62,18 @@ Result<DateTime> predictGachaNotificationTime({
     );
   }
 
-  final now = DateTime.now();
-
   final int thresholdEnergy = (stamina.maxStamina * threshold).ceil();
 
   if (stamina.staminaOfLastestReset >= thresholdEnergy) {
-    return Result.ok(now);
+    return Result.ok(DateTime.now());
   }
 
   final int rechargeSeconds = stamina.rechargeTime.inSeconds;
+  if (rechargeSeconds <= 0) {
+    return Result.error(ValidationFailure('Recharge time must be > 0 seconds'));
+  }
+
+  final DateTime now = DateTime.now();
 
   final int elapsed = now.difference(stamina.timeOfLastReset).inSeconds;
   final int safeElapsed = elapsed < 0 ? 0 : elapsed;
@@ -85,16 +88,16 @@ Result<DateTime> predictGachaNotificationTime({
     return Result.ok(now);
   }
 
-  final int energyUntilThreshold = thresholdEnergy - currentEnergy;
+  final int neededEnergyFromReset =
+      thresholdEnergy - stamina.staminaOfLastestReset;
 
-  final int remainder = safeElapsed % rechargeSeconds;
-  final int secondsUntilNextTick = remainder == 0
-      ? 0
-      : (rechargeSeconds - remainder);
+  final DateTime thresholdTime = stamina.timeOfLastReset.add(
+    Duration(seconds: neededEnergyFromReset * rechargeSeconds),
+  );
 
-  final int totalSeconds = energyUntilThreshold == 0
-      ? 0
-      : (secondsUntilNextTick + (energyUntilThreshold - 1) * rechargeSeconds);
+  if (!thresholdTime.isAfter(now)) {
+    return Result.ok(now);
+  }
 
-  return Result.ok(now.add(Duration(seconds: totalSeconds)));
+  return Result.ok(thresholdTime);
 }

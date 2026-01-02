@@ -27,6 +27,23 @@ class StaminaModel {
   Duration get rechargeTime => _rechargeTime;
   String get gachaTitle => _gachaTitle;
   String? get imageName => _imageName;
+
+  int get currentStamina {
+    final int rechargeSeconds = rechargeTime.inSeconds;
+
+    final DateTime now = DateTime.now();
+
+    final int elapsed = now.difference(timeOfLastReset).inSeconds;
+    final int safeElapsed = elapsed < 0 ? 0 : elapsed;
+
+    final int gained = safeElapsed ~/ rechargeSeconds;
+    final int currentEnergy = (staminaOfLastestReset + gained).clamp(
+      0,
+      maxStamina,
+    );
+
+    return currentEnergy;
+  }
 }
 
 extension StaminaRowMapper on Stamina {

@@ -16,8 +16,6 @@ class LocalNotificationService {
         NotificationSchedulingFailure('Stamina id must not be null'),
       );
 
-    await plugin.cancel(stamina.id!);
-
     const NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'gacha_channel',
@@ -30,26 +28,75 @@ class LocalNotificationService {
 
     final String title = '${stamina.gachaTitle} energy almost full';
     final String body =
-        'Energy at ${(stamina.maxStamina * NOTIFICATION_ENERGY_THRESHOLD).ceil()}/${stamina.maxStamina}';
+        'Energy at ${stamina.currentStamina}/${stamina.maxStamina}';
     final Result<DateTime> result = predictGachaNotificationTime(
       stamina: stamina,
     );
 
     switch (result) {
       case Ok<DateTime>(value: final DateTime notificationTime):
-        await plugin.zonedSchedule(
-          stamina.id!,
-          title,
-          body,
-          tz.TZDateTime.from(notificationTime, tz.local),
-          notificationDetails,
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        final DateTime now = DateTime.now();
+        final scheduledAt = notificationTime.isAfter(now)
+            ? notificationTime
+            : now.add(const Duration(seconds: 1));
+
+        return await guardedAsyncExecute(
+          () => plugin.zonedSchedule(
+            stamina.id!,
+            title,
+            body,
+            tz.TZDateTime.from(scheduledAt, tz.local),
+            notificationDetails,
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          ),
+          NotificationSchedulingFailure('Failed to schedule notification'),
         );
-        return Result.ok(null);
 
       case Error<DateTime>(failure: final Failure failure):
         return Result.error(failure);
     }
+  }
+
+  Future<Result<void>> rescheduleGachaNotification(StaminaModel stamina) async {
+    final Result<void> descheduleResult = await descheduleNotification(
+      stamina.id,
+    );
+
+    switch (descheduleResult) {
+      case Error<void>(failure: final Failure failure):
+        return Result.error(failure);
+      case Ok<void>():
+    }
+
+    final Result<void> rescheduleResult = await scheduleGachaNotification(
+      stamina,
+    );
+
+    switch (rescheduleResult) {
+      case Error<void>(failure: final Failure failure):
+        return Result.error(failure);
+      case Ok<void>():
+    }
+
+    return Result.ok(null);
+  }
+
+  Future<Result<void>> descheduleNotification(int? notificationId) async {
+    if (notificationId == null)
+      return Result.error(
+        NotificationSchedulingFailure('Cannot deschedule null notification id'),
+      );
+
+    if (notificationId < 0)
+      return Result.error(
+        NotificationSchedulingFailure(
+          'Cannot deschedule notification id $notificationId. Must be > 0',
+        ),
+      );
+
+    await plugin.cancel(notificationId);
+
+    return Result.ok(null);
   }
 
   Future<void> initialize() async {

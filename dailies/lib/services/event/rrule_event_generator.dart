@@ -105,12 +105,16 @@ abstract class RRuleEventGenerator {
       generated++;
 
       switch (freq) {
+        case 'SECONDLY':
+          cursor = cursor.add(const Duration(seconds: 1));
+        case 'MINUTELY':
+          cursor = cursor.add(const Duration(minutes: 1));
+        case 'HOURLY':
+          cursor = cursor.add(const Duration(hours: 1));
         case 'DAILY':
           cursor = cursor.add(const Duration(days: 1));
-
         case 'WEEKLY':
           cursor = cursor.add(const Duration(days: 7));
-
         case 'MONTHLY':
           cursor = DateTime(
             cursor.year,
@@ -119,7 +123,14 @@ abstract class RRuleEventGenerator {
             cursor.hour,
             cursor.minute,
           );
-
+        case 'YEARLY':
+          cursor = DateTime(
+            cursor.year + 1,
+            cursor.month,
+            cursor.day,
+            cursor.hour,
+            cursor.minute,
+          );
         default:
           return out;
       }

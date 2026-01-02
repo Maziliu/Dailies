@@ -10,12 +10,15 @@ class ScheduleItem extends StatelessWidget {
   final DateTime? end;
   final String? location;
   final EventType type;
-  final bool showDate, disableOnHold;
-  final VoidCallback onHold;
+  final bool showDate, disableOnHold, isAlternateTapMode;
+  final VoidCallback? onHold, onTap, onTapAlternate;
 
   const ScheduleItem({
     super.key,
     required this.onHold,
+    required this.onTap,
+    required this.onTapAlternate,
+    required this.isAlternateTapMode,
     required this.title,
     required this.date,
     required this.type,
@@ -32,6 +35,7 @@ class ScheduleItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return InkWell(
+      onTap: isAlternateTapMode ? onTapAlternate : onTap,
       onLongPress: disableOnHold ? null : onHold,
       child: Card(
         elevation: 0,

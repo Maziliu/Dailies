@@ -7,14 +7,42 @@ import 'package:flutter/material.dart';
 
 class EventsList extends StatelessWidget {
   final List<EventUIModel> events;
-  final bool showDate, disableOnHold;
+  final bool showDate, disableOnHold, isAlternateTapMode;
 
   const EventsList({
     super.key,
     required this.events,
     this.showDate = false,
     this.disableOnHold = false,
+    this.isAlternateTapMode = false,
   });
+
+  void _handleOnHold(EventUIModel event, BuildContext context) async {
+    final EventDeleteOptions? result = await showDialog(
+      context: context,
+      builder: (_) => DeleteEventModal(
+        title: 'Delete ${event.title}?',
+        message: 'This action cannot be undone.',
+      ),
+    );
+
+    if (result == null) {
+      return;
+    }
+
+    switch (result) {
+      case EventDeleteOptions.CANCEL:
+        return;
+      case EventDeleteOptions.DELETE_SERIES:
+        EVENTS_VIEW_MODEL.deleteAllEventsInSeries(event.seriesId);
+      case EventDeleteOptions.DELETE_INSTANCE:
+        EVENTS_VIEW_MODEL.deleteEventInstance(event.instanceId);
+    }
+  }
+
+  void _handleOnTap(EventUIModel event, BuildContext context) async {}
+
+  void _handleOnTapAlternate(EventUIModel event, BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +50,14 @@ class EventsList extends StatelessWidget {
       items: events,
       itemBuilder: (event) {
         return ScheduleItem(
-          onHold: () async {
-            final EventDeleteOptions? result = await showDialog(
-              context: context,
-              builder: (_) => DeleteEventModal(
-                title: 'Delete ${event.title}?',
-                message: 'This action cannot be undone.',
-              ),
-            );
-
-            if (result == null) {
-              return;
-            }
-
-            switch (result) {
-              case EventDeleteOptions.CANCEL:
-                return;
-              case EventDeleteOptions.DELETE_SERIES:
-                EVENTS_VIEW_MODEL.deleteAllEventsInSeries(event.seriesId);
-              case EventDeleteOptions.DELETE_INSTANCE:
-                EVENTS_VIEW_MODEL.deleteEventInstance(event.instanceId);
-            }
-          },
+          onTap: event.seriesId != null
+              ? () => _handleOnTap(event, context)
+              : null,
+          onTapAlternate: event.seriesId != null
+              ? () => _handleOnTapAlternate(event, context)
+              : null,
+          isAlternateTapMode: isAlternateTapMode,
+          onHold: () => _handleOnHold(event, context),
           title: event.title,
           date: event.date,
           start: event.start,

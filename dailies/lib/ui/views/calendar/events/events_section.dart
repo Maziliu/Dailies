@@ -1,5 +1,5 @@
 import 'package:dailies_v2/models/event.dart';
-import 'package:dailies_v2/ui/modals/add_event.dart';
+import 'package:dailies_v2/ui/modals/add_update_event.dart';
 import 'package:dailies_v2/ui/state/events_view_model.dart';
 import 'package:dailies_v2/ui/state/init.dart';
 import 'package:dailies_v2/ui/widgets/events_list.dart';
@@ -29,7 +29,7 @@ class EventsSection extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const AddEventModal(),
+            child: const AddOrUpdateEventModal(),
           );
         },
       );

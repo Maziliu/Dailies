@@ -11,11 +11,13 @@ class ScheduleItem extends StatelessWidget {
   final String? location;
   final EventType type;
   final bool showDate, disableOnHold;
-  final VoidCallback onHold;
+  final VoidCallback? onHold, onTap, onDoubleTap;
 
   const ScheduleItem({
     super.key,
     required this.onHold,
+    required this.onTap,
+    required this.onDoubleTap,
     required this.title,
     required this.date,
     required this.type,
@@ -32,6 +34,8 @@ class ScheduleItem extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return InkWell(
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
       onLongPress: disableOnHold ? null : onHold,
       child: Card(
         elevation: 0,

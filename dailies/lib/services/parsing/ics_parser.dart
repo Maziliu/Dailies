@@ -9,6 +9,82 @@ import 'package:icalendar_parser/icalendar_parser.dart';
 import 'package:timezone/standalone.dart';
 import 'package:uuid/uuid.dart';
 
+const Map<String, String> abbreviationToTimezoneMap = {
+  // North America - US
+  'EST': 'America/New_York',
+  'EDT': 'America/New_York',
+  'CST': 'America/Chicago',
+  'CDT': 'America/Chicago',
+  'MST': 'America/Denver',
+  'MDT': 'America/Denver',
+  'PST': 'America/Los_Angeles',
+  'PDT': 'America/Los_Angeles',
+  'AKST': 'America/Anchorage',
+  'AKDT': 'America/Anchorage',
+  'HST': 'Pacific/Honolulu',
+  'HAST': 'Pacific/Honolulu',
+  'HADT': 'Pacific/Honolulu',
+
+  // North America - Canada
+  'AST': 'America/Halifax',
+  'ADT': 'America/Halifax',
+  'NST': 'America/St_Johns',
+  'NDT': 'America/St_Johns',
+
+  // Europe
+  'GMT': 'Europe/London',
+  'BST': 'Europe/London',
+  'IST': 'Europe/Dublin',
+  'WET': 'Europe/Lisbon',
+  'WEST': 'Europe/Lisbon',
+  'CET': 'Europe/Paris',
+  'CEST': 'Europe/Paris',
+  'EET': 'Europe/Athens',
+  'EEST': 'Europe/Athens',
+  'MSK': 'Europe/Moscow',
+
+  // Asia
+  'PKT': 'Asia/Karachi',
+  'ICT': 'Asia/Bangkok',
+  'SGT': 'Asia/Singapore',
+  'HKT': 'Asia/Hong_Kong',
+  'JST': 'Asia/Tokyo',
+  'KST': 'Asia/Seoul',
+  'AEST': 'Australia/Sydney',
+  'AEDT': 'Australia/Sydney',
+  'ACST': 'Australia/Adelaide',
+  'ACDT': 'Australia/Adelaide',
+  'AWST': 'Australia/Perth',
+
+  // Middle East
+  'GST': 'Asia/Dubai',
+
+  // South America
+  'ART': 'America/Argentina/Buenos_Aires',
+  'BRT': 'America/Sao_Paulo',
+  'BRST': 'America/Sao_Paulo',
+  'CLT': 'America/Santiago',
+  'CLST': 'America/Santiago',
+
+  // Africa
+  'CAT': 'Africa/Johannesburg',
+  'EAT': 'Africa/Nairobi',
+  'WAT': 'Africa/Lagos',
+
+  // Pacific
+  'NZST': 'Pacific/Auckland',
+  'NZDT': 'Pacific/Auckland',
+  'FJT': 'Pacific/Fiji',
+
+  // UTC variants
+  'UTC': 'UTC',
+  'Z': 'UTC',
+};
+
+const Map<String, String> equivalentRegionsMap = {
+  'America/Edmonton': 'America/Denver',
+};
+
 class ICSParser extends FileParser {
   static const _uuid = Uuid();
 
@@ -21,7 +97,16 @@ class ICSParser extends FileParser {
 
   DateTime _icsDateTimeToDateTime(IcsDateTime ics) {
     if (ics.tzid != null) {
-      final location = getLocation(ics.tzid!);
+      late Location location;
+
+      if (abbreviationToTimezoneMap.values.contains(ics.tzid)) {
+        location = getLocation(ics.tzid!);
+      } else if (equivalentRegionsMap.keys.contains(ics.tzid)) {
+        location = getLocation(equivalentRegionsMap[ics.tzid]!);
+      } else {
+        location = getLocation(abbreviationToTimezoneMap[ics.tzid]!);
+      }
+
       return TZDateTime(
         location,
         int.parse(ics.dt.substring(0, 4)),

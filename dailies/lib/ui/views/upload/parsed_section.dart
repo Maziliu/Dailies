@@ -49,10 +49,6 @@ class ParsedSection extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ElevatedButton(onPressed: () {}, child: const Text('Edit')),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
             child: ElevatedButton(
               onPressed: UPLOAD_VIEW_MODEL.addParsedToCalendar,
               child: const Text('Add Events'),

@@ -96,7 +96,7 @@ class EventUIModel {
   final DateTime date;
   final DateTime? start, end;
   final String title;
-  final String? location;
+  final String? location, description, rrule;
   final EventType type;
 
   EventUIModel({
@@ -108,6 +108,8 @@ class EventUIModel {
     required this.date,
     required this.title,
     required this.location,
+    required this.description,
+    required this.rrule,
   });
 
   factory EventUIModel.fromInfoAndInstance({
@@ -121,7 +123,9 @@ class EventUIModel {
     end: instance.end,
     title: info.title,
     location: info.location,
+    description: info.description,
     type: info.type,
+    rrule: info.rrule,
   );
 
   factory EventUIModel.fromEventInfo({required EventInfoModel info}) =>
@@ -129,9 +133,11 @@ class EventUIModel {
         date: info.date,
         title: info.title,
         location: info.location,
+        description: info.description,
         start: info.start,
         end: info.end,
         type: info.type,
+        rrule: info.rrule,
       );
 }
 

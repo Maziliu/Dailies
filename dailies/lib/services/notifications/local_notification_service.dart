@@ -4,7 +4,7 @@ import 'package:dailies_v2/utils/utils.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-const double NOTIFICATION_ENERGY_THRESHOLD = 0.9;
+const double NOTIFICATION_ENERGY_THRESHOLD = 0.98;
 
 class LocalNotificationService {
   final FlutterLocalNotificationsPlugin plugin =
@@ -31,6 +31,7 @@ class LocalNotificationService {
         'Energy at ${stamina.currentStamina}/${stamina.maxStamina}';
     final Result<DateTime> result = predictGachaNotificationTime(
       stamina: stamina,
+      threshold: NOTIFICATION_ENERGY_THRESHOLD,
     );
 
     switch (result) {
